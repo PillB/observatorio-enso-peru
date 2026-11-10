@@ -607,7 +607,7 @@ def email_html(doc: dict, site: str) -> str:
 <tr><td style="background:#0b4f71;color:#ffffff;padding:14px 18px">
 <div style="font:700 19px Arial,sans-serif">Boletín de eventos El Niño · Perú</div>
 <div style="font:13px Arial,sans-serif;opacity:.9">Edición N° {doc["edition"]} · corte {_e(when(doc["cutoff"]))} (hora de Lima)</div></td></tr>
-<tr><td style="padding:14px 18px">{ch_block}
+<tr><td style="padding:14px 18px"><!--cambios-->{ch_block}<!--/cambios-->
 <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 12px"><tr>{counters}</tr></table>
 <div style="font:12px Arial,sans-serif;color:#555;margin:0 0 12px">Departamentos según el nivel más alto de sus avisos oficiales vigentes o próximos.</div>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr>

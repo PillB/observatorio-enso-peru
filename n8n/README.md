@@ -8,6 +8,9 @@ cuando una fuente no responde a GitHub Actions (canal «relay-n8n»).
 
 Instalación, configuración y operación: [docs/n8n.md](../docs/n8n.md).
 
+También manda por Gmail el boletín de eventos El Niño que publica el sitio
+(`dist/enso-n8n-boletin.json`; [docs/boletin.md](../docs/boletin.md)).
+
 | Carpeta | Qué hay |
 |---|---|
 | `lib/` | Código que corre dentro de los nodos Code: clasificador de respuestas y bloqueos, SHA-256/SHA-1, PDF del ENFEN, armado de la copia |

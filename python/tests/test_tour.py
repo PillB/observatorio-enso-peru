@@ -18,9 +18,9 @@ pytestmark = pytest.mark.browser
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
-TOURS = ["inicio", "completo", "resumen", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "zona", "noticias",
+TOURS = ["inicio", "completo", "resumen", "boletin", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "zona", "noticias",
          "datos", "metodologia", "asistente"]
-TAB_OF = {"resumen": "", "costero": "costero", "pacifico": "pacifico", "oceano": "oceano", "mapa": "mapa",
+TAB_OF = {"resumen": "", "boletin": "boletin", "costero": "costero", "pacifico": "pacifico", "oceano": "oceano", "mapa": "mapa",
           "historia": "historia", "memoria": "memoria", "zona": "zona", "noticias": "noticias", "datos": "datos",
           "metodologia": "metodologia", "asistente": "asistente"}
 

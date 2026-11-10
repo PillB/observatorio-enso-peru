@@ -218,7 +218,7 @@ it('el detalle por cuenca y por distrito: color del aviso, memoria y enlace a la
   assert.match(String(D.svg), /class="dist hz-na s-r2"[^>]*data-dist="200111"[^>]*data-tip="[^"]*Sin registros en la memoria de desastres\./);
 });
 
-it('#/variantes: los tres experimentos con su tasa de uso, su intervalo y la decisión', async () => {
+it('#/variantes: los cuatro experimentos con su tasa de uso, su intervalo y la decisión', async () => {
   const { statsHtml } = await import('../../../public/assets/js/alertmap.js');
   const { decide, EXPERIMENTS } = await import('../../../functions/_lib/ab.js');
   const t = (view, use) => ({ view, use, hover: 0, select: use, detail: 0, choose: 0, leave: 0, keep: 0, chosen: 0 });
@@ -226,10 +226,11 @@ it('#/variantes: los tres experimentos con su tasa de uso, su intervalo y la dec
     mapa: { A: t(10, 1), B: t(10, 2), C: t(10, 3), D: t(10, 4) },
     memoria: { resumen: t(300, 60), cuencas: t(300, 180), puntos: t(300, 70), riesgo: t(300, 65) },
     noticias: { resumen: t(50, 10), cuencas: t(250, 50), distritos: t(250, 60) },
+    boletin: { mapa: t(40, 10), mosaico: t(40, 12) },
   };
   const experiments = Object.fromEntries(Object.entries(EXPERIMENTS).map(([x, vs]) => [x, { variants: vs, totals: totals[x], decision: decide(vs, totals[x]) }]));
   const out = String(statsHtml({ available: true, days: 30, decideDays: 60, since: '2026-09-29', totals: totals.mapa, experiments }));
-  assert.equal((out.match(/<table/g) || []).length, 3);
+  assert.equal((out.match(/<table/g) || []).length, 4);
   assert.match(out, /Gana «cuencas»/);
   assert.match(out, /Detalle: cuencas <span class="chip chip-ok">Ganadora<\/span>/);
   assert.match(out, /60 %<div class="muted small">54–65 %<\/div>/);  // 180 de 300, con su intervalo de Wilson

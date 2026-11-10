@@ -23,7 +23,7 @@ pytestmark = pytest.mark.browser
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
-ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias", "datos", "metodologia", "asistente"]
+ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias", "datos", "metodologia", "asistente", "boletin"]
 VIEWPORTS = {"telefono-320": (320, 640), "telefono-390": (390, 844), "tableta": (820, 1180), "escritorio": (1366, 900)}
 
 
@@ -281,7 +281,7 @@ def test_tutorial_start_pause_resume_and_clear(site, page):
     go(page, base)
     page.get_by_role("button", name="Ayuda y tutorial").click()
     dlg = page.get_by_role("dialog", name="Ayuda y tutorial")
-    expect(dlg.locator(".tour-menu li")).to_have_count(14)
+    expect(dlg.locator(".tour-menu li")).to_have_count(15)
     dlg.get_by_role("button", name=re.compile("^Inicio rápido")).click()
     pop = page.locator(".tour-pop")
     expect(pop.get_by_text("paso 1 de")).to_be_visible()
@@ -305,7 +305,7 @@ def test_full_tour_visits_every_target(site, page):
     go(page, base)
     page.get_by_role("button", name="Ayuda y tutorial").click()
     page.get_by_role("button", name=re.compile("^Recorrido completo")).click()
-    for _ in range(12):
+    for _ in range(13):
         pop = page.locator(".tour-pop")
         expect(pop).to_have_attribute("data-state", "ready", timeout=30000)
         assert pop.get_by_text("no está disponible en esta publicación").count() == 0, pop.inner_text()
@@ -1267,3 +1267,144 @@ def test_zona_fits_every_screen_and_answers_its_own_questions(site, browser, vp)
         assert not errors, errors
     finally:
         ctx.close()
+
+
+# --- Boletín de eventos El Niño -----------------------------------------------------------------------------------
+# El sitio de las pruebas sale de las fuentes capturadas, sin avisos vigentes: el boletín con contenido es el de la
+# publicación real del 10 de noviembre de 2026 (tests/fixtures/boletin), con el corte movido a ahora para que no se
+# vea viejo y con el publicationId del sitio para que no se tome por otra publicación.
+
+BOL_FIX = Path(__file__).parent / "fixtures" / "boletin"
+
+
+def _boletin_doc(root):
+    from datetime import timezone
+
+    from enso import boletin as B
+
+    rd = lambda n: json.loads((BOL_FIX / n).read_text(encoding="utf-8"))  # noqa: E731
+    off = rd("oficial-2026-11-10.json")
+    doc = B.build(rd("feed-alertas-2026-11-10.json"), off["official"], rd("escenario-distritos-2026-11-10.json"),
+                  datetime(2026, 11, 10, 15, 31, 50, tzinfo=timezone.utc), None, off["freshness"])
+    doc["publicationId"] = json.loads((root / "data" / "dashboard.json").read_text(encoding="utf-8"))["publicationId"]
+    doc["cutoff"] = doc["generatedAt"] = datetime.now(timezone.utc).isoformat()
+    return doc
+
+
+@pytest.fixture(scope="module")
+def bol(site):
+    return _boletin_doc(site[1])
+
+
+def _bol_page(browser, site, doc, *, variant="mapa", **ctx_kw):
+    base, _ = site
+    ctx = browser.new_context(**{"viewport": {"width": 1280, "height": 900}, "locale": "es-PE", **ctx_kw})
+    ctx.add_init_script("if (!localStorage.getItem('enso-vista-boletin')) localStorage.setItem('enso-vista-boletin', JSON.stringify({v: '%s', chosen: true, at: '2000-01-01'}));" % variant)
+    pg = ctx.new_page()
+    pg.errors = []
+    pg.on("pageerror", lambda e: pg.errors.append(str(e)))
+    pg.on("console", lambda m: pg.errors.append(m.text) if m.type == "error" else None)
+    body = json.dumps(doc, ensure_ascii=False)
+    pg.route("**/data/boletin.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=body))
+    go(pg, base, "boletin")
+    expect(pg.locator("#bol-sheet")).to_be_visible(timeout=15000)
+    return ctx, pg
+
+
+def test_boletin_shows_the_published_counts_order_and_sources(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol)
+    c = bol["counts"]
+    for cls, k in (("r3", "rojo"), ("r2", "naranja"), ("ok", "verde")):
+        expect(pg.locator(f".bol-count.bc-{cls} strong")).to_have_text(str(c[k]))
+    expect(pg.locator("#bol-h")).to_contain_text(f"N° {bol['edition']}")
+    rows = pg.locator(".bol-row")
+    expect(rows).to_have_count(10)
+    assert [r.get_attribute("data-dep") for r in rows.all()] == [s["code"] for s in bol["segments"][:10]]
+    # La fuente de cada fila abre sus avisos con enlace a la institución.
+    first = pg.locator(".bol-row").first.locator("details.bol-evs")
+    if first.count():
+        first.locator("summary").click()
+        expect(first.locator("a[href^='http']").first).to_be_visible()
+    # Probabilidades: solo si el ENFEN las publicó, y con la página del informe.
+    if bol["enso"].get("probabilities"):
+        expect(pg.locator(".bol-what")).to_contain_text("ENFEN")
+    # Los 25 y de vuelta.
+    pg.locator("#bol-all").click()
+    expect(pg.locator(".bol-row")).to_have_count(25)
+    pg.locator("#bol-all").click()
+    expect(pg.locator(".bol-row")).to_have_count(10)
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+@pytest.mark.parametrize("variant", ["mapa", "mosaico"])
+def test_boletin_map_selects_a_department_and_switches_form(site, browser, bol, variant):
+    ctx, pg = _bol_page(browser, site, bol, variant=variant)
+    sel = ".bol-svg [data-dep='20']" if variant == "mapa" else ".bol-tiles [data-dep='20']"
+    expect(pg.locator(f"[data-variant='{variant}']")).to_have_attribute("aria-pressed", "true")
+    pg.locator(sel).click()
+    card = pg.locator("#bol-dep .bol-depcard")
+    expect(card).to_contain_text("Piura")
+    expect(pg.locator(".bol-row.on")).to_have_attribute("data-dep", "20") if pg.locator(".bol-row[data-dep='20']").count() else None
+    card.locator("[data-close]").click()
+    expect(pg.locator("#bol-dep .bol-depcard")).to_have_count(0)
+    other = "mosaico" if variant == "mapa" else "mapa"
+    pg.locator(f"[data-variant='{other}']").click()
+    expect(pg.locator(f"[data-variant='{other}']")).to_have_attribute("aria-pressed", "true")
+    expect(pg.locator(".bol-tiles" if other == "mosaico" else ".bol-svg")).to_be_visible()
+    # Elegida a mano: se recuerda al volver.
+    pg.reload()
+    expect(pg.locator(f"[data-variant='{other}']")).to_have_attribute("aria-pressed", "true", timeout=15000)
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_actions_share_copy_mail_and_print_one_page(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol, permissions=["clipboard-read", "clipboard-write"])
+    href = pg.locator("#bol-wa").get_attribute("href")
+    assert href.startswith("https://wa.me/?text=") and "Bolet" in __import__("urllib.parse").parse.unquote(href)
+    assert pg.locator("#bol-mail").get_attribute("href") == "data/boletin-correo.html"
+    for a in pg.locator(".bol-actions a[href$='.csv']").all():
+        assert pg.request.get(site[0] + a.get_attribute("href")).ok
+    pg.locator("#bol-copy").click()
+    expect(pg.locator("#bol-st")).to_contain_text("copiado")
+    assert pg.evaluate("navigator.clipboard.readText()") == bol["whatsapp"]
+    pg.evaluate("window.print = () => { window.__printed = true; }")
+    pg.locator("#bol-print").click()
+    assert pg.evaluate("window.__printed") is True
+    # La hoja impresa del top 10 entra en una A4.
+    pdf = pg.pdf(format="A4", print_background=True)
+    assert len(re.findall(rb"/Type\s*/Page[^s]", pdf)) == 1
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+@pytest.mark.parametrize("w", [320, 390])
+@pytest.mark.parametrize("scheme", ["light", "dark"])
+def test_boletin_fits_phones_in_both_themes(site, browser, bol, w, scheme):
+    ctx, pg = _bol_page(browser, site, bol, viewport={"width": w, "height": 800}, color_scheme=scheme)
+    pg.locator("#bol-all").click()
+    expect(pg.locator(".bol-row")).to_have_count(25)
+    over = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+    assert over <= 0, f"{over}px de scroll horizontal a {w}px"
+    wide = pg.evaluate("""() => [...document.querySelectorAll('#bol-sheet *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1).map(e => e.className || e.tagName).slice(0, 5)""")
+    assert not wide, wide
+    pg.locator(".bol-tiles [data-dep], .bol-svg [data-dep]").first.click()
+    expect(pg.locator("#bol-dep .bol-depcard")).to_be_visible()
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_says_so_when_the_file_is_missing(site, page):
+    base, _ = site
+    page.route("**/data/boletin.json*", lambda r: r.fulfill(status=404, body="no"))
+    go(page, base, "boletin")
+    expect(page.locator("#bol-root")).to_contain_text("El boletín no está en esta publicación")
+    expect(page.locator("#bol-print")).to_be_hidden()
+
+
+def test_boletin_warns_when_the_edition_is_old(site, browser, bol):
+    old = dict(bol, cutoff="2026-01-01T00:00:00+00:00")
+    ctx, pg = _bol_page(browser, site, old)
+    expect(pg.locator("#bol-root .notice-warn")).to_contain_text("la actualización diaria no corrió")
+    ctx.close()

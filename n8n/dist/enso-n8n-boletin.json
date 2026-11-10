@@ -1,0 +1,319 @@
+{
+  "id": "EnsoBoletin00001",
+  "name": "ENSO · Boletín de eventos El Niño por correo (Gmail)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "95d37800-e89a-4f73-85a9-b126b3644bdb",
+      "name": "Cada hora",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -120
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "031472b2-a157-4c4a-8475-5cf7202f6d7b",
+      "name": "Ejecutar a mano",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fbae041b",
+              "name": "site",
+              "value": "https://enso-peru.pages.dev/",
+              "type": "string"
+            },
+            {
+              "id": "663ea1bf",
+              "name": "to",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a9b8efc5",
+              "name": "bcc",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "da0f62e5",
+              "name": "sender_name",
+              "value": "Observatorio ENSO Perú",
+              "type": "string"
+            },
+            {
+              "id": "d1fca2af",
+              "name": "digest_hour",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "34e0a3fb",
+              "name": "max_age_hours",
+              "value": 36,
+              "type": "number"
+            },
+            {
+              "id": "27ce1d1b",
+              "name": "send",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "87c527c9-b1a1-45be-8064-410f485441b9",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Configuración').first().json.site.replace(/\\/?$/, '/') + 'data/boletin.json?t=' + Date.now() }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "=Observatorio-ENSO-Peru/4.0 (+{{ 'https://github.com/PillB/observatorio-enso-peru' }}; datos abiertos; n8n)"
+            },
+            {
+              "name": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "e7eeddc8-fdd4-4d7d-882c-3762a1d1b4b1",
+      "name": "Leer boletín",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generado por n8n/build.mjs desde n8n/nodes/boletin.js y n8n/lib/. No editar en n8n.\n// Boletín de eventos El Niño por correo: decide si se manda, a quién y con qué.\n//\n// El boletín lo arma la actualización diaria (python/enso/boletin.py → data/boletin.json): cada edición nueva trae\n// sus cambios y la regla de cada uno («inmediata» o «resumen»), y ``recent`` guarda los de las últimas ediciones. Este\n// código solo compara con la última edición que este n8n ya mandó (``lastEdition``, en los datos estáticos del flujo)\n// y junta los cambios de todas las ediciones nuevas, así no se pierde ninguno aunque salgan dos entre dos revisiones\n// ni se repite uno ya enviado.\n//\n//   - Algún cambio «inmediata» (aviso rojo o naranja nuevo, un departamento que sube a naranja o rojo, otro estado\n//     del ENFEN, un aviso importante cancelado): se manda ya.\n//   - Solo cambios «resumen»: se manda en la hora del resumen diario (``digestHour``, hora de Lima), una vez al día.\n//   - Sin ediciones nuevas: nada.\n//   - Primera vez (sin estado): el boletín completo, como «primer boletín».\n\n/** Direcciones de una lista separada por comas, punto y coma o espacios, sin repetidas (en minúsculas). */\nfunction parseRecipients(text) {\n  const seen = new Set();\n  const out = [];\n  for (const raw of String(text || '').split(/[\\s,;]+/)) {\n    const a = raw.trim().toLowerCase();\n    if (/^[^@\\s<>\"]+@[^@\\s<>\"]+\\.[a-z]{2,}$/.test(a) && !seen.has(a)) { seen.add(a); out.push(a); }\n  }\n  return out;\n}\n\n/** Hora y día en Lima (UTC−5, sin horario de verano). */\nfunction limaClock(now) {\n  const d = new Date(now - 5 * 3600000);\n  return { hour: d.getUTCHours(), day: d.toISOString().slice(0, 10) };\n}\n\nconst esc = (s) => String(s == null ? '' : s).replace(/[&<>\"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c]));\n\n/** Los cambios de las ediciones posteriores a ``lastEdition``, de la más vieja a la más nueva. */\nfunction pendingChanges(doc, lastEdition) {\n  const recent = Array.isArray(doc.recent) ? doc.recent : [];\n  const eds = recent.filter((r) => Number(r.edition) > lastEdition).sort((a, b) => a.edition - b.edition);\n  // Si n8n estuvo apagado más de lo que guarda ``recent``, se avisa: faltan ediciones de por medio.\n  const gap = eds.length && lastEdition > 0 && Number(eds[0].edition) > lastEdition + 1;\n  const changes = [];\n  for (const r of eds) for (const c of r.changes || []) changes.push({ ...c, edition: r.edition });\n  return { editions: eds.map((r) => r.edition), changes, gap };\n}\n\n/** Bloque «Qué cambió» del correo, con los cambios de todas las ediciones nuevas. */\nfunction changesHtml(changes, gap) {\n  const list = changes.filter((c) => c.rule !== 'inicial');\n  if (!list.length && !gap) return '';\n  const tag = (c) => (c.tier === 'inmediata' ? '<strong style=\"color:#a3141f\">Importante:</strong> ' : '');\n  const items = list.slice(0, 12).map((c) => `<li style=\"margin:0 0 4px\">${tag(c)}${esc(c.text)}</li>`).join('');\n  return '<div style=\"background:#fff8e1;border-left:4px solid #ef8a2b;padding:8px 12px;margin:0 0 12px\">'\n    + '<div style=\"font:700 13px Arial,sans-serif;margin:0 0 4px\">Qué cambió desde el último correo</div>'\n    + `<ul style=\"margin:0;padding-left:18px;font:13px/1.4 Arial,sans-serif\">${items}</ul>`\n    + (list.length > 12 ? `<p style=\"margin:4px 0 0;font:12px Arial,sans-serif\">Y ${list.length - 12} cambios más en el sitio.</p>` : '')\n    + (gap ? '<p style=\"margin:4px 0 0;font:12px Arial,sans-serif\">Hubo ediciones que este correo no alcanzó a cubrir: vea el boletín completo en el sitio.</p>' : '')\n    + '</div>';\n}\n\n/**\n * Qué hacer con el boletín publicado. ``cfg``: la configuración del flujo; ``st``: el estado guardado\n * ({lastEdition, lastDigestDay}); ``now``: milisegundos. Devuelve {send, reason, ...correo}.\n */\nfunction decide(doc, cfg, st, now) {\n  if (!doc || doc.schema !== 'enso-boletin/1' || !Array.isArray(doc.segments) || !doc.email) {\n    throw new Error('boletin.json no tiene el formato esperado (enso-boletin/1)');\n  }\n  const maxAge = Number(cfg.max_age_hours) || 36;\n  const age = (now - Date.parse(doc.cutoff)) / 3600000;\n  if (!(age <= maxAge)) {\n    throw new Error(`El boletín publicado es viejo: corte ${doc.cutoff} (hace ${Math.round(age)} h, máximo ${maxAge} h). Revisar la actualización diaria.`);\n  }\n  const to = parseRecipients(cfg.to);\n  const bcc = parseRecipients(cfg.bcc).filter((a) => !to.includes(a));\n  const last = Number(st && st.lastEdition) || 0;\n  const base = { edition: doc.edition, cutoff: doc.cutoff, recipients: to.length + bcc.length };\n  if (last >= doc.edition && last > 0) return { ...base, send: false, reason: `Sin ediciones nuevas (la última enviada es la N° ${last}).` };\n  const { editions, changes, gap } = pendingChanges(doc, last);\n  const first = last === 0;\n  const urgent = first || changes.some((c) => c.tier === 'inmediata');\n  const clock = limaClock(now);\n  const digestHour = Number.isFinite(Number(cfg.digest_hour)) && String(cfg.digest_hour) !== '' ? Number(cfg.digest_hour) : 7;\n  const digestDue = clock.hour >= digestHour && (!st || st.lastDigestDay !== clock.day);\n  if (!urgent && !digestDue) {\n    return { ...base, send: false, reason: `Solo cambios para el resumen diario: se mandan a las ${digestHour}:00 (hora de Lima).`, pending: changes.length };\n  }\n  if (!to.length) return { ...base, send: false, reason: 'Falta la dirección «to» en Configuración: no se manda nada.' };\n  const kind = first ? 'Primer boletín' : urgent ? 'Aviso' : 'Resumen diario';\n  const subject = `${first ? '' : urgent ? '[Aviso] ' : '[Resumen] '}${doc.email.subject}`;\n  const block = first ? '' : changesHtml(changes, gap);\n  let html = String(doc.email.html);\n  html = /<!--cambios-->[\\s\\S]*?<!--\\/cambios-->/.test(html) ? html.replace(/<!--cambios-->[\\s\\S]*?<!--\\/cambios-->/, `<!--cambios-->${block}<!--/cambios-->`) : html;\n  const text = (block ? `Qué cambió desde el último correo:\\n${changes.filter((c) => c.rule !== 'inicial').slice(0, 12).map((c) => `- ${c.text}`).join('\\n')}\\n\\n` : '') + String(doc.email.text || '');\n  return {\n    ...base, send: cfg.send === true || cfg.send === 'true', simulate: !(cfg.send === true || cfg.send === 'true'),\n    reason: `${kind}: ediciones ${editions.join(', ') || doc.edition}, ${changes.length} cambios.`,\n    kind, digest: !urgent, digestDay: clock.day, to: to.join(','), bcc: bcc.join(','), subject, html, text,\n    whatsapp: doc.whatsapp || '',\n  };\n}\n\n/** El estado que se guarda después de mandar el correo. */\nfunction nextState(st, sent) {\n  const out = { ...(st || {}), lastEdition: sent.edition, lastSentAt: new Date(sent.at || Date.now()).toISOString() };\n  if (sent.digest || !out.lastDigestDay) out.lastDigestDay = sent.digestDay;\n  return out;\n}\n\n// ---- nodo ----\n// ¿Hay que mandar el boletín? Lee data/boletin.json del sitio publicado (nodo «Leer boletín») y la última\n// edición que este flujo mandó (datos estáticos del flujo), y decide con lib/boletin.js. Si el sitio no responde o el\n// boletín es viejo, la ejecución falla y el «Error workflow» de n8n avisa. No guarda nada: eso lo hace «Guardar\n// estado» después de que Gmail mandó el correo, así un envío que falla se vuelve a intentar en la hora siguiente.\nconst cfg = $('Configuración').first().json;\nconst r = $input.first().json;\nconst where = `${cfg.site} (data/boletin.json)`;\nif (r.error || r.statusCode !== 200) {\n  const why = r.error ? (r.error.message || JSON.stringify(r.error)).slice(0, 200) : `HTTP ${r.statusCode}`;\n  throw new Error(`No se pudo leer el boletín: ${where}: ${why}`);\n}\nlet doc;\ntry {\n  const body = r.data !== undefined ? r.data : r.body;\n  doc = typeof body === 'string' ? JSON.parse(body) : body;\n} catch (e) {\n  throw new Error(`boletin.json no es JSON válido en ${where}`);\n}\nconst st = $getWorkflowStaticData('global');\nconst out = decide(doc, cfg, { lastEdition: st.lastEdition, lastDigestDay: st.lastDigestDay }, Date.now());\nout.lastEdition = st.lastEdition || 0;\nreturn [{ json: out }];\n"
+      },
+      "id": "631b361a-61a3-45c2-8740-d378bcaf292d",
+      "name": "Decidir envío",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "5b1d0f4e-2c3a-4b8d-9e6f-7a1b2c3d4e5f",
+              "leftValue": "={{ $json.send }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "498b0062-142b-4cff-8bba-9ad580d379a2",
+      "name": "¿Enviar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        960,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "html",
+        "message": "={{ $json.html }}",
+        "options": {
+          "bccList": "={{ $json.bcc }}",
+          "senderName": "={{ $('Configuración').first().json.sender_name }}",
+          "appendAttribution": false
+        }
+      },
+      "id": "9dc49e2a-121f-49f0-8d41-4bb7ff464cdc",
+      "name": "Enviar por Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        0
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "EnsoGmailCred001",
+          "name": "Gmail boletín ENSO"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generado por n8n/build.mjs desde n8n/nodes/boletin-guardar.js y n8n/lib/. No editar en n8n.\n// Boletín de eventos El Niño por correo: decide si se manda, a quién y con qué.\n//\n// El boletín lo arma la actualización diaria (python/enso/boletin.py → data/boletin.json): cada edición nueva trae\n// sus cambios y la regla de cada uno («inmediata» o «resumen»), y ``recent`` guarda los de las últimas ediciones. Este\n// código solo compara con la última edición que este n8n ya mandó (``lastEdition``, en los datos estáticos del flujo)\n// y junta los cambios de todas las ediciones nuevas, así no se pierde ninguno aunque salgan dos entre dos revisiones\n// ni se repite uno ya enviado.\n//\n//   - Algún cambio «inmediata» (aviso rojo o naranja nuevo, un departamento que sube a naranja o rojo, otro estado\n//     del ENFEN, un aviso importante cancelado): se manda ya.\n//   - Solo cambios «resumen»: se manda en la hora del resumen diario (``digestHour``, hora de Lima), una vez al día.\n//   - Sin ediciones nuevas: nada.\n//   - Primera vez (sin estado): el boletín completo, como «primer boletín».\n\n/** Direcciones de una lista separada por comas, punto y coma o espacios, sin repetidas (en minúsculas). */\nfunction parseRecipients(text) {\n  const seen = new Set();\n  const out = [];\n  for (const raw of String(text || '').split(/[\\s,;]+/)) {\n    const a = raw.trim().toLowerCase();\n    if (/^[^@\\s<>\"]+@[^@\\s<>\"]+\\.[a-z]{2,}$/.test(a) && !seen.has(a)) { seen.add(a); out.push(a); }\n  }\n  return out;\n}\n\n/** Hora y día en Lima (UTC−5, sin horario de verano). */\nfunction limaClock(now) {\n  const d = new Date(now - 5 * 3600000);\n  return { hour: d.getUTCHours(), day: d.toISOString().slice(0, 10) };\n}\n\nconst esc = (s) => String(s == null ? '' : s).replace(/[&<>\"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c]));\n\n/** Los cambios de las ediciones posteriores a ``lastEdition``, de la más vieja a la más nueva. */\nfunction pendingChanges(doc, lastEdition) {\n  const recent = Array.isArray(doc.recent) ? doc.recent : [];\n  const eds = recent.filter((r) => Number(r.edition) > lastEdition).sort((a, b) => a.edition - b.edition);\n  // Si n8n estuvo apagado más de lo que guarda ``recent``, se avisa: faltan ediciones de por medio.\n  const gap = eds.length && lastEdition > 0 && Number(eds[0].edition) > lastEdition + 1;\n  const changes = [];\n  for (const r of eds) for (const c of r.changes || []) changes.push({ ...c, edition: r.edition });\n  return { editions: eds.map((r) => r.edition), changes, gap };\n}\n\n/** Bloque «Qué cambió» del correo, con los cambios de todas las ediciones nuevas. */\nfunction changesHtml(changes, gap) {\n  const list = changes.filter((c) => c.rule !== 'inicial');\n  if (!list.length && !gap) return '';\n  const tag = (c) => (c.tier === 'inmediata' ? '<strong style=\"color:#a3141f\">Importante:</strong> ' : '');\n  const items = list.slice(0, 12).map((c) => `<li style=\"margin:0 0 4px\">${tag(c)}${esc(c.text)}</li>`).join('');\n  return '<div style=\"background:#fff8e1;border-left:4px solid #ef8a2b;padding:8px 12px;margin:0 0 12px\">'\n    + '<div style=\"font:700 13px Arial,sans-serif;margin:0 0 4px\">Qué cambió desde el último correo</div>'\n    + `<ul style=\"margin:0;padding-left:18px;font:13px/1.4 Arial,sans-serif\">${items}</ul>`\n    + (list.length > 12 ? `<p style=\"margin:4px 0 0;font:12px Arial,sans-serif\">Y ${list.length - 12} cambios más en el sitio.</p>` : '')\n    + (gap ? '<p style=\"margin:4px 0 0;font:12px Arial,sans-serif\">Hubo ediciones que este correo no alcanzó a cubrir: vea el boletín completo en el sitio.</p>' : '')\n    + '</div>';\n}\n\n/**\n * Qué hacer con el boletín publicado. ``cfg``: la configuración del flujo; ``st``: el estado guardado\n * ({lastEdition, lastDigestDay}); ``now``: milisegundos. Devuelve {send, reason, ...correo}.\n */\nfunction decide(doc, cfg, st, now) {\n  if (!doc || doc.schema !== 'enso-boletin/1' || !Array.isArray(doc.segments) || !doc.email) {\n    throw new Error('boletin.json no tiene el formato esperado (enso-boletin/1)');\n  }\n  const maxAge = Number(cfg.max_age_hours) || 36;\n  const age = (now - Date.parse(doc.cutoff)) / 3600000;\n  if (!(age <= maxAge)) {\n    throw new Error(`El boletín publicado es viejo: corte ${doc.cutoff} (hace ${Math.round(age)} h, máximo ${maxAge} h). Revisar la actualización diaria.`);\n  }\n  const to = parseRecipients(cfg.to);\n  const bcc = parseRecipients(cfg.bcc).filter((a) => !to.includes(a));\n  const last = Number(st && st.lastEdition) || 0;\n  const base = { edition: doc.edition, cutoff: doc.cutoff, recipients: to.length + bcc.length };\n  if (last >= doc.edition && last > 0) return { ...base, send: false, reason: `Sin ediciones nuevas (la última enviada es la N° ${last}).` };\n  const { editions, changes, gap } = pendingChanges(doc, last);\n  const first = last === 0;\n  const urgent = first || changes.some((c) => c.tier === 'inmediata');\n  const clock = limaClock(now);\n  const digestHour = Number.isFinite(Number(cfg.digest_hour)) && String(cfg.digest_hour) !== '' ? Number(cfg.digest_hour) : 7;\n  const digestDue = clock.hour >= digestHour && (!st || st.lastDigestDay !== clock.day);\n  if (!urgent && !digestDue) {\n    return { ...base, send: false, reason: `Solo cambios para el resumen diario: se mandan a las ${digestHour}:00 (hora de Lima).`, pending: changes.length };\n  }\n  if (!to.length) return { ...base, send: false, reason: 'Falta la dirección «to» en Configuración: no se manda nada.' };\n  const kind = first ? 'Primer boletín' : urgent ? 'Aviso' : 'Resumen diario';\n  const subject = `${first ? '' : urgent ? '[Aviso] ' : '[Resumen] '}${doc.email.subject}`;\n  const block = first ? '' : changesHtml(changes, gap);\n  let html = String(doc.email.html);\n  html = /<!--cambios-->[\\s\\S]*?<!--\\/cambios-->/.test(html) ? html.replace(/<!--cambios-->[\\s\\S]*?<!--\\/cambios-->/, `<!--cambios-->${block}<!--/cambios-->`) : html;\n  const text = (block ? `Qué cambió desde el último correo:\\n${changes.filter((c) => c.rule !== 'inicial').slice(0, 12).map((c) => `- ${c.text}`).join('\\n')}\\n\\n` : '') + String(doc.email.text || '');\n  return {\n    ...base, send: cfg.send === true || cfg.send === 'true', simulate: !(cfg.send === true || cfg.send === 'true'),\n    reason: `${kind}: ediciones ${editions.join(', ') || doc.edition}, ${changes.length} cambios.`,\n    kind, digest: !urgent, digestDay: clock.day, to: to.join(','), bcc: bcc.join(','), subject, html, text,\n    whatsapp: doc.whatsapp || '',\n  };\n}\n\n/** El estado que se guarda después de mandar el correo. */\nfunction nextState(st, sent) {\n  const out = { ...(st || {}), lastEdition: sent.edition, lastSentAt: new Date(sent.at || Date.now()).toISOString() };\n  if (sent.digest || !out.lastDigestDay) out.lastDigestDay = sent.digestDay;\n  return out;\n}\n\n// ---- nodo ----\n// Después de que Gmail mandó el correo: anota la edición enviada (y el día del resumen) en los datos estáticos del\n// flujo. n8n los guarda solo en las ejecuciones activadas por el disparador (no en «Execute workflow» a mano), así que\n// una prueba a mano no impide el envío real de la hora siguiente.\nconst sent = $('Decidir envío').first().json;\nconst st = $getWorkflowStaticData('global');\nconst next = nextState(st, { edition: sent.edition, digest: sent.digest, digestDay: sent.digestDay, at: Date.now() });\nObject.assign(st, next);\nreturn [{ json: { resultado: `Enviado: ${sent.kind}, edición N° ${sent.edition}`, destinatarios: sent.recipients, asunto: sent.subject, estado: next } }];\n"
+      },
+      "id": "bafbb7e4-87f6-4fc7-8c48-fa8774fe812b",
+      "name": "Guardar estado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Cada hora": {
+      "main": [
+        [
+          {
+            "node": "Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuración": {
+      "main": [
+        [
+          {
+            "node": "Leer boletín",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer boletín": {
+      "main": [
+        [
+          {
+            "node": "Decidir envío",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decidir envío": {
+      "main": [
+        [
+          {
+            "node": "¿Enviar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ejecutar a mano": {
+      "main": [
+        [
+          {
+            "node": "Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Enviar?": {
+      "main": [
+        [
+          {
+            "node": "Enviar por Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Enviar por Gmail": {
+      "main": [
+        [
+          {
+            "node": "Guardar estado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Lima",
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "ensoVersion": "d2c93eff33"
+  },
+  "tags": []
+}

@@ -69,6 +69,7 @@ export const TOURS = [
     id: 'completo', title: 'Recorrido completo', desc: 'Una parada en cada pestaña.',
     steps: [
       { route: '#/', target: '[data-tour-id="official-status"]', title: 'Resumen', text: 'Los estados oficiales, el dato más reciente, los indicadores clave y la señal del equipo GRD.' },
+      { route: '#/boletin', target: '[data-tour-id="boletin-map"]', title: 'Boletín', text: 'Una hoja con lo que viene: el país en un mapa y los diez departamentos más críticos, con los avisos oficiales, el ENFEN y el CENEPRED. Se imprime y llega por correo.' },
       { route: '#/costero', target: '#ch-icen', title: 'El Niño Costero', text: 'El ICEN oficial del ENFEN y su clasificación, con los datos más recientes de Niño 1+2.', demo: chartDemo('ch-icen'), ensure: chartReset('ch-icen', '15') },
       { route: '#/pacifico', target: '#ch-roni', title: 'Pacífico', text: 'El RONI y el ONI de NOAA para el Pacífico central, que influye en el clima de todo el planeta.' },
       { route: '#/oceano', target: '#ch-weekly', title: 'Océano y atmósfera', text: 'Temperatura del mar semanal y mensual, vientos alisios, calor bajo la superficie, termoclina y SOI.' },
@@ -87,7 +88,7 @@ export const TOURS = [
   // Una pestaña a la vez (en el orden de la barra)
   // ---------------------------------------------------------------------------------------------------------
   {
-    id: 'resumen', tab: '', next: 'costero', title: 'Resumen', desc: 'Estados oficiales, vigencia de los datos e indicadores.',
+    id: 'resumen', tab: '', next: 'boletin', title: 'Resumen', desc: 'Estados oficiales, vigencia de los datos e indicadores.',
     steps: [
       { route: '#/', target: '[data-tour-id="freshness"]', ensure: [opened('[data-tour-id="freshness"]', false)], title: '¿Qué tan recientes son estos datos?', text: 'Cada pestaña empieza con este panel: dice si sus datos están al día. Ábralo para ver la fecha y el estado de cada uno.',
         demo: [{ click: '[data-tour-id="freshness"] > summary', say: 'Se abre el panel con cada dato, su fecha y su estado.', target: '[data-tour-id="freshness"]', pause: 900 }] },
@@ -97,6 +98,18 @@ export const TOURS = [
       { route: '#/', target: '[data-tour-id="enfen-outlook"]', optional: true, title: 'Perspectiva del ENFEN', text: 'Lo que el ENFEN espera para los próximos meses, citado textualmente de su comunicado.' },
       { route: '#/', target: '[data-tour-id="grd"] .section-head', title: 'Señal operativa del equipo GRD', text: 'Un semáforo interno con la tabla de umbrales del equipo GRD: no es un estado oficial. Lo que la tabla no define queda «Sin clasificación», nunca en verde.' },
       { route: '#/', target: '[data-tour-id="grd"] tbody tr', title: 'Cada fila', text: 'El indicador, su señal, el valor con su periodo, y enlaces a la fuente en vivo y a la copia que bajó el observatorio.' },
+    ],
+  },
+  {
+    id: 'boletin', tab: 'boletin', next: 'costero', title: 'Boletín', desc: 'La hoja de eventos de El Niño: qué viene, dónde y cuándo, y cómo llega por correo.',
+    steps: [
+      { route: '#/boletin', target: '#bol-sheet .bol-top', title: 'Una hoja', text: 'El boletín de eventos de El Niño: su número de edición, la hora de corte y cuántos departamentos hay en cada color. La edición cambia solo si algo cambió.' },
+      { route: '#/boletin', target: '[data-tour-id="boletin-map"]', ensure: [pressed('[data-variant="mapa"]', '.bol-variant')], title: 'Arriba, el país', text: 'Cada departamento con el nivel más alto de sus avisos oficiales (rojo, naranja, amarillo; verde si no tiene ninguno), y al lado qué se viene: el ENFEN, los avisos, el riesgo del CENEPRED y los daños recientes.',
+        demo: [{ click: '.bol-svg [data-dep="24"]', say: 'Al tocar un departamento se ven sus avisos y su riesgo.', ready: '.bol-depcard', target: '.bol-depcard', pause: 1400 }],
+        after: '[data-tour-id="boletin-map"]' },
+      { route: '#/boletin', target: '[data-tour-id="boletin-top"] .section-head', title: 'Abajo, los diez más críticos', text: 'Qué podría pasar, dónde, cuándo, qué institución lo dice y cuántos distritos el CENEPRED pone en riesgo. El orden está escrito al pie de la tabla.' },
+      { route: '#/boletin', target: '[data-tour-id="boletin-actions"]', title: 'Imprimir y compartir', text: 'Cabe en una hoja A4: imprímala o guárdela en PDF. También se ve como el correo, se comparte por WhatsApp y se baja en CSV.' },
+      { route: '#/boletin', target: '[data-tour-id="boletin-rules"] h2', title: 'Por correo', text: 'Un flujo de n8n lee el boletín cada hora y lo manda por Gmail: al momento si hay un aviso rojo o naranja nuevo, y en un resumen diario si los cambios son menores.' },
     ],
   },
   {

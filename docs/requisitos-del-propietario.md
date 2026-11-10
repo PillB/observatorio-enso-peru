@@ -267,3 +267,18 @@ limits are in [`memoria-desastres.md`](memoria-desastres.md); the source registe
 | M11 | Request frequency: follow each site's guidelines; Peruvian public institutions (.gob.pe, .mil.pe) exempt from robots.txt `Disallow` | DONE | `enso.reach.Robots`; at least 5 s between requests and the site's `Crawl-delay`; other hosts' robots.txt respected (`memoria-desastres.md` §Reproducir y actualizar) |
 | M12 | IDMC through its own API | DONE | `IDMC_CLIENT_ID` secret; without it, the HDX export seed |
 | M13 | Long downloads run as a GitHub Actions job | DONE | `.github/workflows/memoria-cosecha.yml` (`memoria-desastres.md` §Cosecha en GitHub Actions) |
+
+## 16. El Niño events bulletin ("Boletín de alertas de eventos FE/FEN", added November 2026)
+
+Requirements from the owner's meeting notes and the proposal relayed on 2026-11-10. Method, rules and setup are in
+[`boletin.md`](boletin.md).
+
+| ID | Requirement (owner's words, condensed) | Status | Where it is met |
+|---|---|---|---|
+| B1 | One sheet: the top half general (Peru map in red, orange and green with what each colour means, executive summary, counts of critical and low alerts) | DONE | `#/boletin`: counters by level, map with legend, «Qué se viene»; prints on one A4 page |
+| B2 | The bottom half breaks down the top 10 segments by criticality (Tumbes, Piura…) with what will happen, when, the probability and the source | DONE, with a caveat | The table of the ten most critical departments, with its published ordering rule. Probabilities appear only when ENFEN's technical report gives them (country level, with its page); no per-department probability is invented |
+| B3 | Light, concrete and simple | DONE | One sheet, plain words; the detail opens on demand. Map vs. tile mosaic A/B test |
+| B4 | Automatic, and it alerts when something changes | DONE | A new edition only when something changed; the rules table sorts immediate changes from the daily digest |
+| B5 | Email with the updated bulletin, through n8n's Gmail node | DONE, owner step pending | `n8n/dist/enso-n8n-boletin.json`, in dry-run mode until the Gmail credential, recipients and `send = true` are set (`boletin.md` §Paso de configuración) |
+| B6 | WhatsApp summary | PARTIAL | Free: «Compartir por WhatsApp» (`wa.me`) and «Copiar resumen». Automatic sending needs the paid WhatsApp Business Cloud API (phase 2, `boletin.md` §WhatsApp) |
+| B7 | Geoblocked sources reach n8n through the published site | DONE | n8n only reads `data/boletin.json`; Peru-only sources already arrive through the Peru collector |

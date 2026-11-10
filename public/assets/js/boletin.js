@@ -166,7 +166,7 @@ function rulesCard(doc) {
     <p>Cada actualización arma una edición nueva solo si algo cambió. Un flujo de n8n lee <a href="data/boletin.json">boletin.json</a> cada hora y manda el correo con Gmail según estas reglas. El boletín se puede reenviar por WhatsApp con un toque (botón de arriba); el envío automático por WhatsApp queda para una segunda fase.</p>
     <div class="table-wrap"><table class="data bol-rules"><thead><tr><th scope="col">Situación</th><th scope="col">Qué se hace</th></tr></thead>
       <tbody>${(doc.rules || []).map((r) => html`<tr><td>${r.when}</td><td><span class="lvl lvl-s lvl-${TIER[r.tier]?.[1] || 'un'}">${TIER[r.tier]?.[0] || r.tier}</span></td></tr>`)}</tbody></table></div>
-    <p class="muted small">El correo lleva el mismo boletín que esta página, con un mapa de cuadros que se ve en cualquier programa de correo. Para recibirlo, pida que lo agreguen a la lista. Configuración: <a href="https://github.com/PillB/observatorio-enso-peru/blob/main/docs/boletin.md" rel="noopener" target="_blank">docs/boletin.md</a>.</p>
+    <p class="muted small">El correo lleva el mismo boletín que esta página, con un mapa de cuadros que se ve en cualquier programa de correo. Para recibirlo, pida que lo agreguen a la lista. La configuración del envío está en la documentación del proyecto (<code>docs/boletin.md</code>).</p>
     ${(doc.recent || []).length > 1 ? html`<details class="more"><summary>Ediciones anteriores y sus cambios</summary><ol class="bol-recent">${doc.recent.map((r) => html`<li><strong>N° ${r.edition}</strong> · ${when(r.at)}<ul>${(r.changes || []).map((c) => html`<li>${c.text}</li>`)}</ul></li>`)}</ol></details>` : ''}
   </section>`;
 }

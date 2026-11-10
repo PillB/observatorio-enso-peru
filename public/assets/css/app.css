@@ -1117,6 +1117,7 @@ table.grd .chip { white-space: normal; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { --bol-ok: #3aa36a; --bol-ok-ink: #04140b; } }
 .bol-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
 .bol-actions .btn svg { width: 16px; height: 16px; vertical-align: -3px; }
+.bol-actions [hidden] { display: none !important; }
 .bol-sheet { display: grid; gap: 12px; }
 .bol-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; border-bottom: 3px solid var(--brand); padding-bottom: 10px; }
 .bol-top h2 { margin: 2px 0; font-size: 1.45rem; }
