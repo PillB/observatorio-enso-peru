@@ -1090,3 +1090,13 @@ table.grd .chip { white-space: normal; }
 .zn-h3 { background: color-mix(in srgb, var(--brand-2) 50%, transparent); }
 .zn-h4 { background: color-mix(in srgb, var(--brand) 72%, transparent); color: var(--brand-ink); font-weight: 700; }
 #zn-root > * + * { margin-top: 16px; }
+.zn-pick { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin-top: 12px; }
+.zn-pick label { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; color: var(--fg-2); min-width: 0; flex: 1 1 180px; max-width: 260px; }
+.zn-pick select.input { width: 100%; max-width: 100%; }
+.zn-near { display: flex; flex-wrap: wrap; gap: 8px; }
+.zn-near .btn { height: auto; padding: 8px 14px; flex-direction: column; align-items: flex-start; text-align: left; max-width: 100%; white-space: normal; }
+.zn-risk td { text-align: right; }
+.zn-faq { margin-top: 16px; }
+.zn-faq details.more { margin-top: 4px; }
+.zn-faq details.more > summary { min-height: 44px; }
+.zn-risk th[scope="col"]:not(:first-child) { text-align: right; }

@@ -1060,3 +1060,118 @@ def test_memory_records_table_follows_the_filter_and_downloads_it(site, browser,
         assert not errors, errors
     finally:
         ctx.close()
+
+
+# --- Mi zona: riesgo esperado, elegir por pasos, ubicación y preguntas frecuentes ---
+
+def _zona(page, base, area=""):
+    go(page, base, f"zona?area={area}" if area else "zona")
+    expect(page.locator("#zn-dep option")).not_to_have_count(0, timeout=20000)
+
+
+def test_zona_shows_expected_risk_where_cenepred_evaluated_and_says_so_where_not(site, page):
+    base, root = site
+    K = json.loads((root / "assets/capas/manzanas-riesgo.json").read_text(encoding="utf-8"))
+    area = K["blocks"][0][2]
+    n = sum(1 for b in K["blocks"] if b[2] == area)
+    _zona(page, base, area)
+    card = page.locator("section[aria-labelledby='zn-rie']")
+    expect(card).to_be_visible()
+    expect(card.locator("table.zn-risk tbody tr")).to_have_count(4)
+    shown = sum(int(re.sub(r"\D", "", t) or 0) for t in card.locator("table.zn-risk tbody td:nth-child(2)").all_inner_texts())
+    assert shown == n, "la tabla cuenta las manzanas del distrito en la capa"
+    expect(card).to_contain_text("censo 2017")
+    expect(card).to_contain_text("no está libre de riesgo")
+    expect(card.locator("a[href='https://www.gob.pe/indeci']")).to_have_count(1)
+    # Un distrito sin manzanas evaluadas: se dice que falta el dato, nunca que no hay riesgo.
+    _zona(page, base, "150110")
+    none = page.locator("#zn-rie-none")
+    expect(none).to_contain_text("no quiere decir que aquí no haya riesgo")
+    expect(page.locator("table.zn-risk")).to_have_count(0)
+    assert not page.errors, page.errors
+
+
+def test_zona_step_by_step_lists_follow_and_set_the_place(site, page):
+    base, _ = site
+    _zona(page, base)
+    expect(page.locator("#zn-prov")).to_be_disabled()
+    page.select_option("#zn-dep", "20")
+    expect(page).to_have_url(re.compile(r"area=20$"))
+    expect(page.locator("#zn-prov")).to_be_enabled(timeout=20000)
+    expect(page.locator("#zn-dep")).to_have_value("20")
+    page.select_option("#zn-prov", "2001")
+    expect(page).to_have_url(re.compile(r"area=2001$"))
+    expect(page.locator("#zn-dist")).to_be_enabled(timeout=20000)
+    page.select_option("#zn-dist", "200101")
+    expect(page).to_have_url(re.compile(r"area=200101$"))
+    expect(page.locator("#zn-dist")).to_have_value("200101", timeout=20000)
+    expect(page.locator("#zn-q")).to_have_value(re.compile(r"^Piura · "))
+    # Volver un nivel: «Toda la provincia».
+    page.select_option("#zn-dist", "")
+    expect(page).to_have_url(re.compile(r"area=2001$"))
+    # Un enlace directo deja las tres listas en su lugar.
+    _zona(page, base, "150110")
+    expect(page.locator("#zn-dep")).to_have_value("15")
+    expect(page.locator("#zn-prov")).to_have_value("1501")
+    expect(page.locator("#zn-dist")).to_have_value("150110")
+    assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize("case", ["piura", "fuera", "negado"])
+def test_zona_use_my_location_offers_nearby_districts_without_sending_the_position(site, browser, case):
+    base, _ = site
+    geo = {"piura": {"latitude": -5.1945, "longitude": -80.6328}, "fuera": {"latitude": 40.4168, "longitude": -3.7038}}.get(case)
+    ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="es-PE", geolocation=geo,
+                              permissions=["geolocation"] if geo else [])
+    pg = ctx.new_page()
+    errors, sent = [], []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("request", lambda r: sent.append(r.url))
+    try:
+        _zona(pg, base)
+        btn = pg.get_by_role("button", name="Usar mi ubicación")
+        expect(btn).to_be_visible()
+        before = len(sent)
+        btn.click()
+        if case == "piura":
+            links = pg.locator("#zn-near a.btn")
+            expect(links).to_have_count(3, timeout=20000)
+            expect(links.first).to_contain_text("Piura")
+            assert not [u for u in sent[before:] if "5.19" in u or "80.63" in u], "la posición no viaja en ningún pedido"
+            assert all(u.startswith(base) for u in sent[before:]), sent[before:]
+            links.first.click()
+            expect(pg).to_have_url(re.compile(r"area=2001\d\d$"))
+            expect(pg.locator("section[aria-labelledby='zn-rie']")).to_be_visible(timeout=20000)
+        elif case == "fuera":
+            expect(pg.locator("#zn-msg")).to_contain_text("no parece estar en el Perú", timeout=20000)
+            expect(pg.locator("#zn-near a")).to_have_count(0)
+        else:
+            expect(pg.locator("#zn-msg")).to_contain_text(re.compile("permiso|no pudo|tardó"), timeout=25000)
+            expect(btn).to_be_enabled()
+        overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+        assert overflow <= 1, f"desbordamiento horizontal de {overflow}px"
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+@pytest.mark.parametrize("vp", list(VIEWPORTS))
+def test_zona_fits_every_screen_and_answers_its_own_questions(site, browser, vp):
+    base, _ = site
+    w, h = VIEWPORTS[vp]
+    ctx = browser.new_context(viewport={"width": w, "height": h}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        for area in ("", "200101", "150110", "24"):
+            _zona(pg, base, area)
+            overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en zona?area={area} a {w}px"
+        faq = pg.locator(".zn-faq details")
+        assert faq.count() >= 6
+        faq.first.locator("summary").click()
+        expect(faq.first.locator("p")).to_contain_text("no emite alertas")
+        assert not errors, errors
+    finally:
+        ctx.close()
