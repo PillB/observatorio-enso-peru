@@ -19,7 +19,7 @@ def _text(p):
 
 
 def test_the_number_of_views_in_the_docs_is_the_number_of_tabs():
-    app = _text(REPO / "public" / "assets" / "js" / "app.js")
+    app = _text(REPO / "public" / "assets" / "js" / "sitio.js")  # las pestañas y su agrupación (versiones A y B)
     nav = re.search(r"const NAV = \[(.*?)\];", app, re.S).group(1)
     tabs = len(re.findall(r"\['[^']*', '[^']*', '[^']*'\]", nav))
     for p in ARCH:

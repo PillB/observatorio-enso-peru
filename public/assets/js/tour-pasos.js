@@ -57,7 +57,7 @@ export const TOURS = [
   {
     id: 'inicio', title: 'Inicio rápido', desc: 'Lo esencial en un minuto.',
     steps: [
-      { route: '#/', target: '.nav-inner', title: 'Las pestañas', text: 'Cada pestaña es una parte del observatorio. En el teléfono, deslice la barra para ver todas. Cada una tiene su propio recorrido guiado.' },
+      { route: '#/', target: '.nav-inner', title: 'Las pestañas', text: 'Cada pestaña es una parte del observatorio. En la versión agrupada están dentro de cinco secciones: toque una para ver sus pestañas. En el teléfono, deslice la barra para ver todas. Cada una tiene su propio recorrido guiado. El botón «Versión», arriba, cambia entre las dos formas de ordenar el sitio.' },
       { route: '#/', target: '[data-tour-id="official-status"]', title: 'Estados oficiales', text: 'Lo que declaran el ENFEN para la costa peruana y NOAA para el Pacífico, con la fecha del comunicado y la del próximo.' },
       { route: '#/', target: '[data-tour-id="freshest"]', title: 'El dato más reciente', text: (d) => `La medición semanal más nueva${d?.weekly?.nino12 ? ` (semana del ${d.weekly.nino12.latest.date})` : ''}. Es una observación, no una declaración oficial.` },
       { route: '#/', target: '[data-tour-id="indicators"] .grid > :first-child', title: 'Indicadores clave', text: 'Cada tarjeta dice a qué periodo corresponde su valor; si está vencido, dice «Dato actual no disponible». Tóquela para ir a su pestaña.' },

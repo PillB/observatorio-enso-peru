@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Analítica de uso</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="admin.css">
+  <script type="module" src="consola.js"></script>
+  <script type="module" src="analitica.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../" title="Volver al sitio público"><img src="../favicon.svg" width="32" height="32" alt=""><span><span class="brand-name">Analítica de uso</span><span class="brand-tag">Observatorio ENSO Perú · versiones A y B del sitio</span></span></a>
+      <div class="header-actions" id="session" hidden>
+        <nav class="gc-nav" aria-label="Consolas"><a href="./">Lugares</a><a href="documentos.html">Documentos</a><a href="analitica.html" aria-current="page">Analítica</a></nav>
+        <span class="muted small" id="who"></span>
+        <button type="button" class="btn" id="logout">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="gc-main an-main">
+    <p id="status" class="gc-status" role="status" aria-live="polite"></p>
+
+    <section id="login-view" class="gc-card gc-login" hidden>
+      <h1>Ingresar</h1>
+      <p class="muted">La misma cuenta de la consola de lugares.</p>
+      <form id="login-form" autocomplete="on" novalidate>
+        <label for="username">Usuario</label>
+        <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required maxlength="40">
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200">
+        <p id="login-error" class="gc-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+      </form>
+      <p class="muted small gc-back"><a href="../">Volver al sitio público</a>, que no necesita usuario.</p>
+    </section>
+
+    <section id="app-view" hidden>
+      <div class="an-top">
+        <div class="gc-intro">
+          <p>Cómo se usa cada versión del sitio: <strong>A, clásica</strong> (las trece pestañas en una fila) y <strong>B, agrupada</strong> (cinco secciones con submenús y lo largo plegado). Son sumas anónimas por día: no hay visitantes identificados, cookies ni direcciones IP, y no cuentan quienes piden no ser rastreados.</p>
+        </div>
+        <div class="an-filter" role="group" aria-label="Periodo">
+          <button type="button" class="btn btn-small" data-days="7" aria-pressed="false">7 días</button>
+          <button type="button" class="btn btn-small" data-days="30" aria-pressed="true">30 días</button>
+          <button type="button" class="btn btn-small" data-days="90" aria-pressed="false">90 días</button>
+        </div>
+      </div>
+      <p class="muted small" id="an-range"></p>
+      <div id="an-body"></div>
+    </section>
+  </main>
+</body>
+</html>

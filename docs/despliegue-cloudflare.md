@@ -148,7 +148,7 @@ vínculos declarados. Para usarlos:
 - Las solicitudes a Functions cuentan contra el plan gratuito de Workers
   (100 000 al día); los archivos estáticos no.
 
-Hay tres Functions, todas bajo `/api/` (`functions/api/<ruta>/[[path]].js`,
+Hay cuatro Functions, todas bajo `/api/` (`functions/api/<ruta>/[[path]].js`,
 con la lógica en `functions/_lib/`). Los vínculos y secretos se cargan en
 el panel: *Workers & Pages → el proyecto → Settings → Bindings* (la base
 D1) y *Variables and Secrets* (los secretos y variables).
@@ -158,13 +158,15 @@ D1) y *Variables and Secrets* (los secretos y variables).
 | `/api/geo/*` | Consola de lugares (`/admin/`): las correcciones de lugar que lee el pipeline | Base D1 `GEO_DB` y secreto `GEO_USERS`. Pasos en [georreferenciacion.md](georreferenciacion.md#puesta-en-marcha-en-cloudflare-una-sola-vez) |
 | `/api/docs/*` | Consola de documentos (`/admin/documentos.html`): un administrador sube el PDF que ninguna ruta automática trae; la Function lo guarda en la rama `data-manual` y pide una actualización (`enso-refresh`) | Las cuentas de la consola de lugares y su base `GEO_DB` (tabla `uploads`); el secreto `DOCS_GITHUB_TOKEN` (token de grano fino de GitHub, solo este repositorio, *Contents: Read and write*) y, opcionales, `DOCS_GITHUB_REPO` (por omisión `PillB/observatorio-enso-peru`) y `DOCS_UPLOAD_ROLES` (por omisión `admin`). Pasos en [documentos-manuales.md](documentos-manuales.md#configurar-una-vez) |
 | `/api/ab/*` | Analítica anónima de las versiones del mapa de alertas: suma contadores por día, versión y evento en la tabla `ab_daily` | La misma base `GEO_DB`; sin ella responde sin hacer nada. Resultados en `#/variantes`. Ver [mapa-alertas.md](mapa-alertas.md#analítica-anónima) |
+| `/api/uso/*` | Medición anónima del uso por versión del sitio (A clásica, B agrupada): sesiones, visitas repetidas, veces y segundos en cada pestaña y cambios de versión, en la tabla `uso_daily`. Sin IP, cookies ni identificador | La misma base `GEO_DB`; sin ella responde sin hacer nada. La lectura (`/api/uso/stats`) pide una sesión de la consola. Tablero en `/admin/analitica.html`. Ver [analitica-uso.md](analitica-uso.md) |
 
 Sin `DOCS_GITHUB_TOKEN`, la consola de documentos dice «La subida no está
-configurada» y la API responde 503 al subir. Las tres rutas escriben en la
+configurada» y la API responde 503 al subir. Las cuatro rutas escriben en la
 misma base D1, y el cupo gratuito de D1 (100 000 filas escritas al día) es
 por cuenta: por eso la analítica tiene un tope de 20 000 sumas al día
-(`DAILY_CAP` en `functions/_lib/ab.js`), para no dejar sin escrituras a las
-consolas. `ASSETS` (los archivos del sitio, con el que las consolas leen
+(`DAILY_CAP` en `functions/_lib/ab.js`) y la medición del uso uno de 30 000
+filas al día (`ROW_CAP` en `functions/_lib/uso.js`), para no dejar sin
+escrituras a las consolas. `ASSETS` (los archivos del sitio, con el que las consolas leen
 `data/`) lo pone Pages; no se configura.
 
 ## Referencias en el código
@@ -175,6 +177,7 @@ consolas. `ASSETS` (los archivos del sitio, con el que las consolas leen
 | `functions/_lib/geo-console.js` (`/api/geo/*`) | `GEO_DB`, `GEO_USERS`, `ASSETS` |
 | `functions/_lib/doc-uploads.js` (`/api/docs/*`) | `GEO_DB`, `DOCS_GITHUB_TOKEN`, `DOCS_GITHUB_REPO`, `DOCS_UPLOAD_ROLES`, `ASSETS` |
 | `functions/_lib/ab.js` (`/api/ab/*`) | `GEO_DB` (tabla `ab_daily`) |
+| `functions/_lib/uso.js` (`/api/uso/*`) | `GEO_DB` (tabla `uso_daily`); `GEO_USERS` para la sesión que pide la lectura |
 | `python/enso/geo_overrides.py` | `GEO_OVERRIDES_URL` (lo fija el flujo diario con Cloudflare) |
 | `.github/workflows/watchdog.yml` | `SITE_URL` |
 | `python/tools/cloudflare_pages.py` | Crea el proyecto si falta y devuelve su dirección |

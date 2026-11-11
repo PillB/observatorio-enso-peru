@@ -10,6 +10,7 @@
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/app.css">
   <link rel="stylesheet" href="admin.css">
+  <script type="module" src="consola.js"></script>
   <script type="module" src="admin.js"></script>
 </head>
 <body>
@@ -17,7 +18,7 @@
     <div class="header-inner">
       <a class="brand" href="../" title="Volver al sitio público"><img src="../favicon.svg" width="32" height="32" alt=""><span><span class="brand-name">Consola de lugares</span><span class="brand-tag">Observatorio ENSO Perú · revisión de ubicaciones</span></span></a>
       <div class="header-actions" id="session" hidden>
-        <a class="btn" href="documentos.html">Documentos</a>
+        <nav class="gc-nav" aria-label="Consolas"><a href="./" aria-current="page">Lugares</a><a href="documentos.html">Documentos</a><a href="analitica.html">Analítica</a></nav>
         <span class="muted small" id="who"></span>
         <button type="button" class="btn" id="logout">Salir</button>
       </div>
