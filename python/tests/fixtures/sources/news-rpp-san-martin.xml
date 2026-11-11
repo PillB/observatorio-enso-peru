@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:35:21 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 11 Nov 2026 17:34:48 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[¡Al límite! Captan el arriesgado rescate de una mujer atrapada en la feroz corriente del río Yuracyacu [VIDEO]]]></title>
+        <description><![CDATA[La mujer quedó atrapada en medio del caudal y, en un intento por evitar ser arrastrada, logró sujetarse de una roca, desde donde comenzó a pedir desesperadamente ayuda.]]></description>
+        <pubDate>Tue, 03 Nov 2026 16:02:28 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/serenos-de-nueva-cajamarca-rescatan-a-mujer-que-era-arrastrada-por-las-aguas-del-rio-yuracyacu-video-noticia-1715792</link>
+        <guid>1715792</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/11/03/atsapp-video-2026-11-03-at-93806-am-1925419mp4_1925420.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ rescate, lluvias, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[San Martín: pobladores de Sauce atraparon y lincharon a delincuente que mató a negociante [VIDEO]]]></title>
         <description><![CDATA[<em><strong><a rel="nofollow noopener" data-mce-href="https://rotafono.pe/" href="https://rotafono.pe/" target="_blank">Rotafono de RPP </a></strong></em>| Ciudadanos del distrito de Sauce en <a rel="nofollow noopener" data-mce-href="https://rotafono.pe/tag/san-martin?label=San+Mart%C3%ADn" href="https://rotafono.pe/tag/san-martin?label=San+Mart%C3%ADn" target="_blank">San Martín</a> se organizaron junto a la policía para atrapar a uno de los dos asesinos del dueño de un negocio de venta y reparación de celulares.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2025/04/18/033103_1732199.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Instituto Geofísico del Perú, Sismo, IGP, San Martín, Tocache, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Falleció futbolista que chocó con un arquero durante un partido de Copa Perú en Moyobamba]]></title>
-        <description><![CDATA[<strong>Helar Gonzales Altamirano </strong>estuvo dos días internado en el hospital. Sus restos serán velados en el caserío Palestina.]]></description>
-        <pubDate>Wed, 09 Apr 2025 11:30:13 -0500</pubDate>
-        <link>https://rpp.pe/peru/san-martin/moyobamba-fallecio-futbolista-que-choco-con-un-arquero-durante-un-partido-de-la-copa-peru-noticia-1627304</link>
-        <guid>1627304</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/04/08/304730_1728198.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ San Martin, Moyobamba, Copa Perú, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
