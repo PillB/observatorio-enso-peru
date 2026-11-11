@@ -98,6 +98,16 @@ jobs:
           # El calendario ENSO de hoy (ICEN del IGP y ONI de la NOAA); si no responden, la copia de las pruebas.
           python -m tools.build_historico --sin-red --parcial --aceptar-cambios --indices-al-dia "$RUNNER_TEMP/indices"
           python -m tools.cosecha_historico --informe "$RUNNER_TEMP/antes" > "$RUNNER_TEMP/pr.md"
+          # La capa de ríos del mapa cuenta los registros del catálogo: se rehace con él. Lee las páginas de la Carta
+          # Nacional del IGN (tools.build_aguas --keep); si no se pueden bajar, queda la capa anterior y las pruebas
+          # del PR lo dicen.
+          ign="$HOME/.cache/enso-historico/ign-carta"
+          if [ -d "$ign" ] || python -m tools.build_aguas --keep "$ign"; then
+            git checkout -- enso/data/aguas.json.gz
+            python -m tools.build_capas_mapa --aguas "$ign"
+          else
+            echo "::warning::No se pudo bajar la Carta Nacional: la capa de ríos no se rehízo"
+          fi
 
       - name: Open or update the pull request
         if: steps.build.outcome == 'success'
@@ -113,7 +123,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
           git switch -c "$branch"
-          git add data/historico public/assets/historico
+          git add data/historico public/assets/historico public/assets/capas/rios-mapa.json
           if git diff --cached --quiet; then
             echo "::notice::El catálogo reconstruido es igual al publicado: no hay PR"
             [ "$ESTADO" = completa ] && mark "sin cambios"
