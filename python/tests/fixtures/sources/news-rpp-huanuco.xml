@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:25:28 -0500</lastBuildDate>
+  <lastBuildDate>Wed, 11 Nov 2026 17:45:09 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,17 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.1 remeció la región Huánuco esta mañana]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 15 kilómetros al oeste de <strong>Huánuco</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Tue, 10 Nov 2026 07:45:50 -0500</pubDate>
+        <link>https://rpp.pe/peru/huanuco/huanuco-sismo-de-magnitud-41-remecio-la-region-esta-manana-noticia-1716970</link>
+        <guid>1716970</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/11/10/235223_1927633.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Instituto Geofísico del Perú, Sismo, IGP, Huánuco, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Huánuco: hallan cuerpo de turista australiano desaparecido tras realizar caminata a la cordillera Huayhuash]]></title>
         <description><![CDATA[El turista <strong>Jap Jordan Hao</strong> fue hallado sin vida en el sector <strong>Machaycancha</strong>, tras desaparecer durante una caminata hacia la cordillera <strong>Huayhuash</strong>. El extranjero había iniciado su recorrido el<strong> 14 de septiembre</strong> y tenía previsto regresar el día<strong> 23</strong>.]]></description>
@@ -553,17 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2025/03/28/anuco-2025-03-28-14-30-47-3554-1723475mp4_1723476.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Huánuco, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Emergencia por lluvias en Huánuco: temporal durante marzo y mayo afectará a casi 200 mil personas]]></title>
-        <description><![CDATA[El representante de <strong>Indeci</strong> en la región advirtió ante el premier Gustavo Adrianzén y el ministro de Cultura que el temporal <a data-mce-href="https://rpp.pe/peru/actualidad/temporada-de-lluvias-se-va-a-prolongar-hasta-abril-senala-vocero-de-enfen-noticia-1619330" href="https://rpp.pe/peru/actualidad/temporada-de-lluvias-se-va-a-prolongar-hasta-abril-senala-vocero-de-enfen-noticia-1619330">causará mayores daños en los próximos meses</a>.]]></description>
-        <pubDate>Thu, 13 Mar 2025 15:07:40 -0500</pubDate>
-        <link>https://rpp.pe/peru/huanuco/emergencia-por-lluvias-en-huanuco-temporal-durante-marzo-y-mayo-afectara-a-casi-200-mil-personas-noticia-1621721</link>
-        <guid>1621721</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2025/03/13/25-03-13-14-12-28-2444-1717210mp4_1717211.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Huánuco, lluvias, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
