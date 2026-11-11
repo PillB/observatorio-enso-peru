@@ -1,0 +1,18 @@
+{
+ "folders": [
+  "alertaEmergencias",
+  "Cartografia_Peligros",
+  "Emergencias",
+  "Ent_Tecnico_Cientificas",
+  "Hosted",
+  "LimitesAdministrativos",
+  "Multisectorial",
+  "Recursos_GORE",
+  "SIERD_INDECI",
+  "SIRAIM",
+  "Test",
+  "Utilities"
+ ],
+ "services": [],
+ "currentVersion": 12
+}

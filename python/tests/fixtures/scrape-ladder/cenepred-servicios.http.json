@@ -1,0 +1,21 @@
+{
+ "currentVersion": 10.81,
+ "folders": [
+  "FEN",
+  "FONDES",
+  "INDECI",
+  "MEF",
+  "MIDIS",
+  "MINJUS",
+  "sectores",
+  "sigrid",
+  "Utilities",
+  "VIVIENDA"
+ ],
+ "services": [
+  {
+   "name": "SampleWorldCities",
+   "type": "MapServer"
+  }
+ ]
+}

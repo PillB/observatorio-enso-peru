@@ -1,0 +1,14 @@
+{
+ "folders": [],
+ "services": [
+  {
+   "name": "LimitesAdministrativos/limitesAdministrativos",
+   "type": "MapServer"
+  },
+  {
+   "name": "LimitesAdministrativos/SDE_limDistrital_SINPAD_1981",
+   "type": "MapServer"
+  }
+ ],
+ "currentVersion": 12
+}
