@@ -10,6 +10,10 @@ la institución y, con eso, su estado:
 * ``vencido``: supera la antigüedad máxima de su fuente y el sitio no lo usa como actual;
 * ``sin-dato``: la fuente no dio nada en esta publicación.
 
+El escenario de riesgo por lluvias del CENEPRED («Mi zona») sigue su propia regla
+(``cenepred_escenario.freshness_item``): vencido cuando terminó su vigencia; atrasado si se conservó el anterior o si,
+quince días después del mes siguiente a su inicio, no hay uno más nuevo vigente (el CENEPRED abre uno cada mes).
+
 El calendario de cada producto (cuándo aparece el dato de un mes) es el que se observa en las fuentes:
 NOAA publica los índices mensuales hacia el día 10 del mes siguiente; el IGP actualiza el ICEN cuando
 llega el ERSST del mes posterior (por eso va dos meses detrás); el OISST semanal se publica el lunes
@@ -41,6 +45,8 @@ VIEWS: dict[str, list[str]] = {
     "mapa": ["weekly"],  # el mapa dibuja solo las anomalías semanales
     "historia": ["icen"],
     "noticias": ["enfen", "noaa", "alerts", "news"],
+    # Mi zona: las alertas vigentes y el escenario de riesgo por distrito del CENEPRED (``cenepred_escenario``).
+    "zona": ["alerts", "escenario"],
 }
 
 
@@ -108,9 +114,11 @@ def _official_item(key: str, o: Optional[dict], today: date, label: str, source:
 
 
 def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed: Optional[dict],
-          news_feeds: Optional[list[dict]], today: date, now: datetime) -> dict:
+          news_feeds: Optional[list[dict]], today: date, now: datetime, escenario: Optional[dict] = None) -> dict:
     """``meta``: id de fuente → {institution, retrievedAt, channel}; ``feed``: feed.json; ``news_feeds``: el
-    estado de cada feed (news/feeds.json)."""
+    estado de cada feed (news/feeds.json); ``escenario``: el escenario de riesgo por distrito del CENEPRED
+    (``cenepred_escenario.acquire``; su estado lo da ``cenepred_escenario.freshness_item``)."""
+    from .cenepred_escenario import freshness_item
     items: dict[str, dict] = {}
     for key, s in series.items():
         items[key] = _series_item(key, s, today, meta)
@@ -217,6 +225,8 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
     else:
         items["news"] = {"id": "news", "label": "Noticias de medios y del Estado", "state": "sin-dato"}
 
+    items["escenario"] = freshness_item(escenario, today)
+
     for keys in VIEWS.values():
         for k in keys:
             if k not in items:  # una serie que esta publicación no trae: fila «sin dato», no se omite
@@ -240,7 +250,7 @@ def log_late(fresh: dict, log) -> None:
     """Cada dato atrasado queda como incidencia (y así como issue en GitHub). Los vencidos ya la tienen
     (``stale-*``, ``official-overdue``)."""
     for it in fresh["items"].values():
-        if it["state"] == "atrasado" and it.get("kind") in ("comunicado", "informe", "serie"):
+        if it["state"] == "atrasado" and it.get("kind") in ("comunicado", "informe", "serie", "escenario"):
             exp = f"; se esperaba el siguiente hacia el {it['expectedNext']}" if it.get("expectedNext") else ""
             log.add("warning", it.get("source") or it["id"], "validate", f"late-{it['id']}",
                     f"{it['label']}: el dato más reciente es de {it.get('observed') or '—'} ({it['state']}){exp}.")

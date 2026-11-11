@@ -1,0 +1,686 @@
+# Conciliación de cifras de personas con la población oficial de su área (enso/historico/conciliacion.py).
+#
+# Cada fila del catálogo con más personas afectadas, damnificadas, evacuadas, reubicadas o desplazadas que habitantes
+# en su área en el año del evento (INEI: estimaciones 1990-2005, censo 2017, proyecciones 2018-2022) se investigó con
+# su propio texto, las fichas de los mismos días en el área y la población de cada nivel (y, si hizo falta, otras
+# fuentes). Aquí están las que tienen una ruta propia; las demás son fichas de un distrito (el SINPAD registra cada
+# emergencia en uno) que se llevan a la población del distrito (tope-poblacion, automática).
+#
+# Rutas (campos):
+#   cifra-de-area  area      la cifra es de la provincia o el departamento: cuenta ahí y no en el distrito
+#   homonimo       ubigeo    la fuente nombró el departamento o la provincia de ese nombre: la fila pasa ahí
+#   duplicado      de        la cifra repite la de otra fila que la consolida: se cuenta una vez, en esa
+#   consolidado    partes    la fila es el total de un área cuyas partes tienen filas: cuenta el resto
+#   transcripcion  cifras    la cifra se corrige con la propia fila
+#   tope-poblacion           investigada: se cuenta toda la población del área
+# Todas llevan motivo (lo que dice la fila) y evidencia (con qué se comprobó). «area» en otra ruta dice además de qué
+# área es la cifra que queda. La población de cada área y año la calcula la construcción y queda en
+# conciliaciones.csv.
+conciliaciones:
+  # --- Cifras de un área mayor -----------------------------------------------------------------------------------
+  - id: desinventar-43412
+    ruta: cifra-de-area
+    area: "02"
+    motivo: «Unos ochenta mil pobladores de los centros poblados quedaron aislados a causa del derrumbe en el camino».
+    evidencia: >-
+      Son las personas aisladas por el corte de la vía, no las del distrito: 80 000 no caben en Santa Rosa (1 578
+      habitantes en 2008) ni en toda la provincia de Pallasca (30 631); sí en Áncash.
+  - id: desinventar-31682
+    ruta: cifra-de-area
+    area: "02"
+    motivo: >-
+      Derrumbes en la vía Huaraz-Huallanca-Chuquicara-Pomabamba; la ficha nombra como afectadas las provincias de
+      Corongo, Sihuas y otras.
+    evidencia: Cuatro provincias de Áncash; 60 000 no caben en La Pampa (1 446) ni en Corongo (9 258).
+  - id: desinventar-37083
+    ruta: cifra-de-area
+    area: "09"
+    motivo: >-
+      «Vía Quichuas-Ahuihua y puente arrasados»: personas incomunicadas por el corte de la vía.
+    evidencia: >-
+      30 000 no caben en Tantara (923 en 1999) ni en Castrovirreyna (19 354); la ficha de Huachos del mismo día
+      (desinventar-37076, 15 000) es la de la provincia.
+  - id: desinventar-37076
+    ruta: cifra-de-area
+    area: "0904"
+    motivo: Desborde del río San Juan, que recorre la provincia de Castrovirreyna (Huachos, Chupamarca, Aurahua, San Juan).
+    evidencia: 15 000 no caben en Huachos (1 883 en 1999); sí en Castrovirreyna (19 354).
+  - id: desinventar-29219
+    ruta: cifra-de-area
+    area: "02"
+    motivo: >-
+      «13 mil habitantes de 13 poblados de Recuay (Huaquillán, Llacllín, Pararín, Tapacocha, Cotaparaco, Chucchas,
+      Raquia, Cajacay…)».
+    evidencia: >-
+      Los poblados son de Recuay y de Bolognesi (Cajacay, Raquia), así que el área común es Áncash; 13 000 no caben
+      en Llacllín (936 en 1990).
+  - id: desinventar-35418
+    ruta: cifra-de-area
+    area: "0217"
+    motivo: «20 pueblos ubicados en la Cordillera Negra quedaron aislados».
+    evidencia: >-
+      7 000 no caben en Llacllín (937 en 1997); sí en Recuay (19 767). La ficha del mismo día en Llacllín
+      (desinventar-35415: 99 afectados en el anexo de Huacllón) es la del distrito.
+  - id: desinventar-29484
+    ruta: cifra-de-area
+    area: "1507"
+    motivo: >-
+      «Cumbe, Salpin, Lanca, Canchacalla, Tapicara, Otao y San Juan…: 20 000 personas incomunicadas», cuatro puentes
+      caídos.
+    evidencia: Poblados de varios distritos de Huarochirí; 20 000 no caben en San Mateo de Otao (2 131).
+  - id: desinventar-46206
+    ruta: cifra-de-area
+    area: "0505"
+    motivo: >-
+      «Se multiplicó el número de familias por 5»: 8 000 familias por la nevada.
+    evidencia: >-
+      8 000 familias son más que todas las de Chungui (4 618 habitantes en 2015); caben en La Mar (63 673), la
+      menor área que las contiene.
+  - id: desinventar-44423
+    ruta: cifra-de-area
+    area: "1308"
+    motivo: >-
+      «En la localidad de Chahual ninguna de las tres vías… está habilitada, lo cual perjudica a unos 70 mil
+      pobladores».
+    evidencia: Son los usuarios de las vías de la provincia; 70 000 no caben en el distrito de Pataz (8 184); sí en la provincia (78 296).
+  - id: desinventar-43337
+    ruta: cifra-de-area
+    area: "1102"
+    motivo: >-
+      «Aislados unas 10 000 personas. Se encuentran incomunicadas las localidades de Chavín…» por el desborde del río
+      San Juan en el límite de Chincha y Huancavelica.
+    evidencia: Localidades de varios distritos altos de Chincha; 10 000 no caben en San Pedro de Huacarpana (1 429).
+  - id: desinventar-36814
+    ruta: cifra-de-area
+    area: "0103"
+    motivo: >-
+      Hundimiento de terrenos en San Carlos: 20 casas destruidas y 33 rajadas; «campesinos viven en zozobra». Los
+      3 000 afectados son los del valle.
+    evidencia: >-
+      3 000 no caben en San Carlos (541 en 1998); sí en Bongará (24 068). Los damnificados (239) y las viviendas
+      son locales, pero la ruta lleva todas las cifras de personas y viviendas de la fila a Bongará.
+  - id: desinventar-41294
+    ruta: cifra-de-area
+    area: "0405"
+    motivo: >-
+      Huaico en la comunidad campesina Murko (Huanca): 15 000 damnificados.
+    evidencia: >-
+      15 000 no caben en Huanca (2 650 en 1990); sí en Caylloma (46 252). La ficha del día anterior en Huanca
+      (desinventar-41293: «D: +2500») es la del distrito.
+  - id: desinventar-37082
+    ruta: cifra-de-area
+    area: "1209"
+    motivo: Desborde del río Mantaro, dos puentes destrozados.
+    evidencia: 20 000 no caben en Huamancaca Chico (3 629 en 1999); sí en Chupaca (53 479), por donde pasa el Mantaro.
+  - id: desinventar-32935
+    ruta: cifra-de-area
+    area: "15"
+    motivo: >-
+      «2000 familias aisladas de la parte andina de la provincia: Churín, Canín, Mayobamba, Jucul, Parquín, Picoy,
+      Huancahuasi, Rapaz…».
+    evidencia: >-
+      Churín y Rapaz son de Oyón, Picoy y Huancahuasi de Huaura: el área común es Lima; 9 000 no caben en Santa Leonor
+      (1 671).
+  - id: desinventar-32670
+    ruta: cifra-de-area
+    area: "1507"
+    motivo: >-
+      Sequía: «corresponde a 7000 familias».
+    evidencia: 31 500 no caben en Matucana (5 923 en 1992); sí en Huarochirí (60 997).
+  - id: desinventar-35944
+    ruta: cifra-de-area
+    area: "2401"
+    motivo: >-
+      «Entre Cerro Blanco y Cabuyal a lo largo de 7 km el río Tumbes afectó a los sectores Limón, Pampas de Hospital
+      y otros… 7000 familias»; la crecida aisló a Tumbes en cinco zonas.
+    evidencia: >-
+      Sectores de varios distritos del valle del Tumbes; 31 500 personas y 7 000 viviendas no caben en Pampas de
+      Hospital (6 125 en 1998); sí en la provincia de Tumbes (135 386).
+  - id: desinventar-36340
+    ruta: cifra-de-area
+    area: "1204"
+    motivo: Se derrumbó el pozo que abastecía la planta de tratamiento de agua potable.
+    evidencia: Son los usuarios de la planta, que abastece más que San Lorenzo (2 085 en 1998); caben en Jauja (112 188).
+  - id: desinventar-29297
+    ruta: cifra-de-area
+    area: "1508"
+    motivo: >-
+      «Más de 10 mil afectados consolidado con ficha 83958»: dos meses de huaicos en Huamboy y otros poblados.
+    evidencia: >-
+      Es el total consolidado de dos distritos de Huaura (la ficha de Paccho del mismo día, desinventar-29301, trae
+      el mismo «dato consolidado»); 10 000 no caben en Leoncio Prado (2 137 en 1983).
+  - id: desinventar-27660
+    ruta: cifra-de-area
+    area: "0804"
+    motivo: >-
+      Huaicos y deslizamiento del cerro Urusayhua: caminos intransitables.
+    evidencia: 30 000 no caben en Lares (6 799 en 1990, la primera cifra del INEI); sí en Calca (56 138).
+  - id: desinventar-27767
+    ruta: cifra-de-area
+    area: "0804"
+    motivo: «Río Yanatile se desbordó… Aislados los pueblos por interrupción de vías. 30 000 pobladores afectados».
+    evidencia: Pueblos de los valles de Lares y Yanatile; 30 000 no caben en Lares (6 799); sí en Calca (56 138).
+  - id: desinventar-38221
+    ruta: cifra-de-area
+    area: "0902"
+    motivo: Granizada con hectáreas afectadas (INDECI 2001).
+    evidencia: 34 444 damnificados no caben en Acobamba (9 445 en 2001); sí en la provincia de Acobamba (46 141).
+  - id: desinventar-29041
+    ruta: cifra-de-area
+    area: "2402"
+    motivo: «Sólo personas dedicadas a actividades agropecuarias»; tres carreteras inhabilitadas.
+    evidencia: Los agricultores del valle; 4 000 no caben en Casitas (2 845); sí en Contralmirante Villar (12 793).
+  - id: desinventar-38278
+    ruta: cifra-de-area
+    area: "1201"
+    motivo: La crecida del río Chanchas se llevó el único puente por el que pasaban los transportes hacia Huancayo.
+    evidencia: Son los usuarios del puente; 30 000 no caben en Huancán (9 426 en 2001); sí en Huancayo (471 946).
+  - id: desinventar-35661
+    ruta: cifra-de-area
+    area: "1504"
+    motivo: >-
+      «10 000 moradores aislados»: se destruyeron dos tramos de la carretera de Lima a Canta.
+    evidencia: Los pueblos de la vía; 10 000 no caben en el distrito de Canta (3 160 en 1997); sí en la provincia (11 282).
+  - id: desinventar-34802
+    ruta: cifra-de-area
+    area: "1102"
+    motivo: «500 familias que se dedican a la agricultura… se preparan para migrar» (Chitia Pata y Marcocancha).
+    evidencia: 500 familias son más que todas las de Chavín (715 habitantes en 1996); caben en Chincha.
+  - id: desinventar-35644
+    ruta: cifra-de-area
+    area: "0205"
+    motivo: Huaico que destruyó canales; 15 familias perdieron sus enseres.
+    evidencia: >-
+      600 afectados no caben en Abelardo Pardo Lezameta (219 en 1997): son los usuarios de los canales; caben en
+      Bolognesi.
+  - id: desinventar-38553
+    ruta: cifra-de-area
+    area: "0904"
+    motivo: &castrovirreyna >-
+      «Quedaron aislados desde hace quince días porque varios huaicos han bloqueado la carretera de acceso».
+    evidencia: &castrovirreyna-ev >-
+      Nueve fichas del 2 de mayo de 2001 con el mismo texto, una por distrito de Castrovirreyna, con 1 700 a 1 850
+      afectados cada una sin importar su población (de 561 a 1 487): es la cifra de la provincia (unas 16 000
+      personas, de 19 452) repartida en partes casi iguales. Se cuenta en la provincia.
+  - {id: desinventar-38554, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - {id: desinventar-38555, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - {id: desinventar-38556, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - {id: desinventar-38557, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - {id: desinventar-38558, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - {id: desinventar-38560, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - {id: desinventar-38561, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - {id: desinventar-38562, ruta: cifra-de-area, area: "0904", motivo: *castrovirreyna, evidencia: *castrovirreyna-ev}
+  - id: desinventar-36164
+    ruta: cifra-de-area
+    area: "0904"
+    motivo: «Cadena de huaycos… desborde de los ríos Yanacapa y…» a 150 km al sudeste de Chincha.
+    evidencia: 3 000 no caben en Chupamarca (1 012 en 1998); sí en Castrovirreyna (19 421).
+  - id: desinventar-36088
+    ruta: cifra-de-area
+    area: "0904"
+    motivo: «Aislado distrito de Chupamarca y otras localidades» por la crecida del río Chupamarca.
+    evidencia: 2 000 no caben en Chupamarca (1 012 en 1998); la ficha nombra otras localidades.
+  - id: desinventar-33153
+    ruta: cifra-de-area
+    area: "0212"
+    motivo: Huaicos que arrasaron el poblado de Tocash y más de 300 ha de cultivos; campesinos afectados.
+    evidencia: 20 000 no caben en Pueblo Libre (6 823 en 1993); sí en Huaylas (52 828).
+  - id: desinventar-41389
+    ruta: cifra-de-area
+    area: "0405"
+    motivo: >-
+      «Aproximadamente 12 mil pobladores incomunicados; bloqueo de numerosos tramos de carretera que une Chivay con
+      decenas de distritos».
+    evidencia: 12 000 no caben en Chivay (4 158 en 1993); sí en Caylloma (47 334).
+  - id: desinventar-31152
+    ruta: cifra-de-area
+    area: "0301"
+    motivo: «3 000 familias fueron afectadas o 15 mil personas» por lluvias, granizadas y vientos.
+    evidencia: 15 000 no caben en Lambrama (5 308 en 1990, la primera cifra del INEI); sí en Abancay (91 049).
+  - id: desinventar-41261
+    ruta: cifra-de-area
+    area: "0401"
+    motivo: >-
+      El río Siguas arrasó cultivos: «corresponden a 700 familias».
+    evidencia: >-
+      Familias del valle del Siguas (Santa Isabel y San Juan de Siguas); 700 familias no caben en Santa Isabel de
+      Siguas (1 247 habitantes en 1990).
+  - id: desinventar-41532
+    ruta: cifra-de-area
+    area: "0401"
+    motivo: >-
+      Huaicos: «damnificados corresponden a 600 familias».
+    evidencia: 600 familias no caben en Santa Isabel de Siguas (1 205 en 1995); son del valle del Siguas.
+  - id: desinventar-41578
+    ruta: cifra-de-area
+    area: "0401"
+    motivo: >-
+      Deslizamiento entre los anexos Tintín y Sandor: 1 800 damnificados, 250 ha de cultivo destruidas, la trocha
+      cortada.
+    evidencia: 1 800 no caben en Santa Isabel de Siguas (1 214 en 1996); son del valle del Siguas.
+  - id: desinventar-32966
+    ruta: cifra-de-area
+    area: "1507"
+    motivo: >-
+      Deslizamiento que arrasó el puente de la vía férrea y el paso vehicular: aislados.
+    evidencia: 2 800 no caben en San Bartolomé (1 031 en 1993); son los usuarios de la vía, en Huarochirí.
+  - id: desinventar-32965
+    ruta: cifra-de-area
+    area: "1507"
+    motivo: >-
+      Huaicos en Surco con la línea férrea afectada; damnificados: «200 personas y 15 familias».
+    evidencia: Los 3 000 afectados son los de la vía; no caben en Surco (1 797 en 1993); sí en Huarochirí.
+  - id: desinventar-37084
+    ruta: cifra-de-area
+    area: "16"
+    motivo: «Desborde de ríos Marañón, Curaray y Napo».
+    evidencia: >-
+      El Curaray y el Napo no pasan por Manseriche (están en Maynas y Loreto): 23 000 damnificados y 4 600 viviendas
+      destruidas son de los ríos de Loreto; no caben en Manseriche (8 489 en 1999).
+  - id: desinventar-32498
+    ruta: cifra-de-area
+    area: "02"
+    motivo: >-
+      Desborde del río Grande: «treinta poblados aislados, cientos de vehículos bloqueados», carretera a Huaraz
+      destruida.
+    evidencia: 20 000 no caben en la provincia de Ocros (7 549 en 1991); son los usuarios de la vía, en Áncash.
+  - id: desinventar-37118
+    ruta: cifra-de-area
+    area: "1105"
+    motivo: Desborde del río Pisco, cultivos de algodón inundados.
+    evidencia: 12 000 no caben en Humay (4 668 en 1999); el valle del Pisco está en la provincia de Pisco (120 748).
+  - id: desinventar-44356
+    ruta: cifra-de-area
+    area: "0408"
+    motivo: «Las autoridades de la provincia arequipeña de La Unión informaron…» las lluvias persistentes.
+    evidencia: El informe es de la provincia; 2 500 no caben en Toro (1 094 en 2011); sí en La Unión (16 513).
+  - id: desinventar-33056
+    ruta: cifra-de-area
+    area: "2002"
+    motivo: >-
+      Dos meses de lluvias con las vías de acceso dañadas: «aguda escasez de alimentos y medicinas».
+    evidencia: 7 500 no caben en Jilili (3 358 en 1993); son los de las vías de Ayabaca (136 904).
+  - id: desinventar-33756
+    ruta: cifra-de-area
+    area: "1606"
+    motivo: Desborde del río Ucayali, 2 160 ha afectadas.
+    evidencia: >-
+      3 600 damnificados y 523 viviendas no caben en Inahuaya (1 716 en 1994): son los de la ribera del Ucayali en la
+      provincia (54 221).
+  - id: desinventar-28979
+    ruta: cifra-de-area
+    area: "2007"
+    motivo: La marejada destruyó pozos de captación y 3 km de tuberías.
+    evidencia: Son los usuarios del agua; 20 000 no caben en Los Órganos (9 603 en 1990); sí en Talara (119 081).
+  - id: desinventar-30132
+    ruta: cifra-de-area
+    area: "2501"
+    motivo: >-
+      Desborde de los ríos Aguaytía y Ucayali: tierras de cultivo afectadas.
+    evidencia: 22 000 no caben en Campoverde (10 890 en 1990); sí en Coronel Portillo.
+  - id: desinventar-28593
+    ruta: cifra-de-area
+    area: "21"
+    motivo: >-
+      Sequía: «Datos consolidados con fichas 83956, 83957, 93958 y 83959».
+    evidencia: >-
+      En 1983 Chucuito incluía El Collao (creada en 1991) y Yunguyo (1984): 189 058 no caben en la Chucuito de hoy
+      (94 022 en 1990); el área de hoy que contiene a la de entonces es Puno.
+  - id: desinventar-28607
+    ruta: cifra-de-area
+    area: "21"
+    motivo: «En febrero 37292 habitantes y en marzo 108798».
+    evidencia: >-
+      En 1983 Huancané incluía Moho y San Antonio de Putina (creadas en 1989-1991): 108 798 no caben en el Huancané de
+      hoy (84 253 en 1990); el área de hoy que la contiene es Puno.
+  - id: desinventar-43847
+    ruta: cifra-de-area
+    area: "0811"
+    motivo: >-
+      «Unos 20.000 campesinos resultaron afectados, debido a que 30 camiones se han quedado varados… las dos
+      carreteras que conducen al Paucartambo».
+    evidencia: Usuarios de las vías; 20 400 no caben en el distrito de Paucartambo (13 060 en 2007); sí en la provincia.
+  - id: desinventar-35875
+    ruta: cifra-de-area
+    area: "0302"
+    motivo: >-
+      Nevada en Ccochapucro, Ccallo-acco, Santiago de Yanama, Chosicani y otras «15 comunidades»; «pérdidas en
+      distritos Tumay Huaraca y Andahuaylas».
+    evidencia: La ficha nombra dos distritos; 3 600 no caben en Tumay Huaraca (2 176 en 1997); sí en Andahuaylas.
+  - id: desinventar-26121
+    ruta: cifra-de-area
+    area: "09"
+    motivo: >-
+      Deslizamiento de Mayunmarca (25 de abril de 1974) que represó el Mantaro: «han evacuado a habitantes de 13
+      poblados en previsión al peligro por embalse».
+    evidencia: >-
+      Los 13 poblados son de la ribera del Mantaro aguas abajo del dique, en varias provincias de Huancavelica;
+      5 000 no caben en Andabamba (3 270 en 1990). Los 80 fallecidos y 220 desaparecidos se quedan en la fila.
+  - id: desinventar-29255
+    ruta: cifra-de-area
+    area: "2006"
+    motivo: >-
+      Tormenta en los pueblos jóvenes Sánchez Cerro, Nueva Bellavista, Jorge Basadre, Esteban Pavletich y Buenos
+      Aires: «por lo menos 10 mil» viviendas destruidas.
+    evidencia: Pueblos jóvenes de la ciudad de Sullana (Sullana y Bellavista); 50 000 no caben en Bellavista (33 077).
+  - id: desinventar-24206
+    ruta: cifra-de-area
+    area: "1209"
+    motivo: >-
+      Crecida del Mantaro: puentes arrasados, «pobladores tienen que utilizar botes».
+    evidencia: Los pueblos de la ribera; 5 000 no caben en Huamancaca Chico (3 457 en 1990); sí en Chupaca.
+  - id: desinventar-36515
+    ruta: cifra-de-area
+    area: "0212"
+    motivo: Lluvias en Caraz con los puentes Cornejo y Llallún de la carretera Huaraz-Caraz debilitados.
+    evidencia: Usuarios de la vía; 30 000 no caben en Caraz (22 074 en 1998); sí en Huaylas.
+  - id: desinventar-22799
+    ruta: cifra-de-area
+    area: "1510"
+    motivo: >-
+      Huaico en Catahuasi (otro distrito de Yauyos), por el desborde de una represa «que abastecía de agua a diversos
+      valles»: puentes Catahuasi y Huayllampi arrasados.
+    evidencia: Catahuasi y Tupe son distritos distintos de Yauyos; 1 000 damnificados no caben en Tupe (751 en 1990).
+  - id: desinventar-24853
+    ruta: cifra-de-area
+    area: "1104"
+    motivo: Desborde del río Viscas, «50 % de las viviendas» afectadas, Panamericana cortada.
+    evidencia: El Viscas recorre la provincia de Palpa; 9 000 no caben en el distrito de Palpa (6 882 en 1990).
+  - id: desinventar-26524
+    ruta: cifra-de-area
+    area: "1101"
+    motivo: >-
+      «Afectados: Ica, San Juan Bautista, Subtanjalla, Salas… 10 mil personas de los pueblos jóvenes».
+    evidencia: Cuatro distritos de la provincia de Ica; 10 000 no caben en Subtanjalla (7 756 en 1990).
+  - id: desinventar-29513
+    ruta: cifra-de-area
+    area: "1401"
+    motivo: >-
+      Desborde del río Reque: «En Chiclayo y Ferreñafe…».
+    evidencia: 15 000 evacuados no caben en Etén (11 639 en 1990); son de la provincia de Chiclayo.
+  - id: desinventar-40952
+    ruta: cifra-de-area
+    area: "21"
+    motivo: Inundación en la vía Cojata-Sina, cortada en 7 tramos; 20 familias de Corihuara y Potosí afectadas.
+    evidencia: >-
+      Los 1 800 afectados son los usuarios de la vía, que une Sina (San Antonio de Putina) con Cojata (Huancané); no
+      caben en Sina (1 468 en 2006).
+  - id: desinventar-45059
+    ruta: cifra-de-area
+    area: "0401"
+    motivo: «El colapso del sistema de drenaje y desagüe inundó algunas calles… del centro de la Ciudad de Arequipa».
+    evidencia: La ciudad de Arequipa son varios distritos; 89 000 no caben en el Cercado (71 765 en 2013).
+  - id: desinventar-37288
+    ruta: cifra-de-area
+    area: "2103"
+    motivo: «11.282 casos de infecciones respiratorias y 1.095 de neumonía» (Dirección Regional de Salud).
+    evidencia: Casos de la red de salud; 12 377 no caben en Macusani (10 943 en 2000); sí en Carabaya.
+  - id: desinventar-43922
+    ruta: cifra-de-area
+    area: "0408"
+    motivo: >-
+      El huaico rompió 1 900 m de canales de la minicentral hidroeléctrica de Chococo (Alca).
+    evidencia: Usuarios de la minicentral; 2 730 no caben en Alca (2 505 en 2007); sí en La Unión.
+  - id: desinventar-36250
+    ruta: cifra-de-area
+    area: "1506"
+    motivo: «Río Huaral desbordado a lo largo de su recorrido por el valle desde la bocatoma de Palpa hasta Hornillos».
+    evidencia: El valle de Huaral, Aucallama y Chancay; 15 000 no caben en Aucallama (12 811 en 1998).
+  - id: desinventar-33326
+    ruta: cifra-de-area
+    area: "1901"
+    motivo: >-
+      Desborde de la laguna Patarcocha: «30 mil pobladores de unos 20 poblados quedaron aislados».
+    evidencia: La ciudad de Cerro de Pasco son Chaupimarca, Yanacancha y Simón Bolívar; 30 000 no caben en Chaupimarca (29 740 en 1994).
+  - id: desinventar-36068
+    ruta: cifra-de-area
+    area: "1101"
+    motivo: >-
+      Desborde del río Ica «en diferentes sectores de la ciudad»: San Juan, La Angostura, San Martín, La Esperanza…
+    evidencia: La ciudad de Ica son varios distritos; 120 000 damnificados no caben en el distrito de Ica (119 273 en 1998).
+  - id: desinventar-28710
+    ruta: cifra-de-area
+    area: "0220"
+    motivo: «Puente fue destruido por el río Santa; aisló a 4000 pobladores y varios caseríos».
+    evidencia: Usuarios del puente; 4 000 no caben en Shupluy (2 288 en 1990); sí en Yungay.
+
+  # --- Homónimos -------------------------------------------------------------------------------------------------
+  - id: desinventar-41276
+    ruta: homonimo
+    ubigeo: "0405"
+    motivo: Sequía en «Caylloma», «la más aguda de los últimos 20 años»; «200 000 total dpto.».
+    evidencia: >-
+      40 000 damnificados no caben en el distrito de Caylloma (5 735 en 1990); sí en la provincia de Caylloma
+      (46 252), de la que habla la nota.
+  - id: desinventar-41572
+    ruta: homonimo
+    ubigeo: "0405"
+    motivo: >-
+      Helada en «Caylloma»: 10 niños fallecidos y 8 000 afectados por males respiratorios (INDECI).
+    evidencia: 8 000 no caben en el distrito de Caylloma (5 154 en 1996); el INDECI informa por provincia.
+  - id: desinventar-44966
+    ruta: homonimo
+    ubigeo: "12"
+    motivo: >-
+      «Ola de frío en Junín»: 24 fallecidos y 37 035 afectados.
+    evidencia: La ola de frío de junio de 2012 fue en las alturas del departamento; 37 035 no caben en el distrito de Junín (16 101).
+  - id: desinventar-33962
+    ruta: homonimo
+    ubigeo: "16"
+    motivo: >-
+      «Desbordes de ríos selváticos: Amazonas, Ucayali, Marañón, Huallaga (Datos consolidados); 49 687 familias de
+      1 148 caseríos» (V Región de Defensa Civil).
+    evidencia: >-
+      Los cuatro ríos recorren todo Loreto, no solo su provincia de Loreto: 456 623 personas no caben en ella
+      (56 637 en 1994); sí en el departamento (769 057).
+
+  # --- Duplicados y consolidados ---------------------------------------------------------------------------------
+  - id: desinventar-28592
+    ruta: duplicado
+    de: desinventar-28595
+    columnas: [Damnificados, PerdidasUSD]
+    motivo: >-
+      «852 mil campesinos paralizados sus actividades» en la sequía de 1983; «pobladores de Pilcuyo son los más
+      afectados»; «Estimaciones preliminares de [pérdidas] en los sectores agrícola ganadero y artesanal se fijan en 200
+      mil millones de soles».
+    evidencia: >-
+      Es la cifra de todo Puno (desinventar-28595: 852 010 damnificados, El Comercio 12/08/1983), 48 veces la
+      población de Pilcuyo (17 898). Las pérdidas también son de todo Puno y preliminares (junio de 1983): el balance
+      de agosto (desinventar-28595) las reemplaza.
+  - id: desinventar-28595
+    ruta: consolidado
+    partes: [desinventar-28602, desinventar-28599, desinventar-28593, desinventar-28607, desinventar-28606,
+             desinventar-28610, desinventar-28600]
+    motivo: >-
+      Sequía de 1983 en Puno: balance de agosto de 1983, 852 010 damnificados.
+    evidencia: >-
+      Siete fichas del mismo evento traen las cifras de febrero y marzo de Azángaro, Carabaya, Chucuito, Huancané,
+      Lampa, San Román y Sandia (616 579): sumadas al total, Puno tendría 1 468 589 damnificados en 1983, más que su
+      población (1 074 830). El total cuenta solo lo que esas fichas no detallan.
+  - id: desinventar-29301
+    ruta: duplicado
+    de: desinventar-29297
+    motivo: «Más de 10 mil habitantes. Dato consolidado con otra ficha».
+    evidencia: Es el mismo total de Leoncio Prado y Paccho que trae desinventar-29297 (mismo día y nota).
+  - id: desinventar-29006
+    ruta: duplicado
+    de: desinventar-29005
+    motivo: «Los 10000 damnificados corresponden a los agricultores» del desborde del río Tumbes.
+    evidencia: >-
+      Son los agricultores del valle del Tumbes, no de Casitas (2 845 habitantes); el total consolidado de Tumbes del
+      mismo día (desinventar-29005: «Datos consolidados: 40 mil pobladores») los incluye.
+  - id: desinventar-35743
+    ruta: duplicado
+    de: desinventar-35739
+    motivo: «Cifra registrada para las localidades de Iparia y Masisea».
+    evidencia: La misma nota y la misma cifra (20 000) están en la ficha de Iparia; se cuentan una vez.
+  - id: desinventar-35739
+    ruta: cifra-de-area
+    area: "2501"
+    motivo: >-
+      «Cifra registrada para las localidades de Iparia y Masisea»: desborde del río Pichis y sus afluentes.
+    evidencia: Dos distritos de Coronel Portillo; 20 000 no caben en Iparia (11 735 en 1997).
+  - id: desinventar-46238
+    ruta: duplicado
+    de: desinventar-46232
+    motivo: Helada en Pampamarca (Canas) del 1 de junio de 2015, 2 050 afectados.
+    evidencia: Dos fichas del INDECI del mismo día, lugar y cifra; esta solo añade una oración.
+  - id: desinventar-29449
+    ruta: consolidado
+    partes: [desinventar-29445]
+    area: "15"
+    motivo: >-
+      «Af: 25 mil habitantes; E: Río Chilca; A: Malogró el 80 % de los sembríos de Pucusana y Chilca (ficha 382 y
+      383)».
+    evidencia: >-
+      Es el total de Pucusana (Lima) y Chilca (Cañete): la ficha de Chilca del mismo día (desinventar-29445: 10 485)
+      es la otra parte. Queda el resto, de las dos provincias.
+  - id: sinpad-00089121
+    ruta: consolidado
+    partes: [sinpad-00082320]
+    motivo: >-
+      Lluvias intensas del 20 de febrero de 2017 en Cristo Nos Valga (Sechura): 3 078 afectados, 1 170 damnificados y
+      733 viviendas afectadas, con el punto por defecto del distrito.
+    evidencia: >-
+      La otra ficha del mismo día y peligro en el distrito (sinpad-00082320: 356 afectados, 543 damnificados, 105
+      viviendas, con su punto de campo) suma con esta 5 147 personas, más que los 4 641 habitantes del distrito
+      (censo 2017 y proyección de 2018 del INEI), así que se solapan. Esta se registró después con la misma fecha y es
+      mayor en todas las cifras: es la evaluación consolidada del distrito, que incluye la otra. Cuenta el resto, y la
+      otra conserva sus cifras y su punto.
+
+  # --- Transcripción --------------------------------------------------------------------------------------------
+  - id: desinventar-46143
+    ruta: transcripcion
+    cifras: {Afectados: 800}
+    motivo: Deslizamiento en Caleta Cruz con 200 viviendas afectadas y 10 destruidas.
+    evidencia: >-
+      «200800» son «200» (las viviendas afectadas de la fila) y «800» pegados: 800 personas son 4 por cada una de las
+      200 viviendas. 200 800 serían el 89 % de todo Tumbes (225 965 en 2015) y las fichas de Tumbes del 28 y 29 de
+      marzo de 2015 tienen de 144 a 1 200 afectados.
+  - id: desinventar-46064
+    ruta: transcripcion
+    cifras: {Afectados: 8000}
+    motivo: >-
+      Granizada que colapsó techos de paja: 1 600 viviendas afectadas.
+    evidencia: >-
+      DesInventar calcula las personas como 5 por vivienda («multiplicado por el valor 5 personas por vivienda»):
+      1 600 viviendas son 8 000 personas; 80 000 tiene un cero de más y no cabe en La Joya (32 750 en 2015).
+  - id: desinventar-41293
+    ruta: transcripcion
+    cifras: {ViviendasDestruidas: 500}
+    motivo: >-
+      Huaico en los anexos de Huanca «luego de arrasar mina Misky»: «D: +2500».
+    evidencia: >-
+      La ficha copia los 2 500 damnificados en las viviendas destruidas, que serían casi una por habitante (2 650 en
+      1990). Con los 5 por vivienda de DesInventar son 500, el 80 % de las viviendas que dice la ficha del día
+      siguiente (desinventar-41294: «Viviendas destruidas: 80%»).
+
+  # --- Pérdidas en dólares ------------------------------------------------------------------------------------
+  # DesInventar convierte los soles de la nota a dólares con un tipo de cambio por mes, que se lee en sus propias
+  # fichas (pérdida en soles del texto / PerdidasUSD): 73,5 soles por dólar en marzo de 1977; 1 030 en enero de
+  # 1983, 1 100 en febrero, 1 170 en marzo, 1 300 en abril, 1 410 en mayo, 1 530 en junio, 1 870 en agosto; 2 320
+  # en enero de 1984. Estas fichas se apartan de su propio texto por 10, 100 o 1 000 (un cero o tres de más o de
+  # menos), o pasan lo posible (el PBI del Perú en 1983 fue de 17 345 millones de dólares, Banco Mundial,
+  # NY.GDP.MKTP.CD).
+  - id: desinventar-28595
+    ruta: transcripcion
+    cifras: {PerdidasUSD: 317050000}
+    motivo: >-
+      Balance de la sequía de 1983 en Puno (El Comercio, 12/08/1983): «Valor de pérdidas: 592 millones 884 miles de
+      soles en el agro».
+    evidencia: >-
+      Los 43 961 millones de dólares de la ficha son 2,5 veces el PBI del Perú de 1983 y no salen del texto. Leído al
+      pie de la letra, el texto da 592 884 000 soles (317 050 dólares a 1 870), menos que las pérdidas de un solo
+      distrito en febrero (Capachica, desinventar-28601: 31 707 millones de soles) y que la estimación preliminar de
+      junio para Puno (desinventar-28592: 200 mil millones de soles en el agro, la ganadería y la artesanía) en una
+      sequía que afectó al 80 % de las unidades agropecuarias. Leído como 592 884 millones de soles, que es como
+      coincide con esas estimaciones, son 317 050 000 dólares a 1 870 soles por dólar (agosto de 1983).
+  - id: desinventar-29223
+    ruta: transcripcion
+    cifras: {PerdidasUSD: 1027273}
+    motivo: >-
+      Lluvias en cinco pueblos jóvenes de Chiclayo (9 de Octubre, César Vallejo, San Antonio, Buenos Aires, Ricardo
+      Palma) en febrero de 1983; la cifra en soles se perdió al digitar («Pérdidas desde Enero… es de soles»).
+    evidencia: >-
+      1 027 millones de dólares son el 5,9 % del PBI del Perú de 1983 (17 345 millones) para cinco barrios; son
+      1 130 000 millones de soles a 1 100 (febrero de 1983). Con tres ceros menos, 1 130 millones de soles, son
+      1 027 273 dólares: el mismo error de las fichas de Arequipa 1977, Camaná 1984 e Iquitos 1994.
+  - id: desinventar-42666
+    ruta: transcripcion
+    cifras: {PerdidasUSD: 272000}
+    motivo: >-
+      Tormenta eléctrica en Arequipa (El Comercio, 14/03/1977): «Vp. Ascienden a 20 millones de soles».
+    evidencia: >-
+      20 millones de soles a 73,5 por dólar (marzo de 1977) son unos 272 000 dólares; la ficha dice 272 (en miles).
+  - id: desinventar-42470
+    ruta: transcripcion
+    cifras: {PerdidasUSD: 43103}
+    motivo: >-
+      Sequía en el arroz de Camaná (El Comercio, 03/01/1984), «Datos consolidados fichas 82100-102»: «tendrá una
+      pérdida bruta del 30% (100 millones de soles)».
+    evidencia: >-
+      100 millones de soles a 2 320 por dólar (enero de 1984) son 43 103 dólares; la ficha tiene 1 000 veces más
+      (43 103 448) y las otras dos fichas de la nota, 100 veces más (4 303 448).
+  - id: desinventar-42468
+    ruta: duplicado
+    de: desinventar-42470
+    columnas: [PerdidasUSD]
+    motivo: >-
+      «Campaña arrocera 1983-84 se perderá el orden del 30% (100 millones de soles)», en El Cardo.
+    evidencia: >-
+      La misma pérdida de la misma nota para los tres distritos arroceros de Camaná; la ficha consolidada
+      (desinventar-42470) la cuenta una vez. Esta tenía además 100 veces los dólares (4 303 448).
+  - id: desinventar-42469
+    ruta: duplicado
+    de: desinventar-42470
+    columnas: [PerdidasUSD]
+    motivo: >-
+      «Campaña arrocera 1983-84 se perderá el orden del 30% (100 millones de soles)», en San José.
+    evidencia: >-
+      La misma pérdida de la misma nota para los tres distritos arroceros de Camaná; la ficha consolidada
+      (desinventar-42470) la cuenta una vez. Esta tenía además 100 veces los dólares (4 303 448).
+  - id: desinventar-41481
+    ruta: transcripcion
+    cifras: {PerdidasUSD: 6153846}
+    motivo: >-
+      Sequía en los distritos de riego de Sama y Candarave (El Comercio, 13/04/1983): «Más de 8 mil millones de soles
+      en agricultura y ganadería».
+    evidencia: >-
+      8 mil millones de soles a 1 300 por dólar (abril de 1983, el de otras seis fichas del mes) son 6 153 846
+      dólares; la ficha tiene 10 veces más.
+  - id: desinventar-29702
+    ruta: transcripcion
+    cifras: {PerdidasUSD: 446809}
+    motivo: >-
+      Inundación de arrozales en Guadalupe (El Comercio, 06/05/1983): 350 ha perdidas que «equivale[n] a 630
+      mil30 millones… de soles» (texto dañado al digitar).
+    evidencia: >-
+      630 millones de soles a 1 410 por dólar (mayo de 1983) son 446 809 dólares, lo que valen 350 ha de arroz a las
+      5 toneladas por hectárea que da la nota (unas 1 750 t); la ficha tiene 10 veces más. Leído como 630 mil
+      millones serían 447 millones de dólares por 350 ha.
+  - id: desinventar-33823
+    ruta: transcripcion
+    cifras: {PerdidasUSD: 15000000}
+    motivo: >-
+      Deslizamiento por erosión en Iquitos con 6 fallecidos (El Comercio, 07/03/1994): «Daños se calculan en 15
+      millones de dólares».
+    evidencia: La nota da la cifra en dólares; la ficha tiene 15 000.
+
+  # --- Tope en la población, investigado ------------------------------------------------------------------------
+  - id: sinpad-145223
+    ruta: tope-poblacion
+    motivo: >-
+      Los 3 509 desplazados vienen del IDMC; la evaluación de daños del SINPAD de la emergencia tiene 4 damnificados
+      y 1 vivienda.
+    evidencia: >-
+      El INGEMMET halló un deslizamiento-flujo reactivado el 24 de noviembre de 2021 que bordeó el área poblada de
+      Recta y, tras el sismo del 28 de noviembre, recomendó reubicar a la población del distrito en Jumbilla
+      (andina.pe, «Ingemmet recomienda reubicar a pobladores de Recta»): los desplazados son toda la población de
+      Recta; el resto de la cifra del IDMC es del sismo en otros distritos.
+  - id: sinpad-00086881
+    ruta: tope-poblacion
+    motivo: Huaico que «afecta localidades del distrito de Calango», con 55 evaluaciones de daños en el SINPAD.
+    evidencia: >-
+      11 705 afectados son 4,7 veces la población de Calango (2 501 en el censo de 2017). El SINPAD suma las 55
+      evaluaciones de la emergencia, que se repiten sobre los mismos poblados en marzo de 2017; ninguna ficha de los
+      distritos vecinos del valle de Mala tiene cifras ese día, así que no es la de un área mayor.

@@ -15,6 +15,21 @@ variable `SITE_URL` si se publica en Cloudflare Pages; ver
 > los comunicados del ENFEN; ante una emergencia siga a INDECI y a su
 > gobierno local.
 
+## Descargar los datos
+
+Todo con las 13 columnas del tablero del equipo de prevención primero (Date, DangerType, Ubicacion, Distrito,
+Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud) y después los
+metadatos. Lea Ubigeo como texto.
+
+| Qué | Dónde | Se actualiza |
+|---|---|---|
+| Desastres pasados, completo | `assets/historico/eventos.zip` (pestaña Memoria de desastres, «Descargar los datos») | Al aceptar el PR de la cosecha del catálogo |
+| Desastres pasados, filtrado | Tabla «Registros del catálogo» al final de Memoria de desastres: sigue los filtros del mapa; también Mi zona para un lugar | Con el catálogo |
+| Lo más nuevo: noticias | `data/news/eventos-noticias.csv` (pestaña Noticias), una fila por nota y lugar | Cada día |
+| Qué dice cada columna | `assets/historico/diccionario.csv` | Con el catálogo |
+
+Detalle en [memoria-desastres](docs/memoria-desastres.md#tabla-de-registros-y-descargas).
+
 ## Qué hay en el repositorio
 
 | Carpeta | Contenido |
@@ -61,6 +76,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 ## Documentación
 
 - [Arquitectura y contrato de datos](docs/arquitectura.md)
+- [Versiones A y B del sitio, selector y analítica de uso](docs/analitica-uso.md)
 - [Metodología e indicadores](docs/metodologia.md)
 - [Catálogo de fuentes](docs/catalogo-fuentes.md)
 - [Informes en texto libre y vigencia de los datos](docs/informes-texto.md): comunicado e informe técnico del ENFEN leídos del PDF, con su validación y procedencia
@@ -73,6 +89,9 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Lugares de los PDF del COEN: prueba hacia atrás](docs/documentos-backtest.md): qué tan bien se leen los lugares de los avisos y reportes del COEN, y qué se corrigió
 - [Mapa de alertas](docs/mapa-alertas.md): nivel y vigencia de cada aviso según su institución, versiones A–D y su analítica anónima
 - [Memoria de desastres](docs/memoria-desastres.md): catálogo de desastres de origen climático desde 1970 por distrito, con fuentes, indicadores de recurrencia y la evidencia sobre la prevención desde los años 90
+- [Boletín de eventos El Niño](docs/boletin.md): una hoja con el mapa por nivel, qué se viene y los diez departamentos más críticos; el correo por n8n y Gmail, sus reglas de aviso y la decisión sobre WhatsApp
+- [Mi zona](docs/mi-zona.md): para un departamento, provincia o distrito, su historia, los meses críticos y los avisos oficiales de hoy en una página
+- [Tutorial guiado](docs/tutorial-guiado.md): un recorrido interactivo por pestaña, que nunca tapa lo que muestra, y sus pruebas
 - [Aportes voluntarios](docs/apoyo.md): cómo activar Ko-fi, Yape y GitHub Sponsors, y dónde aparecen
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)

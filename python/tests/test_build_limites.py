@@ -89,3 +89,27 @@ def test_a_zip_downloaded_by_hand_builds_the_same_file(tmp_path, monkeypatch):
     path.write_bytes(_zip())
     monkeypatch.setattr(B, "OUT", tmp_path / "limites.json.gz")
     assert B.main(["--zip", str(path)]) == 0 and (tmp_path / "limites.json.gz").exists()
+
+
+def _square(code_field: str, code: str, x: float, y: float) -> dict:
+    ring = [[x, y], [x + 0.1, y], [x + 0.1, y + 0.1], [x, y + 0.1], [x, y]]
+    return {"type": "Feature", "properties": {code_field: code}, "geometry": {"type": "Polygon", "coordinates": [ring]}}
+
+
+def test_indeci_layers_are_read_page_by_page_and_keep_every_district(tmp_path, monkeypatch):
+    """GEOSINPAD del INDECI: tres capas, por páginas de ``PAGE``; la última página corta termina la capa."""
+    monkeypatch.setattr(B, "PAGE", 2)
+    pages = {0: [_square("UBI_DIST", "250306", -75.5, -9.0), _square("UBI_DIST", "250307", -75.8, -9.1)],
+             2: [_square("UBI_DIST", "130112", -79.0, -8.1)]}
+    routes = {"https://geosinpad.indeci.gob.pe/robots.txt": httpx.Response(404)}
+    for off, feats in pages.items():
+        routes[B._indeci_query(0, "UBI_DIST", off)] = httpx.Response(200, json={"features": feats})
+    routes[B._indeci_query(1, "UBI_PROV", 0)] = httpx.Response(200, json={"features": [_square("UBI_PROV", "2503", -75.8, -9.1)]})
+    routes[B._indeci_query(2, "UBI_DEP", 0)] = httpx.Response(200, json={"features": [_square("UBI_DEP", "25", -75.8, -9.1)]})
+    asked: list[str] = []
+    src = B._download_indeci(_client(routes, asked), tmp_path)
+    assert [len(src[k]["features"]) for k in ("districts", "provinces", "departments")] == [3, 1, 1]
+    data = B.build(src, B.SOURCE_INDECI, {k: f for k, (_, f, _) in B.INDECI_LAYERS.items()})
+    assert set(data["districts"]) == {"250306", "250307", "130112"} and "INDECI" in data["source"]
+    # Las páginas guardadas rehacen el mismo archivo sin red.
+    assert B.build(B._read_indeci(tmp_path), B.SOURCE_INDECI, {k: f for k, (_, f, _) in B.INDECI_LAYERS.items()}) == data

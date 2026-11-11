@@ -1,14 +1,17 @@
 """Ubica un punto (latitud, longitud) en el distrito, la provincia o el departamento del Perú que lo contiene.
 
-Usa los límites del IGN (``data/limites-ign.json.gz``, construido por ``tools.build_limites``) y responde
-con el nivel más fino que el punto permite afirmar:
+Usa los límites administrativos vigentes del INDECI (``data/limites-ign.json.gz``, construido por
+``tools.build_limites`` desde el GEOSINPAD, con los 1 891 distritos) y responde con el nivel más fino que el
+punto permite afirmar:
 
 - Si la fuente da la incertidumbre del punto (``accuracy_km``: el epicentro de un sismo se conoce con
   unos km de error), y el punto está más cerca que eso del borde del distrito, se sube a la provincia;
   si también está cerca del borde de la provincia, al departamento.
-- Los distritos creados después de los límites de la fuente no tienen polígono: el punto cae en el
-  distrito del que se separaron. En esas provincias el distrito sale con confianza menor y una nota.
-- Donde la fuente une distritos (``120699`` Mazamari - Pangoa) se devuelve la provincia.
+- Si el nomenclátor tiene un distrito sin polígono en los límites (uno creado después de ellos), el punto
+  cae en el distrito del que se separó: en esa provincia el distrito sale con confianza menor y una nota.
+  Con los límites del INDECI de 2026 no hay ninguno; la regla queda para cuando se cree el próximo.
+- Donde una fuente une distritos (``120699`` Mazamari - Pangoa en los límites de 2020 del IGN) se devuelve
+  la provincia.
 - Los sismos frente a la costa no caen en ningún polígono: si el punto está en el mar (al oeste o
   suroeste de la costa) a menos de ``max_km``, se devuelve el departamento más cercano con la distancia.
   En el lago Titicaca, del lado peruano, se devuelve Puno.
@@ -39,6 +42,12 @@ PERU_BOX = (-82.5, -19.5, -68.0, 0.5)
 TITICACA = (-70.1, -16.4, -69.3, -15.2)
 #: Departamentos con costa: solo frente a ellos un punto fuera de los límites puede estar en el mar.
 COASTAL = {"24", "20", "14", "13", "02", "15", "07", "11", "04", "18", "23"}
+#: Distritos que no tenían polígono en los límites de 2020 del IGN (creados después, o que esos límites no
+#: separaban de su vecino): una fuente que nombró al distrito del que se separaron puede traer un punto que hoy cae
+#: en ellos (``historico.fuentes.newer_sibling``). Mazamari y Pangoa no están: existían antes, unidos en esa fuente.
+CREATED_AFTER_2020 = frozenset({
+    "030612", "050413", "050512", "050513", "050514", "050515", "080915", "080916", "080917", "080918", "090724",
+    "090725", "130112", "180107", "221006", "250306", "250307"})
 #: Error de los bordes simplificados (``tools.build_limites``): más cerca que esto, el distrito es dudoso.
 EDGE_KM = 0.15
 

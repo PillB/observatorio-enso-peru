@@ -17,6 +17,9 @@ import { ICON } from './icons.js';
 import * as AM from './alertmap.js';
 import { stats as abStats } from './ab.js';
 import { memoriaView } from './historico.js';
+import { zonaView } from './zona.js';
+import { boletinView } from './boletin.js';
+import { initSite, enterView, viewReady } from './sitio.js';
 
 const DATA = 'data/';
 export const S = { dash: null, files: {}, pub: null, mismatch: [] };
@@ -64,15 +67,19 @@ async function fullSeries(k) {
 const LEVEL_TXT = { ok: 'Normal', watch: 'Amarilla', alert: 'Roja', unclassified: 'Sin clasificación', na: 'No disponible' };
 const LEVEL_ICON = { ok: 'check', watch: 'triangle', alert: 'octagon', unclassified: 'dash', na: 'clock' };
 
+// Qué quiere decir cada color de etiqueta, para quien pasa el puntero (la clave completa está en «Cómo leer esto»).
+const LEVEL_TIP = { ok: 'Verde: normal, al día o sin evento', watch: 'Ámbar: atención, primer umbral o dato atrasado', alert: 'Rojo: umbral de activación, alerta o dato vencido', unclassified: 'Gris: la tabla no define este intervalo; no es verde', na: 'Gris: no disponible o no aplica' };
+
 function chip(level, text) {
   const lv = ['ok', 'watch', 'alert'].includes(level) ? level : 'na';
-  return html`<span class="chip chip-${lv}">${raw(ICON[LEVEL_ICON[level] || 'dash'])}<span>${text || LEVEL_TXT[level] || level}</span></span>`;
+  return html`<span class="chip chip-${lv}" title="${LEVEL_TIP[level] || LEVEL_TIP[lv]}">${raw(ICON[LEVEL_ICON[level] || 'dash'])}<span>${text || LEVEL_TXT[level] || level}</span></span>`;
 }
 
 function toneChip(tone, text) {
   if (!text) return '';
   const t = tone === 'warm' ? 'warm' : tone === 'cool' ? 'cool' : 'na';
-  return html`<span class="chip chip-${t}">${text}</span>`;
+  const tip = t === 'warm' ? 'Rojo: condición cálida (anomalía positiva)' : t === 'cool' ? 'Azul: condición fría (anomalía negativa)' : 'Gris: neutro';
+  return html`<span class="chip chip-${t}" title="${tip}">${text}</span>`;
 }
 
 function periodText(s, period) {
@@ -649,6 +656,8 @@ VIEWS.historia = {
 };
 
 VIEWS.memoria = memoriaView;
+VIEWS.boletin = { title: boletinView.title, render: () => boletinView.render(), after: () => boletinView.after(load) };
+VIEWS.zona = { title: zonaView.title, render: () => html`${raw(String(zonaView.render()))}${freshnessPanel('zona')}`, after: () => zonaView.after(load) };
 
 VIEWS.datos = {
   title: 'Datos',
@@ -677,6 +686,7 @@ VIEWS.datos = {
           <li><a href="${DATA}dashboard.json">Resumen de la publicación (JSON)</a></li>
           <li><a href="${DATA}sources.json">Registro de fuentes (JSON)</a></li>
           <li><a href="${DATA}run-report.json">Informe de la última corrida (JSON)</a></li>
+          <li><a href="${DATA}csv/escenario-distritos.csv" download>Riesgo esperado por lluvias por distrito, escenario vigente del CENEPRED (CSV)</a></li>
         </ul>
         <h3>Por serie</h3><ul class="link-list cols">${csvs}</ul>
         <p class="muted small">Los valores de texto que empiezan con =, +, − o @ se protegen para evitar fórmulas en hojas de cálculo.</p>
@@ -698,7 +708,19 @@ VIEWS.datos = {
       const xy = toXY(pts, 'period');
       const pl = meta.periodKind === 'season' ? seasonLabel : undefined;
       timeChart($('#ex-chart'), { title: meta.label, units: meta.units, series: [{ label: meta.label, points: xy }], fill: meta.units === 'degC', periodLabel: pl });
-      $('#ex-table').innerHTML = dataTable([{ label: meta.label, points: xy }], meta.units, { n: 100000, periodLabel: pl });
+      // Las series largas (más de 900 meses) se muestran en 60 filas: todas, a un clic y en el CSV.
+      const total = xy.filter((p) => p.v !== null).length;
+      const table = (n) => {
+        $('#ex-table').innerHTML = dataTable([{ label: meta.label, points: xy }], meta.units, { n, periodLabel: pl })
+          + (total > n ? `<button type="button" class="btn ghost" id="ex-all">Ver las ${total} filas</button>` : '');
+        $('#ex-all')?.addEventListener('click', () => {
+          table(Infinity);
+          const th = $('#ex-table tbody tr:nth-child(61) th');
+          th?.setAttribute('tabindex', '-1');
+          th?.focus();
+        });
+      };
+      table(60);
     };
     [sel, from, to].forEach((x) => x.addEventListener('change', draw));
     await draw();
@@ -726,7 +748,7 @@ VIEWS.metodologia = {
         <p class="muted">De las fuentes al sitio: quién baja cada dato, qué respaldo se usa si una fuente no responde, cómo se publica y quién vigila. Toca una caja o una conexión (letra o número) para leer qué es.</p>
         <figure class="arch-figure" id="arch-fig"><a href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Ver el diagrama de arquitectura</a></figure>
         <p class="arch-note" id="arch-note" aria-live="polite" hidden></p>
-        <p class="small"><a href="arquitectura.html">Explorar los diagramas y sus anexos A1 a A10</a> (cómo funciona cada parte, con su tecnología y sus respaldos) · <a id="arch-open" href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Abrir el diagrama en otra pestaña</a></p>
+        <p class="small"><a href="arquitectura.html">Explorar los diagramas y sus anexos A1 a A11</a> (cómo funciona cada parte, con su tecnología y sus respaldos) · <a id="arch-open" href="assets/arquitectura-simple.svg" rel="noopener" target="_blank">Abrir el diagrama en otra pestaña</a></p>
       </section>
       <section class="card prose" aria-labelledby="met-h">
         <h2 id="met-h">Cómo funciona</h2>
@@ -765,7 +787,7 @@ VIEWS.metodologia = {
     };
     $$('[data-arch]').forEach((b) => b.addEventListener('click', () => showArch(b.dataset.arch)));
     // En el teléfono no hay «hover»: al tocar una caja o una conexión, su explicación (el <title> del SVG) aparece debajo.
-    // Las etiquetas A1 a A10 de las cajas abren su anexo en el explorador de la arquitectura.
+    // Las etiquetas A1 a A11 de las cajas abren su anexo en el explorador de la arquitectura.
     $('#arch-fig').addEventListener('click', (ev) => {
       const link = ev.target.closest?.('a[data-annex]');
       if (link) {
@@ -827,7 +849,7 @@ const HAZARD_LABEL = { lluvias: 'Lluvias', inundacion: 'Inundaciones', huaico: '
 function newsParams() {
   const q = new URLSearchParams(location.hash.split('?')[1] || '');
   return { tab: q.get('tab') || 'oficial', tipo: q.get('tipo') || '', dep: q.get('dep') || '', peligro: q.get('peligro') || '',
-    fase: q.get('fase') || '', nivel: q.get('nivel') || '', edad: q.get('edad') || '' };
+    fase: q.get('fase') || '', nivel: q.get('nivel') || '', edad: q.get('edad') || '', vista: q.get('vista') || '' };
 }
 
 function placeLabel(p, deps) {
@@ -862,7 +884,7 @@ function officialItem(it) {
     ${feedValue(it)}
     ${it.text ? html`<p class="feed-text">${it.text}</p>` : ''}
     <div class="feed-tags">
-      ${(it.hazards || []).filter((h) => HAZARD_LABEL[h]).map((h) => html`<span class="tag tag-hazard">${HAZARD_LABEL[h]}</span> `)}${it.geo && (it.geo.places || []).length ? it.geo.places.slice(0, 3).map((p) => html`${placeTag(p, {})} `) : (it.where || []).map((w) => html`<span class="tag tag-place">${raw(ICON.pin)}${w}</span> `)}
+      ${(it.hazards || []).filter((h) => HAZARD_LABEL[h]).map((h) => html`<span class="tag tag-hazard">${HAZARD_LABEL[h]}</span> `)}${it.geo && (it.geo.places || []).length ? it.geo.places.slice(0, 3).map((p) => html`${placeTag(p, {})} `) : (it.where || []).map((w) => html`<span class="tag tag-place">${raw(ICON.pin)}${w}</span> `)}${it.group === 'alertas' ? AM.fineTags(it) : ''}
       ${it.level ? chip(it.level, LEVEL_TXT[it.level] && it.level !== 'ok' ? `Alerta ${LEVEL_TXT[it.level].toLowerCase()}` : undefined) : ''}
       ${it.stale ? html`<span class="tag tag-prelim">vencido</span>` : ''}
       ${it.newerListed ? html`<span class="tag tag-prelim">hay un comunicado más reciente (${it.newerListed}) sin leer</span>` : ''}
@@ -876,7 +898,7 @@ function officialItem(it) {
 // «mirror» es cualquier otra URL de la misma fuente (el mismo archivo por https, la página de la propia
 // institución o la réplica de la DHN), no una copia: no entra en «Leídas de una copia».
 const CHANNEL_TAG = { 'relay-peru': 'vía recolector en el Perú', 'relay-n8n': 'vía n8n', 'relay-manual': 'subido a mano (consola de documentos)', archive: 'vía Internet Archive', 'archive-fresh': 'vía Internet Archive', mirror: 'vía otra dirección oficial' };
-const CHANNEL_SHORT = { 'relay-peru': 'recolector en el Perú', 'relay-n8n': 'n8n', 'relay-manual': 'subido a mano', mirror: 'otra dirección oficial', archive: 'Internet Archive', 'archive-fresh': 'Internet Archive' };
+const CHANNEL_SHORT = { seed: 'copia incluida en el sitio', 'relay-peru': 'recolector en el Perú', 'relay-n8n': 'n8n', 'relay-manual': 'subido a mano', mirror: 'otra dirección oficial', archive: 'Internet Archive', 'archive-fresh': 'Internet Archive' };
 function channelTag(ch) {
   return CHANNEL_TAG[ch] ? html`<span class="tag">${CHANNEL_TAG[ch]}</span>` : '';
 }
@@ -919,7 +941,8 @@ VIEWS.noticias = {
     const cur = NEWS_TABS.some(([k]) => k === tab) ? tab : 'oficial';
     return html`
       <div class="page-head"><div class="eyebrow">Novedades</div><h1>Noticias y novedades</h1>
-        <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño y sus impactos en el Perú y el mundo: autoridades, diarios, radios y medios regionales. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno, y cada noticia se ubica en su departamento, provincia o distrito.</p></div>
+        <p>Lo último que publicó cada fuente oficial y las noticias sobre El Niño y sus impactos en el Perú y el mundo: autoridades, diarios, radios y medios regionales. Cuando varios medios cuentan lo mismo se agrupan en una sola entrada con el enlace a cada uno, y cada noticia se ubica en su departamento, provincia o distrito.</p>
+        <p class="small" data-tour-id="news-team-csv">${raw(ICON.download)} <strong>Descargar</strong>: <a href="${DATA}news/eventos-noticias.csv" download>las noticias en el esquema del tablero del equipo de prevención (CSV)</a>, una fila por nota y lugar, con las 13 columnas Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud y Longitud; se actualiza cada día. Los desastres pasados, completos o filtrados, con las mismas columnas: <a href="#/memoria">Memoria de desastres</a>. Más archivos, abajo en «Descargas».</p></div>
       ${freshnessPanel('noticias')}
       <div id="alert-map" class="amap-slot"></div>
       <div class="seg" role="tablist" aria-label="Tipo de novedades" data-tour-id="news-tabs">${NEWS_TABS.map(([k, l]) => html`<button type="button" role="tab" data-tab="${k}" aria-selected="${String(k === cur)}" aria-pressed="${String(k === cur)}">${l}</button>`)}</div>
@@ -929,6 +952,7 @@ VIEWS.noticias = {
         <p class="muted small">El histórico de noticias solo crece: cada corrida agrega las notas nuevas y nunca reescribe las anteriores. Solo se guarda lo que cada medio publica en su feed (titular, resumen, fecha y enlace).</p>
         <ul class="link-list cols">
           <li><a href="${DATA}news/items.csv" download>Histórico de noticias (CSV)</a></li>
+          <li><a href="${DATA}news/eventos-noticias.csv" download>Noticias en el esquema del equipo de prevención (CSV)</a> <span class="muted small">Una fila por nota y UBIGEO, con las columnas del tablero: Date, DangerType, Ubicacion, Distrito, Provincia, Departamento, Descripción, DuraciónEvento, Ubigeo, TipoEvento, Fuente, Latitud, Longitud, y los metadatos de la nota. Lea Ubigeo como texto.</span></li>
           <li><a href="${DATA}news/items.jsonl" download>Histórico de noticias (JSON Lines, solo anexar)</a></li>
           <li><a href="${DATA}news/clusters.json">Noticias agrupadas de los últimos 14 días (JSON)</a></li>
           <li><a href="${DATA}feed.json">Novedades de las fuentes oficiales (JSON)</a></li>
@@ -1031,11 +1055,11 @@ VIEWS.noticias = {
   },
 };
 
-// Resultados de las versiones del mapa de alertas (no está en el menú: es para el equipo).
+// Resultados de las versiones y las vistas de los mapas (no está en el menú: es para el equipo).
 VIEWS.variantes = {
-  title: 'Versiones del mapa',
-  render: () => html`<div class="page-head"><div class="eyebrow">Analítica anónima</div><h1>Versiones del mapa de alertas</h1>
-    <p>Qué versión del mapa de Noticias ve la gente, cuál usa y cuál deja como predeterminada.</p></div>
+  title: 'Versiones de los mapas',
+  render: () => html`<div class="page-head"><div class="eyebrow">Analítica anónima</div><h1>Versiones de los mapas</h1>
+    <p>Qué versión del mapa de alertas y qué vista de los mapas de Noticias y de la memoria ve la gente, cuál usa y cuál deja como predeterminada.</p></div>
     <section class="card" aria-labelledby="ab-h"><div class="section-head"><h2 id="ab-h">Resultados</h2>
       <div class="seg" role="group" aria-label="Periodo">${[['7', '7 días'], ['30', '30 días'], ['90', '90 días']].map(([k, l]) => html`<button type="button" data-days="${k}" aria-pressed="${String(k === '30')}">${l}</button>`)}</div></div>
       <div id="ab-stats"><div class="skeleton"></div></div></section>`,
@@ -1095,7 +1119,7 @@ VIEWS.asistente = { title: 'Asistente', render: () => assistantView.render(), af
 // ---------------------------------------------------------------------------
 // Estructura, navegación y arranque
 // ---------------------------------------------------------------------------
-const NAV = [['', 'Resumen', 'home'], ['costero', 'El Niño Costero', 'wave'], ['pacifico', 'Pacífico', 'globe'], ['oceano', 'Océano y atmósfera', 'layers'], ['mapa', 'Mapa', 'map'], ['historia', 'Historia', 'clock'], ['memoria', 'Memoria de desastres', 'pin'], ['noticias', 'Noticias', 'news'], ['datos', 'Datos', 'table'], ['metodologia', 'Metodología', 'book'], ['asistente', 'Asistente', 'chat']];
+// Las pestañas y su agrupación en la versión B están en sitio.js (NAV, GROUPS).
 
 function routeName() {
   const h = location.hash.replace(/^#\/?/, '').split('?')[0];
@@ -1108,13 +1132,16 @@ async function render() {
   const view = VIEWS[name];
   const main = $('#main');
   const my = ++rendering;
-  $$('.nav a').forEach((a) => a.setAttribute('aria-current', a.dataset.route === name ? 'page' : 'false'));
+  enterView(name);
   if (!S.dash) return;
   main.innerHTML = String(view.render());
+  viewReady(); // la versión B pliega antes de que lleguen los gráficos: sin salto de la página
   document.title = `${view.title} · ${SITE.name}`;
   if (S.navigated) { main.focus({ preventScroll: true }); window.scrollTo(0, 0); }
   S.navigated = true;
-  try { if (view.after && my === rendering) await view.after(); } catch (e) { console.error(e); }
+  // Si la persona ya se fue a otra sección, lo que falle al terminar esta (un gráfico que ya no está) no es un error.
+  try { if (view.after && my === rendering) await view.after(); } catch (e) { if (my === rendering) console.error(e); }
+  if (my === rendering) viewReady();
   document.dispatchEvent(new CustomEvent('view:ready', { detail: name }));
 }
 
@@ -1130,7 +1157,7 @@ function renderBanner() {
 }
 
 function shell() {
-  $('#nav').innerHTML = NAV.map(([r, l, i]) => `<a href="#/${r}" data-route="${r}">${ICON[i] || ''}<span>${esc(l)}</span></a>`).join('');
+  initSite({ rerender: () => render() });
   $('#disclaimer').textContent = DISCLAIMER;
   const theme = storage('enso-theme');
   if (theme) document.documentElement.dataset.theme = theme;
@@ -1169,6 +1196,7 @@ async function boot() {
   const tour = new Tour({ getData: () => S.dash, navigate: (r) => { if (location.hash !== r) location.hash = r; } });
   $('#help-btn').addEventListener('click', () => tour.openMenu());
   tour.maybeResume();
+  tour.decorate();
 }
 
 boot();

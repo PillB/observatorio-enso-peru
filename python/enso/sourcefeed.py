@@ -54,6 +54,52 @@ def _geo_brief(g: Optional[dict]) -> Optional[dict]:
             "reviewed": bool(g.get("review"))}
 
 
+#: Puntos y formas que se publican como máximo por aviso (los focos de calor de un día llegan a cientos de celdas).
+DETAIL_MAX_POINTS = 400
+DETAIL_MAX_AREAS = 600
+
+
+def _detail(i: dict) -> Optional[dict]:
+    """Lo que ubica un aviso más fino que su distrito, para el mapa de alertas.
+
+    - ``points``: lo que trae la fuente (estaciones hidrológicas con su cuenca, epicentros, volcanes, focos de calor)
+      o el centro poblado que nombra (el PDF del COEN, ``documentos``, o el texto del aviso, ``lugares.localities``)
+      y, si no nombra uno, el río, la quebrada o la laguna que nombra (``aguas.waters``), con su radio y su cuenca
+      (ANA). En el texto el nombre debe ir tras una palabra que lo presente («caserío», «sector», «río»…).
+    - ``shapes``: los polígonos de los avisos del SENAMHI (lluvias, peligro de incendios), simplificados.
+    - ``areas``: los distritos con quebradas en un aviso de activación de quebradas, con cuántas, y las provincias
+      expuestas de un aviso de corto plazo del COEN (``kind`` = provincia)."""
+    d = i.get("detail") if isinstance(i.get("detail"), dict) else {}
+    points = [p for p in d.get("points") or [] if isinstance(p, dict)]
+    if not points:
+        points = [p for p in i.get("localities") or [] if isinstance(p, dict)]
+    codes = [p.get("code") or "" for p in (i.get("geo") or {}).get("places") or [] if len(p.get("code") or "") == 6]
+    if not points and codes and not d.get("areas") and not d.get("shapes"):
+        from .aguas import waters
+        from .lugares import localities
+
+        text = f"{i.get('title') or ''}. {i.get('summary') or ''}"
+        try:
+            points = localities(codes, text) or waters(codes, text)
+        except Exception:  # noqa: BLE001 — sin el punto fino el aviso sigue en su distrito
+            points = []
+    out = {}
+    if points:
+        out["points"] = points[:DETAIL_MAX_POINTS]
+    if d.get("shapes"):
+        out["shapes"] = d["shapes"]
+    areas = list(d.get("areas") or [])
+    if i.get("provinces"):
+        from .geo import gazetteer
+
+        gz = gazetteer()
+        areas += [{"code": c, "name": gz.label(c)["name"], "kind": "provincia"}
+                  for c in i["provinces"] if isinstance(c, str) and len(c) == 4 and gz.valid(c)]
+    if areas:
+        out["areas"] = areas[:DETAIL_MAX_AREAS]
+    return out or None
+
+
 def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
     """Lo último de las fuentes oficiales de peligros (INDECI, SENAMHI, IGP, DHN, USGS…), sin agrupar.
 
@@ -90,6 +136,7 @@ def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
                     "archive": news_page(i), "hazards": hz[:3],
                     "where": where, "geo": _geo_brief(i.get("geo")), "stale": False,
                     **({"document": i["document"]} if i.get("document") else {}),
+                    **({"detail": det} if (det := _detail(i)) else {}),
                     **assess(f.id, i["title"], i.get("summary") or "", when, now, avisos)})
         if len(out) >= ALERTS_MAX:
             break

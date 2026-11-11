@@ -410,7 +410,7 @@ FEEDS: list[Feed] = [
          covers=("lluvias", "huaico", "frio", "calor", "viento", "oleaje")),
     Feed("senamhi-quebradas", "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2"
-         "/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json",
+         "/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CNOMBPROV%2CNOMBDIST%2CFECHA&f=json",
          kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis",
          covers=("huaico", "lluvias")),
     Feed("senamhi-hidrologicos", "SENAMHI · avisos hidrológicos (servidor GEOSINPAD del INDECI)", "peru",
@@ -900,6 +900,11 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
                 "hazards": hazards(title, summary), "title": title, "summary": summary, "link": e["link"]}
         if hint:
             item["geoHint"] = hint  # para volver a ubicar la nota cuando mejore el nomenclátor
+        # Lo que la fuente ubica más fino que un distrito, para el mapa de alertas: estaciones, epicentros, focos de
+        # calor y volcanes (``points``), polígonos de los avisos (``shapes``) y distritos con quebradas (``areas``).
+        detail = {k: e[k] for k in ("points", "shapes", "areas") if e.get(k)}
+        if detail:
+            item["detail"] = detail
         if g:
             item["geo"] = g
             item.update(legacy_fields(g))

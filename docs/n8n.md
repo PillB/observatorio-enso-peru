@@ -13,7 +13,7 @@ registro de fuentes ──► n8n (AWS) ──► rama data-n8n ──┐
                         servidor del Perú ─► data-peru ─┘   (directo › relay más reciente › Internet Archive)
 ```
 
-Hay cuatro flujos, en `n8n/dist/`:
+Hay cinco flujos, en `n8n/dist/`:
 
 | Archivo | Para qué | Credenciales |
 |---|---|---|
@@ -21,6 +21,7 @@ Hay cuatro flujos, en `n8n/dist/`:
 | `enso-n8n-recolector.json` | Recolectar todos los días a las 22:50 (Lima) y publicar en `data-n8n` | Token de GitHub |
 | `enso-n8n-vigilante.json` | Cada 6 horas, revisar que el sitio publicado esté al día (`data/manifest.json`, `generatedAt` de menos de 30 h); si no, la ejecución falla y avisa | Ninguna |
 | `enso-n8n-extractor.json` | Respaldo con OpenAI para leer los informes del ENFEN cuando su formato cambia: el pipeline lo llama por un webhook con token y recibe una propuesta en JSON para revisión | OpenAI del colega y un token propio |
+| `enso-n8n-boletin.json` | Cada hora, leer el boletín de eventos El Niño del sitio y mandarlo por Gmail: al momento si hay un cambio importante, si no en un resumen diario ([boletin](boletin.md)) | Gmail (OAuth2) de quien manda |
 
 Probados de punta a punta con n8n **2.44** y **1.123** (CI: `.github/workflows/n8n.yml`).
 
@@ -53,7 +54,14 @@ bloqueo, 429 y respuestas vacías) se reintentan una vez, tras esperar 30 s,
 en una segunda pasada. DNS, TLS, 403 y verificaciones no se reintentan. En la misma segunda pasada se bajan los
 documentos que el registro indica seguir (`follow`) y los PDF de los
 comunicados del ENFEN deducidos de sus listados (los dos últimos y los dos
-números siguientes), con el mismo criterio que el pipeline.
+números siguientes), con el mismo criterio que el pipeline. Una regla
+`follow` con `template` arma el enlace con lo que captura el patrón (`{1}`)
+y, con `order: "desc"`, toma primero los de número mayor: así se bajan, de
+la lista de escenarios del SIGRID (CENEPRED), los ZIP con la tabla por
+distrito de los tres escenarios más recientes
+(`storage/escenario_trimestral/<número>_tabla.zip`), con el Crawl-delay del
+SIGRID entre pedidos. Los ZIP se guardan como `files/<sha>.zip` y el
+clasificador los reconoce por su firma (`detectFormat` → `zip`).
 
 ### robots.txt
 
@@ -85,6 +93,13 @@ Lo que sí se respeta es la frecuencia: n8n intercala los servidores y, entre
 dos peticiones al mismo servidor público del Perú, espera su `Crawl-delay`
 (el del `robots.txt` que n8n leyó, o `crawl_delay` en `by_url` si el registro lo trae) o 1 segundo, hasta 30
 (nodos «Pausa», con `pause_s`).
+
+Con `shard` = `i/n` en «Configuración», el flujo pide solo una de `n` partes de
+los servidores. Cada servidor va entero a una parte, así que su pausa se
+respeta, y las partes se equilibran por número de URL. Entre todas piden cada
+URL una vez. `n8n.yml` corre así la validación en 4 trabajos paralelos (una sola
+corrida pasaba de 30 minutos) y junta las partes en `validacion-actions.json`.
+Vacío (lo normal), se pide todo.
 
 El veredicto queda en la entrada de `index.json` de la URL pedida (`robots`)
 o, si no se pidió, en `not_requested`; en la validación, en la columna
@@ -128,7 +143,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
 1. **Credentials → Add credential → GitHub API** (la credencial «GitHub API» de n8n, de tipo *Access Token*).
 2. **Github Server**: `https://api.github.com` · **User**: `PillB` · **Access Token**: el token del paso 2.
 3. Nombre: `GitHub ENSO (n8n)`. Guardar. n8n prueba la credencial al guardar; debe quedar en verde.
-4. Opcional: copiar el id de la credencial (la parte final de la URL al abrirla) y enviárselo a Pablo. Con él, `N8N_GITHUB_CRED_ID=<id> node n8n/build.mjs` genera flujos que ya la traen elegida, y las reimportaciones no piden volver a elegirla.
+4. Copiar el id de la credencial (la parte final de la URL al abrirla) y enviárselo a Pablo. Los flujos de `n8n/dist` traen elegida la credencial del n8n del proyecto (`JFHwj9JHLMkHWCLT`); en otro n8n, `N8N_GITHUB_CRED_ID=<id> node n8n/build.mjs` genera flujos con la suya. Si el id no coincide, n8n importa el flujo sin credencial y la corrida se detiene en «Preparar copia» con «Credentials not found», sin publicar nada.
 
 ## Paso 4 — Importar y probar el recolector (colega)
 
@@ -229,6 +244,12 @@ curl -X POST "$ENSO_LLM_EXTRACT_URL" -H "Authorization: Bearer $ENSO_LLM_EXTRACT
 
 Sin el token responde 403. La prueba de punta a punta con n8n real y un
 OpenAI falso es `n8n/test/e2e-extractor.sh n8nio/n8n:2.44.4 /tmp/ext`.
+
+## Boletín por correo (Gmail)
+
+Lee `data/boletin.json` del sitio y decide si manda, a quién y con qué asunto. Viene en simulacro (`send = false`):
+arma el correo y no lo manda hasta que se configure la credencial de Gmail, las direcciones y `send = true`. El paso a
+paso, las reglas de aviso y la prueba con n8n real están en [boletin.md](boletin.md#correo-con-n8n-y-gmail).
 
 ## Qué publica
 

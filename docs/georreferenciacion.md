@@ -46,7 +46,7 @@ Cada nota (`news/items.jsonl`, `geo/items.json`) y cada aviso de
 | Método | De dónde sale | Confianza |
 |---|---|---|
 | `campo` | La fuente trae UBIGEO o «distrito de X, provincia de Y, departamento de Z» (SENAMHI, INDECI, FIRMS, DHN), o el PDF del COEN los lista (`documentos.py`, ver `mapa-alertas.md`) | 0,95–0,97 |
-| `coordenadas` | Punto dentro de los límites del IGN (sismos de USGS, focos de calor) | 0,95 distrito; 0,9 provincia o departamento; 0,75 en el mar |
+| `coordenadas` | Punto dentro de los límites del INDECI (sismos de USGS, focos de calor) | 0,95 distrito; 0,9 provincia o departamento; 0,75 en el mar |
 | `texto` | El titular o el resumen nombran el lugar | 0,55–0,95 según la regla |
 | `medio` | Un medio regional que no nombra lugar: su departamento | 0,5 (0,6 gobiernos regionales; 0,35 búsquedas de Google Noticias, que no se publica) |
 | `correccion` | Una persona en la consola | 1,0 |
@@ -86,13 +86,16 @@ medio, o noticias de impactos sin lugar.
 
 ## Coordenadas (`python/enso/limites.py`)
 
-Límites del IGN (OCHA HDX `cod-ab-per`, CC BY-IGO), simplificados a unos
-110 m (`python/enso/data/limites-ign.json.gz`, 1,5 MB; se regenera con
-`python -m tools.build_limites`, que respeta el robots.txt de HDX: como
-prohíbe su API, el `.geojson.zip` se baja a mano de la página del conjunto y
-se pasa con `--zip`). Frente a los límites completos, 3 500
-puntos al azar dan 99,9 % de acuerdo (4 diferencias, todas en bordes
-departamentales a metros de distancia).
+Límites administrativos vigentes del INDECI (GEOSINPAD, capas `SDE.DISTRITOS`,
+`SDE.PROVINCIAS` y `SDE.DEPARTAMENTOS`: los 1 891 distritos con su UBIGEO, la
+misma cartografía con la que el INDECI ubica los reportes del COEN y el SINPAD),
+simplificados a unos 110 m (`python/enso/data/limites-ign.json.gz`, 1,4 MB; se
+regenera con `python -m tools.build_limites`, que respeta el robots.txt del
+servidor). Hasta octubre de 2026 se usaban los del IGN vía OCHA HDX
+(`cod-ab-per`, límites de 2020, 1 873 distritos; `--zip` los sigue leyendo):
+sobre 8 000 puntos al azar ambos dan el mismo distrito en el 98,8 %; la
+diferencia son los distritos creados después de 2020 (0,9 %) y límites
+interdepartamentales en controversia.
 
 - **Incertidumbre del punto**: el epicentro preliminar de USGS se conoce
   con unos 10 km de error (5 km si lo revisó un sismólogo). Si el punto
@@ -105,11 +108,103 @@ departamentales a metros de distancia).
   peruano, Puno. Puntos en Chile, Ecuador o Bolivia quedan sin lugar, salvo que la fuente los refiera al Perú («a 37 km al ESE
   de Cañaveral, Perú») y estén a 25 km o menos del límite: el departamento más cercano, con confianza 0,55
   («≈», va a revisión).
-- **Distritos nuevos**: la fuente tiene los límites de 2020; en las
-  provincias con distritos creados después (Huachipa en Lima, Kumpirushiato
-  en La Convención…) el distrito sale con confianza 0,75 y queda para
-  revisión. Mazamari y Pangoa, unidos en la fuente, quedan como
-  provincia de Satipo.
+- **Distritos nuevos**: los límites del INDECI tienen todos los distritos del
+  nomenclátor, también los creados después de 2020 (Putis, Unión Asháninka,
+  Boquerón, Alto Trujillo…) y Mazamari y Pangoa por separado. Si el
+  nomenclátor llegara a tener un distrito sin polígono (uno recién creado), en
+  su provincia el distrito sale con confianza 0,75 y queda para revisión.
+
+## Más fino que el distrito: centros poblados y cuencas (`python/enso/lugares.py`)
+
+El objeto `geo` llega al distrito. Para ubicar un aviso o un registro dentro del distrito hay dos tablas más, que se
+arman a mano (`python -m tools.build_lugares`, desde el geoportal de la IDEP de la PCM) y no en cada corrida:
+
+- **Centros poblados** (`python/enso/data/lugares.json.gz`, 2,5 MB): 103 mil, con su nombre, su punto, su
+  categoría, su código y su población. Juntan los del censo 2017 del INEI (`CENTROS_POBLADOS_DISPERSOS/0`), los del
+  IGN (`CENTROS_POBLADOS/3`) y los de la SDOT (`CENTROS_POBLADOS_DISPERSOS/1`). Cada uno va al distrito en que cae
+  su punto según los límites del INDECI; uno que cae en otra provincia que la de su código, o fuera del Perú, se
+  descarta (858). Si el INEI y el IGN ubican el mismo código a más de 5 km (2 844), el lugar lleva un radio de 5 km.
+- **Cuencas** (`python/enso/data/cuencas.json.gz`, 320 kB): las 231 unidades hidrográficas de la ANA (cuencas e
+  intercuencas, metodología Pfafstetter, R.M. N° 033-2008-AG, `INSTITUCIONALES/ANA_WMS/7`), simplificadas a unos 220 m, con la parte
+  de cada distrito que cae en cada una.
+
+`lugares.candidates` saca del texto los nombres que suelen ir antes de un centro poblado («sector», «caserío»,
+«anexo», «C.P.», «localidad de», «comunidad campesina», «A.H.») y `Lugares.find` los busca **solo dentro del
+distrito** ya ubicado: así un nombre común (hay cientos de «San Juan») no lleva a otro lado. Un nombre que se repite
+dentro del distrito no se elige. Las palabras de, del, la, los no cuentan. `localities` hace lo mismo con todo el
+texto, para los reportes del COEN (en el campo «UBICACIÓN» de su tabla los nombres van pegados: se buscan entre los
+del distrito, `documentos.table_localities`).
+
+`basin_at(lat, lon)` da la cuenca de un punto; `district_basin(code)`, la del distrito si el 80 % o más de su área
+está en una sola (1 588 de los 1 891).
+
+Validación (`python/tests/test_lugares.py`): con 1 de cada 40 lugares, que cada uno cae a 1,15 km o menos de su
+distrito; las cuencas no se superponen y cubren el país; las 8 estaciones hidrológicas del SENAMHI caen en la
+cuenca que el SENAMHI les asigna; y, con los registros de la memoria de desastres cuyo punto de la fuente es bueno,
+el centro poblado que nombran queda a una mediana de 0,34 km de ese punto (81 % a menos de 2 km, 93 % a menos de
+5 km). Los volcanes van en el punto de su cumbre según el Global Volcanism Program del Smithsonian, que cae en la
+provincia que nombra el IGP.
+
+## Ríos, quebradas y lagunas (`python/enso/aguas.py`)
+
+Muchos reportes no nombran un caserío sino el cauce: «crecida del río Chiguata», «huaico en la quebrada Pedregal»,
+«desborde de la laguna…». Para esos hay una tercera tabla, `python/enso/data/aguas.json.gz` (700 kB), armada a mano
+con `python -m tools.build_aguas` desde la Carta Nacional 1:100 000 del IGN en el geoportal de la IDEP
+(`PERU_100K`, capas «Río Lineal», «Lago y Laguna» y «Toponimia»; su robots.txt responde 404, sin reglas):
+
+- **47 mil nombres por distrito**: 38 mil ríos y quebradas, 8 800 lagunas, 540 nevados, 28 volcanes y 108 abras.
+  Cada tramo con nombre se densifica (un punto cada 400 m) y cada punto va al distrito que lo contiene. Por distrito
+  y nombre, el **punto** es el del cauce más cercano al centro de su tramo en el distrito (siempre sobre el agua), el
+  **radio** es la distancia al punto más lejano del tramo y la **cuenca** es la de la ANA donde cae la mayor parte del
+  tramo. Un río y una quebrada del mismo nombre en un distrito son un mismo curso (el IGN llama «Quebrada» al tramo de
+  arriba). Una laguna en el límite de dos distritos queda en cada uno con la parte de su orilla que cae en él.
+- **Los nombres de la Carta se corrigen** donde la errata cambia la clave: «¥» por «ñ» («Le¥a» → «Leña»), «R¡o»,
+  comillas y signos sueltos, mayúsculas con tilde dentro de una palabra («GavilÁn»), palabras pegadas («RioTirutaña»),
+  abreviaturas («Qda.», «Lag.»). Los nombres alternativos que trae la Carta («Río Chili (Sumbay)», «Río Salla o
+  Cotacucho», «Volcán Yucamane (Ver Yucamani)») también se reconocen (`alias`).
+
+`Aguas.find` busca un nombre **solo detrás de la palabra que dice qué es** («río», «quebrada», «qda.», «riachuelo»,
+«laguna», «nevado», «volcán», «abra»…), solo en el distrito ya ubicado y solo con esa clase (una «laguna X» no es la
+quebrada X). Reglas para no confundir:
+
+- Un nombre que también es adjetivo («Seca», «Honda», «Grande», «Negra») solo cuenta con mayúscula en un texto que
+  no está todo en mayúsculas, o en un campo de lugar: «la quebrada seca» describe, «la quebrada Seca» nombra.
+- De varias palabras se toma el nombre más largo que existe; uno más corto solo si lo que sigue no puede ser parte
+  del nombre: «río Santa Eulalia» no es el río Santa.
+- Una lista («ríos Moche y Chicama») con un nombre que no está en el distrito no da punto: el lugar no es solo el
+  tramo del otro.
+- El nombre da **punto** solo si su radio es de 10 km o menos y menor que tres cuartos del radio del distrito; si no
+  (un río que cruza el distrito de punta a punta), da solo la **cuenca**, si el 60 % o más del tramo está en una.
+  Al radio se le suma un margen (2 km para un cauce, 1 km para una laguna, un nevado o un abra): el daño está cerca
+  del cauce, no sobre él.
+- Si la fuente también nombra un centro poblado, aunque sea la capital del distrito («inundación en Aucayacu por
+  desborde del río Huallaga»), el lugar es ese y no el tramo del río.
+
+Validación (`python/tests/test_aguas.py`): cada nombre es válido y su cuenca existe; 1 de cada 25 puntos cae en su
+distrito; los casos de arriba; y, contra las fichas del SINPAD con punto de campo que nombran un río o una quebrada
+con tramo corto (49), el punto del nombre queda a una mediana de 2,6 km del medido (la capital del distrito, a 11,5
+km), el 73 % dentro del radio y el 84 % más cerca que la capital.
+
+## Exactitud geográfica: cómo se verifica
+
+`tests/test_geolocalizacion.py` contrasta todo con la lista oficial de distritos del INDECI
+(`tests/geo/indeci-distritos.csv`):
+
+- El nomenclátor (`ubigeo.json`) y los límites tienen exactamente los 1 891 distritos oficiales: Alto Trujillo
+  (130112, Ley N° 31644) se agrega aunque la fuente del INEI aún no lo traiga, y Santa María de Huachipa, que
+  esa fuente lista como distrito, es un centro poblado de Lurigancho (la Ley N° 30888 solo declara de interés su
+  creación): se quita (`tools/build_ubigeo.py`, `NOT_DISTRICTS` y `NEW_DISTRICTS`).
+- Cada grafía oficial («IHUAYLLO», «SAN PEDRO DE LARAOS», «HEROES ALBARRACIN») llega a su distrito.
+- La capital de cada distrito, provincia y departamento cae dentro de su polígono (5 capitales a metros del
+  borde se toleran así de cerca). Los 17 distritos sin coordenadas de su capital en la fuente reciben un punto
+  interior de su polígono, marcado `"point": "interior"`.
+- Los puntos del mapa de alertas caen en su provincia o distrito.
+- **Homónimos**: «Huaico en el distrito de X (Departamento)», como titula el COEN, para los 1 891 distritos,
+  y lo mismo con la provincia: el resultado es el distrito o algo que lo contiene, nunca otro lugar. Cuando el
+  nombre se repite en el departamento (Santa Rosa en Puno, Sancos en Ayacucho, Huallanca en Áncash, San
+  Antonio en Lima) sin provincia, queda el departamento. «(Lima)» acota al departamento, no a Lima
+  Metropolitana. Dos excepciones documentadas en la prueba: Surco (Huarochirí) sin provincia y Buenos Aires
+  (Picota), que no se ubica.
 
 ## Calidad medida
 
@@ -141,8 +236,10 @@ python -m tools.geo_eval --gold tests/geo/holdout-noticias.jsonl --errors
 
 ## Consola de lugares
 
-Dirección: `https://<sitio>/admin/` (no está enlazada desde el sitio y
-pide a los buscadores no indexarla). Solo funciona en Cloudflare Pages,
+Dirección: `https://<sitio>/admin/`, con el botón «Ingresar» (candado) de
+la cabecera del sitio. El sitio público no pide usuario; la consola sí, y
+pide a los buscadores no indexarla. El botón solo se publica en Cloudflare
+(`prepare_site --cloudflare`); en otro servidor se quita. Solo funciona en Cloudflare Pages,
 porque usa una Pages Function (`functions/api/geo/[[path]].js`) y una
 base D1.
 
@@ -263,6 +360,9 @@ comprimido) una vez por sesión y luego lo revalida (304 si no cambió).
 |---|---|
 | `python/enso/geo.py` | Nomenclátor, reglas del texto, `locate_item` y el objeto `geo` |
 | `python/enso/limites.py` | Punto en polígono con incertidumbre, mar y lago |
+| `python/enso/lugares.py` | Centros poblados y cuencas dentro del distrito |
+| `python/enso/aguas.py`, `python/tools/build_aguas.py` | Ríos, quebradas, lagunas, nevados y abras dentro del distrito, y su regeneración desde la Carta Nacional del IGN |
+| `python/tools/build_lugares.py`, `build_cuencas_mapa.py` | Regeneran los centros poblados, las cuencas y su trazo para los mapas (`public/assets/cuencas-mapa.json`) |
 | `python/enso/geo_overrides.py` | Reubica el histórico, aplica correcciones y publica `geo/*.json` |
 | `python/tools/geo_eval.py` | Mide la precisión sobre los conjuntos etiquetados |
 | `python/tools/build_limites.py`, `build_ubigeo.py` | Regeneran los datos geográficos |

@@ -159,7 +159,8 @@ el canal que decide quién la pide, en `registry/sources.json`.
 | IMARPE, sitio web (`www.imarpe.gob.pe`) | La portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade); el feed y su robots.txt, según el ejecutor de Actions (2 de 3 lecturas el 26 de octubre). Desde n8n responden los tres | Feed en las noticias cuando Actions lo alcanza o n8n trae copia; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |
 | ANA (caudales, SNIRH) | Tiempo de espera agotado | No disponible desde Actions |
-| INDECI, CENEPRED (SIGRID) | Responden | Candidatos |
+| INDECI | Responde | Candidato |
+| CENEPRED, SIGRID: página pública de escenarios (`sigridv3/escenario-trimestral/data-mm` y `storage/escenario_trimestral/<número>_tabla.zip`) | Responde, sin inicio de sesión; `/arcgis/` pide token (499) | En uso: escenario de riesgo por lluvias por distrito en «Mi zona» (`cenepred-sigrid-escenarios` en el registro; Actions, n8n y el recolector del Perú) |
 | CHIRPS (lluvia satelital) | Responde | Candidato |
 | NASA GPM IMERG | El índice responde; los datos piden cuenta Earthdata | Requiere credencial |
 | CIIFEN, INAMHI, INOCAR, IDEAM | Responden | Candidatos regionales |
@@ -371,6 +372,31 @@ Evaluadas y pendientes:
 | API del IGP (`api.igp.gob.pe`) | `robots.txt` la excluye |
 | SENAMHI (`senamhi.gob.pe`, observatorio), IDESEP, SIG del CENEPRED | Tiempo de espera agotado fuera del Perú; quedan para el recolector del Perú |
 | Normas legales de El Peruano (declaratorias de emergencia) | Su API exige fechas y páginas; candidata para un flujo de n8n |
+
+## Memoria de desastres (catálogo histórico)
+
+Las 66 fuentes de la pestaña «Memoria de desastres» no pasan por el registro ni por la corrida diaria: la lista está en
+`data/historico/fuentes.json` (URL, licencia, cobertura, lector, forma de descarga y SHA-256 de lo bajado) y las baja la
+cosecha de `memoria-cosecha.yml` cada 6 horas (`python -m tools.cosecha_historico`, anexo A11 de la arquitectura). Por
+tipo: 8 de eventos (DesInventar, las dos del SINPAD, las dos del IDMC, NASA, lagunas glaciares y los registros
+curados), 1 de reportes de emergencia (COEN), 7 de prevención (El Peruano, INGEMMET, IGP, Cruz Roja), 4 de peligro
+identificado hoy (INGEMMET, ANA, MINSA), 44 medios en línea, 1 hemeroteca digital (Chronicling America) y la tabla de
+UBIGEO de referencia. El detalle de cada una, las que se
+evaluaron y no se pueden usar y por qué, está en [memoria-desastres](memoria-desastres.md#fuentes).
+
+Dos reglas difieren de las del registro, y se aplican solo a esta cosecha:
+
+- **robots.txt de las instituciones públicas peruanas** (`.gob.pe`, `.mil.pe`): por decisión del proyecto del
+  26-10-2026, su información es pública (Ley N° 27806) y un `Disallow` no impide pedirla; se respeta su `Crawl-delay`,
+  con al menos 5 s entre pedidos, y nunca se evade una verificación antirobots. El resto de servidores se respeta como
+  en el registro.
+- **Ritmo**: un pedido a la vez por servidor y al menos 5 s entre pedidos (las descargas largas tardan horas y siguen en
+  la corrida siguiente).
+
+Los servidores del Estado con archivos de desastres pasados que solo responden desde el Perú (Biblioteca Nacional,
+BVPAD del INDECI, SPIJ, Contraloría) sí están en el registro, con el prefijo `memoria-` y solo el canal
+`peru-server`, para medir desde el Perú si responden; se quitan cuando tengan script de cosecha
+(`python/enso/registry.py`, `_memoria_entries`).
 
 ## Fuentes evaluadas y no usadas
 

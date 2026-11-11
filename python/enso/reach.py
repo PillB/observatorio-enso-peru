@@ -155,12 +155,14 @@ def classify(status: Optional[int], body: bytes = b"", error: str = "", headers=
 
 
 def detect(body: bytes, content_type: str = "") -> str:
-    """Formato del cuerpo, con el mismo criterio que n8n (``detectFormat`` en n8n/lib/classify.js): pdf, json,
+    """Formato del cuerpo, con el mismo criterio que n8n (``detectFormat`` en n8n/lib/classify.js): pdf, zip, json,
     jsonfeed, rss, atom, rdf, html, xml, text, binary o empty."""
     if not body:
         return "empty"
     if body[:4] == b"%PDF":
         return "pdf"
+    if body[:4] == b"PK\x03\x04":
+        return "zip"  # p. ej. la tabla de un escenario del CENEPRED
     head = body[:4096].decode("latin-1")
     head = head.removeprefix("\xef\xbb\xbf")
     low = head.lstrip(" \t\r\n\x00").lower()
@@ -224,6 +226,8 @@ def judge(status: Optional[int], body: bytes, content_type: str = "", expect: Op
         return "empty", detected, "feed sin entradas"
     elif exp == "pdf" and detected != "pdf":
         wanted = "un PDF"
+    elif exp == "zip" and detected != "zip":
+        wanted = "un ZIP"
     elif exp == "json" and detected not in ("json", "jsonfeed"):
         wanted = "JSON"
     elif exp == "json":

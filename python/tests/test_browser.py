@@ -13,6 +13,7 @@ import json
 import os
 import re
 import threading
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -22,7 +23,7 @@ pytestmark = pytest.mark.browser
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
-ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "noticias", "datos", "metodologia", "asistente", "apoyar"]
+ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias", "datos", "metodologia", "asistente", "boletin", "apoyar"]
 VIEWPORTS = {"telefono-320": (320, 640), "telefono-390": (390, 844), "tableta": (820, 1180), "escritorio": (1366, 900)}
 
 
@@ -43,6 +44,31 @@ def site(request):
 
 
 # ``playwright`` y ``browser`` están en conftest.py (los comparte la consola de lugares).
+
+# Los mapas de la memoria y de Noticias abren con una vista sorteada (ab.js): las pruebas que no son de las vistas
+# de detalle fijan el resumen, salvo que la página ya tenga una elegida (una prueba que la cambia y recarga).
+PIN_VIEWS = ("for (const k of ['enso-vista-memoria', 'enso-vista-noticias']) if (!localStorage.getItem(k)) "
+             "localStorage.setItem(k, JSON.stringify({v: 'resumen', chosen: false, at: '2000-01-01'}));")
+
+
+class _Pinned:
+    """Un navegador cuyos contextos abren los mapas en el resumen."""
+
+    def __init__(self, b):
+        self._b = b
+
+    def __getattr__(self, k):
+        return getattr(self._b, k)
+
+    def new_context(self, **kw):
+        ctx = self._b.new_context(**kw)
+        ctx.add_init_script(PIN_VIEWS)
+        return ctx
+
+
+@pytest.fixture(scope="session")
+def browser(browser):
+    return _Pinned(browser)
 
 
 @pytest.fixture
@@ -70,6 +96,28 @@ def go(page, base, route=""):
     page.goto(f"{base}#/{route}")
     expect(page.locator("main h1")).to_have_count(1, timeout=15000)
     expect(page.locator("main .skeleton")).to_have_count(0, timeout=15000)
+
+
+# Las letras del sistema cambian de una máquina a otra: el runner de la corrida diaria cae en DejaVu Sans, más
+# ancha que la del contenedor de ci.yml, y el selector de nivel de la memoria se salía 16 px a 320 px (issue #63)
+# aunque aquí pasaba. Con algo de espacio entre letras, cualquier máquina ve un texto tan ancho como ese.
+WIDE_TEXT = "html, html * { letter-spacing: 0.06em !important; }"
+
+
+@pytest.mark.parametrize("w", [320, 360])
+def test_phone_layout_survives_wider_system_fonts(site, browser, w):
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": w, "height": 800})
+    ctx.add_init_script(f"addEventListener('DOMContentLoaded', () => document.head.append(Object.assign("
+                        f"document.createElement('style'), {{textContent: {json.dumps(WIDE_TEXT)}}})));")
+    pg = ctx.new_page()
+    try:
+        for r in ROUTES:
+            go(pg, base, r)
+            overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en #{r} a {w}px con letras más anchas"
+    finally:
+        ctx.close()
 
 
 @pytest.mark.parametrize("vp", VIEWPORTS, ids=list(VIEWPORTS))
@@ -260,13 +308,13 @@ def test_tutorial_start_pause_resume_and_clear(site, page):
     go(page, base)
     page.get_by_role("button", name="Ayuda y tutorial").click()
     dlg = page.get_by_role("dialog", name="Ayuda y tutorial")
-    expect(dlg.locator(".tour-menu li")).to_have_count(13)
+    expect(dlg.locator(".tour-menu li")).to_have_count(15)
     dlg.get_by_role("button", name=re.compile("^Inicio rápido")).click()
     pop = page.locator(".tour-pop")
     expect(pop.get_by_text("paso 1 de")).to_be_visible()
     pop.get_by_role("button", name="Siguiente").click()
     expect(pop.get_by_text("paso 2 de")).to_be_visible()
-    pop.get_by_role("button", name="Pausar").click()
+    pop.get_by_role("button", name=re.compile("^Cerrar el tutorial")).click()
     expect(pop).to_have_count(0)
     page.reload()
     go(page, base)
@@ -284,10 +332,10 @@ def test_full_tour_visits_every_target(site, page):
     go(page, base)
     page.get_by_role("button", name="Ayuda y tutorial").click()
     page.get_by_role("button", name=re.compile("^Recorrido completo")).click()
-    for _ in range(9):
+    for _ in range(13):
         pop = page.locator(".tour-pop")
-        expect(pop).to_be_visible()
-        assert pop.get_by_text("Este elemento no está visible").count() == 0, pop.inner_text()
+        expect(pop).to_have_attribute("data-state", "ready", timeout=30000)
+        assert pop.get_by_text("no está disponible en esta publicación").count() == 0, pop.inner_text()
         pop.get_by_role("button", name=re.compile("Siguiente|Terminar")).click()
     expect(page.locator(".tour-pop")).to_have_count(0)
 
@@ -626,7 +674,7 @@ def engine(request, playwright, browser):
         if os.environ.get("CI"):  # en CI se instalan los tres motores: si uno no arranca, es una falla
             raise
         pytest.skip(f"{name} no está instalado: {str(exc).splitlines()[0]}")
-    yield playwright, b
+    yield playwright, _Pinned(b)
     b.close()
 
 
@@ -660,6 +708,51 @@ def test_news_fits_every_reference_device(site, engine):
         pytest.skip(f"ningún dispositivo de referencia usa {name}")
 
 
+# Anillo del área elegida: va después de todas las áreas y bordes del SVG (ningún vecino lo tapa), dibuja la
+# forma esperada, deja pasar el clic al área de abajo y su brillo late salvo que se pida menos movimiento.
+RING_CHECK = """({ svg, shape, d }) => {
+  const root = document.querySelector(svg), ring = root.querySelector('.sel-ring');
+  if (!ring) return null;
+  const line = ring.querySelector('.sel-line'), want = d || root.querySelector(shape).getAttribute('d');
+  const below = [...root.querySelectorAll('path:not(.sel-ring *)')];
+  const p = line.getPointAtLength(0), m = line.getScreenCTM(), x = m.a * p.x + m.c * p.y + m.e, y = m.b * p.x + m.d * p.y + m.f;
+  return {
+    above: below.every((e) => e.compareDocumentPosition(ring) & Node.DOCUMENT_POSITION_FOLLOWING),
+    shape: line.getAttribute('d') === want,
+    clickThrough: !document.elementFromPoint(x, y)?.closest('.sel-ring'),
+    glow: getComputedStyle(ring.querySelector('.sel-glow')).animationName,
+  };
+}"""
+RING_OK = {"above": True, "shape": True, "clickThrough": True, "glow": "sel-glow"}
+
+
+def test_memory_map_ring_marks_the_selected_area_above_every_border(site, browser):
+    """Mapa de la memoria: el área elegida lleva un anillo encima de los bordes vecinos y del contorno de los
+    departamentos, con su propia forma aunque el mapa muestre un nivel más fino (una provincia entre distritos),
+    y se queda quieto si se pide menos movimiento."""
+    base, root = site
+    geo = json.loads((root / "assets" / "historico" / "mapa.json").read_text(encoding="utf-8"))
+    deps = {d["code"]: d["d"] for d in json.loads((root / "assets" / "peru-map.json").read_text(encoding="utf-8"))["departments"]}
+    cases = [("1501", "distrito", geo["provinces"]["1501"]["d"]), ("1501", "provincia", geo["provinces"]["1501"]["d"]),
+             ("20", "departamento", deps["20"]), ("200101", "distrito", geo["districts"]["200101"]["d"])]
+    for motion in ("no-preference", "reduce"):
+        ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE", reduced_motion=motion)
+        pg = ctx.new_page()
+        errors = []
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        try:
+            for area, nivel, d in cases:
+                pg.goto(f"{base}#/memoria?area={area}&nivel={nivel}")
+                expect(pg.locator(".hz-mapbox .sel-ring")).to_have_count(1)
+                got = pg.evaluate(RING_CHECK, {"svg": ".hz-mapbox .hz-svg", "d": d})
+                assert got == {**RING_OK, "glow": "none" if motion == "reduce" else "sel-glow"}, (area, nivel, got)
+            pg.locator(".hz-prof-top [data-area='']").click()
+            expect(pg.locator(".hz-mapbox .sel-ring")).to_have_count(0)
+            assert not errors, errors
+        finally:
+            ctx.close()
+
+
 @pytest.mark.parametrize("variant", ["A", "B", "C", "D"])
 def test_alert_map_filters_the_news_and_remembers_the_version(site, browser, variant):
     """Mapa de alertas sobre las noticias: cada versión se dibuja sin errores ni desbordes en un teléfono, un
@@ -689,10 +782,12 @@ def test_alert_map_filters_the_news_and_remembers_the_version(site, browser, var
                 pg.keyboard.press("Enter")
                 expect(pg).to_have_url(re.compile(rf"dep={dep}"))
                 expect(pg.locator(".amap-filtered")).to_contain_text("según el filtro del mapa")
+                assert pg.evaluate(RING_CHECK, {"svg": ".amap-svg", "shape": f'path.dep[data-dep="{dep}"]'}) == RING_OK
                 n = pg.locator("#fg-alertas-list .feed-item").count()
                 assert 1 <= n <= len(alerts)
                 pg.locator(".amap-filtered [data-clear-map]").click()
                 expect(pg.locator(".amap-filtered")).to_have_count(0)
+                expect(pg.locator(".amap-svg .sel-ring")).to_have_count(0)
                 pg.select_option("#amap-ver", "C" if variant != "C" else "A")
                 pg.reload()
                 expect(pg.locator("#amap-ver")).to_have_value("C" if variant != "C" else "A")
@@ -701,8 +796,642 @@ def test_alert_map_filters_the_news_and_remembers_the_version(site, browser, var
             ctx.close()
 
 
+def test_maps_draw_what_is_known_finer_than_the_area(site, browser):
+    """Los dos mapas dibujan lo que se sabe más fino que el departamento o el distrito: en el de alertas, las zonas,
+    los distritos con quebradas y los puntos de los avisos (con su cuadro); en el de la memoria, los registros con
+    punto propio o de centro poblado. La capa de cuencas de la ANA se prende y se apaga, y nada tapa el anillo."""
+    base, root = site
+    feed = json.loads((root / "data" / "feed.json").read_text(encoding="utf-8"))
+    alerts = next((g["items"] for g in feed["groups"] if g["id"] == "alertas"), [])
+    if not any(a.get("detail") for a in alerts):
+        pytest.skip("la publicación no trae avisos con detalle")
+    # El reloj, poco después del último aviso: así los avisos de la publicación siguen vigentes o recientes.
+    last = max(datetime.fromisoformat(a["date"].replace("Z", "+00:00")) for a in alerts if a.get("date"))
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    try:
+        pg.clock.install(time=last + timedelta(minutes=90))
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap-svg .amap-detail")).to_have_count(1)
+        assert pg.locator(".amap-svg .amap-pt").count() > 0
+        pt = pg.locator(".amap-svg .amap-pt").first
+        pt.hover(force=True)
+        expect(pg.locator(".amap-tip")).to_be_visible()
+        expect(pg.locator(".amap-tip strong").first).to_have_text(re.compile(r"\S"))
+        pg.locator('.amap [data-layer="cuencas"]').click()
+        expect(pg.locator(".amap-svg .amap-basins path")).to_have_count(231)
+        pg.locator('.amap [data-layer="detalle"]').click()
+        expect(pg.locator(".amap-svg .amap-detail")).to_have_count(0)
+        dep = next(a["geo"]["places"][0]["code"][:2] for a in alerts if (a.get("geo") or {}).get("places"))
+        pg.locator(f'path.dep[data-dep="{dep}"]').focus()
+        pg.keyboard.press("Enter")
+        assert pg.evaluate(RING_CHECK, {"svg": ".amap-svg", "shape": f'path.dep[data-dep="{dep}"]'}) == RING_OK
+
+        pg.goto(f"{base}#/memoria?nivel=distrito&area=20&cuencas=1")
+        expect(pg.locator(".hz-mapbox .hz-basins path")).to_have_count(231)
+        expect(pg.locator(".hz-mapbox .hz-pts circle").first).to_be_attached()
+        expect(pg.locator("#hz-pts-note")).to_contain_text("registros de esta área tienen un punto más fino que su distrito")
+        layers = pg.evaluate("[...document.querySelector('.hz-mapbox .hz-svg').children].map((e) => e.getAttribute('class'))")
+        assert layers[-3:] == ["hz-basins", "hz-pts", "sel-ring"], layers
+        deps = {d["code"]: d["d"] for d in json.loads((root / "assets" / "peru-map.json").read_text(encoding="utf-8"))["departments"]}
+        assert pg.evaluate(RING_CHECK, {"svg": ".hz-mapbox .hz-svg", "d": deps["20"]}) == RING_OK
+        assert pg.locator(".hz-ev-fine").count() > 0
+        pg.locator('.hz-layers [data-layer="cuencas"]').click()
+        expect(pg.locator(".hz-mapbox .hz-basins")).to_have_count(0)
+        expect(pg).not_to_have_url(re.compile(r"cuencas=1"))
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
 def test_variant_results_view_without_backend(page, site):
     """#/variantes en un sitio sin Functions (GitHub Pages, servidor local) dice que no hay datos, sin romperse."""
     base, _ = site
     page.goto(f"{base}#/variantes")
     expect(page.locator("#ab-stats")).to_contain_text("No se pudo leer la analítica")
+
+
+def _errors(pg):
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    return errors
+
+
+def _overflow(pg):
+    return pg.evaluate("document.scrollingElement.scrollWidth - document.documentElement.clientWidth")
+
+
+def _view(pg, key):
+    return pg.evaluate(f"JSON.parse(localStorage.getItem('{key}') || 'null')")
+
+
+@pytest.mark.parametrize("w", [320, 1366])
+def test_memory_detail_views_open_from_the_map_header(site, browser, w):
+    """Mapa de la memoria, vistas de detalle: se abren con los botones de arriba del mapa (no hay otro tablero
+    debajo), cada una se dibuja sin errores ni desbordes, lo que se toca abre su ficha y queda en la URL, y la vista
+    elegida es la que abre la próxima visita."""
+    base, root = site
+    units = json.loads((root / "assets" / "cuencas-mapa.json").read_text(encoding="utf-8"))["units"]
+    ctx = browser.new_context(viewport={"width": w, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.goto(f"{base}#/memoria")
+        views = pg.locator("section[aria-labelledby='hz-map-h'] .hz-views")
+        expect(views.locator("[data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        cards = pg.locator("main section.card").count()
+
+        views.locator("[data-vista='cuencas']").click()
+        expect(pg).to_have_url(re.compile(r"vista=cuencas"))
+        expect(pg.locator(".hz-mapbox svg.hz-det path[data-basin]")).to_have_count(len(units))
+        assert pg.locator(".hz-mapbox .hz-rivers path").count() > 50
+        assert pg.locator("main section.card").count() == cards  # el detalle cambia el mapa, no agrega tableros
+        assert _overflow(pg) <= 1
+        pg.locator("#hz-side [data-cuenca]").first.click()
+        expect(pg).to_have_url(re.compile(r"cuenca=\d+"))
+        expect(pg.locator(".hz-mapbox .sel-ring")).to_have_count(1)
+        river = pg.locator("#hz-side [data-foco^='r:']").first
+        if river.count():
+            river.click()
+            expect(pg).to_have_url(re.compile(r"foco=r"))
+            expect(pg.locator(".hz-mapbox .hz-river.on")).to_have_count(1)
+            pg.locator("#hz-side [data-foco='']").first.click()
+            expect(pg).not_to_have_url(re.compile(r"foco="))
+        pg.locator("#hz-side [data-cuenca='']").first.click()
+        expect(pg).not_to_have_url(re.compile(r"cuenca="))
+
+        views.locator("[data-vista='puntos']").click()
+        expect(pg).to_have_url(re.compile(r"vista=puntos"))
+        assert pg.locator(".hz-mapbox .hz-hx").count() > 100
+        expect(pg.locator("#hz-side")).to_contain_text("registros tienen un punto")
+        assert _overflow(pg) <= 1
+        pg.locator("#hz-side [data-foco^='r:']").first.click()
+        expect(pg).to_have_url(re.compile(r"foco=r"))
+        expect(pg.locator(".hz-mapbox .hz-river.on")).to_have_count(1)
+        expect(pg.locator("#hz-side .hz-prof-h").first).to_be_visible()
+
+        views.locator("[data-vista='riesgo']").click()
+        expect(pg).to_have_url(re.compile(r"vista=riesgo"))
+        expect(pg).not_to_have_url(re.compile(r"foco="))
+        expect(pg.locator("[data-celda]")).to_have_count(9)
+        assert pg.locator(".hz-mapbox .hz-mz").count() > 0
+        assert _overflow(pg) <= 1
+        pg.locator("[data-celda='22']").click()
+        expect(pg).to_have_url(re.compile(r"celda=22"))
+        expect(pg.locator("[data-celda='22']")).to_have_attribute("aria-pressed", "true")
+        pg.locator("[data-mz]").click()
+        expect(pg).to_have_url(re.compile(r"mz=0"))
+        expect(pg.locator(".hz-mapbox .hz-mz")).to_have_count(0)
+
+        assert _view(pg, "enso-vista-memoria")["v"] == "riesgo" and _view(pg, "enso-vista-memoria")["chosen"]
+        pg.goto(f"{base}#/historia")
+        pg.goto(f"{base}#/memoria")
+        expect(views.locator("[data-vista='riesgo']")).to_have_attribute("aria-pressed", "true")
+        # Un enlace con otros filtros (un área) abre el resumen, sin cambiar la vista elegida.
+        pg.goto(f"{base}#/memoria?nivel=distrito&area=200101")
+        expect(views.locator("[data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        assert _view(pg, "enso-vista-memoria")["v"] == "riesgo"
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+def test_memory_area_figures_count_in_their_area_not_in_the_district(site, browser):
+    """Una cifra de un área mayor (``AreaCifras``: DesInventar puso en Subtanjalla los 10 000 afectados de la provincia
+    de Ica en 1976) no se suma al distrito, y su registro dice de qué área es."""
+    base, root = site
+    ev = json.loads((root / "assets" / "historico" / "eventos.json").read_text(encoding="utf-8"))
+    cols = {c: i for i, c in enumerate(ev["cols"])}
+    rows = [r for r in ev["rows"] if r[cols["Ubigeo"]] == "110112"]
+    mine = sum(r[cols["Afectados"]] for r in rows if str(r[cols["i"]]) not in ev["areaCifras"])
+    theirs = [r for r in rows if ev["areaCifras"].get(str(r[cols["i"]])) == "1101"]
+    assert theirs and mine
+    ctx = browser.new_context(viewport={"width": 1366, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.goto(f"{base}#/memoria?nivel=distrito&area=110112")
+        kv = pg.locator(".hz-kv div", has_text="Afectados, damnificados o desplazados").locator("dd")
+        expect(kv).to_have_text(re.compile(rf"^{mine // 1000}\D?{mine % 1000:03d}$"))
+        expect(pg.locator(".hz-ev", has_text="cifras de Ica")).to_have_count(len(theirs))
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+@pytest.mark.parametrize("w", [320, 1366])
+def test_news_detail_views_show_alerts_by_basin_and_district_with_their_history(site, browser, w):
+    """Mapa de Noticias, vistas de detalle: avisos por cuenca y distritos en aviso con su memoria de desastres. Se
+    abren desde la cabecera del mapa, sin errores ni desbordes; una cuenca o un distrito abre su ficha con el enlace
+    a su memoria, y la vista elegida se recuerda."""
+    base, root = site
+    feed = json.loads((root / "data" / "feed.json").read_text(encoding="utf-8"))
+    alerts = next((g["items"] for g in feed["groups"] if g["id"] == "alertas"), [])
+    if not alerts:
+        pytest.skip("la publicación no trae avisos")
+    last = max(datetime.fromisoformat(a["date"].replace("Z", "+00:00")) for a in alerts if a.get("date"))
+    units = json.loads((root / "assets" / "cuencas-mapa.json").read_text(encoding="utf-8"))["units"]
+    ctx = browser.new_context(viewport={"width": w, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.clock.install(time=last + timedelta(minutes=90))
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap .amap-views [data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        expect(pg.locator("#amap-ver")).to_be_visible()
+        for vista, attr in (("cuencas", "data-basin"), ("distritos", "data-dist")):
+            pg.locator(f".amap .amap-views [data-vista='{vista}']").click()
+            expect(pg).to_have_url(re.compile(rf"vista={vista}"))
+            expect(pg.locator(f".amap.amap-v{vista} svg.amap-det")).to_be_visible()
+            expect(pg.locator("#amap-ver")).to_have_count(0)  # la versión A–D es del resumen
+            if vista == "cuencas":
+                expect(pg.locator(f".amap-det path[{attr}]")).to_have_count(len(units))
+            assert _overflow(pg) <= 1, f"{vista} a {w}px"
+            rows = pg.locator(f".amap-side .rank-row[{attr}]")
+            if rows.count():
+                rows.first.click()
+                expect(pg.locator(".amap-det .sel-ring")).to_have_count(1)
+                expect(pg.locator(".amap-side .amap-memo")).to_contain_text("Memoria")
+                link = pg.locator(".amap-side .amap-memo a[data-memoria]")
+                expect(link).to_have_attribute("href", re.compile(r"^#/memoria\?(vista=cuencas&cuenca=\d+|nivel=distrito&area=\d{6})$"))
+                pg.locator(f".amap-side .amap-sel-top [{attr}='']").click()
+                expect(pg.locator(".amap-det .sel-ring")).to_have_count(0)
+            else:
+                expect(pg.locator(".amap-side")).to_contain_text("Ningún aviso de este filtro")
+        assert _view(pg, "enso-vista-noticias") == {"v": "distritos", "chosen": True, "at": _view(pg, "enso-vista-noticias")["at"]}
+        pg.goto(f"{base}#/datos")
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap.amap-vdistritos")).to_be_visible()
+        pg.locator(".amap .amap-views [data-vista='resumen']").click()
+        expect(pg.locator(".amap .amap-svg path.dep")).to_have_count(25)
+        expect(pg).not_to_have_url(re.compile(r"vista="))
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+def test_a_shared_link_shows_its_view_without_changing_the_chosen_one(site, browser):
+    """Un enlace con ?vista= (alguien lo compartió) muestra esa vista sin cambiar la que la persona eligió."""
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = _errors(pg)
+    try:
+        pg.goto(f"{base}#/memoria?vista=puntos")
+        expect(pg.locator(".hz-views [data-vista='puntos']")).to_have_attribute("aria-pressed", "true")
+        assert _view(pg, "enso-vista-memoria")["v"] == "resumen"
+        pg.goto(f"{base}#/noticias?vista=cuencas")
+        expect(pg.locator(".amap.amap-vcuencas")).to_be_visible()
+        assert _view(pg, "enso-vista-noticias")["v"] == "resumen"
+        pg.goto(f"{base}#/datos")
+        pg.goto(f"{base}#/noticias")
+        expect(pg.locator(".amap .amap-views [data-vista='resumen']")).to_have_attribute("aria-pressed", "true")
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+def test_memory_records_table_follows_the_filter_and_downloads_it(site, browser, tmp_path):
+    """Tabla de registros al final de la memoria: sigue el filtro del mapa, muestra 25 filas y agrega más sin cambiar
+    de página, ordena con aria-sort, pide las fichas solo de los departamentos visibles y descarga el filtro con las
+    columnas del equipo, con los mismos valores que eventos.csv."""
+    import csv
+    import io
+    import zipfile
+
+    base, root = site
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE", accept_downloads=True)
+    pg = ctx.new_page()
+    errors, asked = [], []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("request", lambda r: asked.append(r.url.rsplit("/", 2)[-2:]))
+    try:
+        pg.goto(f"{base}#/memoria?vista=resumen&nivel=distrito&area=200101&peligro=agua")
+        sec = pg.locator("#hz-tbl")
+        expect(sec.locator(".section-head")).to_contain_text("Piura")
+        # Las coordenadas se piden recién al acercarse a la tabla (la ficha del área ya pidió la de su departamento).
+        pg.wait_for_load_state("networkidle")
+        assert not any(a[1] == "coordenadas.json" for a in asked)
+        sec.scroll_into_view_if_needed()
+        expect(sec.locator("tbody tr")).to_have_count(25)
+        expect(sec.locator("[aria-label=cargando]")).to_have_count(0)
+        assert {a[1] for a in asked if a[0] == "detalle"} == {"20.json"}
+        n = int(re.search(r"de (\d+) registros", sec.locator(".hz-tbl-foot").inner_text().replace(".", "")).group(1))
+        sec.locator("[data-tbl-more]").first.click()
+        expect(sec.locator("tbody tr")).to_have_count(min(n, 50))
+        sec.locator("[data-sort='muertos']").click()
+        expect(sec.locator("th[aria-sort]")).to_have_count(1)
+        expect(sec.locator("th[aria-sort='descending']")).to_contain_text("Fallecidos")
+        with pg.expect_download() as dl:
+            sec.locator("[data-tbl-dl]").click()
+        out = tmp_path / "filtro.csv"
+        dl.value.save_as(out)
+        assert dl.value.suggested_filename.startswith("memoria-desastres_piura-piura-piura_agua_")
+        expect(pg.locator("#hz-tbl-st")).to_contain_text("Listo")
+        rows = list(csv.DictReader(io.StringIO(out.read_text(encoding="utf-8-sig"))))
+        assert len(rows) == n and list(rows[0])[:3] == ["Date", "DangerType", "Ubicacion"]
+        with zipfile.ZipFile(root / "assets" / "historico" / "eventos.zip") as z:
+            ref = {r["Id"]: r for r in csv.DictReader(io.TextIOWrapper(z.open("eventos.csv"), encoding="utf-8-sig"))}
+        for r in rows:
+            o = ref[r["Id"]]
+            assert o["Ubigeo"] == "200101" and o["DangerType"] in {"Inundacion fluvial", "Inundacion pluvial", "Inundacion", "Desborde de rio"}
+            assert {k: v for k, v in r.items() if k not in ("HectareasCultivo", "KmVias", "PerdidasUSD")} == {k: o[k] for k in r if k not in ("HectareasCultivo", "KmVias", "PerdidasUSD")}
+        # Sin filtros no se arma nada en el navegador: el botón es el del ZIP.
+        pg.goto(f"{base}#/memoria?vista=resumen")
+        expect(pg.locator("#hz-tbl [data-tbl-dl]")).to_have_count(0)
+        expect(pg.locator("#hz-tbl a[href$='eventos.zip']")).to_contain_text("todo el catálogo")
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+# --- Mi zona: riesgo esperado, elegir por pasos, ubicación y preguntas frecuentes ---
+
+def _zona(page, base, area=""):
+    go(page, base, f"zona?area={area}" if area else "zona")
+    expect(page.locator("#zn-dep option")).not_to_have_count(0, timeout=20000)
+
+
+def test_zona_shows_both_hazards_side_by_side_with_the_scenario_date_and_source(site, page):
+    base, root = site
+    S = json.loads((root / "assets/capas/escenario-distritos.json").read_text(encoding="utf-8"))
+    levels = S["levels"]
+    # Un distrito bajo en un peligro y muy alto en el otro: los dos a la vista, y el más alto nombrado.
+    area = next(c for c, (mm, inu) in sorted(S["districts"].items()) if mm and inu and mm[0] == 3 and inu[0] == 0)
+    mm, inu = S["districts"][area]
+    _zona(page, base, area)
+    card = page.locator("section[aria-labelledby='zn-rie']")
+    expect(card.locator("#zn-rie")).to_contain_text(re.compile(r"Riesgo esperado por lluvias: \w+ .*\d{4}"))
+    cards = card.locator(".zn-haz-c")
+    expect(cards).to_have_count(2)
+    for c in cards.all():
+        expect(c).to_be_visible()  # nunca detrás de una pestaña
+    expect(card.locator("[data-hazard='mm'] .lvl")).to_have_text(levels[mm[0]])
+    expect(card.locator("[data-hazard='inu'] .lvl")).to_have_text(levels[inu[0]])
+    expect(card.locator("#zn-rie-sum")).to_contain_text("Muy Alto")
+    expect(card.locator("#zn-rie-sum")).to_contain_text("inundaciones")
+    expect(card.locator("#zn-rie-sum")).to_contain_text("mire los dos")
+    shown = int(re.sub(r"\D", "", card.locator("[data-hazard='inu'] dd").first.inner_text()) or 0)
+    assert shown == inu[1], "las personas son las de la tabla del CENEPRED, sin cambios"
+    src = card.locator("#zn-rie-src")
+    expect(src).to_contain_text("elaborado en")
+    expect(src.locator("a[href='https://sigrid.cenepred.gob.pe/sigridv3/escenarios']")).to_have_count(1)
+    expect(card).to_contain_text("áreas de mayor susceptibilidad")
+    expect(card.locator("a[href='https://www.gob.pe/indeci']")).to_have_count(1)
+    # Un departamento: distritos por nivel, un peligro por columna, y la suma es la de la tabla.
+    dep = area[:2]
+    n = sum(1 for c in S["districts"] if c.startswith(dep))
+    _zona(page, base, dep)
+    rows = page.locator("table.zn-scen tbody tr")
+    expect(rows).to_have_count(4)
+    for col in (2, 3):
+        total = sum(int(re.sub(r"\D", "", x) or 0) for x in page.locator(f"table.zn-scen tbody td:nth-child({col})").all_inner_texts())
+        assert total == n
+    expect(page.locator("#zn-rie-sum")).to_contain_text(f"de {n} distritos")
+    assert not page.errors, page.errors
+
+
+def test_zona_adds_the_block_detail_only_where_cenepred_evaluated_blocks(site, page):
+    base, root = site
+    K = json.loads((root / "assets/capas/manzanas-riesgo.json").read_text(encoding="utf-8"))
+    area = K["blocks"][0][2]
+    n = sum(1 for b in K["blocks"] if b[2] == area)
+    _zona(page, base, area)
+    card = page.locator("section[aria-labelledby='zn-rie']")
+    expect(card.locator("#zn-mz")).to_be_visible()
+    expect(card.locator("table.zn-blocks tbody tr")).to_have_count(4)
+    shown = sum(int(re.sub(r"\D", "", t) or 0) for t in card.locator("table.zn-blocks tbody td:nth-child(2)").all_inner_texts())
+    assert shown == n, "la tabla cuenta las manzanas del distrito en la capa"
+    expect(card).to_contain_text("censo 2017")
+    expect(card).to_contain_text("no está libre de riesgo")
+    # Un distrito sin manzanas evaluadas tiene el escenario, sin el detalle por manzana.
+    _zona(page, base, "150110")
+    expect(page.locator(".zn-haz-c")).to_have_count(2)
+    expect(page.locator("#zn-mz")).to_have_count(0)
+    assert not page.errors, page.errors
+
+
+def test_zona_says_so_when_the_scenario_cannot_be_loaded(site, page):
+    base, _ = site
+    page.route("**/data/escenario-distritos.json*", lambda r: r.fulfill(status=503, body="x"))
+    page.route("**/assets/capas/escenario-distritos.json", lambda r: r.fulfill(status=503, body="x"))
+    go(page, base, "zona?area=150110")
+    expect(page.locator("#zn-rie-none")).to_contain_text("No se pudo cargar el escenario", timeout=20000)
+    expect(page.locator("#zn-hoy")).to_be_visible()  # el resto de la página sigue
+    expect(page.locator("a[href='https://www.gob.pe/indeci']").first).to_be_visible()
+
+
+def test_zona_uses_the_scenario_of_the_daily_update_and_says_when_it_was_read(site, page):
+    """Primero el escenario que publica la actualización diaria (data/), con su fecha de lectura y el siguiente ya
+    publicado; el panel de vigencia de la página tiene su fila."""
+    base, root = site
+    S = json.loads((root / "assets/capas/escenario-distritos.json").read_text(encoding="utf-8"))
+    daily = {**S, "scenario": {"id": "777", "from": "2027-02", "until": "2027-04", "prepared": "2027-01"},
+             "retrievedAt": "2027-01-20T04:40:00+00:00", "channel": "direct", "carried": False,
+             "archive": "archive/sources/cenepred-escenario/0123456789ab.zip",
+             "listed": {"next": {"id": "778", "from": "2027-03", "until": "2027-05", "prepared": "2027-02"}}}
+    # Del mismo publicationId que el resto: el sitio no muestra archivos de otra publicación.
+    daily["publicationId"] = json.loads((root / "data/dashboard.json").read_text(encoding="utf-8"))["publicationId"]
+    page.route("**/data/escenario-distritos.json*", lambda r: r.fulfill(status=200, content_type="application/json",
+                                                                         body=json.dumps(daily)))
+    go(page, base, "zona?area=150110")
+    card = page.locator("section[aria-labelledby='zn-rie']")
+    expect(card.locator("#zn-rie")).to_contain_text("febrero a abril de 2027", timeout=20000)
+    src = card.locator("#zn-rie-src")
+    expect(src).to_contain_text("elaborado en enero de 2027")
+    expect(src).to_contain_text("consulta el SIGRID cada día")
+    expect(src).to_contain_text("marzo a mayo de 2027")
+    expect(src.locator("a[href$='/data/archive/sources/cenepred-escenario/0123456789ab.zip']")).to_have_count(1)
+    panel = page.locator("details.fresh-panel")
+    expect(panel).to_have_count(1)
+    expect(panel.locator("tr[data-fresh='escenario']")).to_have_count(1)
+    expect(panel.locator("tr[data-fresh='alerts']")).to_have_count(1)
+    assert not page.errors, page.errors
+
+
+def test_zona_falls_back_to_the_copy_bundled_with_the_site(site, page):
+    base, _ = site
+    page.route("**/data/escenario-distritos.json*", lambda r: r.fulfill(status=404, body="no"))
+    go(page, base, "zona?area=150110")
+    expect(page.locator(".zn-haz-c")).to_have_count(2, timeout=20000)
+    expect(page.locator("#zn-rie-src")).to_contain_text("copia incluida en el sitio")
+
+
+def test_zona_step_by_step_lists_follow_and_set_the_place(site, page):
+    base, _ = site
+    _zona(page, base)
+    expect(page.locator("#zn-prov")).to_be_disabled()
+    page.select_option("#zn-dep", "20")
+    expect(page).to_have_url(re.compile(r"area=20$"))
+    expect(page.locator("#zn-prov")).to_be_enabled(timeout=20000)
+    expect(page.locator("#zn-dep")).to_have_value("20")
+    page.select_option("#zn-prov", "2001")
+    expect(page).to_have_url(re.compile(r"area=2001$"))
+    expect(page.locator("#zn-dist")).to_be_enabled(timeout=20000)
+    page.select_option("#zn-dist", "200101")
+    expect(page).to_have_url(re.compile(r"area=200101$"))
+    expect(page.locator("#zn-dist")).to_have_value("200101", timeout=20000)
+    expect(page.locator("#zn-q")).to_have_value(re.compile(r"^Piura · "))
+    # Volver un nivel: «Toda la provincia».
+    page.select_option("#zn-dist", "")
+    expect(page).to_have_url(re.compile(r"area=2001$"))
+    # «Elija…» quita el lugar de la página y de la ruta, y el mismo departamento se puede volver a elegir.
+    page.select_option("#zn-dep", "")
+    expect(page).to_have_url(re.compile(r"#/zona$"))
+    expect(page.locator("#zn-root")).to_be_empty(timeout=20000)
+    expect(page.locator("#zn-prov")).to_be_disabled()
+    expect(page.locator("#zn-q")).to_have_value("")
+    page.select_option("#zn-dep", "20")
+    expect(page).to_have_url(re.compile(r"area=20$"))
+    expect(page.locator("#zn-prov")).to_be_enabled(timeout=20000)
+    # Un enlace directo deja las tres listas en su lugar.
+    _zona(page, base, "150110")
+    expect(page.locator("#zn-dep")).to_have_value("15")
+    expect(page.locator("#zn-prov")).to_have_value("1501")
+    expect(page.locator("#zn-dist")).to_have_value("150110")
+    assert not page.errors, page.errors
+
+
+@pytest.mark.parametrize("case", ["piura", "fuera", "negado"])
+def test_zona_use_my_location_offers_nearby_districts_without_sending_the_position(site, browser, case):
+    base, _ = site
+    geo = {"piura": {"latitude": -5.1945, "longitude": -80.6328}, "fuera": {"latitude": 40.4168, "longitude": -3.7038}}.get(case)
+    ctx = browser.new_context(viewport={"width": 390, "height": 844}, locale="es-PE", geolocation=geo,
+                              permissions=["geolocation"] if geo else [])
+    pg = ctx.new_page()
+    errors, sent = [], []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("request", lambda r: sent.append(r.url))
+    try:
+        _zona(pg, base)
+        btn = pg.get_by_role("button", name="Usar mi ubicación")
+        expect(btn).to_be_visible()
+        before = len(sent)
+        btn.click()
+        if case == "piura":
+            links = pg.locator("#zn-near a.btn")
+            expect(links).to_have_count(3, timeout=20000)
+            expect(links.first).to_contain_text("Piura")
+            assert not [u for u in sent[before:] if "5.19" in u or "80.63" in u], "la posición no viaja en ningún pedido"
+            assert all(u.startswith(base) for u in sent[before:]), sent[before:]
+            links.first.click()
+            expect(pg).to_have_url(re.compile(r"area=2001\d\d$"))
+            expect(pg.locator("section[aria-labelledby='zn-rie']")).to_be_visible(timeout=20000)
+        elif case == "fuera":
+            expect(pg.locator("#zn-msg")).to_contain_text("no parece estar en el Perú", timeout=20000)
+            expect(pg.locator("#zn-near a")).to_have_count(0)
+        else:
+            expect(pg.locator("#zn-msg")).to_contain_text(re.compile("permiso|no pudo|tardó"), timeout=25000)
+            expect(btn).to_be_enabled()
+        overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+        assert overflow <= 1, f"desbordamiento horizontal de {overflow}px"
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+@pytest.mark.parametrize("vp", list(VIEWPORTS))
+def test_zona_fits_every_screen_and_answers_its_own_questions(site, browser, vp):
+    base, _ = site
+    w, h = VIEWPORTS[vp]
+    ctx = browser.new_context(viewport={"width": w, "height": h}, locale="es-PE")
+    pg = ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        for area in ("", "200101", "150110", "24"):
+            _zona(pg, base, area)
+            overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en zona?area={area} a {w}px"
+        faq = pg.locator(".zn-faq details")
+        assert faq.count() >= 6
+        faq.first.locator("summary").click()
+        expect(faq.first.locator("p")).to_contain_text("no emite alertas")
+        assert not errors, errors
+    finally:
+        ctx.close()
+
+
+# --- Boletín de eventos El Niño -----------------------------------------------------------------------------------
+# El sitio de las pruebas sale de las fuentes capturadas, sin avisos vigentes: el boletín con contenido es el de la
+# publicación real del 10 de noviembre de 2026 (tests/fixtures/boletin), con el corte movido a ahora para que no se
+# vea viejo y con el publicationId del sitio para que no se tome por otra publicación.
+
+BOL_FIX = Path(__file__).parent / "fixtures" / "boletin"
+
+
+def _boletin_doc(root):
+    from datetime import timezone
+
+    from enso import boletin as B
+
+    rd = lambda n: json.loads((BOL_FIX / n).read_text(encoding="utf-8"))  # noqa: E731
+    off = rd("oficial-2026-11-10.json")
+    doc = B.build(rd("feed-alertas-2026-11-10.json"), off["official"], rd("escenario-distritos-2026-11-10.json"),
+                  datetime(2026, 11, 10, 15, 31, 50, tzinfo=timezone.utc), None, off["freshness"])
+    doc["publicationId"] = json.loads((root / "data" / "dashboard.json").read_text(encoding="utf-8"))["publicationId"]
+    doc["cutoff"] = doc["generatedAt"] = datetime.now(timezone.utc).isoformat()
+    return doc
+
+
+@pytest.fixture(scope="module")
+def bol(site):
+    return _boletin_doc(site[1])
+
+
+def _bol_page(browser, site, doc, *, variant="mapa", **ctx_kw):
+    base, _ = site
+    ctx = browser.new_context(**{"viewport": {"width": 1280, "height": 900}, "locale": "es-PE", **ctx_kw})
+    ctx.add_init_script("if (!localStorage.getItem('enso-vista-boletin')) localStorage.setItem('enso-vista-boletin', JSON.stringify({v: '%s', chosen: true, at: '2000-01-01'}));" % variant)
+    pg = ctx.new_page()
+    pg.errors = []
+    pg.on("pageerror", lambda e: pg.errors.append(str(e)))
+    pg.on("console", lambda m: pg.errors.append(m.text) if m.type == "error" else None)
+    body = json.dumps(doc, ensure_ascii=False)
+    pg.route("**/data/boletin.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=body))
+    go(pg, base, "boletin")
+    expect(pg.locator("#bol-sheet")).to_be_visible(timeout=15000)
+    return ctx, pg
+
+
+def test_boletin_shows_the_published_counts_order_and_sources(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol)
+    c = bol["counts"]
+    for cls, k in (("r3", "rojo"), ("r2", "naranja"), ("ok", "verde")):
+        expect(pg.locator(f".bol-count.bc-{cls} strong")).to_have_text(str(c[k]))
+    expect(pg.locator("#bol-h")).to_contain_text(f"N° {bol['edition']}")
+    rows = pg.locator(".bol-row")
+    expect(rows).to_have_count(10)
+    assert [r.get_attribute("data-dep") for r in rows.all()] == [s["code"] for s in bol["segments"][:10]]
+    # La fuente de cada fila abre sus avisos con enlace a la institución.
+    first = pg.locator(".bol-row").first.locator("details.bol-evs")
+    if first.count():
+        first.locator("summary").click()
+        expect(first.locator("a[href^='http']").first).to_be_visible()
+    # Probabilidades: solo si el ENFEN las publicó, y con la página del informe.
+    if bol["enso"].get("probabilities"):
+        expect(pg.locator(".bol-what")).to_contain_text("ENFEN")
+    # Los 25 y de vuelta.
+    pg.locator("#bol-all").click()
+    expect(pg.locator(".bol-row")).to_have_count(25)
+    pg.locator("#bol-all").click()
+    expect(pg.locator(".bol-row")).to_have_count(10)
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+@pytest.mark.parametrize("variant", ["mapa", "mosaico"])
+def test_boletin_map_selects_a_department_and_switches_form(site, browser, bol, variant):
+    ctx, pg = _bol_page(browser, site, bol, variant=variant)
+    sel = ".bol-svg [data-dep='20']" if variant == "mapa" else ".bol-tiles [data-dep='20']"
+    expect(pg.locator(f"[data-variant='{variant}']")).to_have_attribute("aria-pressed", "true")
+    pg.locator(sel).click()
+    card = pg.locator("#bol-dep .bol-depcard")
+    expect(card).to_contain_text("Piura")
+    expect(pg.locator(".bol-row.on")).to_have_attribute("data-dep", "20") if pg.locator(".bol-row[data-dep='20']").count() else None
+    card.locator("[data-close]").click()
+    expect(pg.locator("#bol-dep .bol-depcard")).to_have_count(0)
+    other = "mosaico" if variant == "mapa" else "mapa"
+    pg.locator(f"[data-variant='{other}']").click()
+    expect(pg.locator(f"[data-variant='{other}']")).to_have_attribute("aria-pressed", "true")
+    expect(pg.locator(".bol-tiles" if other == "mosaico" else ".bol-svg")).to_be_visible()
+    # Elegida a mano: se recuerda al volver.
+    pg.reload()
+    expect(pg.locator(f"[data-variant='{other}']")).to_have_attribute("aria-pressed", "true", timeout=15000)
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_actions_share_copy_mail_and_print_one_page(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol, permissions=["clipboard-read", "clipboard-write"])
+    href = pg.locator("#bol-wa").get_attribute("href")
+    assert href.startswith("https://wa.me/?text=") and "Bolet" in __import__("urllib.parse").parse.unquote(href)
+    assert pg.locator("#bol-mail").get_attribute("href") == "data/boletin-correo.html"
+    for a in pg.locator(".bol-actions a[href$='.csv']").all():
+        assert pg.request.get(site[0] + a.get_attribute("href")).ok
+    pg.locator("#bol-copy").click()
+    expect(pg.locator("#bol-st")).to_contain_text("copiado")
+    assert pg.evaluate("navigator.clipboard.readText()") == bol["whatsapp"]
+    pg.evaluate("window.print = () => { window.__printed = true; }")
+    pg.locator("#bol-print").click()
+    assert pg.evaluate("window.__printed") is True
+    # La hoja impresa del top 10 entra en una A4.
+    pdf = pg.pdf(format="A4", print_background=True)
+    assert len(re.findall(rb"/Type\s*/Page[^s]", pdf)) == 1
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+@pytest.mark.parametrize("w", [320, 390])
+@pytest.mark.parametrize("scheme", ["light", "dark"])
+def test_boletin_fits_phones_in_both_themes(site, browser, bol, w, scheme):
+    ctx, pg = _bol_page(browser, site, bol, viewport={"width": w, "height": 800}, color_scheme=scheme)
+    pg.locator("#bol-all").click()
+    expect(pg.locator(".bol-row")).to_have_count(25)
+    over = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+    assert over <= 0, f"{over}px de scroll horizontal a {w}px"
+    wide = pg.evaluate("""() => [...document.querySelectorAll('#bol-sheet *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1).map(e => e.className || e.tagName).slice(0, 5)""")
+    assert not wide, wide
+    pg.locator(".bol-tiles [data-dep], .bol-svg [data-dep]").first.click()
+    expect(pg.locator("#bol-dep .bol-depcard")).to_be_visible()
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_says_so_when_the_file_is_missing(site, page):
+    base, _ = site
+    page.route("**/data/boletin.json*", lambda r: r.fulfill(status=404, body="no"))
+    go(page, base, "boletin")
+    expect(page.locator("#bol-root")).to_contain_text("El boletín no está en esta publicación")
+    expect(page.locator("#bol-print")).to_be_hidden()
+
+
+def test_boletin_warns_when_the_edition_is_old(site, browser, bol):
+    old = dict(bol, cutoff="2026-01-01T00:00:00+00:00")
+    ctx, pg = _bol_page(browser, site, old)
+    expect(pg.locator("#bol-root .notice-warn")).to_contain_text("la actualización diaria no corrió")
+    ctx.close()

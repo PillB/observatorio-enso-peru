@@ -84,7 +84,11 @@ def parse_geojson(data: dict, base_url: str = "") -> Parsed:
                 "summary": clean_text(". ".join(x for x in facts if x) + ".", 600),
                 "categories": ["sismo"] + (["tsunami"] if p.get("tsunami") else []),
                 # [lat, lon, incertidumbre en km]: el epicentro preliminar puede moverse unos 10 km
-                **({"coords": [[coords[1], coords[0], 5 if p.get("status") == "reviewed" else 10]]}
+                **({"coords": [[coords[1], coords[0], 5 if p.get("status") == "reviewed" else 10]],
+                    "points": [{"name": "Epicentro", "lat": round(coords[1], 3), "lon": round(coords[0], 3), "kind": "epicentro",
+                                "radiusKm": 5 if p.get("status") == "reviewed" else 10,
+                                **({"mag": mag} if isinstance(mag, (int, float)) else {}),
+                                **({"depthKm": round(depth)} if isinstance(depth, (int, float)) else {})}]}
                    if len(coords) >= 2 and all(isinstance(c, (int, float)) for c in coords[:2]) else {}),
             })
         elif "eventtype" in p:  # GDACS
@@ -309,19 +313,48 @@ def _en_date(s: str, hm: str = "") -> Optional[str]:
 VOLCANOES = {
     "sabancaya": "la provincia de Caylloma (Arequipa)", "ampato": "la provincia de Caylloma (Arequipa)",
     "misti": "la provincia de Arequipa (Arequipa)", "chachani": "la provincia de Arequipa (Arequipa)",
-    "coropuna": "la provincia de Castilla (Arequipa)", "ubinas": "la provincia de General Sánchez Cerro (Moquegua)",
+    # El Coropuna y el Sara Sara están en el límite de dos provincias (IGP); el Auquihuato, en Paucar del Sara Sara.
+    "coropuna": "las provincias de Castilla y Condesuyos (Arequipa)",
+    "ubinas": "la provincia de General Sánchez Cerro (Moquegua)",
     "huaynaputina": "la provincia de General Sánchez Cerro (Moquegua)", "ticsani": "la provincia de Mariscal Nieto (Moquegua)",
     "tutupaca": "la provincia de Candarave (Tacna)", "yucamane": "la provincia de Candarave (Tacna)",
     "casiri": "el departamento de Tacna", "purupuruni": "el departamento de Tacna",
-    "sara sara": "la provincia de Parinacochas (Ayacucho)", "auquihuato": "la provincia de Parinacochas (Ayacucho)",
+    "sara sara": "las provincias de Parinacochas y Paucar del Sara Sara (Ayacucho)",
+    "auquihuato": "la provincia de Paucar del Sara Sara (Ayacucho)",
     "quimsachata": "la provincia de Canchis (Cusco)",
 }
 
 
-def _volcano_place(name: str) -> str:
+#: Cumbre de cada volcán (lat, lon) según el catálogo Volcanoes of the World del Smithsonian (GVP, 2026), con su
+#: número; el Ampato no tiene entrada propia y comparte la del Sabancaya (su complejo, a unos 6 km).
+VOLCANO_POINTS = {
+    "sabancaya": (-15.787, -71.857, 354006), "ampato": (-15.787, -71.857, 354006),
+    "misti": (-16.2991, -71.4056, 354010), "chachani": (-16.1792, -71.5292, 354007),
+    "coropuna": (-15.52, -72.65, 354003), "ubinas": (-16.345, -70.8972, 354020),
+    "huaynaputina": (-16.6144, -70.8542, 354030), "ticsani": (-16.7586, -70.5981, 354031),
+    "tutupaca": (-17.026, -70.372, 354040), "yucamane": (-17.184, -70.196, 354050),
+    "casiri": (-17.4852, -69.7886, 354060), "purupuruni": (-17.2587, -69.8216, 354804),
+    "sara sara": (-15.3299, -73.4456, 354002), "auquihuato": (-15.0726, -73.1914, 354001),
+    "quimsachata": (-14.131, -71.363, 354000),
+}
+
+
+def _volcano_key(name: str) -> str:
     key = re.sub(r"\s+", " ", unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode().lower()).strip()
-    where = VOLCANOES.get(key.removeprefix("el ").removesuffix(" volcano"))
+    return key.removeprefix("el ").removesuffix(" volcano")
+
+
+def _volcano_place(name: str) -> str:
+    where = VOLCANOES.get(_volcano_key(name))
     return f" El volcán {name} está en {where}." if where else ""
+
+
+def _volcano_points(name: str) -> dict:
+    pt = VOLCANO_POINTS.get(_volcano_key(name))
+    if not pt:
+        return {}
+    return {"points": [{"name": f"Volcán {name}", "lat": pt[0], "lon": pt[1], "kind": "volcan",
+                        "source": f"https://volcano.si.edu/volcano.cfm?vn={pt[2]}"}]}
 
 
 def parse_cenvul(body: bytes, base_url: str) -> Parsed:
@@ -343,7 +376,7 @@ def parse_cenvul(body: bytes, base_url: str) -> Parsed:
                           "link": f"{base_url}#{re.sub(r'[^a-z0-9]+', '-', f'{volcano} {kind} {when or ''}'.lower()).strip('-')}",
                           "published": when,
                           "summary": f"Alerta vulcanológica del CENVUL por {what} del volcán {volcano}." + _volcano_place(volcano),
-                          "categories": ["volcan", kind]})
+                          "categories": ["volcan", kind], **_volcano_points(volcano)})
         else:
             code = f.get("código", "")
             color = _ALERT_COLOR_RE.search(card)
@@ -356,7 +389,7 @@ def parse_cenvul(body: bytes, base_url: str) -> Parsed:
                           "published": _en_date(f.get("fecha de publicación", "")),
                           "summary": f"Boletín vulcanológico del CENVUL (IGP) sobre el volcán {volcano}"
                                      + (f". Nivel de alerta: {level.lower()}." if level else ".") + _volcano_place(volcano),
-                          "categories": ["volcan", level]})
+                          "categories": ["volcan", level], **_volcano_points(volcano)})
     if not cards:
         raise FeedError("la página del CENVUL no tiene tarjetas con el formato esperado")
     out = _finish(Parsed("cenvul-html", items))
@@ -485,6 +518,33 @@ def _layer_link(base_url: str, where: str) -> str:
     return f"{layer}/query?where={quote(where)}&outFields=*&returnGeometry=false&f=html"
 
 
+#: Recuadro del Perú (lat0, lon0, lat1, lon1) para descartar coordenadas vacías o fuera del país.
+_PERU_BOX = (-18.6, -81.5, 0.2, -68.4)
+
+
+def _in_peru_box(lat, lon) -> bool:
+    return isinstance(lat, (int, float)) and isinstance(lon, (int, float)) and \
+        _PERU_BOX[0] <= lat <= _PERU_BOX[2] and _PERU_BOX[1] <= lon <= _PERU_BOX[3]
+
+
+def _station_point(r: dict) -> Optional[dict]:
+    """La estación hidrológica de una fila de la capa del SENAMHI: su punto, el río y la cuenca (la que trae la capa,
+    que coincide con la unidad hidrográfica de la ANA en ese punto; ver ``tests/test_lugares.py``)."""
+    try:
+        lat, lon = float(r.get("LATITUD")), float(r.get("LONGITUD"))
+    except (TypeError, ValueError):
+        return None
+    if not _in_peru_box(lat, lon) or not r.get("NOM_ESTACI"):
+        return None
+    p = {"name": f"Estación {_proper(str(r['NOM_ESTACI']))}", "lat": round(lat, 4), "lon": round(lon, 4), "kind": "estacion"}
+    m = re.search(r"\bR[ÍI]O\s+(.+?)\s*[-–]\s*ESTACI", str(r.get("TITULO") or ""), re.I)
+    if m:
+        p["river"] = f"río {_proper(m.group(1))}"
+    if r.get("COD_CUENCA"):
+        p["basin"] = {"code": str(r["COD_CUENCA"]).strip(), "name": str(r.get("NOM_CUENCA") or "").strip()}
+    return p
+
+
 def _range_es(r: str) -> str:
     """«> 97» → «por encima de 97»; «38 - 97» → «entre 38 y 97»."""
     m = re.match(r"^\s*([<>]=?)\s*([\d.,]+)\s*$", r)
@@ -523,43 +583,64 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             places = sorted({f"{_proper(str(r.get('NOM_ESTACI') or ''))} ({w})" for r, w in zip([r for r in rs if r.get("NOMBDEP")], where)})
             facts = [f"Estación {'; '.join(places)}." if places else "",
                      clean_text(str(r0.get("PELIGRO_NI") or ""), 300), clean_text(str(r0.get("RECOMENDAC") or ""), 300)]
+            points = [p for p in (_station_point(r) for r in rs) if p]
             items.append({"title": clean_text(f"SENAMHI · aviso hidrológico N° {num}"
                                               + (f" (nivel {color})" if color else "")
                                               + f": {_river_title(str(r0.get('TITULO') or 'situación de los ríos'))}", 300),
                           "link": _layer_link(base_url, f"NUM_AVISO={int(num)}" if str(num).isdigit() else f"NUM_AVISO='{num}'"),
                           "published": _iso(when) if when else None,
                           "summary": clean_text(" ".join(x for x in facts if x), 600),
-                          "categories": [f"aviso hidrológico {num}"], "geo": list(dict.fromkeys(where))})
-    elif "NIVEL" in keys and "NOMBDEP" in keys:  # activación de quebradas: distritos (o conteos) por nivel
+                          "categories": [f"aviso hidrológico {num}"], "geo": list(dict.fromkeys(where)),
+                          **({"points": points} if points else {})})
+    elif "NIVEL" in keys and "NOMBDEP" in keys:  # activación de quebradas: cuántas por distrito (o por departamento)
+        # Cada polígono de la capa es una quebrada (unas decenas de hectáreas), no un distrito: la consulta las cuenta
+        # por nivel, fecha y distrito. Una respuesta sin NOMBDIST (la consulta vieja) solo dice cuántas por departamento.
+        from .geo import gazetteer
+
+        gz = gazetteer()
         groups: dict = {}
         for r in rows:
-            groups.setdefault((r.get("FECHA"), r.get("NIVEL")), {}).setdefault(_dep_name(r.get("NOMBDEP")), 0)
-            groups[(r.get("FECHA"), r.get("NIVEL"))][_dep_name(r.get("NOMBDEP"))] += int(r.get("N") or r.get("n") or 1)
-        for (fecha, nivel), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, str(kv[0][1])), reverse=True):
+            g = groups.setdefault((r.get("FECHA"), r.get("NIVEL")), {"deps": {}, "dists": {}})
+            dep = _dep_name(r.get("NOMBDEP"))
+            n = int(r.get("N") or r.get("n") or 1)
+            g["deps"][dep] = g["deps"].get(dep, 0) + n
+            if r.get("NOMBDIST"):
+                code = gz.from_admin(_proper(str(r.get("NOMBDIST") or "")), _proper(str(r.get("NOMBPROV") or "")), dep)
+                if code and len(code) == 6:
+                    g["dists"][code] = g["dists"].get(code, 0) + n
+        for (fecha, nivel), g in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, str(kv[0][1])), reverse=True):
             when = _day_ms(fecha)
-            per = sorted(by_dep.items(), key=lambda x: (-x[1], x[0]))
+            per = sorted(g["deps"].items(), key=lambda x: (-x[1], x[0]))
             total = sum(n for _, n in per)
             deps = [d for d, _ in per]
+            dists = sorted(g["dists"].items(), key=lambda x: (-x[1], x[0]))
             where = f"NIVEL='{nivel}'" + (f" AND FECHA=DATE '{when.date().isoformat()}'" if when else "")
+            in_dists = f" en {len(dists)} distrito{'s' if len(dists) != 1 else ''}" if dists else ""
+            top = ", ".join(f"{gz.label(c)['name']} ({gz.label(c[:2])['name']}) {n}" for c, n in dists[:8])
             items.append({"title": clean_text(f"SENAMHI · aviso de activación de quebradas por lluvias, {str(nivel).lower()}: "
-                                              f"{total} distrito{'s' if total != 1 else ''} de {_join(deps[:6])}"
+                                              f"{total} quebrada{'s' if total != 1 else ''}{in_dists} de {_join(deps[:6])}"
                                               + (f" y {len(deps) - 6} departamentos más" if len(deps) > 6 else ""), 300),
                           "link": _layer_link(base_url, where), "published": _iso(when) if when else None,
-                          "summary": clean_text("Distritos con probable activación de quebradas en las próximas 24 horas, "
-                                                "según el SENAMHI: " + ", ".join(f"{d} ({n})" for d, n in per) + ".", 600),
-                          "categories": ["huaico", str(nivel)], "geo": [", ".join(f"departamento de {d}" for d in deps)]})
+                          "summary": clean_text("Quebradas con probable activación en las próximas 24 horas, según el SENAMHI, "
+                                                "por departamento: " + ", ".join(f"{d} ({n})" for d, n in per) + "."
+                                                + (f" Distritos con más quebradas: {top}." if top else ""), 600),
+                          "categories": ["huaico", str(nivel)], "geo": [", ".join(f"departamento de {d}" for d in deps)],
+                          **({"areas": [{"code": c, "name": gz.label(c)["name"], "n": n} for c, n in dists]} if dists else {})})
     elif "INTENSIDAD" in keys and "RANGO" in keys:  # peligro de incendios forestales (FWI): polígonos sin lugares
         from .geo import department_names
-        from .geopoly import polygon_departments
+        from .geopoly import cap_rings, polygon_departments, shape_rings
 
         names = department_names()
-        groups = {}
+        groups, shapes = {}, {}
         for f in feats:
             r = (f or {}).get("properties") or (f or {}).get("attributes") or {}
-            g = groups.setdefault((r.get("FECHA"), str(r.get("INTENSIDAD") or "").strip(), str(r.get("RANGO") or "").strip()), {})
+            k = (r.get("FECHA"), str(r.get("INTENSIDAD") or "").strip(), str(r.get("RANGO") or "").strip())
+            g = groups.setdefault(k, {})
             for code, area in polygon_departments((f or {}).get("geometry") or {}).items():
                 g[code] = g.get(code, 0.0) + area
+            shapes.setdefault(k, []).extend(shape_rings((f or {}).get("geometry") or {}))
         for (fecha, intensidad, rango), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, kv[0][1]), reverse=True):
+            rings = cap_rings(shapes.get((fecha, intensidad, rango)) or [])
             total = sum(by_dep.values())
             # Las astillas de menos del 3 % del área no nombran un departamento.
             codes = [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
@@ -577,19 +658,21 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                                                 + (f"Departamentos, de mayor a menor área: {', '.join(deps)}. " if deps else "")
                                                 + "No es un incendio: son condiciones en que un fuego se inicia y propaga con facilidad.", 600),
                           "categories": ["incendio", "FWI", intensidad],
-                          "ubigeo": codes, "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else []})
+                          "ubigeo": codes, "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else [],
+                          **({"shapes": [{"rings": rings}]} if rings else {})})
     elif "NIVEL" in keys and "NOMBDEP" not in keys:  # avisos de precipitaciones de 24 horas: polígonos por nivel
         from .geo import department_names
-        from .geopoly import polygon_departments
+        from .geopoly import cap_rings, polygon_departments, shape_rings
 
         names = department_names()
-        groups = {}
+        groups, shapes = {}, {}
         for f in feats:
             r = (f or {}).get("properties") or (f or {}).get("attributes") or {}
             nivel = str(r.get("NIVEL") or "").strip()
             if not re.match(r"(?i)^nivel\s+[2-4]$", nivel):
                 continue  # el nivel 1 (verde) no es un aviso
             g = groups.setdefault((r.get("FECHA"), nivel), {})
+            shapes.setdefault((r.get("FECHA"), nivel), []).extend(shape_rings((f or {}).get("geometry") or {}))
             # Un polígono cubre a veces varios departamentos: su área se reparte con una grilla.
             for code, area in polygon_departments((f or {}).get("geometry") or {}, sample=True).items():
                 g[code] = g.get(code, 0.0) + area
@@ -609,7 +692,8 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                                                 "24 horas, según la capa del SENAMHI en el servidor GEOSINPAD del INDECI. "
                                                 + (f"Departamentos, de mayor a menor área: {', '.join(deps)}." if deps else ""), 600),
                           "categories": ["lluvias", nivel], "ubigeo": codes,
-                          "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else []})
+                          "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else [],
+                          **({"shapes": [{"rings": rings}]} if (rings := cap_rings(shapes.get((fecha, nivel)) or [])) else {})})
         if not items:
             return Parsed("arcgis-json", [], ["la capa no tiene avisos de nivel 2 o más"])
     else:
@@ -624,7 +708,6 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
 # no se cuentan.
 
 FIRMS_MAP = "https://firms.modaps.eosdis.nasa.gov/map/#d:24hrs;@-75.0,-9.4,5.6z"
-_PERU_BOX = (-18.6, -81.5, 0.2, -68.4)  # lat0, lon0, lat1, lon1
 
 
 def _days_es(a: datetime, b: datetime) -> str:
@@ -652,7 +735,7 @@ def parse_firms(body: bytes, base_url: str = "") -> Parsed:
         raise FeedError("no es un CSV de focos de calor de FIRMS")
     names = department_names()
     by_dep: dict[str, int] = {}
-    times, low, sat = [], 0, ""
+    times, low, sat, spots = [], 0, "", []
     for r in csv.DictReader(io.StringIO(text)):
         try:
             lat, lon = float(r["latitude"]), float(r["longitude"])
@@ -667,6 +750,7 @@ def parse_firms(body: bytes, base_url: str = "") -> Parsed:
             low += 1
             continue
         by_dep[code] = by_dep.get(code, 0) + 1
+        spots.append((lat, lon))
         sat = sat or str(r.get("satellite") or "").strip()
         hhmm = str(r.get("acq_time") or "").strip().zfill(4)
         try:
@@ -688,9 +772,14 @@ def parse_firms(body: bytes, base_url: str = "") -> Parsed:
     summary = (f"Detecciones del satélite {sat_name or '?'} (VIIRS, 375 m) {span}: "
                + ", ".join(f"{names.get(c, c)} {n}" for c, n in per) + ". Un foco de calor es una temperatura alta "
                "detectada desde el espacio: puede ser un incendio forestal, una quema agrícola u otra fuente de calor.")
+    from .geopoly import grid_points
+
+    # Dónde están los focos: celdas de 0,1° (~11 km) con cuántos caen en cada una (un foco es un píxel de 375 m).
+    cells = [{**c, "kind": "focos"} for c in grid_points(spots)]
     item = {"title": clean_text(title, 300), "link": FIRMS_MAP, "published": _iso(max(times)) if times else None,
             "summary": clean_text(summary, 600), "categories": ["incendio", "focos de calor"],
-            "ubigeo": [c for c, _ in per], "geo": [", ".join(f"departamento de {names.get(c, c)}" for c, _ in per)]}
+            "ubigeo": [c for c, _ in per], "geo": [", ".join(f"departamento de {names.get(c, c)}" for c, _ in per)],
+            "points": cells}
     return Parsed("firms-csv", [item], repairs)
 
 

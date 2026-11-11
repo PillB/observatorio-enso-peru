@@ -129,7 +129,7 @@ class Relay:
     unas horas la última copia válida de una URL que dejó de responder).
     """
 
-    FILE_RE = re.compile(r"^files/[0-9a-f]{16}\.(pdf|html|json|xml|txt)$")
+    FILE_RE = re.compile(r"^files/[0-9a-f]{16}\.(pdf|html|json|xml|txt|zip)$")
 
     def __init__(self, root: Path, max_age_hours: float = 7 * 24):
         self.root = Path(root)

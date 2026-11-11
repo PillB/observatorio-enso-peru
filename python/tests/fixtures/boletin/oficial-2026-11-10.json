@@ -1,0 +1,494 @@
+{
+"generatedAt": "2026-11-10T15:31:50+00:00",
+"official": {
+"noaa": {
+"institution": "NOAA / CPC",
+"status": "El Niño Advisory",
+"statusEs": "Advertencia de El Niño",
+"codes": [
+"nino_advisory"
+],
+"level": "alert",
+"issued": "2026-10-08",
+"nextIssue": "2026-11-12",
+"nextIssueEstimated": false,
+"synopsis": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than an 83% chance). El Niño strengthened further last month, with sea surface temperature anomalies exceeding +4.0°C in portions of the eastern equatorial Pacific",
+"valuesInText": {
+"nino34": 2.1,
+"nino3": 3.0,
+"nino12": 3.9
+},
+"url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml",
+"channel": "direct",
+"carried": false,
+"retrievedAt": "2026-11-10T15:30:45+00:00",
+"stale": false,
+"archive": "archive/sources/cpc-ensodisc/e0e2a3b2309a.txt"
+},
+"enfen": {
+"institution": "ENFEN",
+"listing": [
+{
+"year": 2026,
+"number": 19,
+"id": "19-2026",
+"url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-19-2026/?wpdmdl=2200&refresh=6af22412391f81794253842",
+"date": "2026-10-30",
+"kind": "oficial"
+},
+{
+"year": 2026,
+"number": 18,
+"id": "18-2026",
+"url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
+"date": "2026-10-16",
+"kind": "oficial"
+},
+{
+"year": 2026,
+"number": 17,
+"id": "17-2026",
+"url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/17-2026.pdf",
+"date": "2026-09-28",
+"kind": "oficial"
+},
+{
+"year": 2026,
+"number": 16,
+"id": "16-2026",
+"url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/16-2026.pdf",
+"date": "2026-09-14",
+"kind": "oficial"
+},
+{
+"year": 2026,
+"number": 15,
+"id": "15-2026",
+"url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/15-2026.pdf",
+"date": "2026-08-28",
+"kind": "oficial"
+},
+{
+"year": 2026,
+"number": 14,
+"id": "14-2026",
+"url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/14-2026.pdf",
+"date": "2026-08-14",
+"kind": "oficial"
+}
+],
+"channel": "relay-peru",
+"carried": false,
+"retrievedAt": "2026-11-10T15:29:28+00:00",
+"url": "https://enfen.imarpe.gob.pe/comunicados/",
+"status": "Alerta de El Niño Costero",
+"statusCode": "alerta_nino",
+"level": "alert",
+"number": "19-2026",
+"issued": "2026-10-30",
+"nextIssue": "2026-11-13",
+"summary": "El Niño Costero continuaría hasta fines de otoño de 2027. El calentamiento oceánico persiste en gran parte del Pacífico tropical, registrando la máxima intensidad frente a la costa peruana, desde el inicio del evento (Figura 1). El Niño costero (región Niño 1+2), mantendría una magnitud extraordinaria 2 hasta febrero de 2027 (Figura 2); luego, su magnitud tendería a disminuir gradualmente hasta junio de 2027.",
+"documentUrl": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-19-2026/?wpdmdl=2200",
+"archive": "archive/sources/enfen-comunicados/78b4793e3140.pdf",
+"stale": false,
+"outlook": [
+{
+"region": "nino12",
+"phase": "calida",
+"magnitude": "extraordinaria",
+"until": "2027-02",
+"then": null,
+"quote": "El Niño costero (región Niño 1+2), mantendría una magnitud extraordinaria 2 hasta febrero de 2027 (Figura 2); luego, su magnitud tendería a disminuir gradualmente hasta junio de 2027."
+},
+{
+"region": "nino34",
+"phase": "calida",
+"magnitude": "muy_fuerte",
+"until": "2027-02",
+"then": null,
+"quote": "Por su parte, en el Pacífico central (región Niño 3.4) es más probable que El Niño continúe con un calentamiento de magnitud de muy fuerte 3 hasta febrero de 2027 (Figura 2), con un declive en su magnitud que llevaría a una condición neutra en junio de 2027."
+}
+],
+"outlookUnread": false,
+"informe": {
+"number": 19,
+"dataTo": "2026-10-28",
+"url": "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n19-al-28-de-octubre-de-2026/?wpdmdl=2202",
+"method": "deterministic",
+"icenProvisional": null,
+"lastOfficial": {
+"period": "2026-08",
+"icen": 3.98,
+"roni": 1.69,
+"oni": 2.16,
+"evidence": {
+"quote": "Ago-26 3.98 Cálida Extraordinaria 1.69 Cálida Fuerte 2.16 Cálida Muy fuerte",
+"page": 26
+}
+},
+"probabilities": [
+{
+"region": "nino34",
+"months": [
+"2026-11",
+"2026-12",
+"2027-01",
+"2027-02",
+"2027-03",
+"2027-04",
+"2027-05",
+"2027-06",
+"2027-07"
+],
+"categories": {
+"fria_fuerte": [
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+1
+],
+"fria_moderada": [
+0,
+0,
+0,
+0,
+0,
+0,
+1,
+6,
+7
+],
+"fria_debil": [
+0,
+0,
+0,
+0,
+0,
+1,
+15,
+20,
+22
+],
+"neutro": [
+0,
+0,
+0,
+0,
+1,
+10,
+30,
+47,
+45
+],
+"calida_debil": [
+0,
+0,
+0,
+0,
+5,
+33,
+33,
+15,
+16
+],
+"calida_moderada": [
+0,
+0,
+2,
+8,
+34,
+32,
+16,
+10,
+9
+],
+"calida_fuerte": [
+3,
+6,
+18,
+43,
+35,
+18,
+4,
+2,
+0
+],
+"calida_muy_fuerte": [
+97,
+94,
+80,
+49,
+25,
+6,
+1,
+0,
+0
+]
+},
+"summer": {
+"fria_fuerte": 0,
+"fria_moderada": 0,
+"fria_debil": 0,
+"neutro": 0,
+"calida_debil": 0,
+"calida_moderada": 5,
+"calida_fuerte": 35,
+"calida_muy_fuerte": 60
+},
+"evidence": {
+"quote": "Tabla 6. Probabilidades mensuales estimadas de las condiciones cálidas y frías anómalas en el Pacífico central (región 3.4) entre noviembre de 2026 y julio de 2027",
+"page": 31
+},
+"review": false
+},
+{
+"region": "nino12",
+"months": [
+"2026-11",
+"2026-12",
+"2027-01",
+"2027-02",
+"2027-03",
+"2027-04",
+"2027-05",
+"2027-06",
+"2027-07"
+],
+"categories": {
+"fria_fuerte": [
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+1
+],
+"fria_moderada": [
+0,
+0,
+0,
+0,
+0,
+0,
+0,
+1,
+2
+],
+"fria_debil": [
+0,
+0,
+0,
+0,
+0,
+1,
+3,
+5,
+13
+],
+"neutro": [
+0,
+0,
+0,
+0,
+1,
+3,
+10,
+20,
+35
+],
+"calida_debil": [
+0,
+0,
+0,
+1,
+5,
+20,
+24,
+24,
+23
+],
+"calida_moderada": [
+0,
+0,
+2,
+4,
+11,
+25,
+25,
+22,
+15
+],
+"calida_fuerte": [
+2,
+10,
+23,
+45,
+43,
+28,
+22,
+20,
+10
+],
+"calida_extraordinaria": [
+98,
+90,
+75,
+50,
+41,
+23,
+16,
+8,
+1
+]
+},
+"summer": {
+"fria_fuerte": 0,
+"fria_moderada": 0,
+"fria_debil": 0,
+"neutro": 0,
+"calida_debil": 0,
+"calida_moderada": 5,
+"calida_fuerte": 30,
+"calida_extraordinaria": 65
+},
+"evidence": {
+"quote": "Tabla 7. Probabilidades mensuales estimadas de las condiciones cálidas y frías anómalas en el Pacífico oriental (región Niño 1+2) entre noviembre de 2026 y julio de 2027",
+"page": 31
+},
+"review": false
+}
+],
+"seasonal": [],
+"thermocline": {
+"state": "profunda",
+"evidence": {
+"quote": "Hacia fines de octubre, la isoterma de 15 °C, indicador de la profundidad de la termoclina frente a Paita y Chicama, se profundizó respecto al mes anterior, ubicándose muy por debajo de su posición climatológica dentro de las 100 millas náuticas.",
+"page": 15
+},
+"subsurface": {
+"anomaly": 9.0,
+"layer": "en los primeros 100 m",
+"isotherms": null,
+"quote": "12 Por otro lado, frente a la costa centro y sur de Perú se registró un incremento de la condición cálida durante octubre, desarrollando anomalías de hasta +9 °C en los primeros 100 m de profundidad con valores entre +5 °C y +6 °C en superficie, alrededor de 30 millas de costa; asimismo, la condición cálida se extendió hasta al menos los 500 m de profundidad (Figura 29, 30, 31, 32 y 33).",
+"page": 15
+}
+},
+"issues": [],
+"retrievedAt": "2026-11-02T04:27:53+00:00",
+"channel": "relay-peru",
+"communique": "19-2026",
+"pages": 80,
+"archive": "archive/sources/enfen-comunicados/a3312a91c723.pdf",
+"icenSuperseded": "2026-09"
+}
+}
+},
+"freshness": {
+"items": {
+"nino12": {
+"state": "al-dia"
+},
+"nino34": {
+"state": "al-dia"
+},
+"nino12_oisst": {
+"state": "al-dia"
+},
+"nino34_oisst": {
+"state": "al-dia"
+},
+"nino3_oisst": {
+"state": "al-dia"
+},
+"nino4_oisst": {
+"state": "al-dia"
+},
+"icen": {
+"state": "al-dia"
+},
+"roni": {
+"state": "al-dia"
+},
+"oni": {
+"state": "al-dia"
+},
+"soi": {
+"state": "al-dia"
+},
+"soi_troup": {
+"state": "al-dia"
+},
+"wpac850_anom": {
+"state": "al-dia"
+},
+"wpac850": {
+"state": "al-dia"
+},
+"cpac850_anom": {
+"state": "al-dia"
+},
+"cpac850": {
+"state": "al-dia"
+},
+"epac850_anom": {
+"state": "al-dia"
+},
+"epac850": {
+"state": "al-dia"
+},
+"heat_160e80w": {
+"state": "al-dia"
+},
+"heat_180w100w": {
+"state": "al-dia"
+},
+"heat_130e80w": {
+"state": "al-dia"
+},
+"d20_coastal": {
+"state": "al-dia"
+},
+"d20_global": {
+"state": "al-dia"
+},
+"d20_180w100w": {
+"state": "al-dia"
+},
+"weekly": {
+"state": "al-dia"
+},
+"enfen": {
+"state": "al-dia"
+},
+"noaa": {
+"state": "al-dia"
+},
+"enfen-outlook": {
+"state": "al-dia"
+},
+"enfen-probabilities": {
+"state": "al-dia"
+},
+"icen-provisional": {
+"state": "sin-dato"
+},
+"alerts": {
+"state": "al-dia"
+},
+"news": {
+"state": "al-dia"
+},
+"escenario": {
+"state": "al-dia"
+}
+}
+}
+}

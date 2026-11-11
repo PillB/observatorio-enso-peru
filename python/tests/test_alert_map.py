@@ -7,7 +7,7 @@ import re
 import subprocess
 from pathlib import Path
 
-from enso.geo import department_names
+from enso.geo import department_names, gazetteer
 from test_geo_console import JS, _need_node
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,10 +20,12 @@ def test_map_asset_has_every_department_and_place_point():
         assert d["d"].startswith("M") and d["d"].endswith("Z")
         x, y = d["label"]
         assert 0 <= x <= m["width"] and 0 <= y <= m["height"]
-    # Un punto por provincia y por distrito de los límites del IGN, dentro del mapa.
-    assert sum(len(k) == 4 for k in m["points"]) > 190 and sum(len(k) == 6 for k in m["points"]) > 1800
+    # Un punto por cada provincia y cada distrito del nomenclátor, dentro del mapa: un aviso en un distrito sin
+    # punto no se dibujaría en la versión B.
+    gz = gazetteer()
+    assert set(gz.provs) | set(gz.dists) <= set(m["points"])
     assert all(0 <= x <= m["width"] and 0 <= y <= m["height"] for x, y in m["points"].values())
-    assert "IGN" in m["source"]
+    assert "INDECI" in m["source"]
     assert (ROOT / "public" / "assets" / "peru-map.json").stat().st_size < 150_000
 
 

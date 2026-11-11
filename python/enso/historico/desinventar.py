@@ -98,6 +98,14 @@ def _num(v: str) -> Optional[float]:
     return (int(x) if x == int(x) else round(x, 2)) if x > 0 else None
 
 
+def _km(v: str) -> Optional[float]:
+    """Los kilómetros de vías: DesInventar los guarda en metros aunque el campo se llame «kmvias» («Routes affected:
+    the length of transport networks destroyed and/or rendered unusable, in metres», DesInventar Methodological Guide
+    8.1.9, 2009; San Hilarión, 1996: «7 kms de la Carretera Marginal», kmvias = 7000)."""
+    m = _num(v)
+    return (int(m) // 1000 if m % 1000 == 0 else round(m / 1000, 3)) if m else None
+
+
 def _clean(text: str) -> str:
     text = _AUTHOR.sub("", text or "")
     text = re.sub(r"\s*/\s*", "; ", text)
@@ -164,7 +172,7 @@ def records(xml: str, territory, calendar) -> Iterator[dict]:
             "Damnificados": _num(r.get("damnificados")), "Evacuados": _num(r.get("evacuados")),
             "Reubicados": _num(r.get("reubicados")), "Desplazados": None, "ViviendasDestruidas": _num(r.get("vivdest")),
             "ViviendasAfectadas": _num(r.get("vivafec")), "HectareasCultivo": _num(r.get("nhectareas")),
-            "KmVias": _num(r.get("kmvias")), "CentrosEducativos": _num(r.get("nescuelas")),
+            "KmVias": _km(r.get("kmvias")), "CentrosEducativos": _num(r.get("nescuelas")),
             "CentrosSalud": _num(r.get("nhospitales")), "PerdidasUSD": _num(r.get("valorus")),
         }
         reported = any(v for v in imp.values())

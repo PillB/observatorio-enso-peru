@@ -93,9 +93,16 @@ def test_offshore_lake_and_neighbours():
     assert locate(float("nan"), -77) is None
 
 
-def test_newer_districts_lower_confidence():
-    hit = locate(-12.0167, -76.9333)  # Huachipa (2023) cae en Lurigancho en los límites de la fuente
-    assert hit["code"] == "150118" and hit["confidence"] < 0.8
+@pytest.mark.parametrize("lat,lon,code", [
+    (-9.0152, -75.7691, "250307"),   # Boquerón (Padre Abad), creado en 2021
+    (-8.0549, -79.0152, "130112"),   # Alto Trujillo, Ley N° 31644 (2022)
+    (-12.3159, -73.8603, "080918"),  # Unión Asháninka (La Convención)
+    (-11.3, -74.4, "120604"),        # Mazamari, que los límites de 2020 unían con Pangoa
+    (-12.0167, -76.9333, "150118"),  # Huachipa: centro poblado de Lurigancho, no un distrito
+])
+def test_districts_created_after_2020_have_their_own_polygon(lat, lon, code):
+    hit = locate(lat, lon)
+    assert hit["code"] == code and hit["confidence"] == 0.95, hit
 
 
 def test_usgs_epicentre_coordinates_win_over_text():

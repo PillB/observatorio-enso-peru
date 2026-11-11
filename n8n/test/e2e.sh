@@ -26,7 +26,7 @@ jq --arg api "http://127.0.0.1:$PORT" --arg only "$ONLY" '
     map(if .name == "api" then .value = $api elif .name == "only" then .value = $only else . end)
 ' "$ROOT/n8n/dist/enso-n8n-recolector.json" > "$WORK/recolector.json"
 cat > "$WORK/credenciales.json" <<'JSON'
-[{"id":"EnsoGithubCred01","name":"GitHub ENSO (n8n)","type":"githubApi","data":{"server":"https://api.github.com","user":"prueba","accessToken":"token-de-prueba"}}]
+[{"id":"JFHwj9JHLMkHWCLT","name":"GitHub ENSO (n8n)","type":"githubApi","data":{"server":"https://api.github.com","user":"prueba","accessToken":"token-de-prueba"}}]
 JSON
 
 PROXY_ARGS=()

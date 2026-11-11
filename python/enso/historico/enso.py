@@ -104,6 +104,8 @@ class EnsoCalendar:
         for a, b, name, deps in NAMED:
             if month_known and a <= date <= b and (deps is None or dep in deps) and danger in NAMED_TYPES:
                 return name, "curado"
+        if month_known and self.icen and period > max(self.icen) and source_cause not in ("El Niño", "La Niña"):
+            return "ICEN pendiente", "pendiente"  # el ICEN de ese mes aún no se publica: no es «sin asociación»
         ph = self.phase(period) if month_known else Phase("", "", "", None, None)
         climate = danger in RAIN_TYPES or danger in {"Sequias", "Oleaje anomalo", "Erosion costera", "Epidemia", "Plaga",
                                                      "Vientos fuertes", "Ola de calor", "Incendio forestal"}

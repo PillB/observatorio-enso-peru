@@ -7,8 +7,11 @@ aviso 432 es el que adjuntaron quienes probaron el sitio); los reportes, sus pri
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+import pytest
 
 from enso import documentos as D
 from enso.geo import locate_item
@@ -71,6 +74,38 @@ def test_short_term_warnings_list_exposed_provinces():
     assert {"0201", "0218"} <= set(q["codes"]) and "Activación de Quebradas" in q["source"]
 
 
+@pytest.mark.parametrize("name,wrapped", [
+    # Nombres que pypdf corta al final de una línea de la celda («Víctor / Fajardo», «San / Pablo»).
+    ("corto-plazo-lluvias-297.txt", {"0510", "0611", "1310", "0207"}),
+    ("corto-plazo-quebradas-199.txt", {"0508", "0612", "2110"}),
+    ("corto-plazo-lluvias-298.txt", {"0207", "0612", "1310", "0701"}),  # 0701: «*Callao» en la fila de Lima
+])
+def test_short_term_warnings_keep_every_province_of_the_table(name, wrapped):
+    """Cada provincia de la tabla, comparada con una lectura independiente: el texto de la tabla en una sola
+    línea, cortado por los nombres de los departamentos y luego por comas."""
+    from enso.geo import gazetteer, key
+
+    raw = text(name)
+    codes = set(D.read(raw, "Aviso de corto plazo ante lluvias intensas")["codes"])
+    assert wrapped <= codes
+    gz = gazetteer()
+    table = re.search(r"DEPARTAMENTOS\s+PROVINCIAS\s+EXPUESTAS(.+?)(?:\n\s*(?:INDECI|INTERPRETACI|NIVELES|Fuente|"
+                      r"PERSPECTIVAS)|\Z)", raw, re.S).group(1)
+    flat = re.sub(r"\s+", " ", table).split(" * ")[0]
+    deps = {d["name"].upper(): c for c, d in gz.deps.items()}
+    parts = re.split("(" + "|".join(sorted(map(re.escape, deps), key=len, reverse=True)) + r")(?= \*?[A-ZÁÉÍÓÚ][a-z])", flat)
+    expected = set()
+    for dep, body in zip(parts[1::2], parts[2::2]):
+        for n in re.split(r"\s*,\s*|\s+y\s+", body.strip(" .")):
+            n = n.strip(" .")
+            hit = [c for c, p in gz.provs.items() if c[:2] == deps[dep] and key(p["name"]) == key(n)]
+            if n.startswith("*") and key(n.lstrip("*")) == "callao":
+                hit = ["0701"]
+            assert len(hit) == 1, (dep, n)
+            expected |= set(hit)
+    assert codes == expected
+
+
 def test_swell_bulletin_maps_the_coast():
     doc = D.read(text("oleaje-043.txt"), "Aviso especial de oleaje N° 043")
     assert doc["basis"] == "tramos del litoral del boletín de oleajes del COEN"
@@ -91,6 +126,32 @@ def test_emergency_reports_give_the_exact_district():
                                                                   "200209", "200401"]
     # El pie de página («Chorrillos, Lima – Perú») no es un lugar del reporte.
     assert "15" not in D.location_rows(text("reporte-14898-huaraz.txt"))
+
+
+def test_emergency_reports_give_the_populated_place():
+    """El centro poblado del hecho (``enso.lugares``): el que nombra la descripción y, si no se lee (pypdf parte
+    «s ector de Panamá»), el de la columna de localidad de la tabla de ubicación, aunque esté pegado a otras celdas."""
+    tal = D.read(text("reporte-talavera.txt"))["localidades"]
+    assert [(p["name"], p["evidence"], p["district"]) for p in tal] == [("Sachapuna", "comunidad de sachapuna", "030216")]
+    cond = D.read(text("reporte-condebamba.txt"))["localidades"]
+    assert [(p["name"], p["code"], p["evidence"]) for p in cond] == [
+        ("Panama", "0602030021", "tabla de ubicación del reporte: Panama")]
+    assert cond[0]["basin"] == {"code": "49898", "name": "Cuenca Crisnejas"} and cond[0]["radiusKm"] == 1.0
+    # «UROS CHULLUNI / CHIMUPUNOPUNOPUNO»: hay dos Chimu en el distrito de Puno, a más de 2 km: no se adivina.
+    assert "localidades" not in D.read(text("reporte-puno.txt"))
+    # Barrio Villón (Huaraz) y el cruce de calles de Moquegua no están en el nomenclátor de centros poblados.
+    assert "localidades" not in D.read(text("reporte-14898-huaraz.txt"))
+    assert "localidades" not in D.read(text("reporte-moquegua.txt"))
+    regs = {r["title"]: r for r in json.loads((FIX / "regresiones.json").read_text(encoding="utf-8"))}
+    got = {t: [p["name"] for p in D.read(r["text"], t).get("localidades") or []] for t, r in regs.items()}
+    named = {t: v for t, v in got.items() if v}
+    assert ["Pedregal"] in named.values() and ["Chipta"] in named.values()  # «LOCUMBAJORGE BASADRETACNA PEDREGAL»
+    assert len(named) >= 8, got
+    # Cada punto, en su distrito.
+    from enso.lugares import inside_district
+    for t, r in regs.items():
+        for p in D.read(r["text"], t).get("localidades") or []:
+            assert inside_district(p["district"], p["lat"], p["lon"]), (t, p)
 
 
 def test_backtest_regressions_from_real_reports():

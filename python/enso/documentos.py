@@ -145,31 +145,40 @@ def _unique(codes: list[str]) -> Optional[str]:
 
 def province_table(text: str) -> list[str]:
     """Tabla «DEPARTAMENTOS · PROVINCIAS EXPUESTAS» de un aviso de corto plazo → códigos de provincia (o del
-    departamento, si una provincia no se reconoce)."""
+    departamento, si una provincia no se reconoce).
+
+    pypdf corta la celda de cada departamento en líneas, a veces en medio de un nombre («Carlos / Fermin
+    Fitzcarrald», «San / Pablo», «Santiago de / Chuco»): se une todo lo que sigue a un departamento hasta el
+    siguiente y recién ahí se separa por comas. «*Callao» en la fila de Lima es la Provincia Constitucional."""
     m = re.search(r"DEPARTAMENTOS\s+PROVINCIAS\s+EXPUESTAS(?P<t>.+?)(?:\n\s*(?:INDECI|INTERPRETACI|NIVELES|Fuente|PERSPECTIVAS)|\Z)",
                   text, re.S)
     if not m:
         return []
     gz = _gz()
-    out: list[str] = []
-    dep = None
+    blocks: list[tuple[str, str]] = []
     for chunk in re.split(r"\n", m.group("t")):
         chunk = chunk.strip()
         if not chunk:
             continue
-        head = re.match(r"^([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]+?)(?=\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]|\s*$)", chunk)
+        head = re.match(r"^([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]+?)(?=\s+\*?[A-ZÁÉÍÓÚÑ][a-záéíóúñ]|\s*$)", chunk)
         if head and _dep_code(head.group(1)):
-            dep = _dep_code(head.group(1))
-            if dep not in out:
-                out.append(dep)
-            chunk = chunk[head.end():]
-        if not dep:
-            continue
-        for name in re.split(r"\s*,\s*|\s+y\s+", chunk.strip(" .")):
+            blocks.append((_dep_code(head.group(1)), chunk[head.end():]))
+        elif blocks:
+            blocks[-1] = (blocks[-1][0], blocks[-1][1] + " " + chunk)
+    out: list[str] = []
+    for dep, body in blocks:
+        if dep not in out:
+            out.append(dep)
+        # Lo que sigue al punto final de la celda es otra cosa (la nota «* Provincia Constitucional del Callao»).
+        body = re.split(r"\.\s", body + " ", maxsplit=1)[0]
+        for name in re.split(r"\s*,\s*|\s+y\s+", _flat(body).strip(" .")):
             name = name.strip(" .")
             if not name:
                 continue
-            c = _unique(gz.find(name, "provincia", dep))
+            if name.startswith("*") and _dep_code(name.strip("* ")) == "07":
+                c = "0701"
+            else:
+                c = _unique(gz.find(name, "provincia", dep))
             if c and c not in out:
                 out.append(c)
     # Sin el departamento si ya está una de sus provincias.
@@ -255,6 +264,17 @@ def _same_name(code: str, others: list[str]) -> int:
     return sum(1 for o in others if o != code and mine & {_compact(n) for n in sp[o]})
 
 
+def _location_table(text: str) -> Optional[_Section]:
+    """La tabla «UBICACIÓN» de un reporte de emergencia, sin sus rótulos."""
+    m = re.search(r"UBICACI[ÓO]N\s*:?(?P<t>.+?)(?:\n\s*\d\.\s+[A-ZÁÉÍÓÚ]|EVALUACI[ÓO]N DE DA|Distribuci[óo]n\s*:|"
+                  r"CENTRO DE OPERACIONES|\Z)", text, re.S)
+    if not m:
+        return None
+    sec = re.sub(r"\b(?:DEPARTAMENTO|PROVINCIA|DISTRITO|BARRIO|LOCALIDAD|CENTRO POBLADO|SECTOR|ANEXO|CASER[ÍI]O|"
+                 r"COMUNIDAD|ZONA|UBICACI[ÓO]N|DPTO|PROV|DIST|DIRECCI[ÓO]N|SINPAD)\.?\b", " ", m.group("t"))
+    return _Section(_flat(_fold(sec).upper()))
+
+
 def location_rows(text: str) -> list[str]:
     """Sección «UBICACIÓN» de un reporte de emergencia (tabla departamento · provincia · distrito · localidad) →
     los códigos más finos que nombra.
@@ -265,14 +285,10 @@ def location_rows(text: str) -> list[str]:
     cada uno; uno que es parte de otro nombre del texto, no cuenta ahí. Si la provincia no se lee («LIMA CALLAO
     VENTANILLA»), se buscan los distritos de todo el departamento; un departamento sin provincia ni distrito
     cuando otro sí los tiene es un centro poblado de ese nombre («JUNÍN CONCEPCIÓN ANDAMARCA HUÁNUCO»)."""
-    m = re.search(r"UBICACI[ÓO]N\s*:?(?P<t>.+?)(?:\n\s*\d\.\s+[A-ZÁÉÍÓÚ]|EVALUACI[ÓO]N DE DA|Distribuci[óo]n\s*:|"
-                  r"CENTRO DE OPERACIONES|\Z)", text, re.S)
-    if not m:
+    table = _location_table(text)
+    if table is None:
         return []
     gz, sp = _gz(), _spellings()
-    sec = re.sub(r"\b(?:DEPARTAMENTO|PROVINCIA|DISTRITO|BARRIO|LOCALIDAD|CENTRO POBLADO|SECTOR|ANEXO|CASER[ÍI]O|"
-                 r"COMUNIDAD|ZONA|UBICACI[ÓO]N|DPTO|PROV|DIST|DIRECCI[ÓO]N|SINPAD)\.?\b", " ", m.group("t"))
-    table = _Section(_flat(_fold(sec).upper()))
 
     def pick(codes: list[str], above: list[str], loose: bool = True) -> list[str]:
         return [c for c in codes if table.count(sp[c], loose) >= 1 + _same_name(c, above)]
@@ -288,6 +304,49 @@ def location_rows(text: str) -> list[str]:
         out.append(rows or [dc])
     deep = [r for r in out if len(r[0]) > 2]
     return sorted(c for r in (deep or out) for c in r)
+
+
+#: Letras que debe tener un nombre de lugar para buscarlo pegado en la tabla de ubicación (uno más corto aparece por
+#: azar dentro de otros nombres).
+TABLE_PLACE_LETTERS = 5
+
+
+def table_localities(text: str, codes: list[str]) -> list[dict]:
+    """La columna de localidad de la tabla «UBICACIÓN» (sector, comunidad, barrio, centro poblado): los centros
+    poblados de esos distritos (``enso.lugares``) que aparecen en ella, aunque pypdf pegue las celdas
+    («CONDEBAMBA PANAMÁCAJAMARCA CAJABAMBA»). No cuentan los nombres del departamento, la provincia, el distrito
+    ni su capital, uno que es parte de otro nombre hallado, ni uno con homónimos en el distrito."""
+    from .lugares import GENERIC, inside_district, lugares, name_key
+
+    table = _location_table(text)
+    if table is None:
+        return []
+    gz, L = _gz(), lugares()
+    out: list[dict] = []
+    for code in [c for c in codes if len(c) == 6][:3]:
+        lab = gz.label(code)
+        skip = {_compact(name_key(n).upper()) for n in (lab["name"], lab.get("province", ""), lab.get("department", ""),
+                                                        (gz.dists.get(code) or {}).get("capital", "")) if n}
+        found: dict[str, list] = {}
+        for k, rows in L.index(code).items():
+            c = _compact(k.upper())
+            if len(c) < TABLE_PLACE_LETTERS or k in GENERIC or c in skip or c not in table.compact:
+                continue
+            if table.glued(c):
+                found[c] = rows
+        for c, rows in found.items():
+            if any(c != o and c in o for o in found):
+                continue  # «CHULLUNI» dentro de «UROSCHULLUNI»
+            p = L._place(rows, code, f"tabla de ubicación del reporte: {title_case(rows[0][0])}")
+            if p and inside_district(code, p.lat, p.lon):
+                out.append({**p.as_dict(), "kind": "centro-poblado", "district": code})
+    return out
+
+
+def title_case(s: str) -> str:
+    from .lugares import title
+
+    return title(s)
 
 
 #: Tramos del litoral en los boletines de oleaje del COEN (los mismos de la DHN).
@@ -402,6 +461,16 @@ def read(text: str, title: str = "") -> dict:
             return {"mismatch": f"el PDF es un reporte de emergencia ({where}); la publicación, un aviso"}
         if said and not {_SAME.get(c[:2], c[:2]) for c in codes} & {_SAME.get(d, d) for d in said}:
             return {"mismatch": f"el PDF ubica en {where}; el titular, en {', '.join(gz.label(d)['name'] for d in said)}"}
+    if out.get("basis", "").endswith("reporte del COEN"):
+        # El centro poblado del hecho: el que nombra la descripción («en el sector de Panamá») y, si no, el de la
+        # columna de localidad de la tabla de ubicación.
+        from .lugares import localities
+
+        dists = [c for c in out["codes"] if len(c) == 6]
+        head = _flat(re.split(r"UBICACI[ÓO]N", text, maxsplit=1)[0])
+        pts = localities(dists, head) or table_localities(text, dists)
+        if pts:
+            out["localidades"] = pts
     a = _AVISO_RE.search(text)
     if a:
         out.update(num=int(a.group("num")), what=_flat(a.group("what")).rstrip(" ."),
@@ -577,7 +646,11 @@ def apply(items: list[dict], cache: dict) -> int:
         if not doc or doc.get("status") != "ok":
             continue
         it["document"] = doc["pdf"]
+        if isinstance(doc.get("localidades"), list):
+            it["localities"] = [p for p in doc["localidades"] if isinstance(p, dict)][:12]
         codes = [c for c in doc.get("codes") or [] if isinstance(c, str)]
+        if doc.get("basis") == "provincias expuestas del boletín del COEN":
+            it["provinces"] = [c for c in codes if len(c) == 4]  # el mapa de alertas dibuja cada provincia
         if len(codes) > MAX_PLACES:  # un aviso de corto plazo nombra cien provincias: basta su departamento
             codes = list(dict.fromkeys(c[:2] for c in codes))
         if codes:
