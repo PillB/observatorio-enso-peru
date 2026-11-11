@@ -60,9 +60,11 @@ const VERSION = createHash('sha256')
   .digest('hex').slice(0, 10);
 
 const GH = '{{ $(\'Configuración\').first().json.api }}/repos/{{ $(\'Configuración\').first().json.repo }}';
-// Id de la credencial en el n8n de destino (N8N_GITHUB_CRED_ID), para que al
-// reimportar el flujo no haya que volver a elegirla en cada nodo.
-const CRED = { githubApi: { id: process.env.N8N_GITHUB_CRED_ID || 'EnsoGithubCred01', name: 'GitHub ENSO (n8n)' } };
+// Id de la credencial en el n8n de destino, para que al reimportar el flujo no
+// haya que volver a elegirla en cada nodo. Por defecto, la del n8n del
+// proyecto (la parte final de la URL de la credencial); otro n8n la cambia
+// con N8N_GITHUB_CRED_ID. No es un secreto: el token queda en n8n.
+const CRED = { githubApi: { id: process.env.N8N_GITHUB_CRED_ID || 'JFHwj9JHLMkHWCLT', name: 'GitHub ENSO (n8n)' } };
 const GH_HEADERS = [
   { name: 'Accept', value: 'application/vnd.github+json' },
   { name: 'X-GitHub-Api-Version', value: '2022-11-28' },

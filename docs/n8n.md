@@ -143,7 +143,7 @@ sigue funcionando (todo va por la API, nada por `raw.githubusercontent.com`).
 1. **Credentials → Add credential → GitHub API** (la credencial «GitHub API» de n8n, de tipo *Access Token*).
 2. **Github Server**: `https://api.github.com` · **User**: `PillB` · **Access Token**: el token del paso 2.
 3. Nombre: `GitHub ENSO (n8n)`. Guardar. n8n prueba la credencial al guardar; debe quedar en verde.
-4. Opcional: copiar el id de la credencial (la parte final de la URL al abrirla) y enviárselo a Pablo. Con él, `N8N_GITHUB_CRED_ID=<id> node n8n/build.mjs` genera flujos que ya la traen elegida, y las reimportaciones no piden volver a elegirla.
+4. Copiar el id de la credencial (la parte final de la URL al abrirla) y enviárselo a Pablo. Los flujos de `n8n/dist` traen elegida la credencial del n8n del proyecto (`JFHwj9JHLMkHWCLT`); en otro n8n, `N8N_GITHUB_CRED_ID=<id> node n8n/build.mjs` genera flujos con la suya. Si el id no coincide, n8n importa el flujo sin credencial y la corrida se detiene en «Preparar copia» con «Credentials not found», sin publicar nada.
 
 ## Paso 4 — Importar y probar el recolector (colega)
 
