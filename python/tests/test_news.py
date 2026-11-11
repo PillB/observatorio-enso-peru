@@ -611,3 +611,41 @@ def test_probe_feeds_redacts_third_party_keys_before_saving():
     out = probe_feeds.redact(body)
     assert mapbox not in out and google not in out and out.count(b"REDACTED") == 2
     assert probe_feeds.redact(b"<title>Huaico en Chosica: pk. 12</title>") == b"<title>Huaico en Chosica: pk. 12</title>"
+
+
+def _it(n, title, summary="", deps=(), minute=0):
+    return {"id": f"id{n}", "feed": "x", "outlet": f"Medio {n}", "region": "peru", "title": title, "summary": summary,
+            "link": f"https://m{n}.pe/{n}", "published": f"2026-07-01T10:{minute:02d}:00+00:00",
+            "first_seen": f"2026-07-01T10:{minute:02d}:00+00:00", "relevance": "impacto", "departments": list(deps)}
+
+
+def test_cluster_summary_belongs_to_the_headline_shown():
+    """El resumen es el de la nota del titular, no el más largo de cualquier nota del grupo."""
+    now = datetime(2026, 7, 2, tzinfo=timezone.utc)
+    items = [
+        _it(1, "Piura: Chulucanas soporta fuertes lluvias y calles quedan inundadas", "Las calles de Chulucanas amanecieron cubiertas de agua tras seis horas de lluvia.", minute=0),
+        _it(2, "Chulucanas soporta fuertes lluvias y calles inundadas en Piura", "Sismo de magnitud 5,1 sacudió Lima esta madrugada, informó el IGP, sin que se reporten daños personales ni materiales hasta ahora.", minute=5),
+    ]
+    g = N.cluster(items, now)
+    assert len(g) == 1 and g[0]["count"] == 2
+    assert g[0]["summary"].startswith("Las calles de Chulucanas")
+    # Sin resumen propio, vale el de una nota con titular parecido; nunca el de una que entró por encadenamiento.
+    items[0]["summary"] = ""
+    assert N.cluster(items, now)[0]["summary"].startswith("Sismo de magnitud")
+
+
+def test_cluster_does_not_chain_or_mix_departments():
+    now = datetime(2026, 7, 2, tzinfo=timezone.utc)
+    # A~B y B~C, pero C no se parece a A: C abre su propio grupo.
+    a = _it(1, "Lluvias intensas inundan calles Chulucanas Piura", minute=0)
+    b = _it(2, "Lluvias intensas inundan calles Chulucanas tras temblor fuerte Lima", minute=1)
+    c = _it(3, "Temblor fuerte Lima: sismo sacude capital esta madrugada", minute=2)
+    d = _it(4, "Temblor fuerte Lima: sismo sentido en Callao", "Otro hecho.", minute=3)
+    groups = N.cluster([a, b, c, d], now)
+    by_lead = {g["title"]: g["count"] for g in groups}
+    assert by_lead[a["title"]] == 2 and by_lead[c["title"]] == 2
+    # La misma plantilla en dos departamentos son dos hechos.
+    x = _it(5, "Incendio forestal en el distrito de Quillo (Áncash)", deps=["02"], minute=4)
+    y = _it(6, "Incendio forestal en el distrito de Lampa (Puno)", deps=["21"], minute=5)
+    z = _it(7, "Incendio forestal en el distrito de Yanama (Áncash)", deps=["02"], minute=6)
+    assert sorted(g["count"] for g in N.cluster([x, y, z], now)) == [1, 2]
