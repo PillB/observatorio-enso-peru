@@ -257,8 +257,9 @@ def test_tour_keys_pause_and_resume(site, browser):
         pg.wait_for_timeout(300)
         assert pop.locator(".tour-count").inner_text() == count
         assert pg.locator("#ch-icen .tooltip").is_visible()
-        # Con el foco en la ventana, las flechas avanzan y retroceden.
-        pop.locator("[data-act='next']").focus()
+        # Con el foco en la ventana, las flechas avanzan y retroceden. Si el gráfico no deja sitio, la ventana
+        # está recogida en su píldora y el botón visible es el de la píldora (depende del alto de la tarjeta).
+        pop.locator("[data-act='next']:visible, [data-act='pill-next']:visible").first.focus()
         pg.keyboard.press("ArrowRight")
         _ready(pg)
         assert pop.locator(".tour-count").inner_text() != count
