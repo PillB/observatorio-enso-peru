@@ -125,7 +125,8 @@ function wireNavB(nav) {
     else if (e.key === 'Home' && i >= 0) { e.preventDefault(); links[0].focus(); }
     else if (e.key === 'End' && i >= 0) { e.preventDefault(); links[links.length - 1].focus(); }
   });
-  nav.addEventListener('focusout', (e) => { if (!nav.contains(e.relatedTarget)) closeMenus(); });
+  // Al salir con el teclado. (No con «focusout»: Safari no enfoca lo que se pulsa y cerraría el menú antes del clic.)
+  document.addEventListener('focusin', (e) => { if (!e.target.closest?.('.nav-group')) closeMenus(); });
   document.addEventListener('click', (e) => { if (!e.target.closest?.('.nav-group')) closeMenus(); });
 }
 
@@ -218,19 +219,21 @@ function clipLists(main) {
   }
 }
 
-let pending = false;
+function compactNow() {
+  const main = $('#main');
+  if (!main) return;
+  applyGuides(main); // «Cómo leer esto», en las dos versiones
+  if (version() !== 'B') return;
+  foldSections(main);
+  clipLists(main);
+}
+
+// Lo que la vista pinta después (una lista que se filtra, un gráfico que llega): con una pausa corta, para que el
+// globo de un gráfico que sigue al puntero no dispare el repaso en cada movimiento.
+let pending = 0;
 function compact() {
-  if (pending) return;
-  pending = true;
-  requestAnimationFrame(() => {
-    pending = false;
-    const main = $('#main');
-    if (!main) return;
-    applyGuides(main); // «Cómo leer esto», en las dos versiones
-    if (version() !== 'B') return;
-    foldSections(main);
-    clipLists(main);
-  });
+  clearTimeout(pending);
+  pending = setTimeout(compactNow, 80);
 }
 
 /** Muestra un elemento que quedó en una sección plegada o en una lista cortada (el tutorial lo usa). */
@@ -368,7 +371,7 @@ export function gapBucket(days) {
 const ss = (k, v) => { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch { /* bloqueado */ } return null; };
 
 const usage = {
-  t: {}, v: {}, u: 0, c: [], fresh: false, vb: '', rb: '', last: Date.now(), tick: Date.now(), route: null, tabs: new Set(),
+  t: {}, v: {}, u: {}, c: [], fresh: false, vb: '', rb: '', last: Date.now(), tick: Date.now(), route: null, tabs: new Set(),
 
   start() {
     const now = Date.now();
@@ -423,18 +426,19 @@ const usage = {
   },
 
   unfold() {
-    this.u += 1;
+    const k = ROUTE_KEY(this.route);
+    this.u[k] = (this.u[k] || 0) + 1;
   },
 
   drop() {
-    this.t = {}; this.v = {}; this.u = 0; this.c = []; this.fresh = false;
+    this.t = {}; this.v = {}; this.u = {}; this.c = []; this.fresh = false;
   },
 
   payload() {
     const t = Object.fromEntries(Object.entries(this.t).map(([k, s]) => [k, Math.round(s)]).filter(([, s]) => s > 0));
     const body = { s: site().own, t, v: this.v };
     if (this.fresh) Object.assign(body, { n: 1, vb: this.vb, rb: this.rb || undefined });
-    if (this.u) body.u = { [ROUTE_KEY(this.route)]: this.u };
+    if (Object.keys(this.u).length) body.u = this.u;
     if (this.c.length) body.c = this.c;
     return body;
   },
@@ -443,7 +447,7 @@ const usage = {
     const body = this.payload();
     const empty = !body.n && !Object.keys(body.t).length && !Object.keys(body.v).length && !body.u && !body.c;
     // Lo que se vio desde un enlace de vista previa (?sitio=B) no se cuenta como uso de la versión.
-    if (empty || site().preview || document.documentElement.dataset.tourDemo === '1') { this.drop(); return; }
+    if (empty || site().preview) { this.drop(); return; }
     if (canSend()) {
       const text = JSON.stringify(body);
       try {
@@ -482,5 +486,5 @@ export function enterView(route) {
 
 /** Llamada cuando la vista terminó de pintarse. */
 export function viewReady() {
-  compact();
+  compactNow();
 }

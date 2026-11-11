@@ -1290,7 +1290,7 @@ table.data.bol-table td.num { text-align: right; white-space: nowrap; }
 
 /* Secciones plegadas y listas cortadas (versión B) */
 .foldable { position: relative; }
-.foldable.folded { max-height: 15rem; overflow: hidden; }
+.foldable.folded { max-height: 15rem; overflow: hidden; overflow: clip; } /* clip: no se puede desplazar por dentro (un ancla o el foco movían el contenido bajo el botón) */
 .fold-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 44px; margin-top: 12px; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--bg-elev); color: var(--brand); font: inherit; font-weight: 700; cursor: pointer; }
 .fold-btn .chev { transition: transform 0.15s; }
 .fold-btn[aria-expanded='true'] .chev { transform: rotate(180deg); }

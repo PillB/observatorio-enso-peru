@@ -277,3 +277,28 @@ def test_reading_guides_appear_in_every_tab_and_open(site, browser, w):
         assert not pg.errors, pg.errors
     finally:
         ctx.close()
+
+
+# --- El tutorial en la versión B ----------------------------------------------------------------------------------
+import test_tour as T  # noqa: E402
+
+
+@pytest.mark.browser
+@pytest.mark.parametrize("tour", T.TOURS)
+@pytest.mark.parametrize("screen", ["telefono-390-oscuro", "escritorio-oscuro"])
+def test_every_tour_reaches_its_sections_in_version_b(site, browser, tour, screen):
+    """Con la navegación agrupada y las secciones plegadas, cada recorrido encuentra y muestra lo que explica."""
+    base, _ = site
+    w, h, dark = T.SCREENS[screen]
+    ctx, pg = T._ctx(browser, w, h, dark=dark)
+    ctx.add_init_script(SET_B)
+    try:
+        T._start(pg, base, tour)
+        assert pg.locator("html").get_attribute("data-sitio") == "B"
+        seen = T._walk(pg, f"{tour}@{screen}@B")
+        assert len(seen) >= 2
+        viol = pg.evaluate("window.__viol")
+        assert not viol, sorted(set(viol))[:10]
+        assert not pg.errors, pg.errors
+    finally:
+        ctx.close()

@@ -1093,6 +1093,7 @@ async function render() {
   enterView(name);
   if (!S.dash) return;
   main.innerHTML = String(view.render());
+  viewReady(); // la versión B pliega antes de que lleguen los gráficos: sin salto de la página
   document.title = `${view.title} · ${SITE.name}`;
   if (S.navigated) { main.focus({ preventScroll: true }); window.scrollTo(0, 0); }
   S.navigated = true;
