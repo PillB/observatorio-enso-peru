@@ -91,7 +91,10 @@ REGISTRY_OLD_DAYS = 14
 #: la revisión de los robots.txt que prohibían.
 #: 2: el repositorio del IMARPE (``imarpe_repository``: búsquedas, paquetes y PDF, que Actions no alcanza) y la
 #: medición de las URL del registro con los certificados intermedios del kit.
-COLLECTOR_CONTRACT = 2
+#: 3: la lista de escenarios del SIGRID y el ZIP de los de número más alto (``follow`` con ``template``). La
+#: actualización diaria no lo exige (``MIN_COLLECTOR_CONTRACT`` sigue en 2): el SIGRID responde a Actions y la copia
+#: del Perú es un respaldo; un kit anterior simplemente no la trae.
+COLLECTOR_CONTRACT = 3
 
 #: Capa de avisos del GeoServer de IDESEP (SENAMHI) que se pide por WFS: los avisos y la lista de campos.
 IDESEP_AVISOS = ("https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0"
@@ -103,6 +106,12 @@ ICEN = "http://met.igp.gob.pe/datos/ICEN.txt"
 
 #: Fuentes que se recolectan desde el Perú. Las URL deben coincidir con las
 #: del catálogo del pipeline para que la actualización diaria las encuentre.
+from enso import cenepred_escenario as _escenario  # noqa: E402
+
+ESCENARIO_LIST = _escenario.LIST_URL
+#: Reglas ``follow`` de las URL fijas de SOURCES (las del registro llegan con cada fuente).
+FIXED_FOLLOW: dict[str, dict] = {ESCENARIO_LIST: _escenario.FOLLOW}
+
 SOURCES: dict[str, list[str]] = {
     "enfen": [
         "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado",
@@ -139,8 +148,13 @@ SOURCES: dict[str, list[str]] = {
     ],
     "cenepred": [
         # SIGRID del CENEPRED (servicios ArcGIS; la carpeta FEN trae los escenarios de riesgo por El Niño).
-        # sig.cenepred.gob.pe/arcgis_server respondía 404 desde el Perú y desde EE. UU. (25-10-2026).
+        # sig.cenepred.gob.pe/arcgis_server respondía 404 desde el Perú y desde EE. UU. (25-10-2026). Desde
+        # noviembre de 2026 /arcgis/ pide un token (499): queda como medición.
         "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson",
+        # Lista de escenarios de riesgo por lluvias (página pública de escenarios, sin inicio de sesión); la regla
+        # ``follow`` (FIXED_FOLLOW) baja el ZIP con la tabla por distrito de los de número más alto. La actualización
+        # diaria la pide directo y usa esta copia si el SIGRID no le responde (``enso.cenepred_escenario``).
+        ESCENARIO_LIST,
     ],
 }
 
@@ -153,6 +167,7 @@ EXPECT: dict[str, str] = {
     IDESEP_SCHEMA: "text",  # esquema XML de la capa
     ICEN: "text",
     "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson": "json",
+    ESCENARIO_LIST: "json",
 }
 
 
@@ -284,7 +299,7 @@ def plan(registry: dict) -> tuple[dict[str, list[str]], dict[str, dict]]:
     permite no se pide: ``fetch`` lo comprueba esa misma noche."""
     groups = {g: list(urls) for g, urls in SOURCES.items()}
     known = {u for urls in groups.values() for u in urls}
-    follow: dict[str, dict] = {}
+    follow: dict[str, dict] = dict(FIXED_FOLLOW)
     for src in peru_sources(registry):
         if isinstance(src.get("follow"), dict):
             follow[src["url"]] = src["follow"]
@@ -306,7 +321,8 @@ def guess_expect(url: str) -> str | None:
     low = url.lower()
     if "wp-json" in low or re.search(r"[?&](f=(p?json|geojson)|outputformat=application/json)(&|$)", low):
         return "json"
-    return "pdf" if urlparse(low).path.endswith(".pdf") else None
+    path = urlparse(low).path
+    return "pdf" if path.endswith(".pdf") else "zip" if path.endswith(".zip") else None
 
 
 def url_info(registry: dict) -> dict[str, dict]:
@@ -352,7 +368,12 @@ def probe_targets(registry: dict, skip: set[str]) -> list[str]:
 
 def follow_links(client: httpx.Client | Session, page: dict, rule: dict, seen: set[str]) -> list[dict]:
     """Regla ``follow`` del registro: baja hasta ``max`` enlaces de la página
-    que coinciden con ``pattern`` (p. ej. los PDF de un listado)."""
+    que coinciden con ``pattern`` (p. ej. los PDF de un listado). Con
+    ``template``, el enlace se arma con lo que captura el patrón (``{1}``: el
+    primer grupo), como el ZIP de cada escenario del CENEPRED a partir de su
+    número en la lista JSON; con ``order: "desc"``, primero los de número
+    mayor (la lista del SIGRID no viene ordenada). Solo enlaces del mismo
+    servidor que la página, como en n8n (nodo «Segunda pasada»)."""
     body = page.get("body") or b""
     if page.get("status") != 200 or not body:
         return []
@@ -363,13 +384,28 @@ def follow_links(client: httpx.Client | Session, page: dict, rule: dict, seen: s
         return []
     if not pattern.pattern:
         return []
+    template = rule.get("template") if isinstance(rule.get("template"), str) else None
     text = body.decode("utf-8", "replace").replace("\\/", "/")  # JSON escapa las barras
-    links: list[str] = []
+    found: list[str] = []
     for m in pattern.finditer(text):
+        cap = m.group(1) if m.groups() else m.group(0)
+        if template:
+            if not re.fullmatch(r"[A-Za-z0-9._-]{1,64}", cap or ""):
+                continue  # lo capturado va dentro de una URL: solo un número o un nombre simple
+            cap = template.replace("{1}", cap)
+        found.append(cap)
+    if rule.get("order") == "desc":
+        def num(u: str) -> int:
+            d = re.findall(r"\d+", u)
+            return int(d[-1]) if d else -1
+        found = sorted(dict.fromkeys(found), key=num, reverse=True)
+    host = urlparse(page["url"]).netloc.lower()
+    links: list[str] = []
+    for cap in found:
         if len(links) >= limit:
             break
-        url = urljoin(page["url"], html.unescape(m.group(1) if m.groups() else m.group(0)))
-        if url.startswith(("https://", "http://")) and url not in seen:
+        url = urljoin(page["url"], html.unescape(cap))
+        if url.startswith(("https://", "http://")) and urlparse(url).netloc.lower() == host and url not in seen:
             seen.add(url)
             links.append(url)
     out = []
@@ -392,7 +428,7 @@ def usable(entry: dict) -> bool:
 
 #: Extensión del archivo guardado según el formato detectado (las que acepta enso.fetch.Relay).
 EXT = {"pdf": ".pdf", "json": ".json", "jsonfeed": ".json", "rss": ".xml", "atom": ".xml", "rdf": ".xml",
-       "xml": ".xml", "text": ".txt"}
+       "xml": ".xml", "text": ".txt", "zip": ".zip"}
 
 
 class Session:

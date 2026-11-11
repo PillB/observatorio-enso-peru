@@ -1,8 +1,9 @@
-// Versiones de los mapas y su analítica anónima. Tres experimentos (functions/_lib/ab.js):
+// Versiones de los mapas y su analítica anónima. Cuatro experimentos (functions/_lib/ab.js):
 //
 //   mapa      la versión del mapa de alertas de Noticias («Versión A / B / C / D»)
 //   memoria   la vista con que abre el mapa de la memoria: el resumen por área o uno de sus detalles
 //   noticias  la vista con que abre el mapa de Noticias: el resumen (la versión A–D) o uno de sus detalles
+//   boletin   el mapa del Boletín: el del Perú o un mosaico de cuadros (el que lleva el correo)
 //
 // La primera visita recibe una versión de cada uno: al azar mientras no haya una ganadora; si ya la hay
 // (/api/ab/defaults: la que más se usa, con su intervalo), la ganadora a 4 de cada 5 personas y otra al azar al
@@ -23,9 +24,22 @@ export const EXPERIMENTS = {
     key: 'enso-vista-memoria',
     variants: [['resumen', 'Resumen por área'], ['cuencas', 'Detalle: cuencas'], ['puntos', 'Detalle: ríos y lugares'], ['riesgo', 'Detalle: daños y pobreza']],
   },
+  boletin: {
+    key: 'enso-vista-boletin',
+    variants: [['mapa', 'Mapa del Perú'], ['mosaico', 'Mosaico de cuadros (como en el correo)']],
+  },
   noticias: {
     key: 'enso-vista-noticias',
     variants: [['resumen', 'Resumen (versión A–D)'], ['cuencas', 'Detalle: avisos por cuenca'], ['distritos', 'Detalle: distritos y su historia']],
+  },
+  // La versión de todo el sitio (sitio.js): A, las pestañas en una fila y todo desplegado; B, cinco secciones con
+  // submenús y lo largo plegado. Sin servidor de analítica (en local, en GitHub Pages) se ve la A si la persona no
+  // eligió otra: así las pruebas y el espejo no cambian solos. ?sitio=B en el enlace la muestra sin elegirla.
+  sitio: {
+    key: 'enso-version-sitio',
+    variants: [['A', 'Clásica: todas las pestañas a la vista'], ['B', 'Agrupada: secciones con submenús y lo largo plegado']],
+    param: 'sitio',
+    local: 'A',
   },
 };
 export const VARIANTS = EXPERIMENTS.mapa.variants;
@@ -46,12 +60,19 @@ function read(exp) {
 const write = (exp, s) => storage(EXPERIMENTS[exp].key, JSON.stringify(s));
 
 /** Hay servidor de analítica: el sitio publicado en Cloudflare (el espejo en GitHub Pages no tiene Functions). */
-const hasBackend = () => location.protocol === 'https:' && !/\.github\.io$/.test(location.hostname);
+// Las pruebas de navegador con el servidor de mentira (http://localhost) lo afirman con ENSO_BACKEND.
+const hasBackend = () => globalThis.ENSO_BACKEND === true || (location.protocol === 'https:' && !/\.github\.io$/.test(location.hostname));
+
+/** La persona pidió no participar (selector de versiones), o su navegador pide no rastrear. */
+export const OPT_OUT_KEY = 'enso-medicion-no';
+export function optedOut() {
+  return Boolean(navigator.globalPrivacyControl || navigator.doNotTrack === '1' || window.doNotTrack === '1' || storage(OPT_OUT_KEY) === '1');
+}
 
 function allowed() {
-  if (navigator.globalPrivacyControl || navigator.doNotTrack === '1' || window.doNotTrack === '1') return false;
-  return hasBackend();
+  return !optedOut() && hasBackend();
 }
+export { hasBackend, allowed as canSend };
 
 function send(exp, v, events) {
   if (!events.length || !allowed()) return;
@@ -98,10 +119,13 @@ export function assign(exp, winner = null, rnd = Math.random) {
 class Session {
   constructor(exp) {
     this.exp = exp;
-    const forced = exp === 'mapa' ? new URLSearchParams(location.hash.split('?')[1] || '').get('version') : null;
+    const param = exp === 'mapa' ? 'version' : EXPERIMENTS[exp].param;
+    const q = (src) => new URLSearchParams(src || '');
+    const forced = param ? q(location.hash.split('?')[1]).get(param) || q(location.search).get(param) : null;
     let s = read(exp);
     if (!s) {
-      s = { v: assign(exp, cachedWinners()?.[exp]), chosen: false, at: day() };
+      const local = EXPERIMENTS[exp].local;
+      s = { v: local && !hasBackend() ? local : assign(exp, cachedWinners()?.[exp]), chosen: false, at: day() };
       write(exp, s);
     }
     this.state = s;
@@ -147,7 +171,9 @@ class Session {
     // El tutorial muestra una vista: se ve como un enlace compartido, sin cambiar la de la persona ni contarla.
     if (byTour()) { this.show(v); return; }
     const old = this.state.v;
+    const seen = this.variant;
     this.preview = null;
+    try { document.dispatchEvent(new CustomEvent('ab:choose', { detail: { exp: this.exp, from: seen, to: v } })); } catch { /* sin DOM */ }
     if (old !== v) send(this.exp, old, ['leave']);
     this.flush();
     this.state = { v, chosen: true, at: day() };

@@ -118,8 +118,8 @@
   <a class="ar-annex" href="../arquitectura.svg" data-annex="full"><text class="ar-link" x="1420" y="36" font-size="12" text-anchor="end">← Volver al diagrama completo</text></a>
   <text class="ar-s" x="20" y="60" font-size="12">Qué vigila el observatorio y cómo se decide, URL por URL, quién la descarga. Cada lunes se mide desde dónde responde cada dirección (GitHub Actions en Azure, n8n en AWS y el equipo en el Perú) y el registro asigna cada una a</text>
   <text class="ar-s" x="20" y="77" font-size="12">un recolector. Nadie pide lo que robots.txt prohíbe, salvo los feeds de noticias que se leen como un lector.</text>
-  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: ENFEN e IGP: fuentes oficiales del Perú, NOAA (CPC y PSL), Alertas oficiales de peligros (15 fuentes), Páginas del Estado que guarda el Perú, Medios y Estado: 116 feeds de noticias, Google Noticias: 38</text>
-  <text class="ar-m" x="20" y="111" font-size="11">búsquedas, robots.txt de cada servidor, Armado del registro, Registro de fuentes (registry/), Sondeo semanal de alcance.</text>
+  <text class="ar-m" x="20" y="96" font-size="11">Detalla estas cajas del diagrama completo: ENFEN e IGP: fuentes oficiales del Perú, NOAA (CPC y PSL), Alertas oficiales de peligros (15 fuentes), Páginas del Estado que guarda el Perú, Escenario de riesgo por lluvias del CENEPRED (SIGRID), Medios y</text>
+  <text class="ar-m" x="20" y="111" font-size="11">Estado: 116 feeds de noticias, Google Noticias: 38 búsquedas, robots.txt de cada servidor, Armado del registro, Registro de fuentes (registry/), Sondeo semanal de alcance.</text>
   <text class="ar-t" x="20" y="136" font-size="11.5">Líneas:</text>
   <path class="ar-e ar-e-data" d="M78.5 132 L112.5 132" marker-end="url(#a1-m-data)"/>
   <text class="ar-s" x="120.5" y="136" font-size="11.5">datos</text>

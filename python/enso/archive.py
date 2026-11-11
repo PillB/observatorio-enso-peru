@@ -20,7 +20,7 @@ Dentro de la publicación (``data/``):
 
 Las páginas HTML y los feeds de terceros se guardan como texto (``.txt``):
 servidos como HTML desde el dominio del sitio, sus scripts correrían con los
-permisos del sitio. Los PDF, JSON, CSV y texto conservan su extensión.
+permisos del sitio. Los PDF, JSON, CSV, texto y ZIP (las tablas del CENEPRED) conservan su extensión.
 """
 
 from __future__ import annotations
@@ -38,7 +38,7 @@ ROOT = "archive"
 NEWS_DAYS = 60
 #: Una copia mayor que esto no se publica (Cloudflare Pages admite 25 MiB por archivo).
 MAX_BYTES = 20 * 1024 * 1024
-SAFE_EXT = {"pdf", "json", "csv", "txt"}
+SAFE_EXT = {"pdf", "json", "csv", "txt", "zip"}
 
 
 def kind(body: bytes, content_type: str = "", url: str = "") -> str:
@@ -46,6 +46,8 @@ def kind(body: bytes, content_type: str = "", url: str = "") -> str:
     head = body[:4096].lstrip(b"\xef\xbb\xbf \t\r\n").lower()
     if head.startswith(b"%pdf-"):
         return "pdf"
+    if body[:4] == b"PK\x03\x04" and _is_zip(body):
+        return "zip"  # la tabla de un escenario del CENEPRED: se descarga, no se abre en el sitio
     ct = (content_type or "").lower()
     path = url.lower().split("?")[0]
     if head[:1] in (b"{", b"[") and ("json" in ct or path.endswith(".json") or "wp-json" in path):
@@ -57,6 +59,17 @@ def kind(body: bytes, content_type: str = "", url: str = "") -> str:
     if ("csv" in ct or path.endswith(".csv")) and b"<" not in head[:200]:
         return "csv"
     return "txt"  # HTML, XML, feeds y texto plano: se sirven como texto
+
+
+def _is_zip(body: bytes) -> bool:
+    import io
+    import zipfile
+
+    try:
+        with zipfile.ZipFile(io.BytesIO(body)) as z:
+            return z.testzip() is None
+    except (zipfile.BadZipFile, OSError, ValueError):
+        return False
 
 
 def sha(body: bytes) -> str:

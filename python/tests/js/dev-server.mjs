@@ -1,11 +1,13 @@
-// Servidor de prueba que imita Cloudflare Pages: archivos estáticos de --site y /api/geo/* con la
-// Function real (functions/_lib/geo-console.js) sobre una D1 de mentira. Usuarios en GEO_USERS.
+// Servidor de prueba que imita Cloudflare Pages: archivos estáticos de --site y /api/geo/*, /api/ab/* y /api/uso/*
+// con las Functions reales (functions/_lib/) sobre una D1 de mentira. Usuarios en GEO_USERS.
 //   node dev-server.mjs --site ../public --port 8788
 import { readFile } from 'node:fs/promises';
 import http from 'node:http';
 import path from 'node:path';
 
 import { handle } from '../../../functions/_lib/geo-console.js';
+import { handle as handleAb } from '../../../functions/_lib/ab.js';
+import { handle as handleUso } from '../../../functions/_lib/uso.js';
 import { FakeD1 } from './fake-d1.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).reduce((acc, a, i, all) => (a.startsWith('--') ? [...acc, [a.slice(2), all[i + 1]]] : acc), []));
@@ -35,7 +37,8 @@ http.createServer(async (req, res) => {
   headers.set('CF-Connecting-IP', req.socket.remoteAddress || '');
   const request = new Request(url, { method: req.method, headers, body: ['GET', 'HEAD'].includes(req.method) ? undefined : Buffer.concat(chunks) });
   const pathname = new URL(url).pathname;
-  const r = pathname.startsWith('/api/geo/') ? await handle(request, env) : await asset(pathname);
+  const api = pathname.startsWith('/api/geo/') ? handle : pathname.startsWith('/api/ab/') ? handleAb : pathname.startsWith('/api/uso/') ? handleUso : null;
+  const r = api ? await api(request, env) : await asset(pathname);
   res.writeHead(r.status, Object.fromEntries(r.headers));
   res.end(Buffer.from(await r.arrayBuffer()));
 }).listen(port, '127.0.0.1', () => console.log(`listo en http://localhost:${port}/`));

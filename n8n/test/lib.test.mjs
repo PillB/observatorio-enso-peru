@@ -540,6 +540,22 @@ test('Segunda pasada: «follow» solo sigue enlaces del mismo servidor que la p�
   assert.deepEqual(out.map((i) => i.json.url), ['https://www.dhn.mil.pe/a/01-2026.pdf']);
 });
 
+test('Segunda pasada: «follow» con «template» arma el ZIP de cada escenario del CENEPRED, los de número mayor primero', async () => {
+  const list = Buffer.from(JSON.stringify({ data: [{ id: '40' }, { id: '103' }, { id: '7"x' }, { id: '102' }, { id: '99' }, { id: '101' }] }));
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const fn = new AsyncFunction('$', '$input', 'URL', nodeCode('segunda', { VERSION: 'test' }));
+  const reg = JSON.parse(readFileSync(join(HERE, '..', '..', 'registry', 'sources.json'), 'utf8'));
+  const src = reg.sources.find((s) => s.id === 'cenepred-sigrid-escenarios');
+  const item = { json: { id: src.id, group: src.group, name: 'L', url: src.url, cls: { ok: true }, follow: src.follow, crawl_delay: 5, robots_public: true },
+    binary: { data: {} } };
+  const out = await fn.call({ helpers: { getBinaryDataBuffer: async () => list } }, () => ({}), { all: () => [item] }, undefined);
+  const base = 'https://sigrid.cenepred.gob.pe/sigridv3/storage/escenario_trimestral/';
+  assert.deepEqual(out.map((i) => i.json.url), [`${base}103_tabla.zip`, `${base}102_tabla.zip`, `${base}101_tabla.zip`]);
+  assert.ok(out.every((i) => i.json.expect === 'zip' && i.json.crawl_delay === 5));
+  // El Crawl-delay del SIGRID (5 s) entre los tres pedidos.
+  assert.deepEqual(out.map((i) => i.json.pause_s), [0, 5, 5]);
+});
+
 test('Fuentes y Analizar: con «hop», se lee el robots.txt del destino de la redirección', async () => {
   const reg = { schema: 'enso-source-registry/1', sources: [
     { id: 'h', group: 'g', url: 'https://viejo.pe/feed', expect: 'rss', channels: ['actions', 'n8n'],
@@ -622,4 +638,32 @@ test('Fuentes espera entre peticiones al mismo servidor público del Perú', asy
   // Orden: i1 n1 m1 i2 n2 m2 i3. Reloj virtual: i2 espera 1 s; m2, 30 s (tope) menos lo ya esperado.
   assert.deepEqual(out.map((i) => [i.json.id, i.json.pause_s]),
     [['i1', 0], ['n1', 0], ['m1', 0], ['i2', 1], ['n2', 0], ['m2', 29], ['i3', 0]]);
+});
+
+test('Fuentes: las partes «i/n» se reparten todo el registro, sin repetir y con cada servidor en una sola', async () => {
+  const reg = JSON.parse(readFileSync(new URL('../../registry/sources.json', import.meta.url), 'utf8'));
+  const run = async (shard) => (await runCode('fuentes', { REGISTRY: JSON.stringify(reg) },
+    { 'Configuración': [{ json: { scope: 'todas', only: '', shard } }] })).map((i) => i.json);
+  const all = await run('');
+  const host = (u) => new URL(u).host;
+  const parts = [];
+  for (let i = 0; i < 4; i++) parts.push(await run(`${i}/4`));
+  assert.ok(parts.every((p) => p.length > 0));
+  const urls = parts.flat().map((j) => j.url);
+  assert.deepEqual([...urls].sort(), all.map((j) => j.url).sort());
+  assert.equal(new Set(urls).size, urls.length);
+  const owner = new Map();
+  parts.forEach((p, i) => p.forEach((j) => { assert.ok(!owner.has(host(j.url)) || owner.get(host(j.url)) === i); owner.set(host(j.url), i); }));
+  // En cada parte, entre dos pedidos al mismo servidor público del Perú pasa al menos su Crawl-delay (o 1 s).
+  for (const p of parts) {
+    let t = 0;
+    const last = new Map();
+    for (const j of p) {
+      t += j.pause_s;
+      const h = host(j.url);
+      if (/\.(gob|mil|edu)\.pe$/.test(h) && last.has(h)) assert.ok(t - last.get(h) >= Math.min(30, Math.max(1, Number(j.crawl_delay) || 1)), j.url);
+      last.set(h, t);
+    }
+  }
+  await assert.rejects(run('4/4'), /Parte inválida/);
 });

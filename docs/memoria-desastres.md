@@ -25,6 +25,7 @@ prevención: cuántas de esas emergencias ocurrieron donde el Estado ya tenía e
 11. [Peligro identificado hoy (contexto)](#peligro-identificado-hoy-contexto)
 12. [¿Se sabía antes? Peligros documentados y emergencias](#se-sabía-antes-peligros-documentados-y-emergencias)
 13. [La pestaña](#la-pestaña)
+   - [Tabla de registros y descargas](#tabla-de-registros-y-descargas)
 14. [Evidencia sobre la prevención desde los años 90](#evidencia-sobre-la-prevención-desde-los-años-90)
 15. [Límites](#límites)
 16. [Reproducir y actualizar](#reproducir-y-actualizar)
@@ -251,8 +252,9 @@ Otros archivos:
   las conciliadas, el área de las cifras, la población del área en el año del evento y de dónde sale, la razón entre
   personas y habitantes, el motivo, la evidencia y la nota que lleva la descripción (ver
   [Conciliación de cifras](#conciliación-de-cifras)).
-- `public/assets/historico/eventos.json`, `resumen.json`, `contexto.json`, `mapa.json` y `detalle/<dep>.json`:
-  versiones para el navegador. Los CSV de `data/historico/` se copian en `public/assets/historico/` para descargarlos desde la
+- `public/assets/historico/eventos.json`, `resumen.json`, `contexto.json`, `mapa.json`, `detalle/<dep>.json` y
+  `coordenadas.json` (Latitud y Longitud de cada registro tal como las escribe `eventos.csv`, para la
+  [tabla de registros](#tabla-de-registros-y-descargas)): versiones para el navegador. Los CSV de `data/historico/` se copian en `public/assets/historico/` para descargarlos desde la
   pestaña: el sitio publicado no enlaza al repositorio.
 
 ## Clasificación del peligro y del evento
@@ -602,6 +604,11 @@ año, los llamamientos de la Cruz Roja y estos avisos; la ficha de cada área, s
 
 ## La pestaña
 
+- **Descargar los datos**, en la cabecera: las tres formas de bajar los datos en el esquema del tablero del equipo de
+  prevención (las 13 columnas primero, luego los metadatos): el catálogo completo (`eventos.zip`, con su fecha), el
+  filtro del mapa (la [tabla de registros](#tabla-de-registros-y-descargas), al final) y lo más nuevo
+  (`data/news/eventos-noticias.csv`, las noticias de cada día en el mismo esquema). Noticias y Mi zona dicen lo mismo:
+  Mi zona descarga los registros del lugar con el mismo archivo que la tabla.
 - **Aviso del Niño en curso**, con el último ICEN (y si es preliminar), y la **alerta según la historia**: los
   departamentos donde las temporadas con Niño costero tuvieron claramente más lugares con daños (intervalo de la
   razón sobre 1).
@@ -632,11 +639,49 @@ año, los llamamientos de la Cruz Roja y estos avisos; la ficha de cada área, s
 - **¿Se sabía antes?** y **antes de 1970**: los lugares con registros de archivo y de lagunas glaciares, con sus años.
 - **Evidencia** sobre la prevención desde los años 90 y **fuentes, método, límites y descargas** (catálogo, CSV de
   indicadores, contexto y prevención, y el diccionario de datos).
+- **Registros del catálogo**, al final: la tabla de los registros que suma el mapa, con su descarga. Ver
+  [Tabla de registros y descargas](#tabla-de-registros-y-descargas).
 
 El diseño sigue las prácticas de los tableros de riesgo de referencia (DesInventar, el Índice de Riesgo INFORM, el
 SIGRID del CENEPRED): mapa coroplético con tabla equivalente, colores de una sola tonalidad para magnitudes y
 divergentes centrados en 1 para la razón de tasas, estados con icono y texto (no solo color), cifras con su fuente,
 frecuencias y razones con su intervalo, y avisos claros de lo que el dato no dice.
+
+### Tabla de registros y descargas
+
+La última sección de la pestaña (`public/assets/js/historico-tabla.js`) muestra los registros detrás del mapa:
+
+- **Sigue los filtros del mapa**: evento, peligro, temporadas y el área elegida (los registros cuyo ubigeo empieza con
+  el del área). Las casillas y las fichas de las vistas de detalle no la filtran.
+- **Muestra primero los 25 más recientes** y «Mostrar 25 más» o «Mostrar 200 más» agregan filas sin cambiar de página
+  (el foco pasa a la primera fila nueva), con «Mostrando X de N registros». Se ordena por fecha, peligro, lugar,
+  fallecidos, afectados o viviendas destruidas con el botón de cada encabezado (`aria-sort` en la columna ordenada y un
+  aviso para lectores de pantalla); los empates van por fecha y por la posición en el catálogo, así que el orden no
+  cambia entre visitas.
+- **Columnas**: fecha (solo lo que se sabe), peligro, lugar, ubigeo, TipoEvento, descripción, ubicación, duración,
+  los tres daños de `eventos.json` (fallecidos y desaparecidos, afectados y damnificados o desplazados, viviendas
+  destruidas), fuente (enlace), latitud y longitud, fase ENSO y confianza.
+- **Pide solo lo que hace falta**: las columnas compactas ya están en el navegador; `coordenadas.json` (100 KB
+  comprimido) se pide cuando la tabla está por verse; las fichas (`detalle/<dep>.json`, de 50 a 800 KB comprimido
+  cada una) se piden solo para los departamentos de las filas visibles: hasta 3 sin preguntar y, si son más, con el
+  botón «Cargar descripción, ubicación, duración y fuente».
+- **Descargas**: «Descargar los N registros del filtro (CSV)» arma en el navegador las 13 columnas del tablero del
+  equipo de prevención y 30 de la Memoria (Id, Origen, PrecisionFecha, GrupoPeligro, DangerTypeMetodo, PrecisionGeo,
+  Lugar, CuerpoAgua, FaseENSO, AtribucionENSO, las 15 cifras de impacto, FuenteCita, Confianza, FechaTipo,
+  Corroboracion y FuentesAdicionales), en el orden de la tabla y con el nombre del filtro en el archivo
+  (`memoria-desastres_piura-piura-piura_agua_2026-10-26.csv`). Pide las fichas departamento por departamento y de
+  cada una guarda solo las filas del filtro. Sin filtros, el botón es el del catálogo completo (`eventos.zip`, con
+  todas las columnas). Si no llega la ficha de un departamento, el archivo se descarga igual y el aviso dice cuáles
+  van sin descripción, ubicación ni fuente.
+- **Mismo formato que el catálogo**: UTF-8 con BOM, comillas solo donde hacen falta (RFC 4180) y la misma protección
+  contra fórmulas que `eventos.csv` (un texto que empieza con `=`, `+`, `-` o `@` y no es un número lleva un apóstrofo
+  delante; las coordenadas negativas quedan como números).
+
+Validación (`tests/test_historico_tabla.py` y `tests/js/historico-tabla.test.mjs`): el CSV que arma la página con
+`eventos.json`, `coordenadas.json` y `detalle/` es igual a `eventos.csv` en las 146 789 filas y las 43 columnas (las
+cifras con decimales en cero, como 4.0 hectáreas, salen como 4); `coordenadas.json` es el que sale del catálogo; y las
+funciones cubren la protección contra fórmulas, las fechas incompletas, los registros de provincia o departamento, las
+fichas que no llegan, el orden estable y el escape del texto de las fuentes.
 
 ## Vistas de detalle del mapa
 
@@ -852,7 +897,11 @@ horas `python -m tools.cosecha_historico`, que:
    fichas del INGEMMET, términos de cada medio, consultas y fragmentos de Chronicling America). El resumen de la corrida queda en la página de la corrida en
    Actions. Una fuente que falla en tres corridas seguidas (no por el plazo) deja de esperarse: el catálogo se
    construye sin ella y el PR lo dice; se sigue intentando en las corridas siguientes. Las fuentes de eventos y las
-   capas de contexto no dejan de esperarse nunca, porque sin ellas el catálogo no se construye.
+   capas de contexto no dejan de esperarse nunca, porque sin ellas el catálogo no se construye. Un medio con
+   WordPress cuya API responde con error, o sin ninguna nota en ningún término, cuenta como fallo y no como descarga
+   completa (cinco medios no responden a los servidores de Actions y se daban por completos con 0 notas, con lo que
+   el catálogo perdía en silencio sus registros). Si la caché ya tiene un medio guardado sin notas, se borra y se vuelve
+   a pedir, aunque el PR ya esté anotado: el PR siguiente dice cuáles fallaron.
 4. Guarda la caché (siempre, aunque algo falle) y borra las anteriores de la misma rama.
 5. Cuando no falta nada, construye el catálogo sin red (`build_historico --sin-red --parcial --aceptar-cambios
    --indices-al-dia`, con el ICEN y el ONI del día), lo

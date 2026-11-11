@@ -494,7 +494,8 @@ def wp_rest(src: dict, parts: Path, delay: float = 5.0) -> bytes:
     ``parametros.terminos``), por su API REST pública (``/wp-json/wp/v2/posts?search=``, 100 por página): id,
     fecha, enlace, titular y un extracto. Solo metadatos y un extracto corto, con enlace a la nota (derecho de
     cita, D. Leg. 822, art. 44). Cada término terminado se guarda en ``parts`` y una descarga cortada sigue con el
-    siguiente. JSON canónico ordenado por id."""
+    siguiente. Un término con error no se guarda, y si alguno lo tuvo, o ninguno trajo notas, la descarga falla
+    (``SystemExit``) en lugar de darse por completa. JSON canónico ordenado por id."""
     import html as H
     import time
 
@@ -502,6 +503,7 @@ def wp_rest(src: dict, parts: Path, delay: float = 5.0) -> bytes:
     api = src["url"]  # …/wp-json/wp/v2/posts
     parts.mkdir(parents=True, exist_ok=True)
     last = [0.0]
+    failed: list[str] = []
     with httpx.Client(follow_redirects=True, timeout=60, headers=UA, verify=ssl_context()) as c:
         for term in p.get("terminos", NEWS_TERMS):
             part = parts / _wp_part(term)
@@ -541,9 +543,22 @@ def wp_rest(src: dict, parts: Path, delay: float = 5.0) -> bytes:
                     got.append({"id": it.get("id"), "fecha": it.get("date"), "url": it.get("link"),
                                 "titulo": re.sub(r"\s+", " ", title), "extracto": re.sub(r"\s+", " ", exc).strip()[:500]})
                 page += 1
+            if errors:  # sin guardar: la corrida siguiente vuelve a pedir el término
+                failed += errors
+                print(f"  {src['id']}: «{term}»: {errors[0]}", file=sys.stderr)
+                continue
             write_atomic(part, json.dumps({"termino": term, "notas": got, "errores": errors}, ensure_ascii=False))
             print(f"  {src['id']}: «{term}»: {len(got)} notas", file=sys.stderr)
-    return wp_assemble(parts, src)
+    # Un medio que responde con error, o con ninguna nota en ningún término (p. ej. una API que no contesta a los
+    # servidores de GitHub Actions), no es una descarga terminada: si se diera por completa, el catálogo perdería en
+    # silencio las notas que ese medio tenía. Falla, y la cosecha la cuenta como fallo y lo dice en el PR.
+    if failed:
+        raise SystemExit(f"{src['id']}: {len(failed)} términos con error ({'; '.join(failed[:3])})")
+    data = wp_assemble(parts, src)
+    if not json.loads(data)["notas"]:
+        shutil.rmtree(parts, ignore_errors=True)  # que la corrida siguiente vuelva a preguntar
+        raise SystemExit(f"{src['id']}: ningún término devolvió notas (¿la API no responde a este servidor?)")
+    return data
 
 
 def _wp_part(term: str) -> str:
@@ -1646,7 +1661,8 @@ def web_payload(records: list[dict]) -> tuple[dict, dict[str, dict]]:
         detail[r["Ubigeo"][:2]][str(i)] = [
             r["Descripción"], r["Ubicacion"], r["FuenteCita"], r["Fuente"], r["DuraciónEvento"] or "",
             r["PrecisionFecha"], r["Id"], r["DangerTypeMetodo"], r["AtribucionENSO"],
-            {k: r[k] for k in E.IMPACT_COLUMNS if r.get(k)},
+            # Un cero reportado es un dato (la tabla de la pestaña lo escribe como eventos.csv); vacío, «no reportado».
+            {k: r[k] for k in E.IMPACT_COLUMNS if r.get(k) not in (None, "")},
             int(r.get("Corroboracion") or 0), [u for u in (r.get("FuentesAdicionales") or "").split(" | ") if u],
             r.get("FechaTipo") or "evento",
         ]
@@ -1699,6 +1715,31 @@ def fine_payload(records: list[dict]) -> dict:
         if r.get("CuerpoAgua"):
             waters.append([i, name(r["CuerpoAgua"])])
     return {"cuencas": basins, "nombres": names, "cuenca": cuenca, "puntos": points, "lugar": places, "agua": waters}
+
+
+def coords_payload(records: list[dict]) -> dict:
+    """``coordenadas.json``: Latitud y Longitud de cada registro escritas como en ``eventos.csv``, para que la tabla de
+    la pestaña arme en el navegador las columnas del equipo de un filtro sin pedir el ZIP:
+
+    - ``areas``: ``{ubigeo: [lat, lon]}`` de los registros ubicados en la capital de su distrito, provincia o
+      departamento (``[lat, lon, 1]`` si es un punto dentro del distrito porque no se conoce su capital). Todas las
+      filas de un mismo ubigeo ubicadas así tienen el mismo punto.
+    - ``puntos``: ``{i: [lat, lon]}`` (``i``, la posición en ``eventos.json``) de los registros con un punto propio,
+      con todos sus decimales (``detalle/`` los redondea a cuatro para el mapa).
+    """
+    text = lambda v: "" if v is None else str(v)  # lo que escribe csv.writer
+    areas: dict[str, list] = {}
+    points: dict[str, list] = {}
+    for i, r in enumerate(records):
+        lat, lon = text(r.get("Latitud")), text(r.get("Longitud"))
+        if not lat or not lon:
+            continue
+        geo = r.get("PrecisionGeo") or ""
+        if geo in WEB_POINT_KIND:
+            points[str(i)] = [lat, lon]
+        else:
+            areas.setdefault(r["Ubigeo"], [lat, lon, *([1] if geo == "interior-distrito" else [])])
+    return {"areas": dict(sorted(areas.items())), "puntos": points}
 
 
 #: Columnas de ``historia.json`` por distrito, provincia y cuenca.
@@ -2193,6 +2234,8 @@ def main(argv=None) -> int:
         (args.out / "detalle" / f"{dep}.json").write_text(json.dumps(d, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     fine = {"generatedAt": generated, **fine_payload(records)}
     (args.out / "finos.json").write_text(json.dumps(fine, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    coords = {"generatedAt": generated, **coords_payload(records)}
+    (args.out / "coordenadas.json").write_text(json.dumps(coords, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     hist = {"generatedAt": generated, **history_payload(records, ind, territory)}
     (args.out / "historia.json").write_text(json.dumps(hist, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     all_years = range(min(int(r["Anio"]) for r in records), max(int(r["Anio"]) for r in records) + 1)

@@ -13,6 +13,7 @@
     "noaa",
     "hazard-alerts",
     "peru-archive-pages",
+    "cenepred-scenarios",
     "news-feeds",
     "news-google",
     "robots-txt",
@@ -1161,8 +1162,8 @@
      "group": "operations",
      "name_es": "Validación de fuentes",
      "name_en": "Source validation",
-     "what_es": "A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions.",
-     "what_en": "By hand: fetches every registry URL with the same two passes and returns a CSV report; the weekly probe imports it as an n8n-network measurement. n8n.yml runs it on Mondays from Actions.",
+     "what_es": "A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions, repartido en 4 partes por servidor que corren en paralelo y se juntan en un informe.",
+     "what_en": "By hand: fetches every registry URL with the same two passes and returns a CSV report; the weekly probe imports it as an n8n-network measurement. n8n.yml runs it on Mondays from Actions, split into 4 parallel parts by server that are merged into one report.",
      "tech": [
       "Convert to File"
      ],
@@ -3574,8 +3575,8 @@
    "title_en": "The site in the browser",
    "subtitle_es": "El sitio es una página estática, sin compilación ni servidor propio: todo lo que muestra sale de los archivos de data/ de una misma publicación. El navegador comprueba que cada archivo sea de esa publicación y, si no puede, lo dice en vez de mezclar datos.",
    "subtitle_en": "The site is a static page, with no build step or server of its own: everything it shows comes from the data/ files of one publication. The browser checks each file belongs to that publication and, if it cannot, says so instead of mixing data.",
-   "desc_es": "Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 11 vistas con la procedencia de cada valor y quién lo usa.",
-   "desc_en": "Where it is hosted, how it loads the data and checks its consistency, its 11 views with each value's provenance and who uses it.",
+   "desc_es": "Dónde se aloja, cómo carga los datos y comprueba su coherencia, sus 13 vistas con la procedencia de cada valor y quién lo usa.",
+   "desc_en": "Where it is hosted, how it loads the data and checks its consistency, its 13 views with each value's provenance and who uses it.",
    "covers": [
     "live-site",
     "site-app",
@@ -3702,10 +3703,10 @@
      "col": "c3",
      "icon": "layers",
      "group": "site",
-     "name_es": "11 vistas",
-     "name_en": "11 views",
-     "what_es": "Resumen, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Noticias, Datos, Metodología y Asistente; cada una tiene un recorrido guiado que la usa delante de la persona.",
-     "what_en": "Summary, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, News, Data, Methodology and Assistant; each has a guided tour that uses it in front of the reader.",
+     "name_es": "13 vistas",
+     "name_en": "13 views",
+     "what_es": "Resumen, Boletín, El Niño Costero, Pacífico, Océano y atmósfera, Mapa, Historia, Memoria de desastres, Mi zona, Noticias, Datos, Metodología y Asistente; cada una tiene un recorrido guiado que la usa delante de la persona.",
+     "what_en": "Summary, Bulletin, Coastal El Niño, Pacific, Ocean and atmosphere, Map, History, Disaster memory, My area, News, Data, Methodology and Assistant; each has a guided tour that uses it in front of the reader.",
      "tech": [
       "app.js",
       "tour.js",
@@ -4518,8 +4519,8 @@
      "group": "publication",
      "name_es": "Archivos publicados",
      "name_en": "Published files",
-     "what_es": "eventos.zip (las 13 columnas del tablero y 50 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador (con finos.json e historia.json, y los ríos nombrados y las manzanas del CENEPRED de tools.build_capas_mapa, para las vistas de detalle).",
-     "what_en": "eventos.zip (the 13 dashboard columns and 50 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions (with finos.json and historia.json, and the named rivers and CENEPRED blocks from tools.build_capas_mapa, for the detail views)."
+     "what_es": "eventos.zip (las 13 columnas del tablero y 50 de metadatos), los indicadores, el contexto por distrito, la prevención y el diccionario de datos y las versiones para el navegador (con finos.json, historia.json y coordenadas.json, y los ríos nombrados y las manzanas del CENEPRED de tools.build_capas_mapa, para las vistas de detalle y la tabla de registros).",
+     "what_en": "eventos.zip (the 13 dashboard columns and 50 metadata columns), the indicators, the per-district context, the prevention files and the data dictionary and browser versions (with finos.json, historia.json and coordenadas.json, and the named rivers and CENEPRED blocks from tools.build_capas_mapa, for the detail views and the records table)."
     },
     {
      "id": "tab",
@@ -4528,13 +4529,14 @@
      "group": "site",
      "name_es": "Pestaña Memoria de desastres",
      "name_en": "Disaster memory tab",
-     "what_es": "Cómo usarla, mapa y ficha de cada área con intervalos y, arriba del mapa, sus vistas de detalle (cuencas, ríos y lugares, daños y pobreza con las manzanas en riesgo del CENEPRED), línea de tiempo, los grandes Niños uno al lado del otro, ranking, la validación, «¿se sabía antes?», antes de 1970, la evidencia sobre la prevención y el método con sus límites.",
-     "what_en": "How to use it, map and profile of each area with intervals and, above the map, its detail views (watersheds, rivers and places, damage and poverty with CENEPRED's at-risk blocks), timeline, the great Niños side by side, ranking, the validation, «was it known before?», before 1970, the evidence on prevention and the method with its limits.",
+     "what_es": "Cómo usarla, mapa y ficha de cada área con intervalos y, arriba del mapa, sus vistas de detalle (cuencas, ríos y lugares, daños y pobreza con las manzanas en riesgo del CENEPRED), línea de tiempo, los grandes Niños uno al lado del otro, ranking, la validación, «¿se sabía antes?», antes de 1970, la evidencia sobre la prevención, el método con sus límites y, al final, la tabla de registros con el filtro del mapa y su descarga en CSV.",
+     "what_en": "How to use it, map and profile of each area with intervals and, above the map, its detail views (watersheds, rivers and places, damage and poverty with CENEPRED's at-risk blocks), timeline, the great Niños side by side, ranking, the validation, «was it known before?», before 1970, the evidence on prevention, the method with its limits and, at the end, the records table that follows the map filter, with its CSV download.",
      "tech": [
       "historico.js",
       "historico-model.js",
       "historico-evidencia.js",
-      "historico-detalle.js"
+      "historico-detalle.js",
+      "historico-tabla.js"
      ],
      "see": [
       "a9"

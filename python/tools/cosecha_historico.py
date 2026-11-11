@@ -132,6 +132,25 @@ def progress(src: dict, cache: Path) -> str:
     return f"{_count(parts)} partes"
 
 
+def forget_blank_wp(manifest: dict, cache: Path) -> list[str]:
+    """Borra de la caché los medios WordPress guardados sin ninguna nota y devuelve sus ids. Antes, un medio cuya API
+    no respondía a GitHub Actions (error o lista vacía en cada término) quedaba como descarga completa con 0 notas, y
+    el catálogo perdía en silencio lo que tenía de él; ``build_historico.wp_rest`` ahora falla en ese caso."""
+    out = []
+    for s in harvestable(manifest):
+        f = cache / s["archivo"]
+        if s.get("descarga") != "wp-rest" or not f.exists():
+            continue
+        try:
+            blank = not json.loads(f.read_text(encoding="utf-8")).get("notas")
+        except (ValueError, AttributeError):
+            blank = True
+        if blank:
+            f.unlink()
+            out.append(s["id"])
+    return out
+
+
 def child_command(src: dict, cache: Path) -> list[str]:
     return [sys.executable, "-m", "tools.cosecha_historico", "--una", src["id"], "--cache", str(cache)]
 
@@ -187,6 +206,11 @@ def harvest(manifest: dict, cache: Path, minutes: float, only: Optional[set] = N
     Devuelve el estado, con ``resultado`` (de esta corrida) y ``estado`` (completa, sigue o hecha)."""
     cache.mkdir(parents=True, exist_ok=True)
     state = load_state(cache)
+    blank = forget_blank_wp(manifest, cache)
+    if blank and (cache / PR).exists():
+        # El PR (o el aviso) se armó sin esas notas: la cosecha sigue para que el próximo diga qué medios fallaron.
+        (cache / PR).unlink()
+        print(f"Sin notas en la caché, se vuelven a pedir: {', '.join(blank)}", flush=True)
     if (cache / PR).exists():
         state["estado"] = "hecha"
         state["pr"] = json.loads((cache / PR).read_text(encoding="utf-8"))

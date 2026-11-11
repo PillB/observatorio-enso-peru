@@ -445,7 +445,14 @@ Si sigue sin funcionar, enviar a quien mantiene el sitio el último
   `index.json` y el latido, con el motivo y la fecha de la copia; avisa
   si tiene más de 14 días). El kit lleva el registro regenerado con el
   código de su versión. Una regla `follow` baja además los
-  documentos enlazados (por ejemplo, los PDF de un listado), hasta `max`.
+  documentos enlazados (por ejemplo, los PDF de un listado), hasta `max`;
+  con `template`, arma el enlace con lo capturado (`{1}`), y con
+  `order: "desc"` toma primero los de número mayor. Desde el kit 3, la
+  lista de escenarios de riesgo por lluvias del SIGRID está en la lista fija
+  (grupo `cenepred`) con su regla (`FIXED_FOLLOW`): el equipo baja la lista y
+  el ZIP de los tres escenarios más recientes, que la actualización diaria
+  usa si el SIGRID no le responde. Un kit anterior no los trae y no pasa
+  nada más: el sitio no lo exige (`MIN_COLLECTOR_CONTRACT` sigue en 2).
   Lo que el registro marca `robots-disallowed` (el robots.txt del servidor
   no permite la ruta) no se pide; si está en la lista base, el equipo
   vuelve a leer ese robots.txt cada noche y la pide solo si ahora lo

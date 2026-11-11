@@ -1,0 +1,4965 @@
+{
+"generatedAt": "2026-11-10T15:31:50+00:00",
+"publicationId": "20261110T1531Z-a8057f2a",
+"groups": [
+{
+"id": "alertas",
+"label": "Alertas y reportes de peligros (últimos 7 días)",
+"items": [
+{
+"group": "alertas",
+"id": "alert-ef9009e656f85f3a",
+"source": "news-firms-focos",
+"institution": "NASA FIRMS",
+"kind": "deteccion",
+"title": "NASA FIRMS · 14 focos de calor en el Perú (9 y 10 de noviembre): Piura (6), Loreto (3), Puno (2) y 3 departamentos más",
+"date": "2026-11-10T07:05:00Z",
+"url": "https://firms.modaps.eosdis.nasa.gov/map/#d:24hrs;@-75.0,-9.4,5.6z",
+"archive": "archive/news/2026-11-10.html#ef9009e656f85f3a",
+"hazards": [
+"incendio"
+],
+"where": [
+"Piura",
+"Loreto",
+"Puno"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": {
+"from": "2026-11-09T18:17:00Z",
+"until": "2026-11-10T07:05:00Z",
+"basis": "periodo de las detecciones del satélite",
+"observed": true
+},
+"phaseAtPublication": "en-curso",
+"currentHours": 24,
+"snapshot": "archive/feeds/firms-focos.txt"
+},
+{
+"group": "alertas",
+"id": "alert-fa2de6b9dd13e0c9",
+"source": "news-senamhi-telegram",
+"institution": "SENAMHI",
+"kind": "en-curso",
+"title": "SENAMHI, en este momento: en Canta, sierra de Lima, se registran lluvias que persistirán durante las próximas horas.",
+"date": "2026-11-09T21:03:19Z",
+"url": "https://t.me/Senamhi_Peru/23669",
+"archive": "archive/news/2026-11-10.html#fa2de6b9dd13e0c9",
+"hazards": [
+"emergencia"
+],
+"where": [
+"Lima (Lima)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.85,
+"method": "texto",
+"places": [
+{
+"code": "1501",
+"level": "provincia",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.85,
+"method": "texto"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 3,
+"label": "Rojo",
+"color": "rojo",
+"scale": "senamhi-colores",
+"scaleLabel": "SENAMHI, colores de aviso",
+"basis": "nivel del aviso N° 456 que cita en la tabla de avisos del SENAMHI",
+"basisUrl": "https://www.senamhi.gob.pe/?p=aviso-meteorologico-vigente&a=2026&b=29353&c=00&d=SENA",
+"basisArchive": "archive/sources/senamhi-avisos/b5f4d853ccdc.txt"
+},
+"valid": null,
+"phaseAtPublication": "reciente",
+"aviso": {
+"num": 456,
+"year": 2026,
+"url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico-vigente&a=2026&b=29353&c=00&d=SENA",
+"cancelled": false
+},
+"currentHours": 12,
+"snapshot": "archive/feeds/senamhi-telegram.txt"
+},
+{
+"group": "alertas",
+"id": "alert-40a690e4396a4f3d",
+"source": "news-senamhi-telegram",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "Aviso del SENAMHI: del 10 al 11 de noviembre, se presentará el incremento de la temperatura diurna en la selva.",
+"date": "2026-11-09T20:44:47Z",
+"url": "https://t.me/Senamhi_Peru/23667",
+"archive": "archive/news/2026-11-10.html#40a690e4396a4f3d",
+"hazards": [
+"calor",
+"viento"
+],
+"where": [
+"Amazonas",
+"Loreto",
+"San Martín"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.6,
+"method": "region",
+"places": [
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "22",
+"level": "departamento",
+"name": "San Martín",
+"department": "San Martín",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "19",
+"level": "departamento",
+"name": "Pasco",
+"department": "Pasco",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.6,
+"method": "region"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.6,
+"method": "region"
+}
+],
+"reviewed": false,
+"via": {
+"basis": "regiones que nombra el aviso («en la selva»), no departamentos de la fuente"
+}
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Naranja",
+"color": "naranja",
+"scale": "senamhi-colores",
+"scaleLabel": "SENAMHI, colores de aviso",
+"basis": "nivel del aviso N° 463 en la tabla de avisos del SENAMHI",
+"basisUrl": "https://www.senamhi.gob.pe/?p=aviso-meteorologico-vigente&a=2026&b=29360&c=00&d=SENA",
+"basisArchive": "archive/sources/senamhi-avisos/b5f4d853ccdc.txt"
+},
+"valid": {
+"from": "2026-11-10T05:00:00Z",
+"until": "2026-11-12T04:59:00Z",
+"basis": "fechas que indica el aviso"
+},
+"phaseAtPublication": "vigente",
+"aviso": {
+"num": 463,
+"year": 2026,
+"url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico-vigente&a=2026&b=29360&c=00&d=SENA",
+"cancelled": false
+},
+"snapshot": "archive/feeds/senamhi-telegram.txt"
+},
+{
+"group": "alertas",
+"id": "alert-48b35dad8f4f0e24",
+"source": "news-senamhi-telegram",
+"institution": "SENAMHI",
+"kind": "en-curso",
+"title": "SENAMHI, en este momento: en Lima, se registran lluvias en las zonas altas de la región, tal como se indicó en el aviso meteorológico de precipitaciones para la sierra.",
+"date": "2026-11-09T19:24:11Z",
+"url": "https://t.me/Senamhi_Peru/23660",
+"archive": "archive/news/2026-11-10.html#48b35dad8f4f0e24",
+"hazards": [
+"emergencia"
+],
+"where": [
+"Lima (Lima)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.85,
+"method": "texto",
+"places": [
+{
+"code": "1501",
+"level": "provincia",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.85,
+"method": "texto"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": null,
+"phaseAtPublication": "reciente",
+"currentHours": 12,
+"snapshot": "archive/feeds/senamhi-telegram.txt"
+},
+{
+"group": "alertas",
+"id": "alert-4e1ba44ce3d7b853",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 3: 38 quebradas en 19 distritos de Tumbes, Amazonas, Arequipa, Cusco y Ayacucho",
+"date": "2026-11-09T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%203%27%20AND%20FECHA%3DDATE%20%272026-11-09%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-10.html#4e1ba44ce3d7b853",
+"hazards": [
+"huaico"
+],
+"where": [
+"Tumbes",
+"Amazonas",
+"Arequipa"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Nivel 3",
+"color": "naranja",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-09T17:00:00Z",
+"until": "2026-11-10T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vigente",
+"snapshot": "archive/feeds/senamhi-quebradas.txt"
+},
+{
+"group": "alertas",
+"id": "alert-6b1e3c730e6107b2",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 2: 187 quebradas en 36 distritos de Amazonas, San Martín, Huánuco, Loreto, Arequipa y Ayacucho y 4 departamentos más",
+"date": "2026-11-09T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%202%27%20AND%20FECHA%3DDATE%20%272026-11-09%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-10.html#6b1e3c730e6107b2",
+"hazards": [
+"huaico"
+],
+"where": [
+"Amazonas",
+"San Martín",
+"Huánuco"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "22",
+"level": "departamento",
+"name": "San Martín",
+"department": "San Martín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "19",
+"level": "departamento",
+"name": "Pasco",
+"department": "Pasco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 1,
+"label": "Nivel 2",
+"color": "amarillo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-09T17:00:00Z",
+"until": "2026-11-10T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vigente",
+"snapshot": "archive/feeds/senamhi-quebradas.txt"
+},
+{
+"group": "alertas",
+"id": "alert-e73429a01b6556f5",
+"source": "news-senamhi-hidrologicos",
+"institution": "SENAMHI",
+"kind": "en-curso",
+"title": "SENAMHI · aviso hidrológico N° 1675 (nivel amarillo): situación actual del nivel del río Marañón, estación Borja",
+"date": "2026-11-09T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=NUM_AVISO%3D1675&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-10.html#e73429a01b6556f5",
+"hazards": [
+"sequia"
+],
+"where": [
+"Manseriche (Loreto)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "160703",
+"level": "distrito",
+"name": "Manseriche",
+"department": "Loreto",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 1,
+"label": "Umbral amarillo",
+"color": "amarillo",
+"scale": "senamhi-umbral",
+"scaleLabel": "SENAMHI, umbral hidrológico de la estación",
+"basis": "campo COLOR_TEXT del aviso hidrológico"
+},
+"valid": null,
+"phaseAtPublication": "en-curso",
+"currentHours": 72,
+"snapshot": "archive/feeds/senamhi-hidrologicos.txt"
+},
+{
+"group": "alertas",
+"id": "alert-9b17fecc36ca2736",
+"source": "news-senamhi-incendios",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · peligro extremo de incendios forestales (índice FWI > 97): Loreto",
+"date": "2026-11-09T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=INTENSIDAD%3D%27EXTREMO%27%20AND%20FECHA%3DDATE%20%272026-11-09%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-10.html#9b17fecc36ca2736",
+"hazards": [
+"incendio"
+],
+"where": [
+"Loreto"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": {
+"from": "2026-11-09T17:00:00Z",
+"until": "2026-11-10T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vigente",
+"snapshot": "archive/feeds/senamhi-incendios.txt"
+},
+{
+"group": "alertas",
+"id": "alert-305ce1eba2f712ac",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 3: Puno, Arequipa, Ayacucho, Huancavelica, Apurímac, Cusco y 3 departamentos más",
+"date": "2026-11-09T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%203%27%20AND%20FECHA%3DDATE%20%272026-11-09%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-10.html#305ce1eba2f712ac",
+"hazards": [],
+"where": [
+"Puno",
+"Arequipa",
+"Ayacucho"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "09",
+"level": "departamento",
+"name": "Huancavelica",
+"department": "Huancavelica",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "03",
+"level": "departamento",
+"name": "Apurímac",
+"department": "Apurímac",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Nivel 3",
+"color": "naranja",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-09T17:00:00Z",
+"until": "2026-11-10T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vigente",
+"snapshot": "archive/feeds/senamhi-lluvias.txt"
+},
+{
+"group": "alertas",
+"id": "alert-2d0479fca7b64592",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 2: Loreto, Puno, Arequipa, Cusco, Amazonas, Ayacucho y 4 departamentos más",
+"date": "2026-11-09T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%202%27%20AND%20FECHA%3DDATE%20%272026-11-09%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-10.html#2d0479fca7b64592",
+"hazards": [],
+"where": [
+"Loreto",
+"Puno",
+"Arequipa"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "03",
+"level": "departamento",
+"name": "Apurímac",
+"department": "Apurímac",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 1,
+"label": "Nivel 2",
+"color": "amarillo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-09T17:00:00Z",
+"until": "2026-11-10T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vigente",
+"snapshot": "archive/feeds/senamhi-lluvias.txt"
+},
+{
+"group": "alertas",
+"id": "alert-e045c62b4ef1a595",
+"source": "news-igp-cenvul-boletines",
+"institution": "IGP",
+"kind": "en-curso",
+"title": "Volcán Sabancaya: boletín IGP/CENVUL-SAB/BV 2026-0045, alerta naranja",
+"date": "2026-11-09T17:00:00Z",
+"url": "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos#IGP-CENVUL-SAB-BV-2026-0045",
+"archive": "archive/news/2026-11-10.html#e045c62b4ef1a595",
+"hazards": [
+"volcan"
+],
+"where": [
+"Caylloma (Arequipa)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "texto",
+"places": [
+{
+"code": "0405",
+"level": "provincia",
+"name": "Caylloma",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "texto"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Alerta naranja",
+"color": "naranja",
+"scale": "igp-volcan",
+"scaleLabel": "IGP, alerta volcánica",
+"basis": "nivel de alerta del boletín del CENVUL"
+},
+"valid": null,
+"phaseAtPublication": "en-curso",
+"currentHours": 336
+},
+{
+"group": "alertas",
+"id": "alert-794a8773243abd32",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el distrito de Villa María del Triunfo (Lima)",
+"date": "2026-11-09T13:18:48+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-12039-10-9-2026-coen-indeci-0210-horas-reporte-n-1-lluvias-intensas-en-el-distrito-de-villa-maria-del-triunfo-lima/",
+"archive": "archive/news/2026-11-09.html#794a8773243abd32",
+"hazards": [
+"lluvias",
+"inundacion"
+],
+"where": [
+"Villa María del Triunfo (Lima)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "150143",
+"level": "distrito",
+"name": "Villa María del Triunfo",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/09/REPORTE-COMPLEMENTARIO-N.%C2%BA-15686-9NOV2026-LLUVIAS-INTENSAS-EN-EL-DISTRITO-DE-VILLA-MARIA-DEL-TRIUNFO-LIMA-3.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-09-10T04:30:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-63e24f9fd32e28ca",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Huando (Huancavelica)",
+"date": "2026-11-09T11:48:16+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-15522-5-11-2026-coen-indeci-1050-horas-reporte-n-o-1-incendio-forestal-en-el-distrito-de-huando-huancavelica/",
+"archive": "archive/news/2026-11-09.html#63e24f9fd32e28ca",
+"hazards": [
+"incendio"
+],
+"where": [
+"Huando (Huancavelica)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "090119",
+"level": "distrito",
+"name": "Huando",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15681-9NOV2026-INCENDIO-FORESTAL-EN-EL-DISTRITO-DE-HUANDO-HUANCAVELICA-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-04T17:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-85c94ed1eb4ee926",
+"source": "news-usgs-sismos",
+"institution": "USGS",
+"kind": "reporte",
+"title": "Sismo de magnitud 5.3 a 80 km al ENE de Lagunas, Perú",
+"date": "2026-11-09T10:23:53Z",
+"url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tx38",
+"archive": "archive/news/2026-11-09.html#85c94ed1eb4ee926",
+"hazards": [
+"sismo"
+],
+"where": [
+"Parinari (Loreto)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "coordenadas",
+"places": [
+{
+"code": "160302",
+"level": "distrito",
+"name": "Parinari",
+"department": "Loreto",
+"confidence": 0.95,
+"method": "coordenadas"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"snapshot": "archive/feeds/usgs-sismos.txt"
+},
+{
+"group": "alertas",
+"id": "alert-89627b0f22fdeec5",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Helada en el distrito de Combapata (Cusco)",
+"date": "2026-11-09T06:39:32+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-13293-2-10-2026-coen-indeci-0114-horas-reporte-n-1-helada-en-el-distrito-de-combapata-cusco/",
+"archive": "archive/news/2026-11-09.html#89627b0f22fdeec5",
+"hazards": [
+"frio"
+],
+"where": [
+"Combapata (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "080603",
+"level": "distrito",
+"name": "Combapata",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15671-8NOV2026-HELADA-EN-EL-DISTRITO-DE-COMBAPATA-CUSCO-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-01T09:30:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-824de78b90f138d8",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Helada en el distrito de Cuenca (Huancavelica)",
+"date": "2026-11-09T04:56:26+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-13381-3-10-2026-coen-indeci-0545-horas-reporte-n-1-helada-en-el-distrito-de-cuenca-huancavelica/",
+"archive": "archive/news/2026-11-09.html#824de78b90f138d8",
+"hazards": [
+"frio"
+],
+"where": [
+"Cuenca (Huancavelica)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "090105",
+"level": "distrito",
+"name": "Cuenca",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15679-8NOV2026-HELADA-EN-EL-DISTRITO-DE-CUENCA-HUANCAVELICA-4.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-01T11:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-40b4437e4e207c8f",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Pichigua (Cusco)",
+"date": "2026-11-09T04:53:48+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-13545-6-10-2026-coen-indeci-0536-horas-reporte-n-1-incendio-forestal-en-el-distrito-de-pichigua-cusco/",
+"archive": "archive/news/2026-11-09.html#40b4437e4e207c8f",
+"hazards": [
+"incendio"
+],
+"where": [
+"Pichigua (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "080806",
+"level": "distrito",
+"name": "Pichigua",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15678-8NOV2026-INCENDIO-FORESTAL-EN-EL-DISTRITO-DE-PICHIGUA-CUSCO-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-04T17:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-f2dc06e87dec9214",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Cusipata (Cusco)",
+"date": "2026-11-09T04:38:42+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-13410-3-10-2026-coen-indeci-1555-horas-reporte-n-o-1-incendio-forestal-en-el-distrito-de-cusipata-cusco/",
+"archive": "archive/news/2026-11-09.html#f2dc06e87dec9214",
+"hazards": [
+"incendio"
+],
+"where": [
+"Canchis (Cusco)",
+"Cusipata (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "0806",
+"level": "provincia",
+"name": "Canchis",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "081206",
+"level": "distrito",
+"name": "Cusipata",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15677-8NOV2026-INCENDIO-FORESTAL-EN-EL-DISTRITO-DE-CUSIPATA-CUSCO-4.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-02T15:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-34dd3bc7c8e18071",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el distrito de San Pedro de Chana (Áncash)",
+"date": "2026-11-09T04:35:44+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-15676-8-11-2026-coen-indeci-2310-horas-reporte-n-1-lluvias-intensas-en-el-distrito-de-san-pedro-de-chana-ancash/",
+"archive": "archive/news/2026-11-09.html#34dd3bc7c8e18071",
+"hazards": [
+"lluvias",
+"huaico"
+],
+"where": [
+"San Pedro de Chana (Áncash)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "021015",
+"level": "distrito",
+"name": "San Pedro de Chana",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15676-8NOV2026-LLUVIAS-INTENSAS-EN-EL-DISTRITO-DE-SAN-PEDRO-DE-CHANA-%C3%81NCASH-1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-03T23:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-a35b537f468127bd",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Amarilis (Huánuco)",
+"date": "2026-11-09T04:13:23+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-15673-8-11-2026-coen-indeci-2250-horas-reporte-n-1-incendio-forestal-en-el-distrito-de-amarilis-huanuco/",
+"archive": "archive/news/2026-11-09.html#a35b537f468127bd",
+"hazards": [
+"incendio"
+],
+"where": [
+"Amarilis (Huánuco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "100102",
+"level": "distrito",
+"name": "Amarilis",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15673-8NOV2026-INCENDIO-FORESTAL-EN-EL-DISTRITO-DE-AMARILIS-HU%C3%81NUCO1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-07T17:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-2cdbdc7bbff17405",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Helada en el distrito de Checacupe (Cusco)",
+"date": "2026-11-09T04:09:54+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-13291-2-10-2026-coen-indeci-0111-horas-reporte-n-1-helada-en-el-distrito-de-checacupe-cusco/",
+"archive": "archive/news/2026-11-09.html#2cdbdc7bbff17405",
+"hazards": [
+"frio"
+],
+"where": [
+"Checacupe (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "080602",
+"level": "distrito",
+"name": "Checacupe",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15672-8NOV2026-HELADA-EN-EL-DISTRITO-DE-CHECACUPE-CUSCO-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-01T10:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-f1e2f6e0c380a0ee",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Jacas Grande (Huánuco)",
+"date": "2026-11-09T03:32:56+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-15670-8-11-2026-coen-indeci-2200-horas-reporte-n-1-incendio-forestal-en-el-distrito-de-jacas-grande-huanuco/",
+"archive": "archive/news/2026-11-09.html#f1e2f6e0c380a0ee",
+"hazards": [
+"incendio"
+],
+"where": [
+"Jacas Grande (Huánuco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "100504",
+"level": "distrito",
+"name": "Jacas Grande",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15670-8NOV2026-INCENDIO-FORESTAL-EN-EL-DISTRITO-DE-JACAS-GRANDE-HUANUCO-1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-08T21:30:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-867752213ad8063c",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Huaico en el distrito de Huaynacotas (Arequipa)",
+"date": "2026-11-09T03:20:15+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-preliminar-n-1122-8-11-2026-coen-indeci-2215-horas-huaico-en-el-distrito-de-huaynacotas-arequipa/",
+"archive": "archive/news/2026-11-09.html#867752213ad8063c",
+"hazards": [
+"lluvias",
+"huaico"
+],
+"where": [
+"Huaynacotas (Arequipa)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "040804",
+"level": "distrito",
+"name": "Huaynacotas",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-PRELIMINAR-N.%C2%BA-1122-8NOV2026-HUAICO-EN-EL-DISTRITO-DE-HUAYNACOTAS-AREQUIPA.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-08T14:30:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-3f6b696e346f87cf",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el distrito de Villa María del Triunfo (Lima)",
+"date": "2026-11-09T03:11:06+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-preliminar-n-o-0745-17-8-2026-coen-indeci-0325-horas-lluvias-intensas-en-el-distrito-de-villa-maria-del-triunfo-lima/",
+"archive": "archive/news/2026-11-09.html#3f6b696e346f87cf",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Villa María del Triunfo (Lima)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "150143",
+"level": "distrito",
+"name": "Villa María del Triunfo",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/08/REPORTE-COMPLEMENTARIO-N.%C2%BA-15669-8NOV2026-LLUVIAS-INTENSAS-EN-EL-DISTRITO-DE-VILLA-MAR%C3%8DA-DEL-TRIUNFO-LIMA-5.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-08-16T19:00:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-1137951bb3e83629",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Orurillo (Puno)",
+"date": "2026-11-09T03:07:43+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-14166-14-10-2026-coen-indeci-2230-horas-reporte-n-o-01-incendio-forestal-en-el-distrito-de-orurillo-puno/",
+"archive": "archive/news/2026-11-09.html#1137951bb3e83629",
+"hazards": [
+"incendio"
+],
+"where": [
+"Orurillo (Puno)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "210807",
+"level": "distrito",
+"name": "Orurillo",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15668-8NOV2026-INCENDIO-FORESTAL-EN-EL-DISTRITO-DE-ORURILLO-PUNO.-4.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-14T15:30:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-054e16d435770248",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Vientos fuertes en el distrito de Sapallanga (Junín)",
+"date": "2026-11-08T23:42:08+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-15664-8-11-2026-coen-indeci-1820-horas-reporte-n-o-1-vientos-fuertes-en-el-distrito-de-sapallanga-junin/",
+"archive": "archive/news/2026-11-09.html#054e16d435770248",
+"hazards": [
+"viento"
+],
+"where": [
+"Sapallanga (Junín)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "120133",
+"level": "distrito",
+"name": "Sapallanga",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15664-8NOV2026-VIENTOS-FUERTES-EN-EL-DISTRITO-DE-SAPALLANGA-JUN%C3%8DN-1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-07T21:30:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-a7bb4771c0e228f7",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "REPORTE COPLEMENTARIO N.° 15663 – 8/11/2026 / COEN – INDECI / 18:00 HORAS (Reporte N° 02) HELADA EN EL DISTRITO DE URCOS – CUSCO",
+"date": "2026-11-08T23:30:06+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-coplementario-n-13453-4-10-2026-coen-indeci-0620-horas-reporte-n-01-helada-en-el-distrito-de-urcos-cusco/",
+"archive": "archive/news/2026-11-09.html#a7bb4771c0e228f7",
+"hazards": [
+"frio"
+],
+"where": [
+"Urcos (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "081201",
+"level": "distrito",
+"name": "Urcos",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15663-8NOV2026-HELADA-EN-EL-DISTRITO-DE-URCOS-CUSCO-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-01T09:00:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-78816e2eed0876a5",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Deslizamiento en el distrito de Oyón (Lima)",
+"date": "2026-11-08T22:44:28+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-preliminar-n-o-1121-8-11-2026-coen-indeci-1620-horas-deslizamiento-en-el-distrito-de-oyon-lima/",
+"archive": "archive/news/2026-11-09.html#78816e2eed0876a5",
+"hazards": [
+"huaico"
+],
+"where": [
+"Oyón (Lima)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "150901",
+"level": "distrito",
+"name": "Oyón",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-PRELIMINAR-N.%C2%BA-1121-8NOV2026-DESLIZAMIENTO-EN-EL-DISTRITO-DE-OY%C3%93N-LIMA-1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-08T14:00:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-6e9b7e0395756ba0",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Helada en el distrito de Taray (Cusco)",
+"date": "2026-11-08T22:40:57+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-13294-2-10-2026-coen-indeci-0116-horas-reporte-n-1-helada-en-el-distrito-de-taray-cusco/",
+"archive": "archive/news/2026-11-09.html#6e9b7e0395756ba0",
+"hazards": [
+"frio"
+],
+"where": [
+"Taray (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "080407",
+"level": "distrito",
+"name": "Taray",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15662-8NOV2026-HELADA-EN-EL-DISTRITO-DE-TARAY-CUSCO-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-01T09:00:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-36a336701289a174",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Helada en el distrito de Huaro (Cusco)",
+"date": "2026-11-08T22:35:04+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-preliminar-n-0956-1-10-2026-coen-indeci-2028-horas-helada-en-el-distrito-de-huaro-cusco/",
+"archive": "archive/news/2026-11-09.html#36a336701289a174",
+"hazards": [
+"frio"
+],
+"where": [
+"Canchis (Cusco)",
+"Huaro (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "0806",
+"level": "provincia",
+"name": "Canchis",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "081207",
+"level": "distrito",
+"name": "Huaro",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/10/REPORTE-COMPLEMENTARIO-N.%C2%BA-15661-8NOV2026-HELADA-EN-EL-DISTRITO-DE-HUARO-CUSCO-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-10-01T08:30:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-b7ad8b4ede52ad53",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Velille (Cusco)",
+"date": "2026-11-08T22:11:37+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-13048-28-9-2026-coen-indeci-0601-horas-reporte-n-o-1-incendio-forestal-en-el-distrito-de-velille-cusco/",
+"archive": "archive/news/2026-11-10.html#b7ad8b4ede52ad53",
+"hazards": [
+"incendio"
+],
+"where": [
+"Velille (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "texto",
+"places": [
+{
+"code": "080708",
+"level": "distrito",
+"name": "Velille",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "texto"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-09-24T16:00:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-15be80ae4dfa6601",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Incendio forestal en el distrito de Livitaca (Cusco)",
+"date": "2026-11-08T21:52:28+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-12739-23-9-2026-coen-indeci-0130-horas-reporte-n-o-1-incendio-forestal-en-el-distrito-de-livitaca-cusco/",
+"archive": "archive/news/2026-11-10.html#15be80ae4dfa6601",
+"hazards": [
+"incendio"
+],
+"where": [
+"Livitaca (Cusco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "texto",
+"places": [
+{
+"code": "080705",
+"level": "distrito",
+"name": "Livitaca",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "texto"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-09-21T21:00:00Z",
+"snapshot": "archive/feeds/indeci-coen.txt"
+},
+{
+"group": "alertas",
+"id": "alert-5efdadf2ac7c6c37",
+"source": "news-indeci-coen-boletines",
+"institution": "INDECI",
+"kind": "pronostico",
+"title": "Aviso de corto plazo ante posible activación de quebradas (boletín N° 213 del COEN)",
+"date": "2026-11-08T20:21:36+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/boletin-informativo-de-aviso-de-corto-plazo-ante-posible-activacion-de-quebradas-n-213-2026-indeci-coen/",
+"archive": "archive/news/2026-11-09.html#5efdadf2ac7c6c37",
+"hazards": [
+"huaico"
+],
+"where": [
+"Amazonas",
+"Áncash",
+"Cajamarca"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "09",
+"level": "departamento",
+"name": "Huancavelica",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/BOLET%C3%8DN-INFORMATIVO-DE-AVISO-DE-CORTO-PLAZO-ANTE-POSIBLE-ACTIVACI%C3%93N-DE-QUEBRADAS-N%C2%B0213-08-11-2026.pdf",
+"severity": null,
+"valid": {
+"from": "2026-11-08T18:00:00Z",
+"until": "2026-11-09T18:00:00Z",
+"basis": "vigencia del boletín del COEN"
+},
+"phaseAtPublication": "vencida",
+"snapshot": "archive/feeds/indeci-coen-boletines.txt"
+},
+{
+"group": "alertas",
+"id": "alert-9c4b51713b2695cb",
+"source": "news-indeci-coen-boletines",
+"institution": "INDECI",
+"kind": "pronostico",
+"title": "Aviso de corto plazo ante lluvias intensas (boletín N° 311 del COEN)",
+"date": "2026-11-08T18:38:16+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/boletin-informativo-de-aviso-de-corto-plazo-ante-lluvias-intensas-n311-2026-indeci-coen/",
+"archive": "archive/news/2026-11-09.html#9c4b51713b2695cb",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Amazonas",
+"Áncash",
+"Apurímac"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "03",
+"level": "departamento",
+"name": "Apurímac",
+"department": "Apurímac",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "09",
+"level": "departamento",
+"name": "Huancavelica",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "19",
+"level": "departamento",
+"name": "Pasco",
+"department": "Pasco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/BOLET%C3%8DN-INFORMATIVO-DE-AVISO-DE-CORTO-PLAZO-ANTE-LLUVIAS-INTENSAS-N%C2%B0311-2026-DEL-08-11-2026.pdf",
+"severity": null,
+"valid": {
+"from": "2026-11-08T18:00:00Z",
+"until": "2026-11-09T18:00:00Z",
+"basis": "vigencia del boletín del COEN"
+},
+"phaseAtPublication": "vencida",
+"snapshot": "archive/feeds/indeci-coen-boletines.txt"
+},
+{
+"group": "alertas",
+"id": "alert-79463625e356d741",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 4: 48 quebradas en 12 distritos de Piura, Tumbes y Cajamarca",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%204%27%20AND%20FECHA%3DDATE%20%272026-11-08%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-09.html#79463625e356d741",
+"hazards": [
+"huaico"
+],
+"where": [
+"Piura",
+"Tumbes",
+"Cajamarca"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 3,
+"label": "Nivel 4",
+"color": "rojo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-08T17:00:00Z",
+"until": "2026-11-09T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-e26868ba6fb54085",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 3: 482 quebradas en 97 distritos de Cajamarca, Piura, Áncash, Lambayeque, Tumbes y Huancavelica y 4 departamentos más",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%203%27%20AND%20FECHA%3DDATE%20%272026-11-08%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-09.html#e26868ba6fb54085",
+"hazards": [
+"huaico"
+],
+"where": [
+"Cajamarca",
+"Piura",
+"Áncash"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "09",
+"level": "departamento",
+"name": "Huancavelica",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Nivel 3",
+"color": "naranja",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-08T17:00:00Z",
+"until": "2026-11-09T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-cc37f12a879ffb6d",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 2: 1959 quebradas en 272 distritos de Cajamarca, Áncash, Amazonas, Piura, Huancavelica y La Libertad y 8 departamentos más",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%202%27%20AND%20FECHA%3DDATE%20%272026-11-08%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-09.html#cc37f12a879ffb6d",
+"hazards": [
+"huaico"
+],
+"where": [
+"Cajamarca",
+"Áncash",
+"Amazonas"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "09",
+"level": "departamento",
+"name": "Huancavelica",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 1,
+"label": "Nivel 2",
+"color": "amarillo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-08T17:00:00Z",
+"until": "2026-11-09T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-6740cf69cfeac53a",
+"source": "news-senamhi-incendios",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · peligro extremo de incendios forestales (índice FWI > 97): Loreto",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=INTENSIDAD%3D%27EXTREMO%27%20AND%20FECHA%3DDATE%20%272026-11-08%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-09.html#6740cf69cfeac53a",
+"hazards": [
+"incendio"
+],
+"where": [
+"Loreto"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": {
+"from": "2026-11-08T17:00:00Z",
+"until": "2026-11-09T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-6f32e7cf0af8f782",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 4: Tumbes",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%204%27%20AND%20FECHA%3DDATE%20%272026-11-08%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-09.html#6f32e7cf0af8f782",
+"hazards": [],
+"where": [
+"Tumbes"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 3,
+"label": "Nivel 4",
+"color": "rojo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-08T17:00:00Z",
+"until": "2026-11-09T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-8f763d20df96857d",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 3: Madre de Dios, Ucayali, Piura, Ayacucho, Cusco y Arequipa",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%203%27%20AND%20FECHA%3DDATE%20%272026-11-08%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-09.html#8f763d20df96857d",
+"hazards": [],
+"where": [
+"Madre de Dios",
+"Ucayali",
+"Piura"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Nivel 3",
+"color": "naranja",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-08T17:00:00Z",
+"until": "2026-11-09T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-ba4bf9898682a2c1",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 2: Ucayali, Arequipa, Cusco, Madre de Dios, Cajamarca, Lima y 5 departamentos más",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%202%27%20AND%20FECHA%3DDATE%20%272026-11-08%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-09.html#ba4bf9898682a2c1",
+"hazards": [],
+"where": [
+"Ucayali",
+"Arequipa",
+"Cusco"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 1,
+"label": "Nivel 2",
+"color": "amarillo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-08T17:00:00Z",
+"until": "2026-11-09T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-28f1d4cad97259c3",
+"source": "news-dhn-avisos",
+"institution": "DHN",
+"kind": "pronostico",
+"title": "DHN · aviso especial de oleaje N° 47-26: oleaje ligero en el litoral norte y sur (válido del 08 al 11 de noviembre del 2026)",
+"date": "2026-11-08T17:00:00Z",
+"url": "https://www.dhn.mil.pe/portal/avisos-especiales#5362",
+"archive": "archive/news/2026-11-09.html#28f1d4cad97259c3",
+"hazards": [
+"oleaje"
+],
+"where": [
+"Tumbes",
+"Piura",
+"Lambayeque"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": {
+"from": "2026-11-08T05:00:00Z",
+"until": "2026-11-12T04:59:00Z",
+"basis": "fechas que indica el aviso"
+},
+"phaseAtPublication": "vigente",
+"snapshot": "archive/feeds/dhn-avisos.txt"
+},
+{
+"group": "alertas",
+"id": "alert-4b53f3624aa41b3f",
+"source": "news-indeci-coen-boletines",
+"institution": "INDECI",
+"kind": "pronostico",
+"title": "Aviso especial de oleaje N° 47: oleaje de ligera intensidad proveniente del oeste, noroeste y suroeste (vigencia: desde el domingo 08 al miércoles 11 de noviembre)",
+"date": "2026-11-08T15:54:46+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/boletin-informativo-de-oleajes-n047-2026-indeci-coen/",
+"archive": "archive/news/2026-11-09.html#4b53f3624aa41b3f",
+"hazards": [
+"oleaje"
+],
+"where": [
+"Tumbes",
+"Piura",
+"Lambayeque"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "07",
+"level": "departamento",
+"name": "Callao",
+"department": "Callao",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/BOLET%C3%8DN-INFORMATIVO-DE-OLEAJES-N%C2%B0047-2026-DEL-08-11-2026.pdf",
+"severity": null,
+"valid": {
+"from": "2026-11-08T05:00:00Z",
+"until": "2026-11-12T04:59:00Z",
+"basis": "fechas que indica el aviso"
+},
+"phaseAtPublication": "vigente",
+"snapshot": "archive/feeds/indeci-coen-boletines.txt"
+},
+{
+"group": "alertas",
+"id": "alert-974fe6ae1a73c471",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Huaico en el distrito de Casitas (Tumbes)",
+"date": "2026-11-08T11:14:44+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-preliminar-n-1120-7-11-2026-coen-indeci-2300-horas-huaico-en-el-distrito-de-casitas-tumbes/",
+"archive": "archive/news/2026-11-08.html#974fe6ae1a73c471",
+"hazards": [
+"lluvias",
+"huaico"
+],
+"where": [
+"Casitas (Tumbes)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "240202",
+"level": "distrito",
+"name": "Casitas",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-PRELIMINAR-N.%C2%BA-1120-7NOV2026-HUAICO-EN-EL-DISTRITO-DE-CASITAS-TUMBES.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-05T23:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-0f004517daf8cd15",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el distrito de Tumbes (Tumbes)",
+"date": "2026-11-08T06:21:17+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-15633-7-11-2026-coen-indeci-2240-horas-reporte-n-o-1-lluvias-intensas-en-el-distrito-de-tumbes-tumbes/",
+"archive": "archive/news/2026-11-08.html#0f004517daf8cd15",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Tumbes (Tumbes)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "240101",
+"level": "distrito",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15633-7NOV2026-LLUVIAS-INTENSAS-EN-EL-DISTRITO-DE-TUMBES-TUMBES-1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-09-25T08:45:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-b7bc53a43937229d",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el departamento de Piura",
+"date": "2026-11-08T04:24:55+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-15631-7-11-2026-coen-indeci-2140-horas-reporte-n-o-1-lluvias-intensas-en-el-departamento-de-piura/",
+"archive": "archive/news/2026-11-08.html#b7bc53a43937229d",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Ayabaca (Piura)",
+"Frías (Piura)",
+"Montero (Piura)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "200201",
+"level": "distrito",
+"name": "Ayabaca",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200202",
+"level": "distrito",
+"name": "Frías",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200205",
+"level": "distrito",
+"name": "Montero",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200206",
+"level": "distrito",
+"name": "Pacaipampa",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200209",
+"level": "distrito",
+"name": "Sicchez",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200301",
+"level": "distrito",
+"name": "Huancabamba",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200303",
+"level": "distrito",
+"name": "El Carmen de la Frontera",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200304",
+"level": "distrito",
+"name": "Huarmaca",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200408",
+"level": "distrito",
+"name": "Santa Catalina de Mossa",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200409",
+"level": "distrito",
+"name": "Santo Domingo",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200410",
+"level": "distrito",
+"name": "Yamango",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200605",
+"level": "distrito",
+"name": "Marcavelica",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15631-7NOV2026-LLUVIAS-INTENSAS-EN-EL-DEPARTAMENTO-DE-PIURA-1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-07T05:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-b9b3b345d9a20441",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el distrito de Lonya Grande (Amazonas)",
+"date": "2026-11-08T04:17:24+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-15548-5-11-2026-coen-indeci-2135-horas-reporte-n-o-1-lluvias-intensas-en-el-distrito-de-lonya-grande-amazonas/",
+"archive": "archive/news/2026-11-08.html#b9b3b345d9a20441",
+"hazards": [
+"lluvias",
+"viento"
+],
+"where": [
+"Lonya Grande (Amazonas)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "010706",
+"level": "distrito",
+"name": "Lonya Grande",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15629-7NOV2026-LLUVIAS-INTENSAS-EN-EL-DISTRITO-DE-LONYA-GRANDE-AMAZONAS-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-05T22:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-4145d88ba6225f65",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el distrito de Lobitos (Piura)",
+"date": "2026-11-08T04:15:34+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-15626-7-11-2026-coen-indeci-1910-horas-reporte-n-o-1-lluvias-intensas-en-el-distrito-de-lobitos-piura/",
+"archive": "archive/news/2026-11-08.html#4145d88ba6225f65",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Pariñas (Piura)",
+"Lobitos (Piura)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "200701",
+"level": "distrito",
+"name": "Pariñas",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "200704",
+"level": "distrito",
+"name": "Lobitos",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15626-7NOV2026-LLUVIAS-INTENSAS-EN-EL-DISTRITO-DE-LOBITOS-PIURA-1.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-07T09:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-50b93fcb7a36d74f",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el departamento de Tumbes",
+"date": "2026-11-08T04:07:19+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-15614-7-11-2026-coen-indeci-1130-horas-reporte-n-14-lluvias-intensas-en-el-departamento-de-tumbes-tumbes/",
+"archive": "archive/news/2026-11-08.html#50b93fcb7a36d74f",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Tumbes (Tumbes)",
+"Corrales (Tumbes)",
+"La Cruz (Tumbes)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "240101",
+"level": "distrito",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240102",
+"level": "distrito",
+"name": "Corrales",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240103",
+"level": "distrito",
+"name": "La Cruz",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240104",
+"level": "distrito",
+"name": "Pampas de Hospital",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240105",
+"level": "distrito",
+"name": "San Jacinto",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240106",
+"level": "distrito",
+"name": "San Juan de La Virgen",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240201",
+"level": "distrito",
+"name": "Zorritos",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240202",
+"level": "distrito",
+"name": "Casitas",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240203",
+"level": "distrito",
+"name": "Canoas de Punta Sal",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240301",
+"level": "distrito",
+"name": "Zarumilla",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240302",
+"level": "distrito",
+"name": "Aguas Verdes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240303",
+"level": "distrito",
+"name": "Matapalo",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "240304",
+"level": "distrito",
+"name": "Papayal",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15628-7NOV2026-LLUVIAS-INTENSAS-EN-EL-DEPARTAMENTO-DE-TUMBES-TUMBES-15.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-06T03:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-ca423ab11a04b19e",
+"source": "news-indeci-coen",
+"institution": "INDECI",
+"kind": "reporte",
+"title": "Lluvias intensas en el distrito de Huancabamba (Pasco)",
+"date": "2026-11-08T03:57:53+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/reporte-complementario-n-o-15484-4-11-2026-coen-indeci-2115-horas-reporte-n-1-lluvias-intensas-en-el-distrito-de-huancabamba-pasco/",
+"archive": "archive/news/2026-11-08.html#ca423ab11a04b19e",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Huancabamba (Pasco)"
+],
+"geo": {
+"scope": "local",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "190303",
+"level": "distrito",
+"name": "Huancabamba",
+"department": "Pasco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/REPORTE-COMPLEMENTARIO-N.%C2%BA-15627-7NOV2026-LLUVIAS-INTENSAS-EN-EL-DISTRITO-DE-HUANCABAMBA-PASCO-2.pdf",
+"severity": null,
+"valid": null,
+"phaseAtPublication": "ocurrido",
+"occurred": "2026-11-03T22:00:00Z"
+},
+{
+"group": "alertas",
+"id": "alert-6077c3a3141affd6",
+"source": "news-indeci-coen-boletines",
+"institution": "INDECI",
+"kind": "pronostico",
+"title": "Aviso meteorológico N° 462 del SENAMHI: precipitaciones en la costa y sierra (vigencia: desde el lunes 09 al miércoles11 de noviembre)",
+"date": "2026-11-07T23:05:26+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/boletin-informativo-de-aviso-meteorologico-n462-2026-del-07-11-2026/",
+"archive": "archive/news/2026-11-08.html#6077c3a3141affd6",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Áncash",
+"Apurímac",
+"Arequipa"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "03",
+"level": "departamento",
+"name": "Apurímac",
+"department": "Apurímac",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "09",
+"level": "departamento",
+"name": "Huancavelica",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "19",
+"level": "departamento",
+"name": "Pasco",
+"department": "Pasco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/BOLET%C3%8DN-INFORMATIVO-DE-AVISO-METEOROL%C3%93GICO-N%C2%B0462-2026-DEL-07-11-2026.pdf",
+"severity": {
+"rank": 3,
+"label": "Rojo",
+"color": "rojo",
+"scale": "senamhi-colores",
+"scaleLabel": "SENAMHI, colores de aviso",
+"basis": "nivel del aviso N° 462 en la tabla de avisos del SENAMHI",
+"basisUrl": "https://www.senamhi.gob.pe/?p=aviso-meteorologico-vigente&a=2026&b=29359&c=00&d=SENA",
+"basisArchive": "archive/sources/senamhi-avisos/b5f4d853ccdc.txt"
+},
+"valid": {
+"from": "2026-11-09T05:00:00Z",
+"until": "2026-11-12T04:59:00Z",
+"basis": "inicio y fin del aviso N° 462 en la tabla de avisos del SENAMHI",
+"source": "tabla"
+},
+"phaseAtPublication": "vigente",
+"aviso": {
+"num": 462,
+"year": 2026,
+"url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico-vigente&a=2026&b=29359&c=00&d=SENA",
+"cancelled": false
+},
+"snapshot": "archive/feeds/indeci-coen-boletines.txt"
+},
+{
+"group": "alertas",
+"id": "alert-e92784e8ea8b4ec4",
+"source": "news-indeci-coen-boletines",
+"institution": "INDECI",
+"kind": "pronostico",
+"title": "Aviso de corto plazo ante posible activación de quebradas (boletín N° 212 del COEN)",
+"date": "2026-11-07T19:22:08+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/boletin-informativo-de-aviso-de-corto-plazo-ante-posible-activacion-de-quebradas-n212-07-11-2026/",
+"archive": "archive/news/2026-11-08.html#e92784e8ea8b4ec4",
+"hazards": [
+"huaico"
+],
+"where": [
+"Amazonas",
+"Áncash",
+"Apurímac"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "03",
+"level": "departamento",
+"name": "Apurímac",
+"department": "Apurímac",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "19",
+"level": "departamento",
+"name": "Pasco",
+"department": "Pasco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "22",
+"level": "departamento",
+"name": "San Martín",
+"department": "San Martín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/BOLET%C3%8DN-INFORMATIVO-DE-AVISO-DE-CORTO-PLAZO-ANTE-POSIBLE-ACTIVACI%C3%93N-DE-QUEBRADAS-N-1.pdf",
+"severity": null,
+"valid": {
+"from": "2026-11-07T18:00:00Z",
+"until": "2026-11-08T18:00:00Z",
+"basis": "vigencia del boletín del COEN"
+},
+"phaseAtPublication": "vencida",
+"snapshot": "archive/feeds/indeci-coen-boletines.txt"
+},
+{
+"group": "alertas",
+"id": "alert-2607e50205435856",
+"source": "news-indeci-coen-boletines",
+"institution": "INDECI",
+"kind": "pronostico",
+"title": "Aviso de corto plazo ante lluvias intensas (boletín N° 310 del COEN)",
+"date": "2026-11-07T19:11:15+00:00",
+"url": "https://portal.indeci.gob.pe/emergencias/boletin-informativo-de-aviso-de-corto-plazo-ante-lluvias-intensas-n310-2026-del-07-11-2026/",
+"archive": "archive/news/2026-11-08.html#2607e50205435856",
+"hazards": [
+"lluvias"
+],
+"where": [
+"Amazonas",
+"Áncash",
+"Apurímac"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "03",
+"level": "departamento",
+"name": "Apurímac",
+"department": "Apurímac",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "09",
+"level": "departamento",
+"name": "Huancavelica",
+"department": "Huancavelica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "11",
+"level": "departamento",
+"name": "Ica",
+"department": "Ica",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "19",
+"level": "departamento",
+"name": "Pasco",
+"department": "Pasco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "22",
+"level": "departamento",
+"name": "San Martín",
+"department": "San Martín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"document": "https://portal.indeci.gob.pe/wp-content/uploads/2026/11/BOLET%C3%8DN-INFORMATIVO-DE-AVISO-DE-CORTO-PLAZO-ANTE-LLUVIAS-INTENSAS-N310-2026-DEL-07-11-2026.pdf",
+"severity": null,
+"valid": {
+"from": "2026-11-07T18:00:00Z",
+"until": "2026-11-08T18:00:00Z",
+"basis": "vigencia del boletín del COEN"
+},
+"phaseAtPublication": "vencida",
+"snapshot": "archive/feeds/indeci-coen-boletines.txt"
+},
+{
+"group": "alertas",
+"id": "alert-010b0671de9e1d85",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 4: 62 quebradas en 20 distritos de Cajamarca, Piura y Tumbes",
+"date": "2026-11-07T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%204%27%20AND%20FECHA%3DDATE%20%272026-11-07%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-08.html#010b0671de9e1d85",
+"hazards": [
+"huaico"
+],
+"where": [
+"Cajamarca",
+"Piura",
+"Tumbes"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 3,
+"label": "Nivel 4",
+"color": "rojo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-07T17:00:00Z",
+"until": "2026-11-08T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-408e6e159ff1931e",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 3: 1895 quebradas en 253 distritos de San Martín, Áncash, Cajamarca, Amazonas, Loreto y La Libertad y 9 departamentos más",
+"date": "2026-11-07T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%203%27%20AND%20FECHA%3DDATE%20%272026-11-07%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-08.html#408e6e159ff1931e",
+"hazards": [
+"huaico"
+],
+"where": [
+"San Martín",
+"Áncash",
+"Cajamarca"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "22",
+"level": "departamento",
+"name": "San Martín",
+"department": "San Martín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Nivel 3",
+"color": "naranja",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-07T17:00:00Z",
+"until": "2026-11-08T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-6ac600ab23533a68",
+"source": "news-senamhi-quebradas",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de activación de quebradas por lluvias, nivel 2: 3834 quebradas en 426 distritos de San Martín, Amazonas, Cajamarca, Puno, Loreto y Áncash y 15 departamentos más",
+"date": "2026-11-07T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=NIVEL%3D%27Nivel%202%27%20AND%20FECHA%3DDATE%20%272026-11-07%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-08.html#6ac600ab23533a68",
+"hazards": [
+"huaico"
+],
+"where": [
+"San Martín",
+"Amazonas",
+"Cajamarca"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.95,
+"method": "campo",
+"places": [
+{
+"code": "22",
+"level": "departamento",
+"name": "San Martín",
+"department": "San Martín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "18",
+"level": "departamento",
+"name": "Moquegua",
+"department": "Moquegua",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "13",
+"level": "departamento",
+"name": "La Libertad",
+"department": "La Libertad",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "10",
+"level": "departamento",
+"name": "Huánuco",
+"department": "Huánuco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "23",
+"level": "departamento",
+"name": "Tacna",
+"department": "Tacna",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "19",
+"level": "departamento",
+"name": "Pasco",
+"department": "Pasco",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.95,
+"method": "campo"
+},
+{
+"code": "03",
+"level": "departamento",
+"name": "Apurímac",
+"department": "Apurímac",
+"confidence": 0.95,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 1,
+"label": "Nivel 2",
+"color": "amarillo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-07T17:00:00Z",
+"until": "2026-11-08T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-fbddba30b705e2e7",
+"source": "news-senamhi-incendios",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · peligro extremo de incendios forestales (índice FWI > 97): Loreto",
+"date": "2026-11-07T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=INTENSIDAD%3D%27EXTREMO%27%20AND%20FECHA%3DDATE%20%272026-11-07%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-08.html#fbddba30b705e2e7",
+"hazards": [
+"incendio"
+],
+"where": [
+"Loreto"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "16",
+"level": "departamento",
+"name": "Loreto",
+"department": "Loreto",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": null,
+"valid": {
+"from": "2026-11-07T17:00:00Z",
+"until": "2026-11-08T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-2625a5a9a7124402",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 4: Tumbes",
+"date": "2026-11-07T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%204%27%20AND%20FECHA%3DDATE%20%272026-11-07%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-08.html#2625a5a9a7124402",
+"hazards": [],
+"where": [
+"Tumbes"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "24",
+"level": "departamento",
+"name": "Tumbes",
+"department": "Tumbes",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 3,
+"label": "Nivel 4",
+"color": "rojo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-07T17:00:00Z",
+"until": "2026-11-08T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-4a939e434337a43b",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 3: Piura, Cajamarca y Lambayeque",
+"date": "2026-11-07T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%203%27%20AND%20FECHA%3DDATE%20%272026-11-07%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-08.html#4a939e434337a43b",
+"hazards": [],
+"where": [
+"Piura",
+"Cajamarca",
+"Lambayeque"
+],
+"geo": {
+"scope": "regional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "20",
+"level": "departamento",
+"name": "Piura",
+"department": "Piura",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "06",
+"level": "departamento",
+"name": "Cajamarca",
+"department": "Cajamarca",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "14",
+"level": "departamento",
+"name": "Lambayeque",
+"department": "Lambayeque",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 2,
+"label": "Nivel 3",
+"color": "naranja",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-07T17:00:00Z",
+"until": "2026-11-08T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+},
+{
+"group": "alertas",
+"id": "alert-f5d5f097ea89f9f5",
+"source": "news-senamhi-lluvias",
+"institution": "SENAMHI",
+"kind": "pronostico",
+"title": "SENAMHI · aviso de precipitaciones para 24 horas, nivel 2: Madre de Dios, Ucayali, San Martín, Ayacucho, Cusco, Arequipa y 5 departamentos más",
+"date": "2026-11-07T17:00:00Z",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=NIVEL%3D%27Nivel%202%27%20AND%20FECHA%3DDATE%20%272026-11-07%27&outFields=*&returnGeometry=false&f=html",
+"archive": "archive/news/2026-11-08.html#f5d5f097ea89f9f5",
+"hazards": [],
+"where": [
+"Madre de Dios",
+"Ucayali",
+"San Martín"
+],
+"geo": {
+"scope": "nacional",
+"confidence": 0.97,
+"method": "campo",
+"places": [
+{
+"code": "17",
+"level": "departamento",
+"name": "Madre de Dios",
+"department": "Madre de Dios",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "25",
+"level": "departamento",
+"name": "Ucayali",
+"department": "Ucayali",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "22",
+"level": "departamento",
+"name": "San Martín",
+"department": "San Martín",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "05",
+"level": "departamento",
+"name": "Ayacucho",
+"department": "Ayacucho",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "08",
+"level": "departamento",
+"name": "Cusco",
+"department": "Cusco",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "04",
+"level": "departamento",
+"name": "Arequipa",
+"department": "Arequipa",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "12",
+"level": "departamento",
+"name": "Junín",
+"department": "Junín",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "02",
+"level": "departamento",
+"name": "Áncash",
+"department": "Áncash",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "01",
+"level": "departamento",
+"name": "Amazonas",
+"department": "Amazonas",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "21",
+"level": "departamento",
+"name": "Puno",
+"department": "Puno",
+"confidence": 0.97,
+"method": "campo"
+},
+{
+"code": "15",
+"level": "departamento",
+"name": "Lima",
+"department": "Lima",
+"confidence": 0.97,
+"method": "campo"
+}
+],
+"reviewed": false
+},
+"stale": false,
+"severity": {
+"rank": 1,
+"label": "Nivel 2",
+"color": "amarillo",
+"scale": "senamhi-niveles",
+"scaleLabel": "SENAMHI, niveles de aviso (1 a 4)",
+"basis": "campo NIVEL de la capa de precipitaciones del SENAMHI en GEOSINPAD"
+},
+"valid": {
+"from": "2026-11-07T17:00:00Z",
+"until": "2026-11-08T17:00:00Z",
+"basis": "aviso para las 24 horas siguientes a su emisión"
+},
+"phaseAtPublication": "vencida"
+}
+],
+"sources": [
+{
+"id": "indeci-coen",
+"name": "INDECI · COEN, reportes de emergencias",
+"url": "https://portal.indeci.gob.pe/emergencias/feed/?paged=1",
+"ok": true,
+"latest": "2026-11-09T03:32:56+00:00",
+"error": "",
+"channel": "relay-n8n",
+"copyAt": "2026-11-09T03:53:18+00:00"
+},
+{
+"id": "indeci-coen-boletines",
+"name": "INDECI · COEN, boletines de avisos",
+"url": "https://portal.indeci.gob.pe/emergencias/feed/?s=boletin+informativo",
+"ok": true,
+"latest": "2026-11-08T21:40:14+00:00",
+"error": "",
+"channel": "relay-n8n",
+"copyAt": "2026-11-09T03:53:18+00:00"
+},
+{
+"id": "senamhi-quebradas",
+"name": "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CNOMBPROV%2CNOMBDIST%2CFECHA&f=json",
+"ok": true,
+"latest": "2026-11-09T17:00:00Z",
+"error": ""
+},
+{
+"id": "senamhi-hidrologicos",
+"name": "SENAMHI · avisos hidrológicos (servidor GEOSINPAD del INDECI)",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
+"ok": true,
+"latest": "2026-11-09T17:00:00Z",
+"error": ""
+},
+{
+"id": "senamhi-incendios",
+"name": "SENAMHI · peligro de incendios forestales, índice FWI (servidor GEOSINPAD del INDECI)",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+"ok": true,
+"latest": "2026-11-09T17:00:00Z",
+"error": ""
+},
+{
+"id": "senamhi-lluvias",
+"name": "SENAMHI · avisos de precipitaciones para 24 horas (servidor GEOSINPAD del INDECI)",
+"url": "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1&outFields=NIVEL,FECHA&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
+"ok": true,
+"latest": "2026-11-09T17:00:00Z",
+"error": ""
+},
+{
+"id": "firms-focos",
+"name": "NASA FIRMS · focos de calor (VIIRS, NOAA-20)",
+"url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
+"ok": true,
+"latest": "2026-11-10T07:05:00Z",
+"error": ""
+},
+{
+"id": "usgs-sismos",
+"name": "USGS · sismos de magnitud 4 o más (Perú y alrededores)",
+"url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
+"ok": true,
+"latest": "2026-11-09T10:23:53Z",
+"error": ""
+},
+{
+"id": "dhn-tsunamis",
+"name": "DHN · boletines de sismo y tsunami",
+"url": "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami",
+"ok": true,
+"latest": "2026-11-02T15:28:08Z",
+"error": ""
+},
+{
+"id": "dhn-avisos",
+"name": "DHN · avisos especiales de oleaje y de viento",
+"url": "https://www.dhn.mil.pe/portal/avisos-especiales",
+"ok": true,
+"latest": "2026-11-08T17:00:00Z",
+"error": ""
+},
+{
+"id": "ptwc-mensajes",
+"name": "PTWC · mensajes de tsunami del Pacífico",
+"url": "https://www.tsunami.gov/events/xml/PHEBAtom.xml",
+"ok": true,
+"latest": "2026-11-08T06:34:57+00:00",
+"error": ""
+},
+{
+"id": "ptwc-wepa40",
+"name": "PTWC · último mensaje de tsunami (texto)",
+"url": "https://tgftp.nws.noaa.gov/data/raw/we/wepa40.pheb.tsu.pac.txt",
+"ok": true,
+"latest": "2026-11-05T00:00:00Z",
+"error": ""
+},
+{
+"id": "igp-cenvul-boletines",
+"name": "IGP · boletines vulcanológicos (CENVUL)",
+"url": "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos",
+"ok": true,
+"latest": null,
+"error": ""
+},
+{
+"id": "igp-cenvul-alertas",
+"name": "IGP · alertas vulcanológicas (CENVUL)",
+"url": "https://cenvul.igp.gob.pe/productos/alertas-vulcanologicas",
+"ok": true,
+"latest": null,
+"error": ""
+},
+{
+"id": "senamhi-telegram",
+"name": "SENAMHI · canal oficial de Telegram (avisos)",
+"url": "https://t.me/s/Senamhi_Peru",
+"ok": true,
+"latest": "2026-11-10T15:28:10Z",
+"error": ""
+}
+],
+"levelsFrom": {
+"source": "senamhi-avisos",
+"institution": "SENAMHI",
+"url": "https://www.senamhi.gob.pe/?p=aviso-meteorologico",
+"copyAt": "2026-11-10T02:00:15+00:00",
+"avisos": 2140,
+"archive": "archive/sources/senamhi-avisos/b5f4d853ccdc.txt"
+}
+}
+]
+}

@@ -55,7 +55,7 @@ jobs:
       worst: ${{ steps.pipeline.outputs.worst }}
       site_url: ${{ steps.site.outputs.url }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
@@ -277,7 +277,7 @@ jobs:
           path: ${{ runner.temp }}/raw
           if-no-files-found: ignore
           retention-days: 7
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         if: env.DEPLOY_TARGET == 'github-pages'
       - uses: actions/upload-pages-artifact@v5
         if: env.DEPLOY_TARGET == 'github-pages'
@@ -308,11 +308,11 @@ jobs:
     steps:
       - id: deploy
         if: env.DEPLOY_TARGET == 'github-pages'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
       # functions/ y wrangler.toml (si existen) viajan con la subida directa:
       # wrangler los toma del directorio de trabajo (Pages Functions y sus
       # vínculos D1/KV). El modo cono incluye siempre los archivos de la raíz.
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             python
@@ -360,7 +360,7 @@ jobs:
     steps:
       - name: Note when the job started (for the alert email)
         run: echo "ALERT_SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: python
       - uses: actions/setup-python@v7
@@ -399,7 +399,7 @@ jobs:
       # «cancelled» también: un job que pasa su límite de tiempo termina así, y el sitio queda igual de atrasado.
       - name: Open an issue when the run itself failed
         if: always() && github.ref == 'refs/heads/main' && (contains(fromJSON('["failure","cancelled"]'), needs.build.result) || contains(fromJSON('["failure","cancelled"]'), needs.deploy.result) || contains(fromJSON('["failure","cancelled"]'), needs.archive.result))
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const title = '[datos] La actualización diaria falló';
@@ -411,7 +411,7 @@ jobs:
             else await github.rest.issues.create({ ...context.repo, title, body, labels: ['incidente-datos'] });
       - name: Close the run-failure issue after a good run
         if: always() && github.ref == 'refs/heads/main' && needs.build.result == 'success' && needs.deploy.result == 'success' && needs.archive.result == 'success'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
@@ -447,7 +447,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         id: raw
         with:
@@ -532,7 +532,7 @@ jobs:
     permissions:
       actions: write
     steps:
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         with:
           script: |
             for (const id of ['observatory.yml', 'watchdog.yml', 'probe-sources.yml']) {

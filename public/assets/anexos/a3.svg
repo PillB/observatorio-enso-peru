@@ -444,9 +444,9 @@
     <a class="ar-annex" href="a10.svg" data-annex="a10"><title>Anexo A10: Vigilancia, avisos y mantenimiento</title><rect class="ar-tag" x="1351.3" y="216" width="34.7" height="17" rx="8.5"/><text class="ar-tag-t" x="1368.6" y="228.5" font-size="10.5" text-anchor="middle">A10</text></a>
   </g>
   <g class="ar-node-g" id="a3-n-validate" data-node="validate">
-    <title>Validación de fuentes. A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions. Tecnología: Convert to File.</title>
-    <rect class="ar-node ar-g-operations" x="1114" y="383.7" width="280" height="159.9" rx="8"/>
-    <rect class="ar-f-operations" x="1114" y="391.7" width="4" height="143.9" rx="2"/>
+    <title>Validación de fuentes. A mano: baja cada URL del registro con las mismas dos pasadas y entrega un informe CSV; el sondeo semanal lo importa como medición de la red n8n. n8n.yml lo corre los lunes desde Actions, repartido en 4 partes por servidor que corren en paralelo y se juntan en un informe. Tecnología: Convert to File.</title>
+    <rect class="ar-node ar-g-operations" x="1114" y="383.7" width="280" height="190.3" rx="8"/>
+    <rect class="ar-f-operations" x="1114" y="391.7" width="4" height="174.3" rx="2"/>
     <rect class="ar-tile ar-f-operations" x="1126" y="393.7" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-operations" transform="translate(1129 396.7)"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></g>
     <text class="ar-t" x="1164" y="413.2" font-size="12.5">Validación de fuentes</text>
@@ -454,28 +454,30 @@
     <text class="ar-s" x="1126" y="460.3" font-size="11">mismas dos pasadas y entrega un informe</text>
     <text class="ar-s" x="1126" y="475.5" font-size="11">CSV; el sondeo semanal lo importa como</text>
     <text class="ar-s" x="1126" y="490.7" font-size="11">medición de la red n8n. n8n.yml lo corre los</text>
-    <text class="ar-s" x="1126" y="505.9" font-size="11">lunes desde Actions.</text>
-    <rect class="ar-chip" x="1126" y="515.6" width="85.4" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1132" y="527.6" font-size="10">Convert to File</text>
+    <text class="ar-s" x="1126" y="505.9" font-size="11">lunes desde Actions, repartido en 4 partes por</text>
+    <text class="ar-s" x="1126" y="521.1" font-size="11">servidor que corren en paralelo y se juntan en</text>
+    <text class="ar-s" x="1126" y="536.2" font-size="11">un informe.</text>
+    <rect class="ar-chip" x="1126" y="546" width="85.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="558" font-size="10">Convert to File</text>
     <a class="ar-annex" href="a1.svg" data-annex="a1"><title>Anexo A1: Fuentes, alcance y registro</title><rect class="ar-tag" x="1358.6" y="390.7" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="403.2" font-size="10.5" text-anchor="middle">A1</text></a>
   </g>
   <g class="ar-node-g" id="a3-n-extract" data-node="extract">
     <title>Extractor de informes. Webhook con token: cuando el lector de los informes del ENFEN falla, el pipeline le pide una lectura a OpenAI (temperatura 0, JSON con la cita de cada valor). Solo deja una propuesta para revisión. Tecnología: Webhook, OpenAI.</title>
-    <rect class="ar-node ar-g-operations" x="1114" y="573.6" width="280" height="159.9" rx="8"/>
-    <rect class="ar-f-operations" x="1114" y="581.6" width="4" height="143.9" rx="2"/>
-    <rect class="ar-tile ar-f-operations" x="1126" y="583.6" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-operations" transform="translate(1129 586.6)"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></g>
-    <text class="ar-t" x="1164" y="603.1" font-size="12.5">Extractor de informes</text>
-    <text class="ar-s" x="1126" y="635" font-size="11">Webhook con token: cuando el lector de los</text>
-    <text class="ar-s" x="1126" y="650.2" font-size="11">informes del ENFEN falla, el pipeline le pide</text>
-    <text class="ar-s" x="1126" y="665.4" font-size="11">una lectura a OpenAI (temperatura 0, JSON</text>
-    <text class="ar-s" x="1126" y="680.6" font-size="11">con la cita de cada valor). Solo deja una</text>
-    <text class="ar-s" x="1126" y="695.8" font-size="11">propuesta para revisión.</text>
-    <rect class="ar-chip" x="1126" y="705.5" width="58.8" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1132" y="717.5" font-size="10">Webhook</text>
-    <rect class="ar-chip" x="1189.8" y="705.5" width="48.5" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1195.8" y="717.5" font-size="10">OpenAI</text>
-    <a class="ar-annex" href="a5.svg" data-annex="a5"><title>Anexo A5: Actualización diaria: fuentes oficiales, series y señales</title><rect class="ar-tag" x="1358.6" y="580.6" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="593.1" font-size="10.5" text-anchor="middle">A5</text></a>
+    <rect class="ar-node ar-g-operations" x="1114" y="604" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-operations" x="1114" y="612" width="4" height="143.9" rx="2"/>
+    <rect class="ar-tile ar-f-operations" x="1126" y="614" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-operations" transform="translate(1129 617)"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></g>
+    <text class="ar-t" x="1164" y="633.5" font-size="12.5">Extractor de informes</text>
+    <text class="ar-s" x="1126" y="665.4" font-size="11">Webhook con token: cuando el lector de los</text>
+    <text class="ar-s" x="1126" y="680.6" font-size="11">informes del ENFEN falla, el pipeline le pide</text>
+    <text class="ar-s" x="1126" y="695.8" font-size="11">una lectura a OpenAI (temperatura 0, JSON</text>
+    <text class="ar-s" x="1126" y="710.9" font-size="11">con la cita de cada valor). Solo deja una</text>
+    <text class="ar-s" x="1126" y="726.1" font-size="11">propuesta para revisión.</text>
+    <rect class="ar-chip" x="1126" y="735.9" width="58.8" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="747.9" font-size="10">Webhook</text>
+    <rect class="ar-chip" x="1189.8" y="735.9" width="48.5" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1195.8" y="747.9" font-size="10">OpenAI</text>
+    <a class="ar-annex" href="a5.svg" data-annex="a5"><title>Anexo A5: Actualización diaria: fuentes oficiales, series y señales</title><rect class="ar-tag" x="1358.6" y="611" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="623.5" font-size="10.5" text-anchor="middle">A5</text></a>
   </g>
   <line class="ar-rule" x1="20" y1="1281.3" x2="1420" y2="1281.3"/>
   <text class="ar-h" x="20" y="1311.3" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
