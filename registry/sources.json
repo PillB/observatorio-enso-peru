@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-11-10T06:04:57+00:00",
+ "generated_at": "2026-11-11T22:28:35+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -1152,15 +1152,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -1169,6 +1172,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -1176,6 +1180,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -2266,15 +2271,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -2283,6 +2291,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -2290,6 +2299,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -4290,13 +4300,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "absent"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "absent"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "ok",
@@ -5516,15 +5526,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -5533,6 +5546,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -5540,6 +5554,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -5757,15 +5772,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -5774,6 +5792,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -5781,6 +5800,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -6181,15 +6201,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -6198,6 +6221,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -6205,6 +6229,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -6729,15 +6754,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -6746,6 +6774,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -6753,6 +6782,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -7161,13 +7191,13 @@
     "us": {
      "class": "ok",
      "http": 200,
-     "robots": "absent"
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
      "class": "ok",
      "http": 200,
-     "robots": "absent"
+     "robots": "allowed"
     },
     "n8n": {
      "class": "ok",
@@ -7216,15 +7246,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -7233,6 +7266,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -7240,6 +7274,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -8804,15 +8839,18 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
+     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200
+     "http": 200,
+     "robots": "allowed"
     },
     "peru": null,
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -8821,6 +8859,7 @@
     }
    },
    "channels": [
+    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -8828,6 +8867,7 @@
     "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sort_by=recent": {
      "status": "open",
      "channels": [
+      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -9636,18 +9676,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "absent"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "absent"
     },
     "n8n": {
@@ -9656,7 +9693,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -9664,7 +9700,6 @@
     "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -9699,18 +9734,15 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "absent"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
+     "class": "timeout",
      "robots": "absent"
     },
     "n8n": {
@@ -9719,7 +9751,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -9727,7 +9758,6 @@
     "https://www.dhn.mil.pe/portal/avisos-especiales": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -11485,7 +11515,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n",
     "peru-server"
    ],
@@ -11508,7 +11537,6 @@
     "https://www.dhn.mil.pe/portal/comunicados-oficiales-enfen": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -11564,7 +11592,6 @@
     "n8n": null
    },
    "channels": [
-    "actions",
     "n8n",
     "peru-server"
    ],
@@ -11580,7 +11607,6 @@
     "https://www.dhn.mil.pe/portal/informe-tecnico-enfen": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -11746,22 +11772,45 @@
    "notes": "la tabla de cada escenario es un ZIP con dos libros de Excel; robots.txt prohíbe /sigridv3/storage/ y se pide igual por ser una entidad pública del Perú, con su Crawl-delay",
    "tier": 3,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
-    "n8n": null
+    "status": "open",
+    "from": [
+     "github-actions",
+     "n8n-aws-us-east-1",
+     "peru-server"
+    ],
+    "open_from": [
+     "actions",
+     "n8n",
+     "peru"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://sigrid.cenepred.gob.pe/sigridv3/escenario-trimestral/data-mm": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
@@ -11799,7 +11848,8 @@
      "peru"
     ],
     "us": {
-     "class": "timeout",
+     "class": "http-5xx",
+     "http": 503,
      "robots": "absent"
     },
     "peru": {
@@ -11808,7 +11858,8 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "timeout",
+     "class": "http-5xx",
+     "http": 503,
      "robots": "absent"
     },
     "n8n": null
@@ -12292,7 +12343,7 @@
     "peru": {
      "class": "empty",
      "http": 200,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "actions": {
      "class": "timeout",
@@ -12512,7 +12563,7 @@
     "peru": {
      "class": "http-403",
      "http": 403,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "actions": {
      "class": "http-403",
@@ -12568,7 +12619,7 @@
     "peru": {
      "class": "http-403",
      "http": 403,
-     "robots": "allowed"
+     "robots": "absent"
     },
     "actions": {
      "class": "http-403",
@@ -13181,7 +13232,7 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "open",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -13190,10 +13241,12 @@
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "peru"
     ],
     "us": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "peru": {
@@ -13202,7 +13255,8 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -13210,14 +13264,14 @@
     }
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": false,
    "by_url": {
     "https://snirh.ana.gob.pe/": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -13241,7 +13295,7 @@
    "notes": "se archiva desde el Perú; aún sin intérprete en el pipeline",
    "tier": 2,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "open",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -13250,10 +13304,12 @@
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "peru"
     ],
     "us": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "peru": {
@@ -13262,7 +13318,8 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -13270,14 +13327,14 @@
     }
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": false,
    "by_url": {
     "https://snirh.ana.gob.pe/onrh/": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -13438,18 +13495,24 @@
     "status": "open",
     "from": [
      "github-actions",
-     "n8n-aws-us-east-1"
+     "n8n-aws-us-east-1",
+     "peru-server"
     ],
     "open_from": [
      "actions",
-     "n8n"
+     "n8n",
+     "peru"
     ],
     "us": {
      "class": "ok",
      "http": 200,
      "robots": "allowed"
     },
-    "peru": null,
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
     "actions": {
      "class": "ok",
      "http": 200,
