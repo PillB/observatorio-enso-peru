@@ -139,7 +139,7 @@ describe('decisión: la versión que más se usa', () => {
     const r = await defaults();
     assert.equal(r.status, 200);
     assert.match(r.headers.get('Cache-Control'), /public, max-age=3600/);
-    assert.deepEqual(await r.json(), { boletin: null, mapa: null, memoria: 'cuencas', noticias: null });
+    assert.deepEqual(await r.json(), { boletin: null, mapa: null, memoria: 'cuencas', noticias: null, sitio: null });
     const s = await stats(7);
     assert.equal(s.experiments.memoria.decision.winner, 'cuencas');
     assert.equal(s.experiments.noticias.decision.ready, false);
@@ -155,7 +155,7 @@ describe('decisión: la versión que más se usa', () => {
 
   it('sin base vinculada no hay ganadoras', async () => {
     env = {};
-    assert.deepEqual(await (await defaults()).json(), { boletin: null, mapa: null, memoria: null, noticias: null });
+    assert.deepEqual(await (await defaults()).json(), { boletin: null, mapa: null, memoria: null, noticias: null, sitio: null });
   });
 });
 

@@ -15,4 +15,5 @@ def test_zona_page_functions_with_node():
 def test_zona_is_a_route_in_the_navigation():
     app = (ROOT / "public/assets/js/app.js").read_text(encoding="utf-8")
     assert "VIEWS.zona" in app
-    assert re.search(r"\['zona', 'Mi zona',", app)
+    nav = (ROOT / "public/assets/js/sitio.js").read_text(encoding="utf-8")
+    assert re.search(r"\['zona', 'Mi zona',", nav)

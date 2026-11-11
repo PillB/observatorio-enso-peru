@@ -904,6 +904,7 @@ const EXP_TITLE = {
   memoria: ['Vista con que abre el mapa de la memoria', 'Memoria de desastres: el resumen por área o uno de sus tres detalles.'],
   boletin: ['Mapa del Boletín', 'Boletín: el mapa del Perú o el mosaico de cuadros que lleva el correo.'],
   noticias: ['Vista con que abre el mapa de Noticias', 'Noticias: el resumen (con su versión A–D) o uno de sus dos detalles.'],
+  sitio: ['Versión de todo el sitio', 'A, clásica: las trece pestañas en una fila. B, agrupada: cinco secciones con submenús y lo largo plegado. Aquí «usaron» quiere decir que abrieron una segunda pestaña; el tiempo en cada pestaña está en la analítica de la consola.'],
 };
 
 export function statsHtml(s) {
@@ -920,7 +921,7 @@ export function statsHtml(s) {
       const t = e.totals?.[v] || {};
       const d = byV[v];
       const use = d && d.view ? html`${pct(d.use, d.view)}<div class="muted small">${Math.round(d.lo * 100)}–${Math.round(d.hi * 100)} %</div>` : '—';
-      return html`<tr><th scope="row">${x === 'mapa' ? `Versión ${v}` : name}${dec?.winner === v ? html` <span class="chip chip-ok">Ganadora</span>` : ''}<div class="muted small">${x === 'mapa' ? name : v}</div></th>
+      return html`<tr><th scope="row">${x === 'mapa' || x === 'sitio' ? `Versión ${v}` : name}${dec?.winner === v ? html` <span class="chip chip-ok">Ganadora</span>` : ''}<div class="muted small">${x === 'mapa' || x === 'sitio' ? name : v}</div></th>
         <td class="num">${t.view || 0}</td><td class="num">${use}</td><td class="num">${pct(t.hover || 0, t.view)}</td><td class="num">${pct(t.select || 0, t.view)}</td><td class="num">${pct(t.detail || 0, t.view)}</td>
         <td class="num">${t.choose || 0}</td><td class="num">${t.leave || 0}</td><td class="num">${t.keep || 0}</td><td class="num">${pct(t.chosen || 0, t.view)}</td></tr>`;
     });
@@ -931,7 +932,7 @@ export function statsHtml(s) {
           : 'Aún sin ganadora: los intervalos de las versiones se cruzan. Cada versión sigue saliendo con la misma probabilidad.';
     const [title, sub] = EXP_TITLE[x];
     return html`<h3 class="amap-h3">${title}</h3><p class="muted small">${sub}</p>
-      <div class="table-wrap"><table class="grd"><thead><tr><th scope="col">${x === 'mapa' ? 'Versión' : 'Vista'}</th><th scope="col">Visitas</th><th scope="col">Usaron el mapa</th><th scope="col">Pasaron el cursor</th><th scope="col">Filtraron o eligieron</th><th scope="col">Abrieron algo</th><th scope="col">La eligieron</th><th scope="col">La dejaron</th><th scope="col">Volvieron con ella elegida</th><th scope="col">Visitas con ella elegida</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="table-wrap"><table class="grd"><thead><tr><th scope="col">${x === 'mapa' || x === 'sitio' ? 'Versión' : 'Vista'}</th><th scope="col">Visitas</th><th scope="col">${x === 'sitio' ? 'Abrieron otra pestaña' : 'Usaron el mapa'}</th><th scope="col">Pasaron el cursor</th><th scope="col">Filtraron o eligieron</th><th scope="col">Abrieron algo</th><th scope="col">La eligieron</th><th scope="col">La dejaron</th><th scope="col">Volvieron con ella elegida</th><th scope="col">Visitas con ella elegida</th></tr></thead><tbody>${rows}</tbody></table></div>
       ${verdict ? html`<p class="small"><strong>${verdict}</strong></p>` : ''}`;
   };
   return html`${Object.keys(EXPERIMENTS).map(block)}

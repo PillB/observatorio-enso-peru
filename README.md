@@ -76,6 +76,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 ## Documentación
 
 - [Arquitectura y contrato de datos](docs/arquitectura.md)
+- [Versiones A y B del sitio, selector y analítica de uso](docs/analitica-uso.md)
 - [Metodología e indicadores](docs/metodologia.md)
 - [Catálogo de fuentes](docs/catalogo-fuentes.md)
 - [Informes en texto libre y vigencia de los datos](docs/informes-texto.md): comunicado e informe técnico del ENFEN leídos del PDF, con su validación y procedencia

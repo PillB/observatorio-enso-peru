@@ -385,6 +385,7 @@ export class Tour {
     const t0 = performance.now();
     for (;;) {
       const el = find(sel);
+      if (el && el !== true) document.dispatchEvent(new CustomEvent('fold:reveal', { detail: el })); // versión B: plegado
       if (el) return el === true ? document.body : el;
       if (performance.now() - t0 > ms) return null;
       await sleep(100);
