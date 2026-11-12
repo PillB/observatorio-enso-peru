@@ -348,6 +348,18 @@ def test_reviews_must_match_something(tmp_path):
         B.apply_reviews([{"Id": "desinventar-1", "Date": "1998-01-01", "Ubigeo": "200105"}], p)
 
 
+def test_a_source_can_be_held_back_until_reviewed(tmp_path):
+    p = tmp_path / "revisiones.yaml"
+    p.write_text("revisiones:\n  - {origen: hemeroteca, accion: retener, salvo: [hemeroteca-loc-b], motivo: prueba}\n",
+                 encoding="utf-8")
+    rows = [{"Id": "hemeroteca-loc-a", "Origen": "hemeroteca"}, {"Id": "hemeroteca-loc-b", "Origen": "hemeroteca"},
+            {"Id": "sinpad-1", "Origen": "sinpad", "Date": "2017-03-01", "Ubigeo": "200105"}]
+    kept, held = B.held_back(rows, p)
+    assert [r["Id"] for r in kept] == ["hemeroteca-loc-b", "sinpad-1"] and held == {"hemeroteca": 1}
+    # Una revisión de una fuente entera no es una revisión de un registro: no tiene que coincidir con un Id.
+    assert len(B.apply_reviews(rows[2:], p)) == 1
+
+
 def test_curated_records_need_a_known_place_and_a_source(T, cal):
     base = {"Id": "x", "Date": "2017-03", "DangerType": "Inundacion", "Fuente": "https://example.org/a", "FuenteCita": "cita"}
     r = B.normalize_curated({**base, "Departamento": "Piura", "Provincia": "Piura", "Distrito": "Catacaos"}, T, cal, "t.yaml")

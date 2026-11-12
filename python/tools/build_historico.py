@@ -1271,7 +1271,7 @@ def normalize_curated(it: dict, territory: Territory, calendar: EnsoCalendar, fn
 def apply_reviews(records: list[dict], path: Path = DATA / "revisiones.yaml", strict: bool = True) -> list[dict]:
     """Aplica ``data/historico/revisiones.yaml`` (exclusiones y cifras dudosas, cada una con su motivo). ``strict``: cada
     revisión debe coincidir con algún registro (con ``--desde-catalogo`` solo se aplican a los curados, que se releen)."""
-    revs = (yaml.safe_load(path.read_text(encoding="utf-8")) or {}).get("revisiones", []) if path.exists() else []
+    revs = [v for v in _reviews(path) if "origen" not in v]  # las de una fuente entera las aplica ``held_back``
     used = [0] * len(revs)
     out = []
     for r in records:
@@ -1293,6 +1293,26 @@ def apply_reviews(records: list[dict], path: Path = DATA / "revisiones.yaml", st
         if strict and not n:
             raise SystemExit(f"revisiones.yaml: la revisión {v.get('id') or v.get('fecha')} no coincide con ningún registro")
     return out
+
+
+def _reviews(path: Path) -> list[dict]:
+    return (yaml.safe_load(path.read_text(encoding="utf-8")) or {}).get("revisiones", []) if path.exists() else []
+
+
+def held_back(records: list[dict], path: Path = DATA / "revisiones.yaml") -> tuple[list[dict], Counter]:
+    """Las revisiones ``origen: X`` con ``accion: retener`` dejan fuera las filas de esa fuente (sus candidatos de la
+    segunda ronda, antes de unirse, y sus filas propias de un catálogo ya publicado) salvo las de ``salvo``, revisadas
+    una por una. Devuelve las que quedan y cuántas se retuvieron por fuente."""
+    hold = {str(v["origen"]): {str(i) for i in v.get("salvo") or []}
+            for v in _reviews(path) if "origen" in v and v.get("accion") == "retener"}
+    kept, held = [], Counter()
+    for r in records:
+        ok = hold.get(r.get("Origen"))
+        if ok is not None and r["Id"] not in ok:
+            held[r["Origen"]] += 1
+            continue
+        kept.append(r)
+    return kept, held
 
 
 def mark_duplicate_impacts(records: list[dict]) -> None:
@@ -2066,6 +2086,10 @@ def harvest(manifest: dict, territory: Territory, calendar: EnsoCalendar, caches
     records = apply_reviews(records)
     # Segunda ronda: lo que cuentan el COEN y la prensa se une a las filas del mismo evento (o queda como fila propia).
     link_stats: Counter = Counter()
+    for k in list(candidates):
+        candidates[k], held = held_back(candidates[k])
+        for origin, n in held.items():
+            print(f"retenidos hasta revisarlos ({origin}): {n}")
     ordered = [c for k in LINK_ORDER for c in sorted(candidates.get(k, []), key=lambda r: (r["Date"], r["Id"]))]
     added = enlace.link(records, ordered, link_stats)
     by_src = Counter(r["_fuente"] for r in added)
@@ -2172,6 +2196,9 @@ def main(argv=None) -> int:
         # Los registros curados se leen de nuevo (los YAML del repositorio pueden ser más nuevos que el catálogo).
         cur = apply_reviews(curated_records(territory, calendar), strict=False)
         records = [r for r in records if r["Origen"] != "curado"] + cur
+        records, held = held_back(records)
+        for origin, n in held.items():
+            print(f"retenidos hasta revisarlos ({origin}): {n}")
         for src in manifest["fuentes"]:
             if src.get("lector") == "curado":
                 src["registros"] = len(cur)
