@@ -9,6 +9,19 @@ export const SITE = {
   issues: 'https://github.com/PillB/observatorio-enso-peru/issues',
 };
 
+/**
+ * Aportes voluntarios (ver docs/apoyo.md). Cada vía aparece solo cuando tiene
+ * valor; con todo vacío, la página «Apoyar» muestra solo las formas de ayudar
+ * que no son dinero. Nunca se cargan botones ni scripts de terceros: son
+ * enlaces simples, así la política de seguridad y la privacidad no cambian.
+ */
+export const SUPPORT = {
+  kofi: '',            // dirección de la página en Ko-fi, p. ej. 'https://ko-fi.com/observatorioenso'
+  githubSponsors: '',  // dirección del perfil en GitHub Sponsors; se vacía al publicar sin enlaces al repositorio
+  yapeQr: '',          // imagen del QR de Yape dentro de public/, p. ej. 'assets/apoyo/yape-qr.png'
+  yapeName: '',        // nombre del titular que Yape muestra antes de confirmar
+};
+
 export const DISCLAIMER =
   'Este observatorio no es un servicio oficial de alertas. Las declaraciones oficiales en el Perú las emite la Comisión Multisectorial ENFEN; ' +
   'para emergencias siga a INDECI, SENAMHI, CENEPRED y a su gobierno regional o local.';

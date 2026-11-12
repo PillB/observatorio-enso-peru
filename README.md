@@ -92,6 +92,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Boletín de eventos El Niño](docs/boletin.md): una hoja con el mapa por nivel, qué se viene y los diez departamentos más críticos; el correo por n8n y Gmail, sus reglas de aviso y la decisión sobre WhatsApp
 - [Mi zona](docs/mi-zona.md): para un departamento, provincia o distrito, su historia, los meses críticos y los avisos oficiales de hoy en una página
 - [Tutorial guiado](docs/tutorial-guiado.md): un recorrido interactivo por pestaña, que nunca tapa lo que muestra, y sus pruebas
+- [Aportes voluntarios](docs/apoyo.md): cómo activar Ko-fi, Yape y GitHub Sponsors, y dónde aparecen
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
