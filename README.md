@@ -95,6 +95,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Máquinas de estado implícitas](docs/maquinas-de-estado.md): cada estado que guarda el sitio (ruta, versiones, tutorial, mapas, consola), sus diagramas, los estados errados que se encontraron y su corrección
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
+- [Política de Privacidad y Términos de Uso](docs/legal.md): de qué plantillas salen, qué se cambió y qué falta
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
 
 ## Licencia

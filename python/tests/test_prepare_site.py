@@ -29,6 +29,8 @@ def test_rewrites_address_and_hides_repo(site):
     assert 'content="https://observatorio-enso.pages.dev/og-image.png"' in index
     assert 'id="admin-link" href="admin/"' in index  # en Cloudflare la consola sí funciona y se enlaza
     assert 'href="/assets/css/app.css"' in (site / "404.html").read_text(encoding="utf-8")
+    for legal in ("privacy.html", "terms.html", "privacidad.html", "terminos.html"):
+        assert f'<link rel="canonical" href="https://observatorio-enso.pages.dev/{legal}">' in (site / legal).read_text(encoding="utf-8")
     assert "Sitemap: https://observatorio-enso.pages.dev/sitemap.xml" in (site / "robots.txt").read_text()
     headers = (site / "_headers").read_text()
     assert "Access-Control-Allow-Origin: *" in headers

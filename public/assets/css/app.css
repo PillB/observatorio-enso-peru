@@ -1320,3 +1320,14 @@ ul.feed.clipped > li:nth-child(n + 13) { display: none; }
 .lsw-seq { background: linear-gradient(to right, #dbe9ee, #4a7f99); }
 .leer-ojo { margin-bottom: 0 !important; padding: 8px 10px; border-radius: 6px; background: var(--watch-bg); color: var(--fg); }
 @media print { .leer { display: none; } }
+
+/* Privacy Policy y Terms of Use (privacy.html, terms.html) */
+.legal { max-width: 860px; }
+.legal-doc { line-height: 1.6; overflow-wrap: anywhere; }
+.legal-doc h2 { font-size: 1.2rem; margin: 1.6em 0 0.5em; }
+.legal-doc h3, .legal-doc h4 { font-size: 1rem; margin: 1.2em 0 0.4em; }
+.legal-doc table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 0.9rem; display: block; overflow-x: auto; }
+.legal-doc th, .legal-doc td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; text-align: left; }
+.legal-doc mark.pending { background: var(--watch-bg); color: var(--watch); padding: 0 2px; border-radius: 3px; }
+.legal-credit { font-size: 0.82rem; color: var(--fg-3); }
+.legal-nav { margin: 16px 0 0; color: var(--fg-2); font-size: 0.9rem; }
