@@ -323,14 +323,16 @@ async function createCorrection(env, url, session, body, ip) {
   const writeKey = `write:${session.username}`;
   // Una sola lectura de dos filas por clave: la revisión vigente de la nota y el contador de la persona.
   const st = await db.prepare(`SELECT (SELECT rev FROM current WHERE item_id = ?) AS rev,
+      (SELECT action FROM current WHERE item_id = ?) AS action,
       (SELECT count FROM attempts WHERE key = ? AND window_start > ?) AS n`)
-    .bind(item, writeKey, now - WRITE_WINDOW_S).first();
+    .bind(item, item, writeKey, now - WRITE_WINDOW_S).first();
   if (st && st.n >= WRITE_MAX_HOUR) return fail(429, 'Demasiadas correcciones en una hora.');
   const current = (st && st.rev) || 0;
   if (expected !== null && expected !== current) {
     return fail(409, 'Otra persona corrigió esta nota mientras usted la editaba. Recargue para ver su cambio.', {});
   }
-  if (action === 'clear' && !current) return fail(400, 'La nota no tiene correcciones que deshacer.');
+  // Deshacer una nota ya deshecha solo agregaría una revisión vacía al historial (y gastaría una escritura).
+  if (action === 'clear' && (!current || st.action === 'clear')) return fail(400, 'La nota no tiene correcciones que deshacer.');
   const before = body.before === undefined ? null : JSON.stringify(body.before).slice(0, 4000);
   const at = nowIso();
   const rev = current + 1;

@@ -167,7 +167,9 @@ class Session {
   }
 
   choose(v) {
-    if (!ids(this.exp).includes(v) || v === this.variant) return;
+    // Elegir la versión que se está viendo desde un enlace (o la que dejó el tutorial) la adopta como propia: antes
+    // se ignoraba porque ya era la que se veía, y no había forma de quedarse con ella.
+    if (!ids(this.exp).includes(v) || (v === this.variant && !this.preview)) return;
     // El tutorial muestra una vista: se ve como un enlace compartido, sin cambiar la de la persona ni contarla.
     if (byTour()) { this.show(v); return; }
     const old = this.state.v;

@@ -65,7 +65,11 @@ function fillNames() {
   for (const [c, n] of Object.entries(g.districts)) opts.push([`${n} — distrito de ${g.provinces[c.slice(0, 4)]}, ${g.departments[c.slice(0, 2)]}`, c]);
   state.byLabel = new Map(opts);
   list.replaceChildren(...opts.map(([label]) => h('option', { value: label })));
-  $('dep-filter').append(...Object.entries(g.departments).map(([c, n]) => h('option', { value: c }, n)));
+  // Se rehace (no se agrega): start() corre en cada ingreso, y salir y volver a entrar duplicaba los departamentos.
+  const sel = $('dep-filter');
+  sel.replaceChildren(...[...sel.options].filter((o) => o.value === '' || o.value === 'none'),
+    ...Object.entries(g.departments).map(([c, n]) => h('option', { value: c }, n)));
+  sel.value = state.dep;
 }
 
 // --- Estado de cada nota -------------------------------------------------------------
@@ -198,8 +202,11 @@ async function save(it, change, li) {
     $('count-done').textContent = `(${state.items.filter((x) => latestFix(x)).length})`;
   } catch (e) {
     if (e.status === 401) return showLogin('Su sesión venció. Vuelva a ingresar.');
-    if (e.status === 409) await loadLatest();
     say(e.message);
+    if (e.status === 409) {
+      // Otra persona la corrigió: la tarjeta se rehace con su cambio (y su revisión), no se deja la vieja.
+      try { await loadLatest(); li.replaceWith(itemCard(it)); return null; } catch { /* abajo */ }
+    }
     buttons.forEach((b) => { b.disabled = false; });
   }
   return null;
@@ -288,8 +295,19 @@ async function loadLatest() {
 
 // --- Sesión --------------------------------------------------------------------------
 
+/** Lo que veía la persona anterior no pasa a la siguiente que ingrese en esta pestaña (pestaña, filtros, registro). */
+function resetView() {
+  Object.assign(state, { tab: 'review', shown: PAGE, q: '', dep: '', latest: new Map() });
+  $('q').value = '';
+  $('dep-filter').value = '';
+  $('list').replaceChildren();
+  $('audit').replaceChildren();
+  document.querySelectorAll('.gc-tabs [role=tab]').forEach((x) => x.setAttribute('aria-selected', String(x.dataset.tab === 'review')));
+}
+
 function showLogin(msg = '') {
   state.me = null;
+  resetView();
   $('session').hidden = true;
   $('app-view').hidden = true;
   $('login-view').hidden = false;

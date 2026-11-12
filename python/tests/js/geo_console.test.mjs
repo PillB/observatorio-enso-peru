@@ -244,6 +244,14 @@ describe('correcciones', () => {
     assert.deepEqual(pub.overrides, []);
     const hist = await (await handle(req(`corrections?item=${ITEM}`, { cookie: a }), env)).json();
     assert.deepEqual(hist.corrections.map((c) => c.action), ['clear', 'confirm'], 'el historial no se borra');
+    // Deshacer otra vez no tiene nada que deshacer: no suma una revisión vacía.
+    const again = await handle(req('corrections', { method: 'POST', cookie: b, body: { item: ITEM, action: 'clear', expectedRev: 2 } }), env);
+    assert.equal(again.status, 400);
+    const hist2 = await (await handle(req(`corrections?item=${ITEM}`, { cookie: a }), env)).json();
+    assert.equal(hist2.corrections.length, 2);
+    // Tras deshacer se puede volver a corregir.
+    const redo = await handle(req('corrections', { method: 'POST', cookie: a, body: { item: ITEM, action: 'none', expectedRev: 2 } }), env);
+    assert.equal(redo.status, 201);
   });
 
   it('confirmar guarda los lugares que se vieron', async () => {

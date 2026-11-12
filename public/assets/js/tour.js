@@ -78,8 +78,10 @@ export class Tour {
       else if (e.key === 'ArrowLeft') { e.preventDefault(); this.prev(); }
     };
     // La persona se fue a otra pestaña por su cuenta: el tutorial queda en pausa (se reanuda desde «Ayuda»).
+    // También mientras el tutorial navega: el cambio que él provoca va a la pestaña del paso y no pausa; uno hacia
+    // otra pestaña es de la persona (antes se ignoraba y el paso esperaba 10 s y mostraba «no disponible»).
     this.onHash = () => {
-      if (!this.ui || this.navigating) return;
+      if (!this.ui) return;
       const st = this.step();
       if (st?.route && routeName(location.hash) !== routeName(st.route)) this.pause();
     };
@@ -146,6 +148,8 @@ export class Tour {
 
   start(modeId, step = 0) {
     if (!TOURS.some((m) => m.id === modeId)) return;
+    // La dirección es la del recorrido actual: la de otro anterior («Anterior») haría saltar hacia atrás un paso opcional.
+    this.lastDir = 'next';
     this.state.active = { mode: modeId, step, status: 'running', startedAt: new Date().toISOString() };
     this.save();
     this.show();
@@ -153,6 +157,7 @@ export class Tour {
 
   resume() {
     if (!this.state.active || !this.mode()) return;
+    this.lastDir = 'next';
     this.state.active.status = 'running';
     this.save();
     this.show();
@@ -281,7 +286,11 @@ export class Tour {
     if (st.route && routeName(location.hash) !== routeName(st.route)) {
       this.navigating = true;
       await new Promise((res) => {
-        const done = () => { document.removeEventListener('view:ready', done); clearTimeout(t); res(); };
+        // Solo la pestaña del paso: si la persona (o una vista lenta) dispara otra, se sigue esperando.
+        const done = (e) => {
+          if (e?.detail !== undefined && e.detail !== routeName(st.route)) return;
+          document.removeEventListener('view:ready', done); clearTimeout(t); res();
+        };
         const t = setTimeout(done, 10000);
         document.addEventListener('view:ready', done);
         this.navigate(st.route);
@@ -303,10 +312,13 @@ export class Tour {
     let el = await this.waitFor(st.target, 6000);
     if (!live()) return;
     if (!el && st.optional) {
-      // Un dato que esta publicación no trae (p. ej. la perspectiva del ENFEN): se salta el paso.
-      const dir = this.lastDir === 'prev' ? -1 : 1;
+      // Un dato que esta publicación no trae (p. ej. la perspectiva del ENFEN): se salta el paso, en la dirección en
+      // que iba la persona. Hacia atrás desde el primer paso no hay adónde ir: se sigue hacia adelante (antes la
+      // ventana quedaba «cargando» para siempre en un paso vacío). Hacia adelante desde el último, se termina.
+      const dir = this.lastDir === 'prev' && i > 0 ? -1 : 1;
+      if (dir > 0) this.lastDir = 'next';
       const j = i + dir;
-      if (j >= 0 && j < m.steps.length) { this.state.active.step = j; this.save(); this.show(); } else if (dir > 0) this.finish();
+      if (j < m.steps.length) { this.state.active.step = j; this.save(); this.show(); } else this.finish();
       return;
     }
     this.target = el;

@@ -54,8 +54,11 @@ export const mapView = {
   },
 
   async after(load) {
-    const wk = await load('weekly.json');
+    // El contenedor se toma antes de esperar los datos: si la vista se volvió a pintar mientras tanto, este montaje
+    // ya no es el de la página y no conecta nada (dos montajes conectarían dos animaciones al mismo botón).
     const host = $('#map-svg');
+    const wk = await load('weekly.json');
+    if (!host?.isConnected) return;
     if (!wk?.regions) { host.textContent = 'Datos semanales no disponibles.'; return; }
     const dates = [...new Set(Object.values(wk.regions).flatMap((r) => r.points.map((p) => p.date)))].sort().slice(-52);
     const at = Object.fromEntries(Object.entries(wk.regions).map(([k, r]) => [k, new Map(r.points.map((p) => [p.date, p.value]))]));
@@ -100,7 +103,9 @@ export const mapView = {
       play.innerHTML = `${ICON.pause}<span>Pausar</span>`; play.setAttribute('aria-label', 'Pausar animación');
       $('#map-status').textContent = `Mostrando ${dates.length} semanas, desde el ${F.fmtDate(dates[0])}.`;
       timer = setInterval(() => {
-        if (+range.value >= dates.length - 1) { stop(); return; }
+        // La vista se volvió a pintar sin cambiar de ruta (el selector de versiones): esta animación ya no es la de la
+        // página y escribiría la fecha y la tabla en el mapa nuevo. Se detiene.
+        if (!host.isConnected || +range.value >= dates.length - 1) { stop(); return; }
         range.value = String(+range.value + 1); draw();
       }, +$('#map-speed').value);
     };
