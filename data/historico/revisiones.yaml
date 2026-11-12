@@ -2,8 +2,20 @@
 # con su fuente. Acciones:
 #   excluir       el registro no entra al catálogo (no es un desastre de origen climático)
 #   sin-impactos  el registro queda, pero sus cifras no se suman a los totales (dato dudoso)
+#   retener       con «origen» en lugar de «id»: ninguna fila de esa fuente entra, salvo las de «salvo» (revisadas
+#                 una por una), hasta que la fuente pase una revisión
 # Las reglas automáticas (causa o descripción que nombran un sismo) están en enso/historico/desinventar.py.
 revisiones:
+  - origen: hemeroteca
+    accion: retener
+    salvo: []
+    motivo: >-
+      Páginas de periódicos antiguos de EE. UU. (Chronicling America): el texto OCR de una página junta notas
+      distintas, y una ventana puede tomar el peligro de una nota y el lugar de otra. Ejemplos: hemeroteca-loc-0160a9b96933
+      (una inundación en Arequipa armada con una nota sobre Oregón) y hemeroteca-loc-f735d6f97d67 (una inundación en Lima
+      armada con agua salada en los tanques de un barco y otra nota sobre un cóndor). Quedan fuera hasta revisar la
+      fuente; las que se revisen una por una van en «salvo».
+    fuente: https://github.com/PillB/observatorio-enso-peru/pull/110
   - fecha: "1970-05-31"
     departamento: "02"
     accion: excluir

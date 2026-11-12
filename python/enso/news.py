@@ -707,12 +707,22 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
     for it in recent:
         tok = _tokens(it["title"])
         for g in groups:
-            if g["region"] == it["region"] and any(_similar(tok, t) for t in g["_tokens"]):
+            # Solo se compara con el titular que abrió el grupo y con los que se le parecen a él («_core»). Si
+            # bastara parecerse a cualquiera, los grupos se encadenan (A~B, B~C, C~D…) y dos semanas de lluvias,
+            # sismos y reportes del COEN terminan bajo un solo titular.
+            # Dos notas con departamentos distintos no son el mismo hecho, aunque el titular siga la misma plantilla
+            # («Incendio forestal en el distrito de X (Áncash)» y «… de Y (Puno)» del COEN).
+            deps = set(it.get("departments") or [])
+            if g["region"] == it["region"] and not (deps and g["_deps"] and deps.isdisjoint(g["_deps"])) \
+                    and any(_similar(tok, t) for t in g["_core"]):
                 g["items"].append(it)
                 g["_tokens"].append(tok)
+                if _similar(tok, g["_core"][0]):
+                    g["_core"].append(tok)
                 break
         else:
-            groups.append({"region": it["region"], "items": [it], "_tokens": [tok]})
+            groups.append({"region": it["region"], "items": [it], "_tokens": [tok], "_core": [tok],
+                           "_deps": set(it.get("departments") or [])})
     out = []
     for g in groups:
         # La misma nota puede llegar por el feed del medio y por Google Noticias.
@@ -726,8 +736,14 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
                 links.add(link)
         its = list(uniq.values())
         lead = its[0]
-        own = [x for x in (_without_title(i) for i in its) if x and not _tokens(x) <= _tokens(lead["title"]) | _tokens(_outlet(lead))]
-        summary = max(own, key=len, default="")
+        # El resumen acompaña al titular que se muestra: primero el de esa misma nota; si no trae, el de otra nota
+        # del grupo cuyo titular se le parece. Nunca el de una nota que solo entró por parecerse a una tercera.
+        lead_tok = _tokens(lead["title"])
+        said = lead_tok | _tokens(_outlet(lead))
+        own = [x for x in (_without_title(i) for i in its if i is lead or _similar(_tokens(i["title"]), lead_tok))
+               if x and not _tokens(x) <= said]
+        mine = _without_title(lead)
+        summary = mine if mine in own else max(own, key=len, default="")
         outlets = list(dict.fromkeys(_outlet(i) for i in its))
         places = list({p["code"]: p for i in its for p in (i.get("places") or [])}.values())
         out.append({
