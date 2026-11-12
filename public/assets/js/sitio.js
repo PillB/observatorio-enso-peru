@@ -265,17 +265,25 @@ function radios(name, list, cur, describe = (x) => x[1]) {
   return html`<div class="ver-opts" role="radiogroup" aria-label="${name}">${list.map((x) => html`<label class="ver-opt"><input type="radio" name="${name}" value="${x[0]}" ${x[0] === cur ? 'checked' : ''}><span class="ver-opt-l"><strong>${x[0].length <= 2 ? `Versión ${x[0]}` : x[1].split(':')[0]}</strong><span class="muted small">${cap(describe(x))}</span></span></label>`)}</div>`;
 }
 
+/**
+ * Lo que se ve viene de un enlace (?sitio=, ?version=, ?vista=) o lo dejó el tutorial: la opción marcada es esa, así
+ * que marcarla no cambia nada. Este botón la adopta como propia (ab.js choose).
+ */
+const adopt = (exp, v, what) => html`<button type="button" class="linkish ver-adopt" data-adopt="${exp}" data-v="${v}">Quedarme con ${what}</button>`;
+
+const variantLabel = (x, v) => (EXPERIMENTS[x].variants.find(([k]) => k === v) || [v, v])[1].split(': ').pop();
+
 function panelHtml() {
   const v = version();
   const exps = (TAB_EXPS[currentRoute] || []).filter((x) => EXPERIMENTS[x]);
   const prev = site().preview;
   return html`<div class="ver-head"><h2 id="ver-h">Versiones del sitio</h2><button type="button" class="icon-btn ver-close" aria-label="Cerrar">${raw(ICON.close)}</button></div>
     <p class="small muted">Estamos probando dos formas de ordenar el mismo contenido. Elija la que le resulte más cómoda: queda guardada en este navegador. Nada se quita al cambiar.</p>
-    ${prev ? html`<p class="notice notice-info small">${raw(ICON.info)}<span>Está viendo la versión ${prev} desde un enlace. Su versión elegida es la ${site().own}.</span></p>` : ''}
+    ${prev ? html`<p class="notice notice-info small">${raw(ICON.info)}<span>Está viendo la versión ${prev} desde un enlace. Su versión elegida es la ${site().own}. ${adopt('sitio', prev, `la versión ${prev}`)}</span></p>` : ''}
     <fieldset class="ver-set"><legend>Todo el sitio</legend>
       ${radios('sitio', EXPERIMENTS.sitio.variants, v, (x) => x[1].split(': ')[1] || x[1])}</fieldset>
     ${exps.length ? html`<fieldset class="ver-set"><legend>Esta pestaña: ${NAME[currentRoute]}</legend>
-      ${exps.map((x) => html`<p class="ver-sub">${EXP_LABEL[x]}</p>${radios(x, EXPERIMENTS[x].variants, ab(x).variant, (o) => (o[0].length <= 2 ? o[1] : o[1].split(': ')[1] || ''))}`)}</fieldset>` : ''}
+      ${exps.map((x) => html`<p class="ver-sub">${EXP_LABEL[x]}</p>${radios(x, EXPERIMENTS[x].variants, ab(x).variant, (o) => (o[0].length <= 2 ? o[1] : o[1].split(': ')[1] || ''))}${ab(x).preview ? html`<p class="small muted ver-preview">Esta vista viene de un enlace o del tutorial; la suya es «${variantLabel(x, ab(x).own)}». ${adopt(x, ab(x).preview, 'esta')}</p>` : ''}`)}</fieldset>` : ''}
     <label class="ver-opt ver-optout"><input type="checkbox" id="ver-optout" ${storage(OPT_OUT_KEY) === '1' ? 'checked' : ''}><span class="ver-opt-l"><strong>No participar en la medición</strong><span class="muted small">La medición es anónima: cuenta, por día, cuánto se usa cada pestaña en cada versión, sin cookies ni datos de quien visita.${optedOut() && storage(OPT_OUT_KEY) !== '1' ? ' Su navegador ya pide no rastrear: no se manda nada.' : ''}</span></span></label>`;
 }
 
@@ -300,13 +308,47 @@ let keepPanel = false;
 function repaint(name) {
   keepPanel = true;
   try { rerender(); } finally { keepPanel = false; }
+  // El panel se vuelve a armar: el aviso «desde un enlace» y el botón para adoptarla ya no aplican tras elegir.
+  const pop = $('#ver-pop');
+  if (pop && !pop.hidden) pop.innerHTML = String(panelHtml());
   $(`#ver-pop input[name="${name}"]:checked`)?.focus({ preventScroll: true });
 }
 
+/** Quita del enlace los parámetros de vista previa: tras elegir, recargar muestra la elegida y no la del enlace. */
+export function dropPreviewParams(names) {
+  const [path, q] = location.hash.split('?');
+  const p = new URLSearchParams(q || '');
+  const s = new URLSearchParams(location.search);
+  let changed = false;
+  for (const n of names) {
+    if (p.has(n)) { p.delete(n); changed = true; }
+    if (s.has(n)) { s.delete(n); changed = true; }
+  }
+  if (!changed) return;
+  const search = s.toString() ? `?${s}` : '';
+  history.replaceState(null, '', `${location.pathname}${search}${path}${p.toString() ? `?${p}` : ''}`);
+}
+
+/**
+ * Tras elegir la vista de un mapa (memoria, noticias), el enlace dice la elegida en vez de perderla: un enlace con
+ * filtros y sin ?vista= abre el resumen en la memoria (los enlaces de antes de las vistas), así que quitarla mostraba
+ * otra vista que la recién elegida. La versión del mapa de alertas (?version=) sí se quita: sin ella se ve la propia.
+ */
+function keepChoiceInLink(exp, v) {
+  if (exp === 'mapa') { dropPreviewParams(['version']); return; }
+  const [path, q] = location.hash.split('?');
+  const p = new URLSearchParams(q || '');
+  if (![...p.keys()].length) return;
+  p.set('vista', v);
+  history.replaceState(null, '', `${location.pathname}${location.search}${path}?${p}`);
+}
+
 function chooseSite(v) {
-  if (v === version()) return;
+  // Se compara con la versión elegida, no con la que se ve: elegir la de un enlace (?sitio=B) la adopta.
+  if (v === site().own && !site().preview) return;
   usage.flush(); // el tiempo hasta aquí es de la versión anterior
   site().choose(v);
+  dropPreviewParams(['sitio']);
   applyVersion();
   drawNav();
   verLabel();
@@ -327,17 +369,25 @@ function wirePanel() {
     if (EXPERIMENTS[t.name]) {
       ab(t.name).choose(t.value);
       // La vista del enlace (?vista=, ?version=) ya no manda: se ve la elegida.
-      const [path, q] = location.hash.split('?');
-      const p = new URLSearchParams(q || '');
-      p.delete('vista');
-      p.delete('version');
-      history.replaceState(null, '', `${path}${p.toString() ? `?${p}` : ''}`);
+      keepChoiceInLink(t.name, t.value);
       repaint(t.name);
     }
   });
-  pop.addEventListener('click', (e) => { if (e.target.closest('.ver-close')) closePanel(); });
+  pop.addEventListener('click', (e) => {
+    if (e.target.closest('.ver-close')) { closePanel(); return; }
+    const a = e.target.closest('[data-adopt]');
+    if (!a) return;
+    const { adopt: x, v } = a.dataset;
+    if (x === 'sitio') { chooseSite(v); return; }
+    if (!EXPERIMENTS[x]) return;
+    ab(x).choose(v);
+    keepChoiceInLink(x, v);
+    repaint(x);
+  });
   pop.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); closePanel(); } });
-  document.addEventListener('click', (e) => { if (!pop.hidden && !e.target.closest?.('#ver-pop, #ver-btn')) closePanel(false); });
+  // Un clic fuera cierra el panel. Un botón del panel que el propio clic reemplazó (adoptar una versión rehace el
+  // panel) ya no está en la página: tampoco es un clic fuera.
+  document.addEventListener('click', (e) => { if (!pop.hidden && e.target.isConnected && !e.target.closest?.('#ver-pop, #ver-btn')) closePanel(false); });
 }
 
 function mountSwitcher() {

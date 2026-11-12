@@ -446,10 +446,13 @@ async function mount(root, D) {
   if (!q.has('vista')) s.vista = [...q.keys()].length ? 'resumen' : session.own;
   session.show(s.vista);
   const set = (partial, sel) => { s = { ...s, ...partial }; draw(sel); };
+  let detailPending = false;
   const draw = (focusSel) => {
     writeState(s);
-    if (s.vista !== 'resumen' && !DETAIL_DATA) {
-      detailData().then(() => { if (root.isConnected) draw(focusSel); }).catch((e) => {
+    if (s.vista !== 'resumen' && !DETAIL_DATA && !detailPending) {
+      // Un solo redibujo cuando llegan los datos, aunque la persona cambie filtros mientras tanto.
+      detailPending = true;
+      detailData().finally(() => { detailPending = false; }).then(() => { if (root.isConnected) draw(focusSel); }).catch((e) => {
         console.error(e);
         session.show('resumen');
         s = { ...s, vista: 'resumen' };

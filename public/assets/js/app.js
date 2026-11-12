@@ -22,7 +22,9 @@ import { boletinView } from './boletin.js';
 import { initSite, enterView, viewReady } from './sitio.js';
 
 const DATA = 'data/';
-export const S = { dash: null, files: {}, pub: null, mismatch: [] };
+// files: lo ya leído de cada archivo (null si no es de esta publicación); pending: lo que se está pidiendo, para que
+// dos vistas que piden lo mismo a la vez compartan una sola descarga.
+export const S = { dash: null, files: {}, pending: {}, pub: null, mismatch: [], navigated: false };
 
 // ---------------------------------------------------------------------------
 // Datos
@@ -33,24 +35,35 @@ async function fetchJSON(name, bust) {
   return r.json();
 }
 
-/** Archivo de la misma publicación que dashboard.json, o null si no coincide. */
-export async function load(name) {
-  if (S.files[name] !== undefined) return S.files[name];
-  let obj = null;
-  try {
-    obj = await fetchJSON(name, S.pub);
-    if (obj.publicationId !== S.pub) obj = await fetchJSON(name, `${S.pub}-${Date.now()}`);
+/**
+ * Archivo de la misma publicación que dashboard.json, o null si no coincide o no se pudo leer.
+ *
+ * Tres resultados: el archivo (se guarda), otra publicación (se guarda null y se avisa una vez en la franja) o un
+ * fallo de red (no se guarda: la próxima vista que lo pida lo intenta de nuevo, en vez de mostrar «no disponible»
+ * hasta recargar la página por un corte de un segundo).
+ */
+export function load(name) {
+  if (S.files[name] !== undefined) return Promise.resolve(S.files[name]);
+  if (S.pending[name]) return S.pending[name];
+  const p = (async () => {
+    let obj;
+    try {
+      obj = await fetchJSON(name, S.pub);
+      if (obj.publicationId !== S.pub) obj = await fetchJSON(name, `${S.pub}-${Date.now()}`);
+    } catch (e) {
+      console.warn(e);
+      return null;
+    }
     if (obj.publicationId !== S.pub) {
-      S.mismatch.push(name);
+      if (!S.mismatch.includes(name)) S.mismatch.push(name);
       renderBanner();
       obj = null;
     }
-  } catch (e) {
-    console.warn(e);
-    obj = null;
-  }
-  S.files[name] = obj;
-  return obj;
+    S.files[name] = obj;
+    return obj;
+  })().finally(() => { delete S.pending[name]; });
+  S.pending[name] = p;
+  return p;
 }
 
 const series = (k) => S.dash?.series?.[k] || null;
@@ -213,6 +226,8 @@ function freshnessPanel(view) {
   if (!v || !v.items.length) return '';
   const rows = v.items.map((id) => f.items[id]).filter(Boolean);
   const counted = rows.filter((r) => !r.optional);
+  // Sin datos que cuenten (todos «no aplica») el panel diría «Al día» de «los 0 datos»: no se muestra.
+  if (!counted.length) return '';
   const late = counted.filter((r) => r.state === 'atrasado' || r.state === 'vencido');
   const missing = counted.filter((r) => r.state === 'sin-dato');
   const [lv, txt] = FRESH[v.worst] || FRESH['sin-dato'];
@@ -1099,7 +1114,10 @@ async function render() {
   S.navigated = true;
   // Si la persona ya se fue a otra sección, lo que falle al terminar esta (un gráfico que ya no está) no es un error.
   try { if (view.after && my === rendering) await view.after(); } catch (e) { if (my === rendering) console.error(e); }
-  if (my === rendering) viewReady();
+  // Una vista que la persona ya dejó no anuncia que está lista: el tutorial, que espera «view:ready» para seguir,
+  // creería que ya llegó la pestaña nueva y buscaría su contenido en la anterior.
+  if (my !== rendering) return;
+  viewReady();
   document.dispatchEvent(new CustomEvent('view:ready', { detail: name }));
 }
 

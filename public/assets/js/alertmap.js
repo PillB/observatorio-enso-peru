@@ -694,10 +694,12 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
   let vista = VIDS.includes(getFilter().vista) ? getFilter().vista : vsession.own;
   vsession.show(vista);
   let sel = '';
-  let det = null;  // {districts, B, H} de las vistas de detalle, cuando llegan
-  const loadDet = () => Promise.all([districtShapes(), basinShapes(), historyRows()]).then(([districts, B, H]) => {
+  let det = null;  // {districts, B, H} de las vistas de detalle cuando llegan; false si no se pudieron leer
+  // Una sola espera: cada redibujo mientras llegan (un filtro, el reloj) ya no encadena otra carga y otro redibujo.
+  let detLoading = null;
+  const loadDet = () => (detLoading ||= Promise.all([districtShapes(), basinShapes(), historyRows()]).then(([districts, B, H]) => {
     det = districts && B && H ? { districts, B, H } : false;
-  });
+  }));
   let model = prepare(feed);
   if (!geo || !model.alerts.length && !model.sources.total) {
     el.innerHTML = '';
@@ -734,7 +736,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
         <div class="amap-side">${legend('A')}${depSel ? html`<div class="amap-sel"><h3 class="amap-h3">${DEP_NAMES[f.dep]}</h3>${tipHtml('', depSel, { foot: 'Sus avisos y noticias están en la lista de abajo.' })}</div>` : html`<p class="muted small">Pase el cursor o toque un departamento para ver sus avisos; haga clic para filtrar las noticias.</p>`}</div></div>`;
     }
     if (vista !== 'resumen') {
-      if (det === null) loadDet().then(() => { if (det === false) { vsession.show('resumen'); vista = 'resumen'; } draw(); });
+      if (det === null && !detLoading) loadDet().then(() => { if (det === false) { vsession.show('resumen'); vista = 'resumen'; } draw(); });
       const D = det ? detailView(vista, geo, vis, f, det, sel) : null;
       body = html`<div class="amap-grid amap-grid-det"><div class="amap-mapbox">${D ? D.svg : html`<div class="skeleton" aria-hidden="true"></div><p class="muted">Cargando las cuencas, los distritos y la memoria de desastres…</p>`}<div class="amap-tip" role="tooltip" hidden></div>${D ? D.legend : ''}</div>
         <div class="amap-side">${D ? D.side : ''}</div></div>`;
