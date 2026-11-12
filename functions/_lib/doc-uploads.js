@@ -330,13 +330,14 @@ async function upload(request, env, url, session, ip) {
   const db = env.GEO_DB;
   const writeKey = `upload:${session.username}`;
   const now = epoch();
-  // Una lectura: el contador de la persona y, si este mismo archivo ya se subió para este documento (la respuesta
-  // anterior se perdió y la persona lo intenta de nuevo), esa subida.
+  // Una lectura: el contador de la persona y la última subida de este documento. Si es este mismo archivo (la
+  // respuesta anterior se perdió y la persona lo intenta de nuevo), es una repetición. Solo la última: un archivo que
+  // otro reemplazó después ya no está en la rama, y volver a subirlo es restaurarlo, no repetir.
   const st = await withSchema(env, () => db.prepare(`SELECT (SELECT count FROM attempts WHERE key = ? AND window_start > ?) AS n,
-      u.id, u.bytes, u.commit_sha, u.dispatched, u.created_at
-      FROM (SELECT 1) LEFT JOIN (SELECT * FROM uploads WHERE doc_id = ? AND sha256 = ? AND commit_sha IS NOT NULL
-        ORDER BY id DESC LIMIT 1) u`).bind(writeKey, now - UPLOAD_WINDOW_S, docId, sha256).first());
-  if (st && st.id) {
+      u.id, u.sha256, u.bytes, u.commit_sha, u.dispatched, u.created_at
+      FROM (SELECT 1) LEFT JOIN (SELECT * FROM uploads WHERE doc_id = ? AND commit_sha IS NOT NULL
+        ORDER BY id DESC LIMIT 1) u`).bind(writeKey, now - UPLOAD_WINDOW_S, docId).first());
+  if (st && st.id && st.sha256 === sha256) {
     // Idempotente: no se vuelve a mandar a GitHub ni se cuenta como otra subida. Si la actualización no se pudo
     // pedir, se pide ahora.
     request.body.cancel().catch(() => {});

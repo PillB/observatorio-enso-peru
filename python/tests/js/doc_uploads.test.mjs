@@ -239,6 +239,22 @@ describe('subida de documentos', () => {
     assert.equal(n, 1, 'el reintento no gasta el tope por hora');
   });
 
+  it('volver a subir un archivo que otro reemplazó lo restaura (no es una repetición)', async () => {
+    const cookie = await login();
+    const a = PDF;
+    const b = Buffer.concat([PDF, Buffer.from('% otra\n%%EOF\n')]);
+    const shaA = createHash('sha256').update(a).digest('hex');
+    assert.equal((await handle(uploadReq(cookie, { pdf: a }), env)).status, 201);
+    assert.equal((await handle(uploadReq(cookie, { pdf: b }), env)).status, 201);
+    const r = await handle(uploadReq(cookie, { pdf: a }), env);
+    const out = await r.json();
+    assert.equal(r.status, 201, JSON.stringify(out));
+    assert.ok(!out.replayed);
+    const [entry] = JSON.parse(tree()['index.json'].content).entries;
+    assert.equal(entry.sha256, shaA, 'la rama vuelve a tener A');
+    assert.ok(tree()[`files/${shaA.slice(0, 16)}.pdf`]);
+  });
+
   it('si el commit se hizo pero D1 no lo anotó, el reintento no crea otro commit', async () => {
     const cookie = await login();
     assert.equal((await handle(uploadReq(cookie), env)).status, 201);

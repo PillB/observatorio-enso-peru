@@ -50,8 +50,9 @@ si se guardó. Repetirla tiene que ser seguro.
   `Idempotency-Key` ni una tabla nueva: el cambio mismo es la clave, y dos cambios idénticos de la misma persona
   sobre la misma revisión son, por definición, la misma intención. La consola repite una vez, tras una pausa corta y
   al azar, solo si `fetch` falló sin respuesta; un error con estado HTTP no se repite.
-- **Subidas de documentos.** La clave es `(documento, sha256)`. Si D1 ya tiene esa subida con su commit, se
-  responde 200 sin mandar nada a GitHub ni gastar el tope por hora. Si el commit se hizo pero D1 no llegó a anotarlo
+- **Subidas de documentos.** La clave es `(documento, sha256)`. Si la última subida de ese documento en D1 es ese
+  mismo archivo, con su commit, se responde 200 (un archivo que otro reemplazó después no cuenta: volver a subirlo
+  lo restaura) sin mandar nada a GitHub ni gastar el tope por hora. Si el commit se hizo pero D1 no llegó a anotarlo
   (la función se cortó), `commitUpload` ve el mismo archivo en el índice de la rama y no crea otro commit. La
   consola dice que volver a subir es seguro cuando la red se corta.
 
