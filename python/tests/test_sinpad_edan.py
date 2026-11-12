@@ -102,7 +102,10 @@ def test_catalog_edan_rows_are_consistent(catalog):
     for r in catalog:
         assert (F.EDAN_NOTE in r["Descripción"]) == (F.EDAN_CITE in r["FuenteCita"]), r["Id"]
     for r in edan:
-        assert r["ImpactoReportado"] == "si" and not r["KmVias"], r["Id"]
+        # La capa del EDAN no trae vías: un km de vías en una de estas filas solo puede venir de otra fuente que la
+        # corrobora (un reporte del COEN unido a la ficha), y la descripción lo dice.
+        assert r["ImpactoReportado"] == "si", r["Id"]
+        assert not r["KmVias"] or (r.get("OrigenesCorroboran") and "km de vías" in r["Descripción"].split(F.EDAN_NOTE)[0]), r["Id"]
         assert r["Descripción"].count(F.EDAN_NOTE) == 1, r["Id"]
     # Desde 2019 el portal no trae cifras: la capa las da a la mayoría de las fichas con daños.
     since = [r for r in catalog if r["Origen"] == "sinpad" and r["Date"] >= "2019-01-01"]
