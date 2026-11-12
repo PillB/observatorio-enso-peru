@@ -23,7 +23,9 @@ pytestmark = pytest.mark.browser
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
-ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias", "datos", "metodologia", "asistente", "boletin", "apoyar"]
+ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias", "datos", "metodologia", "asistente", "boletin"]
+# Páginas fuera de la navegación (se llega desde el pie): se prueban igual que las pestañas.
+PAGES = [*ROUTES, "apoyar"]
 VIEWPORTS = {"telefono-320": (320, 640), "telefono-390": (390, 844), "tableta": (820, 1180), "escritorio": (1366, 900)}
 
 
@@ -112,7 +114,7 @@ def test_phone_layout_survives_wider_system_fonts(site, browser, w):
                         f"document.createElement('style'), {{textContent: {json.dumps(WIDE_TEXT)}}})));")
     pg = ctx.new_page()
     try:
-        for r in ROUTES:
+        for r in PAGES:
             go(pg, base, r)
             overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
             assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en #{r} a {w}px con letras más anchas"
@@ -129,7 +131,7 @@ def test_every_section_renders_without_errors_or_overflow(site, browser, vp):
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
     pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-    for r in ROUTES:
+    for r in PAGES:
         go(pg, base, r)
         assert pg.locator("main h1").count() == 1, r
         overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
@@ -186,7 +188,7 @@ def test_long_unbroken_text_from_the_sources_never_widens_the_page(site, browser
     ctx.route("**/data/**/*.json*", stretched)
     pg = ctx.new_page()
     try:
-        for r in ROUTES:
+        for r in PAGES:
             go(pg, base, r)
             overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
             assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en #{r} a {w}px"
