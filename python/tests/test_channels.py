@@ -1881,3 +1881,18 @@ def test_reader_feeds_are_only_read_by_the_daily_run(monkeypatch, tmp_path):
     assert seen["reader"] == reader and seen["plan"] == registry.url_channels()
     obs.main(["--out", str(tmp_path / "out"), "--previous", "", "--fail-on", "never", "--offline"])
     assert seen["reader"] is None and seen["plan"] is None
+
+
+def test_retry_after_dates_and_jittered_backoff():
+    """Retry-After puede ser una fecha HTTP (RFC 9110 §10.2.3): antes se ignoraba y se reintentaba al ritmo propio,
+    antes de lo que pidió el servidor. La espera exponencial lleva azar para no reintentar todos al mismo segundo."""
+    from enso.fetch import backoff_s, retry_after_s
+
+    now = 1_700_000_000.0
+    assert retry_after_s("120", now) == 120.0
+    assert retry_after_s("Tue, 14 Nov 2023 22:13:27 GMT", now) == 7.0
+    assert retry_after_s("Tue, 14 Nov 2023 22:00:00 GMT", now) == 0.0  # ya pasó: no se espera
+    assert retry_after_s("", now) is None and retry_after_s(None, now) is None and retry_after_s("pronto", now) is None
+    assert backoff_s(0, 2, rand=lambda: 0.0) == 1.0 and backoff_s(0, 2, rand=lambda: 0.999999) < 2.0
+    assert backoff_s(2, 3, rand=lambda: 1.0) == 12.0
+    assert backoff_s(10, 3, rand=lambda: 1.0) == 30.0  # con tope

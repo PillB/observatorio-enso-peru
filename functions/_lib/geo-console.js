@@ -7,7 +7,8 @@
 //   POST logout
 //   GET  me               usuario de la sesión
 //   GET  corrections      ?item=<id> historial de una nota; ?latest=1 la última corrección de cada nota
-//   POST corrections      {item, action, places?, note?, before?, expectedRev}
+//   POST corrections      {item, action, places?, note?, before?, expectedRev} → 201; 200 si repite lo ya guardado;
+//                         409 {current} si otra persona cambió la nota; 428 sin expectedRev
 //   GET  audit            últimos eventos (ingresos, correcciones)
 //   GET  overrides        PÚBLICA: las correcciones vigentes, sin nombres ni notas, para el pipeline diario
 //
@@ -318,25 +319,32 @@ async function createCorrection(env, url, session, body, ip) {
     if (bad.length) return fail(400, `Códigos UBIGEO desconocidos: ${bad.join(', ')}`);
   }
   const note = String(body.note || '').trim().slice(0, 500);
-  const expected = Number.isInteger(body.expectedRev) ? body.expectedRev : null;
+  // Bloqueo optimista: toda escritura dice sobre qué revisión la hizo la persona. Sin ella sería una escritura a
+  // ciegas que pisa la de otro revisor sin enterarse (actualización perdida), así que se exige (428, RFC 6585).
+  if (!Number.isInteger(body.expectedRev) || body.expectedRev < 0) {
+    return fail(428, 'Falta la revisión sobre la que se hizo el cambio (expectedRev). Recargue la consola.');
+  }
+  const expected = body.expectedRev;
   const now = epoch();
   const writeKey = `write:${session.username}`;
-  // Una sola lectura de dos filas por clave: la revisión vigente de la nota y el contador de la persona.
-  const st = await db.prepare(`SELECT (SELECT rev FROM current WHERE item_id = ?) AS rev,
-      (SELECT action FROM current WHERE item_id = ?) AS action,
-      (SELECT count FROM attempts WHERE key = ? AND window_start > ?) AS n`)
-    .bind(item, item, writeKey, now - WRITE_WINDOW_S).first();
-  if (st && st.n >= WRITE_MAX_HOUR) return fail(429, 'Demasiadas correcciones en una hora.');
+  // Una sola lectura de dos filas por clave: la fila vigente de la nota y el contador de la persona.
+  const st = await db.prepare(`SELECT c.rev, c.action, c.places, c.note, c.username, c.created_at,
+      (SELECT count FROM attempts WHERE key = ? AND window_start > ?) AS n
+      FROM (SELECT 1) LEFT JOIN current c ON c.item_id = ?`)
+    .bind(writeKey, now - WRITE_WINDOW_S, item).first();
   const current = (st && st.rev) || 0;
-  if (expected !== null && expected !== current) {
-    return fail(409, 'Otra persona corrigió esta nota mientras usted la editaba. Recargue para ver su cambio.', {});
-  }
+  const placesJson = JSON.stringify(places);
+  const mine = { action, placesJson, note, username: session.username };
+  // Reintento de un envío que ya se guardó (se cortó la respuesta, la persona pulsó de nuevo): misma persona, mismo
+  // cambio, una revisión más que la esperada. Se responde lo guardado en vez de un 409 falso: el POST es idempotente.
+  if (expected + 1 === current && sameChange(st, mine)) return json(replay(item, st), 200);
+  if (st && st.n >= WRITE_MAX_HOUR) return fail(429, 'Demasiadas correcciones en una hora.');
+  if (expected !== current) return conflict(item, st, 'Otra persona corrigió esta nota mientras usted la editaba.');
   // Deshacer una nota ya deshecha solo agregaría una revisión vacía al historial (y gastaría una escritura).
   if (action === 'clear' && (!current || st.action === 'clear')) return fail(400, 'La nota no tiene correcciones que deshacer.');
   const before = body.before === undefined ? null : JSON.stringify(body.before).slice(0, 4000);
   const at = nowIso();
   const rev = current + 1;
-  const placesJson = JSON.stringify(places);
   try {
     // En lote (una transacción): si otra persona ganó la carrera, UNIQUE (item_id, rev) anula todo el lote.
     await db.batch([
@@ -351,12 +359,26 @@ async function createCorrection(env, url, session, body, ip) {
       auditStmt(db, session.username, 'correccion', ip, item, { action, places, rev }),
     ]);
   } catch (e) {
-    if (/UNIQUE|constraint/i.test(String(e && e.message))) {
-      return fail(409, 'Otra persona corrigió esta nota al mismo tiempo. Recargue para ver su cambio.');
-    }
-    throw e;
+    if (!/UNIQUE|constraint/i.test(String(e && e.message))) throw e;
+    // Perdió la carrera: puede ser otro revisor o el mismo envío repetido que llegó a la vez (dos pestañas, un
+    // reintento). Una lectura más, solo en este caso, para saber cuál.
+    const won = await db.prepare('SELECT rev, action, places, note, username, created_at FROM current WHERE item_id = ?')
+      .bind(item).first();
+    if (won && won.rev === rev && sameChange(won, mine)) return json(replay(item, won), 200);
+    return conflict(item, won, 'Otra persona corrigió esta nota al mismo tiempo.');
   }
   return json({ item, rev, action, places, note, username: session.username, at }, 201);
+}
+
+const sameChange = (row, c) => Boolean(row && row.rev) && row.username === c.username && row.action === c.action
+  && (row.places || '[]') === c.placesJson && (row.note || '') === c.note;
+
+const replay = (item, row) => ({ ...parseRow({ ...row, item_id: item }), replayed: true });
+
+/** 409 con la revisión vigente: la consola rehace la tarjeta con ella sin volver a pedir toda la lista. */
+function conflict(item, row, message) {
+  const current = row && row.rev ? parseRow({ ...row, item_id: item }) : null;
+  return json({ error: `${message} Revise su cambio y vuelva a guardarlo.`, current }, 409);
 }
 
 async function listAudit(env, url) {

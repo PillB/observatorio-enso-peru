@@ -29,6 +29,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import random
 import re
 import time
 from dataclasses import dataclass, field
@@ -52,6 +53,36 @@ TRANSIENT = (httpx.TimeoutException, httpx.ConnectError, httpx.RemoteProtocolErr
 #: Save Page Now lleva su propia cuenta.
 HOST_ONE_TRY_AFTER = 3
 HOST_SKIP_AFTER = 5
+
+
+def retry_after_s(value: Optional[str], now: Optional[float] = None) -> Optional[float]:
+    """Segundos que pide esperar una cabecera ``Retry-After`` (RFC 9110 §10.2.3): un número de segundos o una fecha
+    HTTP. ``None`` si no viene o no se entiende; nunca negativo. Antes solo se entendían los segundos: un servidor que
+    mandaba la fecha recibía el reintento al ritmo propio, antes de lo que pidió."""
+    v = (value or "").strip()
+    if not v:
+        return None
+    if v.isdigit():
+        return float(v)
+    from email.utils import parsedate_to_datetime
+
+    try:
+        when = parsedate_to_datetime(v)
+    except (TypeError, ValueError, IndexError):
+        return None
+    if when is None:
+        return None
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=timezone.utc)
+    return max(0.0, when.timestamp() - (time.time() if now is None else now))
+
+
+def backoff_s(attempt: int, base: float, cap: float = 30.0, rand=random.random) -> float:
+    """Espera exponencial con la mitad al azar («equal jitter»): entre la mitad y el total de ``base * 2**attempt``,
+    hasta ``cap``. Dos corridas (o la sonda y la corrida diaria) que fallan a la vez contra el mismo servidor no
+    vuelven a pedirle al mismo segundo, y la espera mínima sigue siendo la mitad de la de siempre."""
+    full = min(cap, base * 2 ** attempt)
+    return full / 2 + rand() * full / 2
 
 
 class TooSlow(httpx.TransportError):
@@ -330,7 +361,7 @@ class Fetcher:
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
                 self._down[key] = down + 1
                 if i + 1 < n and self._down[key] < HOST_ONE_TRY_AFTER:
-                    time.sleep(min(30, 2 ** i * 2))
+                    time.sleep(backoff_s(i, 2))
                 continue
             except (httpx.HTTPError, *BAD_LOCATION) as exc:  # gzip roto, redirecciones sin fin, URL o Location inválidos
                 attempts.append({"url": url, "error": f"{type(exc).__name__}: {exc}"[:200]})
@@ -341,8 +372,8 @@ class Fetcher:
             if r.status_code == 429 or r.status_code >= 500:
                 overloaded = True
                 if i + 1 < n and down < HOST_ONE_TRY_AFTER:  # tras el último intento no hay nada que esperar
-                    wait = r.headers.get("retry-after")
-                    time.sleep(min(60, float(wait)) if wait and wait.isdigit() else min(30, 2 ** i * 3))
+                    wait = retry_after_s(r.headers.get("retry-after"))
+                    time.sleep(min(60, wait) if wait is not None else backoff_s(i, 3))
                 continue
             self._down[key] = 0
             return r

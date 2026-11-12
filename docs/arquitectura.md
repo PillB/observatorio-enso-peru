@@ -721,7 +721,7 @@ _In English: [anexos/a7-en.svg](anexos/a7-en.svg)._
 | **Correcciones vigentes (pública)** | API en Cloudflare | GET /api/geo/overrides: la última revisión de cada nota, sin nombres ni notas internas, con caché de 60 s. | /api/geo/overrides |
 | **Subida de documentos** | API en Cloudflare | POST /api/docs/upload: solo roles de DOCS_UPLOAD_ROLES (admin). Comprueba %PDF- y %%EOF y pasa el archivo en flujo a GitHub sin decodificarlo (10 ms de CPU por solicitud). _hasta 20 MB y 10 subidas por hora._ | /api/docs/upload |
 | **Rama data-manual** | Hacia el pipeline | Blob, árbol y commit con el formato enso-relay/1 (canal relay-manual): una entrada por documento, que la subida nueva reemplaza. Las copias de más de 120 días salen del índice. Ver [A4](#a4). | GitHub Git Data API |
-| **Pedir actualización** | Hacia el pipeline | Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37. | repository_dispatch |
+| **Pedir actualización** | Hacia el pipeline | Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37. La subida queda anotada antes de pedirlo: si falla, se pide de nuevo al abrir la consola. | repository_dispatch |
 | **Actualización diaria** | Hacia el pipeline | Lee data-manual como un recolector más y valida el PDF como cualquier copia; aplica las correcciones de lugares después de las automáticas: tienen la última palabra. Ver [A5](#a5), [A6](#a6). | Python 3.12 |
 
 | N.º | De → a | Qué viaja, cuándo y por qué |
@@ -730,7 +730,7 @@ _In English: [anexos/a7-en.svg](anexos/a7-en.svg)._
 | 2 | Revisores (rol tester) → Consola de lugares | **revisan notas.** Las notas dudosas aparecen primero. |
 | 3 | Administrador (rol admin) → Consola de documentos | **sube el PDF que falta.** El PDF lo baja la persona tras pasar la verificación de la DHN. |
 | 4 | Consola de lugares → Ingreso y sesión | **ingreso.** |
-| 5 | Consola de lugares → Correcciones de lugares | **corrección.** Lleva la revisión que la persona vio: si otra la cambió antes, responde 409 y pide recargar. |
+| 5 | Consola de lugares → Correcciones de lugares | **corrección.** Lleva la revisión que la persona vio (obligatoria): si otra la cambió antes, responde 409 con la vigente. Repetir el mismo envío no crea otra revisión. |
 | 6 | Consola de documentos → Subida de documentos | **PDF en base64 + sha256.** |
 | 7 | Correcciones de lugares → Base D1 (GEO_DB) | **fila nueva + auditoría.** |
 | 8 | Ingreso y sesión → Base D1 (GEO_DB) | **sesión e intentos.** |
@@ -744,7 +744,7 @@ _In English: [anexos/a7-en.svg](anexos/a7-en.svg)._
 **Si algo falla:**
 
 - **Alguien prueba contraseñas.** Tras 8 fallos por usuario o 30 por IP en 15 min responde 429; un usuario inexistente tarda lo mismo que uno real.
-- **Dos revisores corrigen la misma nota.** El segundo recibe 409 y recarga: ninguna corrección pisa a otra sin verla.
+- **Dos revisores corrigen la misma nota.** El segundo recibe 409 con la corrección del primero y su tarjeta se rehace: ninguna corrección pisa a otra sin verla.
 - **La consola o Cloudflare no responden.** El pipeline aplica las correcciones de la publicación anterior; no se pierde ninguna.
 - **El PDF subido no es el esperado.** El pipeline recalcula el sha256 y valida el documento: si no coincide, no se publica.
 - **El sitio está en GitHub Pages.** Las consolas necesitan Cloudflare: /admin/ explica que no están disponibles y el resto del sitio sigue igual.

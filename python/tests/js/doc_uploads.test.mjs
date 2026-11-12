@@ -24,7 +24,7 @@ let gh; // estado de la API de GitHub de mentira
 const realFetch = globalThis.fetch;
 
 function fakeGitHub() {
-  const state = { refs: {}, commits: {}, trees: {}, blobs: {}, files: {}, calls: [], dispatches: [], conflictOnce: false, n: 0,
+  const state = { refs: {}, commits: {}, trees: {}, blobs: {}, files: {}, calls: [], dispatches: [], conflictOnce: false, conflicts: 0, dispatchDown: false, n: 0,
     repoStatus: 200, tokenExpires: '' };
   const sha = () => (state.n += 1).toString(16).padStart(40, '0');
   globalThis.fetch = async (input, init = {}) => {
@@ -81,8 +81,9 @@ function fakeGitHub() {
     }
     if (method === 'PATCH' && path === 'git/refs/heads/data-manual') {
       const b = await body();
-      if (state.conflictOnce) {
+      if (state.conflictOnce || state.conflicts > 0) {
         state.conflictOnce = false;
+        state.conflicts -= 1;
         return reply(422, { message: 'Update is not a fast forward' });
       }
       assert.equal(b.force, false);
@@ -94,6 +95,7 @@ function fakeGitHub() {
       return new Response(JSON.stringify({}), { status: state.repoStatus, headers });
     }
     if (method === 'POST' && path === 'dispatches') {
+      if (state.dispatchDown) throw new TypeError('fetch failed'); // la red se corta en este paso
       state.dispatches.push(await body());
       return reply(204);
     }
@@ -208,6 +210,81 @@ describe('subida de documentos', () => {
     const r = await handle(uploadReq(cookie, { pdf: Buffer.concat([PDF, Buffer.from('%%EOF\n')]) }), env);
     assert.equal(r.status, 201);
     assert.equal(gh.calls.filter((c) => c === 'PATCH git/refs/heads/data-manual').length, 2);
+  });
+
+  it('aguanta varias subidas que chocan seguidas (compare-and-swap con reintentos)', async () => {
+    const cookie = await login();
+    assert.equal((await handle(uploadReq(cookie), env)).status, 201);
+    gh.conflicts = 2;
+    const r = await handle(uploadReq(cookie, { pdf: Buffer.concat([PDF, Buffer.from('%%EOF\n')]) }), env);
+    assert.equal(r.status, 201);
+    assert.equal(gh.calls.filter((c) => c === 'PATCH git/refs/heads/data-manual').length, 3);
+  });
+
+  it('volver a subir el mismo archivo no crea otro commit ni cuenta como otra subida (idempotente)', async () => {
+    const cookie = await login();
+    const first = await (await handle(uploadReq(cookie), env)).json();
+    const tip = gh.refs['data-manual'];
+    const before = gh.calls.length;
+    const r = await handle(uploadReq(cookie), env);
+    const out = await r.json();
+    assert.equal(r.status, 200, JSON.stringify(out));
+    assert.equal(out.replayed, true);
+    assert.equal(out.commit, first.commit);
+    assert.equal(gh.refs['data-manual'], tip, 'la rama no se movió');
+    assert.deepEqual(gh.calls.slice(before), [], 'ni el blob ni el commit se mandaron de nuevo');
+    const rows = env.GEO_DB.sqlite.prepare('SELECT COUNT(*) AS n FROM uploads').get().n;
+    assert.equal(rows, 1);
+    const n = env.GEO_DB.sqlite.prepare("SELECT count FROM attempts WHERE key = 'upload:pablo'").get().count;
+    assert.equal(n, 1, 'el reintento no gasta el tope por hora');
+  });
+
+  it('si el commit se hizo pero D1 no lo anotó, el reintento no crea otro commit', async () => {
+    const cookie = await login();
+    assert.equal((await handle(uploadReq(cookie), env)).status, 201);
+    env.GEO_DB.sqlite.exec('DELETE FROM uploads');
+    const tip = gh.refs['data-manual'];
+    const r = await handle(uploadReq(cookie), env);
+    assert.equal(r.status, 201);
+    assert.equal((await r.json()).commit, tip);
+    assert.equal(gh.refs['data-manual'], tip);
+    assert.equal(gh.calls.filter((c) => c === 'POST git/commits').length, 1);
+  });
+
+  it('bandeja de salida: si pedir la actualización falla, la subida queda anotada y se pide al abrir la consola', async () => {
+    const cookie = await login();
+    gh.dispatchDown = true;
+    const r = await handle(uploadReq(cookie), env);
+    const out = await r.json();
+    assert.equal(r.status, 201, 'el commit ya está: no es un error (antes respondía 500 y no quedaba registro)');
+    assert.equal(out.dispatched, false);
+    const row = env.GEO_DB.sqlite.prepare('SELECT commit_sha, dispatched FROM uploads').get();
+    assert.equal(row.commit_sha, out.commit);
+    assert.equal(row.dispatched, 0);
+    // Con la red todavía caída, abrir la consola no rompe nada y la deja pendiente.
+    let st = await (await handle(statusReq(cookie), env)).json();
+    assert.equal(st.uploads[0].dispatched, false);
+    gh.dispatchDown = false;
+    st = await (await handle(statusReq(cookie), env)).json();
+    assert.equal(st.uploads[0].dispatched, true);
+    assert.equal(gh.dispatches.length, 1);
+    await handle(statusReq(cookie), env);
+    assert.equal(gh.dispatches.length, 1, 'una vez entregada no se vuelve a pedir');
+    // Las de hace más de un día ya las leyó la corrida diaria: no se piden.
+    env.GEO_DB.sqlite.exec("UPDATE uploads SET dispatched = 0, created_at = '2026-01-01T00:00:00Z'");
+    await handle(statusReq(cookie), env);
+    assert.equal(gh.dispatches.length, 1);
+  });
+
+  it('el reintento de una subida cuya actualización quedó pendiente la pide', async () => {
+    const cookie = await login();
+    gh.dispatchDown = true;
+    assert.equal((await handle(uploadReq(cookie), env)).status, 201);
+    gh.dispatchDown = false;
+    const out = await (await handle(uploadReq(cookie), env)).json();
+    assert.equal(out.replayed, true);
+    assert.equal(out.dispatched, true);
+    assert.equal(gh.dispatches.length, 1);
   });
 
   it('rechaza lo que no es un PDF sin mandarlo a GitHub', async () => {

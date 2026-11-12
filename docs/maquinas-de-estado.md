@@ -393,8 +393,11 @@ stateDiagram-v2
   Extranjera --> Deshecha: clear
   Deshecha --> Corregida: set
   Deshecha --> Deshecha: clear (rechazado, 400)
-  note right of Corregida: cada cambio pide expectedRev; otro revisor en medio → 409
+  note right of Corregida: cada cambio exige expectedRev (sin ella, 428); otro revisor en medio → 409 con la vigente; el mismo envío repetido → 200 con lo guardado
 ```
+
+Cómo se protege cada escritura (bloqueo optimista, idempotencia, bandeja de salida de la subida de documentos,
+reintentos) está en [fiabilidad-datos.md](fiabilidad-datos.md).
 
 Antes se aceptaba deshacer una nota ya deshecha: sumaba una revisión vacía al historial y gastaba una escritura (E7).
 El ingreso tiene su propia máquina por IP y por usuario: libre → fallos contados en una ventana de 15 minutos →
@@ -413,6 +416,10 @@ bloqueado (429) hasta que vence la ventana; un ingreso correcto borra el contado
 | E7 | 18 Correcciones | Deshacer una nota ya deshecha | La regla solo miraba si había revisiones, no la acción vigente | Revisiones vacías en el historial, escrituras gastadas | 400 si la acción vigente ya es `clear` | `js/geo_console.test.mjs` |
 | E8 | 9, 12 Mapas | Varias esperas y redibujos por la misma carga | «Sin pedir» y «cargando» eran el mismo estado (`null` / sin datos) | Redibujos de más al llegar los datos (los archivos ya se pedían una vez) | Estado «cargando» propio (`detLoading`, `detailPending`) | recorridos existentes de los mapas |
 | E9 | 3 Vigencia | «Al día: los 0 datos de esta vista…» | El peor de una lista vacía es «al día» | Panel contradictorio | No se muestra el panel sin datos que cuenten | revisión de código |
+| E10 | 18 Correcciones | Escritura a ciegas que pisa la de otro revisor | `expectedRev` era opcional en la API: sin ella no se comparaba la revisión | Un cliente que no la mandara (script, n8n) perdía cambios ajenos sin aviso | 428 sin `expectedRev` | `js/geo_console.test.mjs` |
+| E11 | 18 Correcciones | 409 falso «otra persona corrigió esta nota» tras un corte de red | Repetir un envío que ya se había guardado chocaba con su propia revisión | La persona recargaba y dudaba de si su cambio estaba | El mismo cambio de la misma persona, una revisión arriba, es una repetición: 200 con lo guardado; la consola repite una vez si la red falló | `js/geo_console.test.mjs`, `test_geo_console.py::test_a_correction_whose_reply_is_lost_is_retried_once_and_saved_once` |
+| E12 | Subida de documentos | Commit en la rama sin registro en D1; commits repetidos | Se pedía la actualización antes de anotar la subida, y un fallo de red en ese paso respondía 500 | Un PDF subido no aparecía en la consola; al reintentar, otro commit | Bandeja de salida: se anota con la actualización pendiente y se pide después; el relevo la pide al abrir la consola; la subida es idempotente por sha256 | `js/doc_uploads.test.mjs` |
+| E13 | Pipeline | La publicación del día sale con las correcciones de ayer | Un solo pedido a `/api/geo/overrides` | Un 503 pasajero retrasaba un día las correcciones | 3 intentos con espera exponencial y `Retry-After` | `test_geo.py` |
 
 ## Lo que se revisó y se deja así
 
