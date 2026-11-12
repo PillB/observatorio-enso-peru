@@ -96,7 +96,7 @@ def test_a_previewed_site_version_can_be_kept_and_the_link_stops_deciding(site, 
 
 
 def test_choosing_a_map_view_from_the_panel_drops_the_link_view(site, browser):
-    """?vista= de un enlace se ve sin elegirla; elegir otra en el panel la deja como la suya y quita la del enlace."""
+    """?vista= de un enlace se ve sin elegirla; «Quedarme con esta» la deja como la suya."""
     base, _ = site
     ctx, pg = _ctx(browser)
     try:
@@ -107,7 +107,8 @@ def test_choosing_a_map_view_from_the_panel_drops_the_link_view(site, browser):
         expect(dlg.locator(".ver-preview")).to_contain_text("enlace")
         dlg.get_by_role("button", name="Quedarme con esta").click()
         assert json.loads(pg.evaluate("localStorage.getItem('enso-vista-noticias')"))["v"] == "cuencas"
-        assert "vista=" not in pg.url
+        # El enlace sigue diciendo la vista (ahora la elegida): sin ella, un enlace con filtros abre otra.
+        assert "vista=cuencas" in pg.url
         expect(dlg.locator(".ver-preview")).to_have_count(0)
         assert not pg.errors, pg.errors
     finally:
@@ -178,5 +179,25 @@ def test_a_network_blip_does_not_leave_a_file_unavailable_until_reload(site, bro
         go(pg, base, "noticias")
         expect(pg.locator("#news-body .feed").first).to_be_visible(timeout=15000)
         assert fails["n"] == 1
+    finally:
+        ctx.close()
+
+
+def test_adopting_a_memoria_view_from_a_filtered_link_keeps_showing_it(site, browser):
+    """Un enlace de la memoria con filtros y ?vista=cuencas: adoptarla la deja a la vista (sin ?vista= un enlace con
+    filtros abre el resumen), también al recargar."""
+    base, _ = site
+    ctx, pg = _ctx(browser)
+    try:
+        pg.goto(f"{base}#/memoria?vista=cuencas&nivel=departamento")
+        btn = pg.locator(".hz-views [data-vista='cuencas']")
+        expect(btn).to_have_attribute("aria-pressed", "true", timeout=30000)
+        pg.locator("#ver-btn").click()
+        pg.get_by_role("dialog", name="Versiones del sitio").get_by_role("button", name="Quedarme con esta").click()
+        assert json.loads(pg.evaluate("localStorage.getItem('enso-vista-memoria')"))["v"] == "cuencas"
+        expect(btn).to_have_attribute("aria-pressed", "true", timeout=30000)
+        pg.reload()
+        expect(pg.locator(".hz-views [data-vista='cuencas']")).to_have_attribute("aria-pressed", "true", timeout=30000)
+        assert not pg.errors, pg.errors
     finally:
         ctx.close()

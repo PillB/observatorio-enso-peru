@@ -173,8 +173,9 @@ stateDiagram-v2
   }
 ```
 
-Al elegir se quitan del enlace los parámetros de vista previa (`sitio`, `version`, `vista`, en la ruta y en
-`?…` antes del `#`): antes `?sitio=B` seguía en la barra y al recargar volvía a mandar sobre lo elegido (E2). El panel
+Al elegir se quitan del enlace los parámetros de vista previa `sitio` y `version` (en la ruta y en `?…` antes del
+`#`): antes `?sitio=B` seguía en la barra y al recargar volvía a mandar sobre lo elegido (E2). `?vista=` no se quita
+sino que pasa a decir la elegida: en la memoria, un enlace con filtros y sin vista abre el resumen. El panel
 se rehace al elegir para que su aviso «desde un enlace» no quede desactualizado.
 
 ### 6. Medición anónima del uso
@@ -404,7 +405,7 @@ bloqueado (429) hasta que vence la ventana; un ingreso correcto borra el contado
 | | Máquina | Estado errado | Causa raíz | Impacto | Corrección | Prueba |
 |---|---|---|---|---|---|---|
 | E1 | 8 Tutorial | La ventana queda «cargando» para siempre en un paso vacío | La dirección del último «Anterior» (`lastDir`) se heredaba entre recorridos, y saltar un paso opcional hacia atrás desde el primero no tenía destino | El recorrido de la Memoria (primer paso opcional, sin Niño en curso) se trababa al usar «Anterior» o tras usarlo en otro recorrido | `start`/`resume` reinician la dirección; sin vecino hacia atrás se sigue hacia adelante | `test_maquinas_estado.py::test_tour_back_into_a_missing_optional_first_step_does_not_hang` |
-| E2 | 4, 5 Versiones | Una vista previa no se puede adoptar; el enlace sigue mandando tras elegir | `choose(v)` comparaba con la versión que se ve, no con la propia; el panel marca la que se ve; `?sitio=` no se quitaba | Quien recibe un enlace a la B no puede quedarse con la B; al recargar vuelve el aviso «desde un enlace» | `choose` adopta la vista previa; botón «Quedarme con…» en el panel; se quitan `sitio`/`version`/`vista` del enlace; el panel se rehace | `js/ab-session.test.mjs`, `test_a_previewed_site_version_can_be_kept…`, `test_choosing_a_map_view_from_the_panel…` |
+| E2 | 4, 5 Versiones | Una vista previa no se puede adoptar; el enlace sigue mandando tras elegir | `choose(v)` comparaba con la versión que se ve, no con la propia; el panel marca la que se ve; `?sitio=` no se quitaba | Quien recibe un enlace a la B no puede quedarse con la B; al recargar vuelve el aviso «desde un enlace» | `choose` adopta la vista previa; botón «Quedarme con…» en el panel; se quitan `sitio`/`version` del enlace y `vista` pasa a ser la elegida; el panel se rehace | `js/ab-session.test.mjs`, `test_a_previewed_site_version_can_be_kept…`, `test_choosing_a_map_view_from_the_panel…` |
 | E3 | 13 Animación | Dos animaciones; la vieja escribe en el mapa nuevo | El temporizador solo se detenía con `hashchange`, y el selector vuelve a pintar sin cambiar de ruta; `after` conectaba controles aunque la vista ya se hubiera reemplazado | La fecha y la tabla saltan solas; dos montajes conectaban dos animaciones al mismo botón | La animación se detiene si su mapa ya no está; `after` no conecta nada si la vista se reemplazó mientras esperaba | `test_map_animation_stops_when_the_view_is_painted_again` |
 | E4 | 2 Ruta, 8 Tutorial | `view:ready` de una vista que ya se fue; el tutorial no se pausa si la persona se va mientras navega | `render` anunciaba también las vistas reemplazadas; el tutorial aceptaba cualquier `view:ready`; `onHash` ignoraba los cambios mientras navegaba | El tutorial podía buscar el paso en la pestaña equivocada y esperar 10 s antes de decir «no disponible» | Solo la vista actual anuncia; el tutorial espera la de su paso; se pausa al irse a otra pestaña también mientras navega | `test_only_the_current_view_announces_it_is_ready` |
 | E5 | 1 Publicación | Un archivo queda «no disponible» hasta recargar | El caché de `load` guardaba `null` también por un fallo de red; no había estado «pidiendo» | Un corte de un segundo dejaba Noticias, los gráficos o el mapa sin datos toda la visita | Promesa compartida mientras se pide; un fallo de red no se guarda; el nombre de otra publicación se avisa una vez | `test_a_network_blip_does_not_leave_a_file_unavailable_until_reload` |
@@ -450,6 +451,11 @@ cada vuelta y se corrigió está marcado con ✔.
 4. **Pruebas que no prueban.** ✔ La prueba de la animación pasaba también sin el arreglo: esperaba hasta 10 s, el
    tiempo en que la animación vieja llega sola al final. Ahora espera 2 s. Las demás pruebas nuevas se corrieron sin
    los arreglos y fallan (E1, E2, E4, E5, E6, E7).
+
+Después, la revisión automática del PR encontró un caso más, corregido: ✔ adoptar la vista de la memoria desde un
+enlace con filtros (`#/memoria?vista=cuencas&nivel=departamento`) quitaba `vista` y la memoria abría el resumen, porque
+un enlace con filtros y sin vista es de antes de las vistas. Ahora `vista` queda en el enlace con la elegida
+(`test_adopting_a_memoria_view_from_a_filtered_link_keeps_showing_it`).
 
 ## Mantener esto al día
 

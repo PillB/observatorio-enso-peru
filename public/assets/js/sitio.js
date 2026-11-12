@@ -329,6 +329,20 @@ export function dropPreviewParams(names) {
   history.replaceState(null, '', `${location.pathname}${search}${path}${p.toString() ? `?${p}` : ''}`);
 }
 
+/**
+ * Tras elegir la vista de un mapa (memoria, noticias), el enlace dice la elegida en vez de perderla: un enlace con
+ * filtros y sin ?vista= abre el resumen en la memoria (los enlaces de antes de las vistas), así que quitarla mostraba
+ * otra vista que la recién elegida. La versión del mapa de alertas (?version=) sí se quita: sin ella se ve la propia.
+ */
+function keepChoiceInLink(exp, v) {
+  if (exp === 'mapa') { dropPreviewParams(['version']); return; }
+  const [path, q] = location.hash.split('?');
+  const p = new URLSearchParams(q || '');
+  if (![...p.keys()].length) return;
+  p.set('vista', v);
+  history.replaceState(null, '', `${location.pathname}${location.search}${path}?${p}`);
+}
+
 function chooseSite(v) {
   // Se compara con la versión elegida, no con la que se ve: elegir la de un enlace (?sitio=B) la adopta.
   if (v === site().own && !site().preview) return;
@@ -355,7 +369,7 @@ function wirePanel() {
     if (EXPERIMENTS[t.name]) {
       ab(t.name).choose(t.value);
       // La vista del enlace (?vista=, ?version=) ya no manda: se ve la elegida.
-      dropPreviewParams(['vista', 'version']);
+      keepChoiceInLink(t.name, t.value);
       repaint(t.name);
     }
   });
@@ -367,7 +381,7 @@ function wirePanel() {
     if (x === 'sitio') { chooseSite(v); return; }
     if (!EXPERIMENTS[x]) return;
     ab(x).choose(v);
-    dropPreviewParams(['vista', 'version']);
+    keepChoiceInLink(x, v);
     repaint(x);
   });
   pop.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); closePanel(); } });
