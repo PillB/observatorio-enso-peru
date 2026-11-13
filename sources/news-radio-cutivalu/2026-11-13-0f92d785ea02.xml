@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Fri, 13 Nov 2026 01:18:40 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>UCV presenta libro conmemorativo por sus 35 años de historia y transformación educativa</title>
+		<link>https://www.cutivalu.pe/ucv-presenta-libro-conmemorativo-por-sus-35-anos-de-historia-y-transformacion-educativa/</link>
+		
+		<dc:creator><![CDATA[Esthefany Azcarate]]></dc:creator>
+		<pubDate>Fri, 13 Nov 2026 01:17:58 +0000</pubDate>
+				<category><![CDATA[Nacional]]></category>
+		<category><![CDATA[Portada]]></category>
+		<category><![CDATA[35 AÑOS]]></category>
+		<category><![CDATA[Libro]]></category>
+		<category><![CDATA[UCV]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=195086</guid>
+
+					<description><![CDATA[<p>La Universidad César Vallejo presentó el libro “UCV: 35 años transformando la vida de los jóvenes”, una obra que recoge los principales hitos y testimonios de la institución desde su fundación en Trujillo, en 1991. Durante la ceremonia, el fundador, Dr. César Acuña Peralta, recordó los desafíos que hicieron posible este proyecto educativo y destacó [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/ucv-presenta-libro-conmemorativo-por-sus-35-anos-de-historia-y-transformacion-educativa/">UCV presenta libro conmemorativo por sus 35 años de historia y transformación educativa</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
