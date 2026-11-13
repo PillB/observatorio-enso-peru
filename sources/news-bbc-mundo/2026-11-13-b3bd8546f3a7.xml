@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title><![CDATA[BBC Mundo]]></title>
+        <description><![CDATA[BBC Mundo - Noticias - BBC News Mundo]]></description>
+        <link>https://www.bbc.com/mundo</link>
+        <image>
+            <url>http://www.bbc.co.uk/mundo/images/gel/rss_logo.gif</url>
+            <title>BBC Mundo</title>
+            <link>https://www.bbc.com/mundo</link>
+        </image>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Fri, 13 Nov 2026 00:22:06 GMT</lastBuildDate>
+        <atom:link href="https://feeds.bbci.co.uk/mundo/rss.xml" rel="self" type="application/rss+xml"/>
+        <copyright><![CDATA[Derechos Reservados de la British Broadcasting Corporation (Corporación Británica de Radiodifusión) ]]></copyright>
+        <language><![CDATA[es]]></language>
+        <ttl>15</ttl>
+        <item>
+            <title><![CDATA[En gráficos: cómo funcionaba Ueno Bank y las razones detrás del colapso que desató una crisis en Paraguay]]></title>
+            <description><![CDATA[Te contamos con gráficos cómo creció Ueno Bank, qué había detrás de sus operaciones y qué factores llevaron a su caída.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cm4gneqkg3dno?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cm4gneqkg3dno#0</guid>
+            <pubDate>Thu, 12 Nov 2026 15:54:39 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/7033/live/3b492280-de98-11f1-b441-2b33b063138f.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[4 claves del escándalo de los supuestos "sexocontratos" por el que se investiga al expresidente de Colombia Gustavo Petro]]></title>
+            <description><![CDATA[Una mujer acusa al expresidente de haberle conseguido contratos con el estado a cambio de favores sexuales.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cr3wg62qwjz9o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cr3wg62qwjz9o#0</guid>
+            <pubDate>Thu, 12 Nov 2026 11:59:08 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/372e/live/1572f1c0-de3a-11f1-a9ed-658311f31da9.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Jensen Huang renuncia como director ejecutivo de Nvidia tras conocerse su relación con una supuesta espía china]]></title>
+            <description><![CDATA[El ejecutivo había admitido el domingo pasado haber sido "infiel" a su esposa y pidió disculpas por haber lastimado a su familia.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cq2d9pg47052o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cq2d9pg47052o#0</guid>
+            <pubDate>Thu, 12 Nov 2026 15:59:31 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/a88e/live/1c8f87c0-dea3-11f1-82bd-ab0398e9e082.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Una falla en Microsoft deja fuera de servicio el correo electrónico de Outlook y otras plataformas durante horas]]></title>
+            <description><![CDATA[La firma informó que registra fallas en sus servidores, luego de reportes de pérdida de conexión de servicios como Outlook, Microsoft 365 y Teams a nivel mundial.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cm20v6ed340wo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cm20v6ed340wo#0</guid>
+            <pubDate>Fri, 13 Nov 2026 00:21:14 GMT</pubDate>
+            <media:thumbnail width="240" height="141" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/a249/live/94eacee0-ded6-11f1-a701-fddedf244c16.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[En Video: el momento del rescate con vida de un adolescente en Australia que estuvo 6 días perdido en un bosque]]></title>
+            <description><![CDATA[La madre del joven de 17 años bromeó diciendo que está "castigado de por vida" y que "nunca más saldrá de casa".]]></description>
+            <link>https://www.bbc.com/mundo/articles/c60md00vxkj2o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c60md00vxkj2o#0</guid>
+            <pubDate>Thu, 12 Nov 2026 18:21:28 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/c8eb/live/75ecf8a0-deb4-11f1-8fb5-a771a656a227.png"/>
+        </item>
+        <item>
+            <title><![CDATA[Cómo el visionario de la IA Jensen Huang cayó en desgracia por sus propias malas decisiones]]></title>
+            <description><![CDATA[Zoe Kleinman explica cómo el hombre que construyó Nvidia desde cero lo perdió todo en cuestión de días.]]></description>
+            <link>https://www.bbc.com/mundo/articles/crgqx8yqgevjo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/crgqx8yqgevjo#1</guid>
+            <pubDate>Thu, 12 Nov 2026 22:17:54 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/9e3f/live/f6e4e9b0-deda-11f1-a75a-dbf83836672c.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Le pedí al 'joven padre Robert' que fuera el padrino de mi hija en Perú. Treinta años después se convirtió en el papa León XIV"]]></title>
+            <description><![CDATA[Hace 30 años, el joven sacerdote Robert Prevost Martínez aceptó ser el padrino de bautismo de una niña en Chulucanas, en la región de Piura. Ahora ella espera con ansiedad su visita a Perú como el papa León XIV.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqly3jpmvvl9o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqly3jpmvvl9o#1</guid>
+            <pubDate>Thu, 12 Nov 2026 19:23:06 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/78f3/live/79c467a0-dece-11f1-86d5-71a9f29d1c99.png"/>
+        </item>
+        <item>
+            <title><![CDATA[¿Por qué mi familia blanca nunca me dijo que yo era negra?]]></title>
+            <description><![CDATA[Lacey Tezino fue criada como una niña blanca en un pueblo rural de Texas conocido por su pasado racista. Por eso, se sorprendió al descubrir que en realidad era negra.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c6x2enpm544zo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c6x2enpm544zo#1</guid>
+            <pubDate>Thu, 12 Nov 2026 11:19:20 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/77ab/live/369c8410-ddcc-11f1-93e1-3b657b665bcf.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[La nueva película que muestra cómo Sylvester Stallone pasó de vivir en la calle a convertirse en estrella de Hollywood gracias a su guion de "Rocky"]]></title>
+            <description><![CDATA[En 1976, el exitoso drama sobre boxeo convirtió a su protagonista y guionista, Sylvester Stallone —un desconocido que estaba "completamente en la ruina"— en una estrella de primer nivel. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cvkg5je34zy5o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cvkg5je34zy5o#1</guid>
+            <pubDate>Thu, 12 Nov 2026 22:43:47 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/eeb9/live/88eacc00-ddee-11f1-b441-2b33b063138f.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Qué es el ejercicio incidental, la manera de mantenernos en forma y saludables sin intentarlo]]></title>
+            <description><![CDATA[La actividad incidental puede reducir nuestro riesgo de padecer enfermedades cardiovasculares e incluso de morir. Puedes incorporar algunas formas sencillas de realizarla durante una reunión, en un vuelo o mientras lees este artículo.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqj6l2w1je7po?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqj6l2w1je7po#3</guid>
+            <pubDate>Thu, 12 Nov 2026 10:48:37 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/449b/live/97c69080-de87-11f1-b88b-3f1671ea859d.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Trump amenaza a México con duplicar aranceles si no detiene las caravanas de migrantes con destino a la frontera]]></title>
+            <description><![CDATA[Después de las elecciones de medio mandato en Estados Unidos, Donald Trump retomó su agenda migratoria y lanzó una advertencia a México.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cj62pglgdwreo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cj62pglgdwreo#3</guid>
+            <pubDate>Thu, 12 Nov 2026 19:10:59 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/1069/live/ecafa590-debf-11f1-8fb5-a771a656a227.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Me los quitaron porque yo estaba sola": la mujer que se reencontró con sus hijos 40 años después de que le fueran arrebatados por la dictadura de Pinochet en Chile]]></title>
+            <description><![CDATA[En 2020, tras hacerse un examen médico, Tim Roinick descubrió la historia de cómo había sido adoptado de forma irregular. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cwr7gr7l9zgvo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cwr7gr7l9zgvo#3</guid>
+            <pubDate>Thu, 12 Nov 2026 13:26:03 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/7c96/live/8dbcef70-de9c-11f1-9afe-1f03bfe02283.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Sloviansk, la ciudad devastada del frente de batalla que Rusia quiere que Ucrania le entregue]]></title>
+            <description><![CDATA[La BBC logró acceder a una unidad especializada en drones que protege la ciudad de Sloviansk, en el este de Ucrania, de los constantes ataques de Rusia.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqdj1ww3pd4lo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqdj1ww3pd4lo#3</guid>
+            <pubDate>Thu, 12 Nov 2026 04:32:43 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/a97e/live/c6e282c0-dd33-11f1-ab46-9fae224bbf6f.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Al menos 1 muerto y 4 heridos en un tiroteo en un gimnasio en Washington DC]]></title>
+            <description><![CDATA[Los equipos de emergencia se desplegaron en el barrio de Logan Circle, un par de kilómetros al norte de la Casa Blanca.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cq8j47lw9nmwo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cq8j47lw9nmwo#3</guid>
+            <pubDate>Thu, 12 Nov 2026 15:14:15 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/a1b1/live/b3a038d0-dea8-11f1-b441-2b33b063138f.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["En el Vaticano hay una guerra entre dos bandos en la que los abusos sexuales se han convertido en un arma, y eso es suicida"]]></title>
+            <description><![CDATA[El escritor peruano Santiago Roncagliolo habló con BBC Mundo sobre el año que pasó siguiendo las huellas del actual pontífice en Perú y reconstruyendo el camino que lo llevó hasta el trono de San Pedro.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cm75pk2zx53xo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cm75pk2zx53xo#4</guid>
+            <pubDate>Wed, 11 Nov 2026 18:19:55 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/3855/live/328130d0-de0b-11f1-9bc2-bf52ab7d7138.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Quién es Wilson "Lanmò San Jou" Joseph, el poderoso líder pandillero de Haití cuya casa Bukele dice haber destruido]]></title>
+            <description><![CDATA[Dirigente de 400 Mawozo, ha sido acusado formalmente por las autoridades estadounidenses de secuestro. Además, el FBI ofrece una recompensa de hasta US$1 millón por información que conduzca a su captura.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cmzx96kk0ly7o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cmzx96kk0ly7o#4</guid>
+            <pubDate>Wed, 11 Nov 2026 18:10:57 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/ecc2/live/7ee16d20-ddc3-11f1-a50f-85eebf9e50e5.png"/>
+        </item>
+        <item>
+            <title><![CDATA["Epstein me violó más de 200 veces": los nuevos testimonios de mujeres que fueron reclutadas por un socio del financiero mediante una agencia de modelos]]></title>
+            <description><![CDATA[Una mujer afirma que el jefe de una agencia la envió a sesiones de fotos en la casa de playa del delincuente sexual.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cq0mem48n7yzo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cq0mem48n7yzo#4</guid>
+            <pubDate>Tue, 10 Nov 2026 10:50:15 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/9349/live/97006970-dc5a-11f1-a701-fddedf244c16.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["No tengo noticias de mi dinero": los millones de paraguayos afectados por la crisis del Ueno Bank que reclaman la devolución de sus ahorros]]></title>
+            <description><![CDATA[Las autoridades aseguran que ya han devuelto sus ahorros a muchos de los clientes de Ueno Bank, pero todavía quedan grandes cantidades por reembolsar.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c977p7pn0m0mo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c977p7pn0m0mo#4</guid>
+            <pubDate>Tue, 10 Nov 2026 20:28:11 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/f500/live/8e34c130-dd20-11f1-b3af-4d29131e82d0.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["El capitalismo ya trataba mal a las personas; lo que ha cambiado ahora es que esa lógica se ha adoptado (…) en discursos sobre liderazgo"]]></title>
+            <description><![CDATA[La filósofa eslovena Renata Salecl lleva varias décadas preguntándose cómo se infiltra la ideología imperante en nuestras mentes. En su libro más reciente en español, Maleducados, aborda cómo la grosería se ha normalizado desde la televisión hasta la política pasando por lo que pasa en el lugar de trabajo.]]></description>
+            <link>https://www.bbc.com/mundo/articles/ck868llen5lgo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/ck868llen5lgo#4</guid>
+            <pubDate>Wed, 11 Nov 2026 14:54:07 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/9526/live/796df210-dd40-11f1-9ac0-6b8f7fc58221.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Por qué México recauda tan pocos impuestos (y cómo financia su creciente Estado de bienestar)]]></title>
+            <description><![CDATA[México es de los países que menos recauda impuestos en América Latina, pero el gasto público es un motor de su consumo interno y arma clave contra la pobreza. Análisis de las “anomalías fiscales” mexicanas. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cm4g109r03npo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cm4g109r03npo#5</guid>
+            <pubDate>Tue, 10 Nov 2026 13:52:26 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/936f/live/88d0d610-dd17-11f1-b4f2-5145cca625ab.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Quién es el exintegrante de las Brigadas Rojas italianas detenido en Argentina que escapó por un balcón usando un arnés]]></title>
+            <description><![CDATA[Leonardo Bertulazzi, antiguo miembro del grupo guerrillero marxista Brigadas Rojas, estaba a punto de ser extraditado a Italia, su país de origen. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cmly7w7err0yo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cmly7w7err0yo#5</guid>
+            <pubDate>Thu, 12 Nov 2026 13:00:11 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/a91e/live/b13e3560-ddd6-11f1-b865-d17d8611efca.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Bukele asegura que fuerzas de El Salvador destruyeron el cuartel de la banda 400 Mawozo en un ataque aéreo en Haití]]></title>
+            <description><![CDATA[El presidente salvadoreño lo anunció en una publicación en la red social X en la que incluyó un video que muestra un ataque aéreo a varias instalaciones.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c98r7xd65z7ko?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c98r7xd65z7ko#5</guid>
+            <pubDate>Wed, 11 Nov 2026 00:56:31 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/2ae1/live/1259e210-dd62-11f1-a0a3-93bf44f3de01.png"/>
+        </item>
+        <item>
+            <title><![CDATA[Por qué hundieron frente a la costa de Florida al mítico SS United States, el que fuera el transatlántico más rápido del mundo]]></title>
+            <description><![CDATA[Activistas lucharon sin éxito para que el histórico transatlántico, que cruzó el océano Atlántico cientos de veces, fuera preservado y convertido en museo.]]></description>
+            <link>https://www.bbc.com/mundo/articles/c5lykgdkdlxlo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c5lykgdkdlxlo#6</guid>
+            <pubDate>Thu, 12 Nov 2026 04:08:41 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/5661/live/7c6e9130-ddeb-11f1-9204-cdcddf7d901c.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[En imágenes: graves disturbios en Barcelona y decenas de detenidos en la primera huelga general en España en 14 años]]></title>
+            <description><![CDATA[Con un seguimiento de la huelga dispar, los españoles protestaron este miércoles por la crisis de la vivienda y el alto costo de la vida en el país europeo.]]></description>
+            <link>https://www.bbc.com/mundo/articles/ckx28e5lj300o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/ckx28e5lj300o#6</guid>
+            <pubDate>Wed, 11 Nov 2026 23:30:52 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/7632/live/1b40cca0-de1f-11f1-9d68-c1daaffc01f2.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[La histórica victoria de Scott Colom, el primer senador negro del conservador estado de Misisipi en más de 140 años]]></title>
+            <description><![CDATA[La victoria de Colom lo convierte además en el primer senador demócrata en Misisipi desde 1982.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cqvg243per3xo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cqvg243per3xo#6</guid>
+            <pubDate>Thu, 12 Nov 2026 00:49:34 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/dc59/live/150d2fe0-ddde-11f1-b465-b9821c2582d4.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Quién es la supuesta espía china que tuvo una relación con el director de Nvidia, el gigante tecnológico de la IA (y otras claves del caso)]]></title>
+            <description><![CDATA[El multimillonario de la industria tecnológica está inmerso en un escándalo de seguridad personal y nacional.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cked3dy4ynjxo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cked3dy4ynjxo#8</guid>
+            <pubDate>Mon, 09 Nov 2026 23:31:27 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/a745/live/1232b0e0-dc37-11f1-95cf-a38331e6cb4b.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Cómo el crecimiento de la energía solar "escandalosamente barata" ha desafiado todas las proyecciones]]></title>
+            <description><![CDATA[La energía solar, debido a sus costos bajos, se ha convertido en una principales fuentes de energía en varios países del mundo.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cr4g1ee27w6po?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cr4g1ee27w6po#8</guid>
+            <pubDate>Mon, 09 Nov 2026 11:10:31 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/766d/live/835ea240-dc8e-11f1-8a0c-79d3a3fe49e0.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Las águilas gigantes que cazaban niños y moldearon la evolución humana]]></title>
+            <description><![CDATA[Tras el impacto del asteroide que acabó con los dinosaurios, las aves gigantes se convirtieron en superdepredadores durante decenas de millones de años, y los seres humanos figuraban entre sus presas.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cm62yxpxv5kqo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cm62yxpxv5kqo#8</guid>
+            <pubDate>Sun, 08 Nov 2026 10:56:09 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/c1f0/live/5eb97170-d51f-11f1-a701-fddedf244c16.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA["Un juez me ordenó por Zoom someterme a una cesárea mientras estaba pariendo en el hospital"]]></title>
+            <description><![CDATA[Mientras estaba pariendo, Cherise tuvo que asistir a una audiencia virtual con un juez de Florida, después de que el hospital decidiera que debían realizarle una cesárea.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cv36ld8n4rpwo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cv36ld8n4rpwo#9</guid>
+            <pubDate>Wed, 11 Nov 2026 19:36:00 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/f6f5/live/b22bbc20-ccdf-11f1-bc2b-d96f63c66363.png"/>
+        </item>
+        <item>
+            <title><![CDATA[Mi hermano murió tras rechazar una transfusión por sus creencias; semanas después los Testigos de Jehová eliminaron esa prohibición]]></title>
+            <description><![CDATA[Muchos testigos de Jehová han muerto en las últimas décadas por seguir un precepto ahora revisado. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cm9dzdq3p48zo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cm9dzdq3p48zo#9</guid>
+            <pubDate>Tue, 10 Nov 2026 16:02:51 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/3537/live/8e12a100-dc61-11f1-8fe6-5becaee5408f.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Por fin hay un tratamiento para la demencia de mi hijo de 5 años, pero tiene un costo de US$4 millones]]></title>
+            <description><![CDATA[El tratamiento para la demencia infantil está disponible en Estados Unidos, pero su costo es demasiado elevado para quien no vive allí. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cxzd6dej1328o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cxzd6dej1328o#9</guid>
+            <pubDate>Wed, 11 Nov 2026 10:46:15 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/d48b/live/91c3e9e0-faac-11f0-91f4-a739ab96be22.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Por qué la familia Kennedy demanda a Trump por la polémica construcción de su arco del triunfo]]></title>
+            <description><![CDATA[La Casa Blanca declaró que es "lamentable" ver que algunos miembros de la familia Kennedy se han sumado a un litigio contra el arco.]]></description>
+            <link>https://www.bbc.com/mundo/articles/cmedq15xwnx9o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cmedq15xwnx9o#11</guid>
+            <pubDate>Wed, 11 Nov 2026 18:27:20 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/afb3/live/7b472130-d956-11f1-b7f4-8bd3c0617693.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Mis padres decidieron morir juntos y yo tuve que afrontar su pérdida solo]]></title>
+            <description><![CDATA[Jan y Els buscaron intervención médica para poner fin a su vida juntos después de 50 años de feliz matrimonio, dejando atrás a su único hijo. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/c5j9k91lyp99o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/c5j9k91lyp99o#11</guid>
+            <pubDate>Mon, 09 Nov 2026 17:36:48 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/0bdf/live/66ee1fc0-d90d-11f1-b441-2b33b063138f.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Ruta 66: la historia poco conocida de la carretera más famosa de EE.UU.]]></title>
+            <description><![CDATA[La Ruta 66, que se extiende desde Chicago hasta Santa Mónica, en California, atraviesa territorios ancestrales de numerosos pueblos indígenas. Sin embargo, durante mucho tiempo sus voces quedaron al margen de la narrativa de la histórica carretera. ]]></description>
+            <link>https://www.bbc.com/mundo/articles/cj20vq3g51z1o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/mundo/articles/cj20vq3g51z1o#11</guid>
+            <pubDate>Wed, 11 Nov 2026 11:33:18 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/291a/live/c2a2f680-db81-11f1-ab1c-6b6075dcdfe1.jpg"/>
+        </item>
+    </channel>
+</rss>
