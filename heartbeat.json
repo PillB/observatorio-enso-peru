@@ -1,38 +1,30 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-12T02:05:33+00:00",
+ "at": "2026-11-13T04:31:51+00:00",
  "result": "ok",
- "reachable": "46/54",
+ "reachable": "51/57",
  "summary": {
   "enfen": "4/4",
   "igp": "1/1",
   "senamhi": "9/9",
   "ana": "3/3",
   "imarpe": "5/5",
-  "cenepred": "0/2",
+  "cenepred": "2/2",
   "archive": "1/1",
   "bnp": "1/1",
   "contraloria": "1/1",
   "midagri": "1/1",
   "unsa": "1/1",
   "enfen-docs": "2/8",
-  "imarpe-repo": "17/17"
+  "imarpe-repo": "17/17",
+  "enlaces": "3/3"
  },
  "failures": [
   {
-   "url": "https://sigrid.cenepred.gob.pe/arcgis/rest/services?f=pjson",
-   "class": "tls",
-   "error": "ConnectError: ('“*.cenepred.gob.pe” certificate has expired',)"
-  },
-  {
-   "url": "https://sigrid.cenepred.gob.pe/sigridv3/escenario-trimestral/data-mm",
-   "class": "tls",
-   "error": "ConnectError: ('“*.cenepred.gob.pe” certificate has expired',)"
-  },
-  {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
-   "class": "timeout",
-   "error": "ReadTimeout: The read operation timed out"
+   "status": 200,
+   "class": "challenge",
+   "error": "página de verificación antirobots: no se guarda (no se evade)"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
@@ -85,6 +77,5 @@
   "dns": 5,
   "empty": 1,
   "http-403": 2
- },
- "carried": 5
+ }
 }
