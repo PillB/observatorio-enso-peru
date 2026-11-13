@@ -185,3 +185,44 @@ def test_reviewer_logs_in_corrects_a_place_and_sees_the_history(console, browser
         assert pub["overrides"][0]["places"] == ["150122"] and "revisor01" not in json.dumps(pub)
     finally:
         ctx.close()
+
+
+@pytest.mark.browser
+def test_a_correction_whose_reply_is_lost_is_retried_once_and_saved_once(console, browser):
+    """La red se corta después de que la API guardó la corrección y antes de que llegue la respuesta. La consola no
+    sabe si llegó: repite el envío una vez y la API lo reconoce como el mismo (200, sin otra revisión), en vez de
+    mostrar el error o un 409 falso «otra persona corrigió esta nota»."""
+    pw = pytest.importorskip("playwright.sync_api")
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE")
+    try:
+        page = ctx.new_page()
+        sent = []
+
+        def lose_first_reply(route):
+            sent.append(route.request.post_data_json)
+            if len(sent) == 1:
+                route.fetch()  # llega al servidor y se guarda…
+                route.abort("connectionreset")  # …pero la respuesta no vuelve
+            else:
+                route.continue_()
+
+        page.route("**/api/geo/corrections", lambda route: lose_first_reply(route) if route.request.method == "POST"
+                   else route.continue_())
+        page.goto(console + "admin/")
+        page.get_by_label("Usuario").fill("revisor01")
+        page.get_by_label("Contraseña").fill("clave-revisor-1")
+        page.get_by_role("button", name="Ingresar").click()
+        page.get_by_role("tab", name=re.compile("^Todas")).click()
+        # Una nota que la otra prueba no corrigió.
+        card = page.locator(".gc-item", has_not=page.locator(".gc-fix")).first
+        title = card.locator("h2").inner_text()
+        card.get_by_role("button", name="No es del Perú").click()
+        card = page.locator(".gc-item", has_text=title).first
+        pw.expect(card.locator(".gc-fix")).to_be_visible()
+        pw.expect(page.locator("#status")).to_contain_text("Guardado")
+        assert len(sent) == 2 and sent[0] == sent[1], "un solo reintento, con el mismo cuerpo"
+        item = sent[0]["item"]
+        hist = page.request.get(console + f"api/geo/corrections?item={item}").json()
+        assert len(hist["corrections"]) == 1, hist
+    finally:
+        ctx.close()

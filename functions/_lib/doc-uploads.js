@@ -82,6 +82,7 @@ async function withSchema(env, fn) {
 }
 
 async function status(env, url, session) {
+  if (env.DOCS_GITHUB_TOKEN) await relayDispatches(env);
   const { results } = await env.GEO_DB.prepare(`SELECT doc_id, label, sha256, bytes, username, created_at, commit_sha, dispatched
       FROM uploads ORDER BY id DESC LIMIT 30`).all();
   const list = await pendingList(env, url);
@@ -224,10 +225,20 @@ function concat(parts, total) {
 
 const pdfBytes = (b64Len) => Math.floor((b64Len * 3) / 4);
 
-/** Commit en data-manual con el PDF y el índice; crea la rama la primera vez. Repite una vez si alguien ganó. */
-export async function commitUpload(env, { blob, sha256, bytes, doc, uploader, at }) {
+export const COMMIT_TRIES = 3;
+const pause = (ms) => new Promise((r) => { setTimeout(r, ms); });
+
+/**
+ * Commit en data-manual con el PDF y el índice; crea la rama la primera vez. Es un compare-and-swap sobre la punta
+ * de la rama (avance sin forzar): si otra subida la movió, GitHub responde 422 y se rehace sobre la nueva punta, hasta
+ * COMMIT_TRIES veces con una pausa corta y al azar (dos subidas que chocan no vuelven a chocar al mismo tiempo).
+ * Idempotente: si el índice ya trae este mismo archivo para el documento (un reintento después de un commit que sí se
+ * hizo), no crea otro commit y devuelve el que ya está.
+ */
+export async function commitUpload(env, { blob, sha256, bytes, doc, uploader, at }, wait = pause) {
   const { call } = gh(env);
-  for (let attempt = 0; attempt < 2; attempt++) {
+  for (let attempt = 0; attempt < COMMIT_TRIES; attempt++) {
+    if (attempt) await wait(150 + Math.random() * 350 * attempt);
     const ref = await call('GET', `git/ref/heads/${BRANCH}`);
     let parent = null;
     let baseTree = null;
@@ -248,6 +259,9 @@ export async function commitUpload(env, { blob, sha256, bytes, doc, uploader, at
     } else if (ref.status !== 404) {
       throw new HttpError(502, `GitHub no respondió por la rama ${BRANCH} (HTTP ${ref.status}).`);
     }
+    const same = Array.isArray(index && index.entries)
+      && index.entries.find((e) => e && e.doc === doc.id && e.sha256 === sha256);
+    if (same && parent) return { commit: parent, existed: true };
     const { entries, removed } = nextEntries(index, { doc, sha256, bytes, uploader, at });
     const file = `files/${sha256.slice(0, 16)}.pdf`;
     const newIndex = {
@@ -269,8 +283,10 @@ export async function commitUpload(env, { blob, sha256, bytes, doc, uploader, at
     const u = parent
       ? await call('PATCH', `git/refs/heads/${BRANCH}`, { sha: c.data.sha, force: false })
       : await call('POST', 'git/refs', { ref: `refs/heads/${BRANCH}`, sha: c.data.sha });
-    if (u.status === 200 || u.status === 201) return c.data.sha;
-    if (u.status !== 422 || attempt) throw new HttpError(502, `GitHub no actualizó la rama ${BRANCH} (HTTP ${u.status}).`);
+    if (u.status === 200 || u.status === 201) return { commit: c.data.sha, existed: false };
+    if (u.status !== 422 || attempt + 1 >= COMMIT_TRIES) {
+      throw new HttpError(502, `GitHub no actualizó la rama ${BRANCH} (HTTP ${u.status}).`);
+    }
     // 422: otra subida movió la rama mientras tanto; se rehace sobre la nueva punta.
   }
   throw new HttpError(502, 'No se pudo guardar el documento.');
@@ -314,23 +330,74 @@ async function upload(request, env, url, session, ip) {
   const db = env.GEO_DB;
   const writeKey = `upload:${session.username}`;
   const now = epoch();
+  // Una lectura: el contador de la persona y la última subida de este documento. Si es este mismo archivo (la
+  // respuesta anterior se perdió y la persona lo intenta de nuevo), es una repetición. Solo la última: un archivo que
+  // otro reemplazó después ya no está en la rama, y volver a subirlo es restaurarlo, no repetir.
   const st = await withSchema(env, () => db.prepare(`SELECT (SELECT count FROM attempts WHERE key = ? AND window_start > ?) AS n,
-      (SELECT COUNT(*) FROM uploads WHERE doc_id = ?) AS prior`).bind(writeKey, now - UPLOAD_WINDOW_S, docId).first());
+      u.id, u.sha256, u.bytes, u.commit_sha, u.dispatched, u.created_at
+      FROM (SELECT 1) LEFT JOIN (SELECT * FROM uploads WHERE doc_id = ? AND commit_sha IS NOT NULL
+        ORDER BY id DESC LIMIT 1) u`).bind(writeKey, now - UPLOAD_WINDOW_S, docId).first());
+  if (st && st.id && st.sha256 === sha256) {
+    // Idempotente: no se vuelve a mandar a GitHub ni se cuenta como otra subida. Si la actualización no se pudo
+    // pedir, se pide ahora.
+    request.body.cancel().catch(() => {});
+    const dispatched = st.dispatched ? true : await dispatchFor(env, [st.id], docId);
+    return json({ doc: docId, sha256, bytes: st.bytes, commit: st.commit_sha, dispatched, at: st.created_at, replayed: true }, 200);
+  }
   if (st && st.n >= UPLOADS_MAX_HOUR) return fail(429, 'Demasiadas subidas en una hora.');
 
   const { blob, bytes } = await streamBlob(env, request, length);
   const at = nowIso();
-  const commit = await commitUpload(env, { blob, sha256, bytes, doc, uploader: `rol ${session.role}`, at });
-  const { call } = gh(env);
-  const d = await call('POST', 'dispatches', { event_type: 'enso-refresh', client_payload: { reason: 'manual-upload', doc: docId } });
-  const dispatched = d.status === 204;
-  await db.batch([
+  const { commit } = await commitUpload(env, { blob, sha256, bytes, doc, uploader: `rol ${session.role}`, at });
+  // Bandeja de salida (outbox): la subida queda en D1 con «actualización pendiente» antes de pedirla. Si la
+  // solicitud a GitHub falla o la función se corta, la fila sigue ahí y status() la vuelve a pedir; antes se pedía
+  // primero y un fallo de red en ese paso perdía el registro de un commit que ya estaba en la rama.
+  const res = await db.batch([
     db.prepare(`INSERT INTO uploads (doc_id, label, sha256, bytes, username, created_at, commit_sha, dispatched)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).bind(docId, String(doc.label || '').slice(0, 200), sha256, bytes, session.username, at, commit, dispatched ? 1 : 0),
+        VALUES (?, ?, ?, ?, ?, ?, ?, 0)`).bind(docId, String(doc.label || '').slice(0, 200), sha256, bytes, session.username, at, commit),
     bumpStmt(db, writeKey, UPLOAD_WINDOW_S, now),
-    auditStmt(db, session.username, 'documento-subido', ip, null, { doc: docId, sha256, bytes, commit, dispatched }),
+    auditStmt(db, session.username, 'documento-subido', ip, null, { doc: docId, sha256, bytes, commit }),
   ]);
+  const id = res[0] && res[0].meta ? res[0].meta.last_row_id : null;
+  const dispatched = id ? await dispatchFor(env, [id], docId) : false;
   return json({ doc: docId, sha256, bytes, commit, dispatched, at }, 201);
+}
+
+// --- Bandeja de salida de las actualizaciones -----------------------------------------
+
+export const RELAY_HOURS = 24; // pasado esto, la corrida diaria ya leyó la subida: no se pide nada
+const RELAY_MAX = 10;
+
+/**
+ * Pide una actualización del sitio (repository_dispatch enso-refresh) y marca las subidas `ids` como pedidas.
+ * Entrega «al menos una vez»: si la marca no llega a escribirse, se pedirá de nuevo, y eso no hace daño (el flujo
+ * observatory.yml tiene un grupo de concurrencia: dos pedidos seguidos dan una corrida en curso y una en espera).
+ */
+async function dispatchFor(env, ids, doc) {
+  let ok = false;
+  try {
+    const d = await gh(env).call('POST', 'dispatches', { event_type: 'enso-refresh', client_payload: { reason: 'manual-upload', doc } });
+    ok = d.status === 204;
+  } catch (e) {
+    console.error('doc-uploads dispatch', e && e.message);
+  }
+  if (!ok || !ids.length) return ok;
+  try {
+    await env.GEO_DB.prepare(`UPDATE uploads SET dispatched = 1 WHERE dispatched = 0 AND id IN (${ids.map(() => '?').join(',')})`)
+      .bind(...ids).run();
+  } catch (e) {
+    console.error('doc-uploads dispatch mark', e && e.message);
+  }
+  return ok;
+}
+
+/** Relevo de la bandeja: las subidas recientes cuya actualización no se pudo pedir se piden ahora, en un solo envío. */
+export async function relayDispatches(env) {
+  const since = new Date(Date.now() - RELAY_HOURS * 3600 * 1000).toISOString().replace(/\.\d{3}Z$/, 'Z');
+  const { results } = await env.GEO_DB.prepare(`SELECT id, doc_id FROM uploads WHERE dispatched = 0 AND commit_sha IS NOT NULL
+      AND created_at >= ? ORDER BY id LIMIT ?`).bind(since, RELAY_MAX).all();
+  if (!results.length) return 0;
+  return (await dispatchFor(env, results.map((r) => r.id), results[results.length - 1].doc_id)) ? results.length : 0;
 }
 
 export async function handle(request, env) {

@@ -2975,8 +2975,8 @@
      "group": "pipeline",
      "name_es": "Pedir actualización",
      "name_en": "Request a refresh",
-     "what_es": "Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37.",
-     "what_en": "After uploading, sends repository_dispatch enso-refresh so the site does not wait for the 23:37 run.",
+     "what_es": "Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37. La subida queda anotada antes de pedirlo: si falla, se pide de nuevo al abrir la consola.",
+     "what_en": "After uploading, sends repository_dispatch enso-refresh so the site does not wait for the 23:37 run. The upload is recorded before asking: if the request fails, it is sent again when the console opens.",
      "tech": [
       "repository_dispatch"
      ]
@@ -3040,8 +3040,8 @@
      "kind": "data",
      "label_es": "corrección",
      "label_en": "correction",
-     "explain_es": "Lleva la revisión que la persona vio: si otra la cambió antes, responde 409 y pide recargar.",
-     "explain_en": "Carries the revision the person saw: if someone changed it first, it answers 409 and asks to reload."
+     "explain_es": "Lleva la revisión que la persona vio (obligatoria): si otra la cambió antes, responde 409 con la vigente. Repetir el mismo envío no crea otra revisión.",
+     "explain_en": "Carries the revision the person saw (required): if someone changed it first, it answers 409 with the current one. Repeating the same request does not add a revision."
     },
     {
      "from": "doc-page",
@@ -3122,9 +3122,9 @@
     },
     {
      "if_es": "Dos revisores corrigen la misma nota",
-     "then_es": "El segundo recibe 409 y recarga: ninguna corrección pisa a otra sin verla.",
+     "then_es": "El segundo recibe 409 con la corrección del primero y su tarjeta se rehace: ninguna corrección pisa a otra sin verla.",
      "if_en": "Two reviewers correct the same item",
-     "then_en": "The second gets 409 and reloads: no correction overwrites another unseen."
+     "then_en": "The second gets 409 with the first one's correction and the card is redrawn: no correction overwrites another unseen."
     },
     {
      "if_es": "La consola o Cloudflare no responden",

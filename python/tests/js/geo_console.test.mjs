@@ -272,9 +272,101 @@ describe('correcciones', () => {
     assert.equal((await post({ item: ITEM, action: 'set', places: [] })).status, 400);
     assert.equal((await post({ item: ITEM, action: 'set', places: ['99'] })).status, 400);
     assert.equal((await post({ item: ITEM, action: 'set', places: ['150199'] })).status, 400, 'no existe en el nomenclátor');
-    assert.equal((await post({ item: ITEM, action: 'clear' })).status, 400, 'nada que deshacer');
+    assert.equal((await post({ item: ITEM, action: 'clear', expectedRev: 0 })).status, 400, 'nada que deshacer');
     assert.equal((await handle(req('corrections', { method: 'POST', cookie, body: '{malo' }), env)).status, 400);
     assert.equal((await handle(req('corrections', { method: 'POST', cookie, body: 'x'.repeat(20000) }), env)).status, 413);
+  });
+
+  it('exige la revisión esperada: sin ella sería una escritura a ciegas (428)', async () => {
+    const { cookie } = await login();
+    const post = (body) => handle(req('corrections', { method: 'POST', cookie, body }), env);
+    for (const expectedRev of [undefined, null, '0', -1, 1.5]) {
+      const r = await post({ item: ITEM, action: 'none', expectedRev });
+      assert.equal(r.status, 428, `expectedRev=${JSON.stringify(expectedRev)}`);
+    }
+    const n = (await env.GEO_DB.prepare('SELECT COUNT(*) AS n FROM corrections').first()).n;
+    assert.equal(n, 0, 'nada se escribió');
+  });
+
+  it('repetir el mismo envío no crea otra revisión ni da un 409 falso (idempotente)', async () => {
+    const { cookie } = await login();
+    const body = { item: ITEM, action: 'set', places: ['150122'], note: 'Miraflores', expectedRev: 0 };
+    const first = await handle(req('corrections', { method: 'POST', cookie, body }), env);
+    assert.equal(first.status, 201);
+    const t0 = env.GEO_DB.trips;
+    const again = await handle(req('corrections', { method: 'POST', cookie, body }), env);
+    assert.equal(again.status, 200);
+    const out = await again.json();
+    assert.equal(out.replayed, true);
+    assert.equal(out.rev, 1);
+    assert.deepEqual(out.places, ['150122']);
+    assert.equal(env.GEO_DB.trips - t0, 2, 'sesión y una lectura: ninguna escritura');
+    const hist = await (await handle(req(`corrections?item=${ITEM}`, { cookie }), env)).json();
+    assert.equal(hist.corrections.length, 1);
+    // Otro cambio sobre la misma revisión vieja sí es un conflicto (no es una repetición).
+    const other = await handle(req('corrections', { method: 'POST', cookie, body: { ...body, note: 'otra cosa' } }), env);
+    assert.equal(other.status, 409);
+    // Y otra persona que manda exactamente lo mismo tampoco «repite» el envío de la primera.
+    const b = (await login('revisor02', 'clave-revisor-2', '198.51.100.2')).cookie;
+    assert.equal((await handle(req('corrections', { method: 'POST', cookie: b, body }), env)).status, 409);
+  });
+
+  // La carrera exacta: el otro envío escribe justo después de que este leyó la revisión vigente.
+  async function racing(cookie, body, other) {
+    const db = env.GEO_DB;
+    const prepare = db.prepare.bind(db);
+    let armed = true;
+    db.prepare = (sql) => {
+      const st = prepare(sql);
+      if (!armed || !/LEFT JOIN current/.test(sql)) return st;
+      const bind = st.bind.bind(st);
+      st.bind = (...args) => {
+        const b = bind(...args);
+        const first = b.first.bind(b);
+        b.first = async (col) => {
+          const row = await first(col);
+          armed = false;
+          assert.equal((await handle(req('corrections', { method: 'POST', cookie: other.cookie, body: other.body }), env)).status, 201);
+          return row;
+        };
+        return b;
+      };
+      return st;
+    };
+    try {
+      return await handle(req('corrections', { method: 'POST', cookie, body }), env);
+    } finally {
+      db.prepare = prepare;
+    }
+  }
+
+  it('dos envíos iguales al mismo tiempo dejan una revisión; el perdedor recibe la guardada', async () => {
+    const { cookie } = await login();
+    const body = { item: ITEM, action: 'confirm', expectedRev: 0 };
+    const r = await racing(cookie, body, { cookie, body });
+    assert.equal(r.status, 200, 'el mismo cambio de la misma persona: se responde lo guardado');
+    assert.equal((await r.json()).replayed, true);
+    const cur = (await env.GEO_DB.prepare('SELECT rev FROM corrections').all()).results;
+    assert.deepEqual(cur, [{ rev: 1 }]);
+  });
+
+  it('el 409 trae la revisión vigente para rehacer la tarjeta sin recargar la lista', async () => {
+    const a = (await login('revisor01', 'clave-revisor-1')).cookie;
+    const b = (await login('revisor02', 'clave-revisor-2', '198.51.100.2')).cookie;
+    const lose = await racing(b, { item: ITEM, action: 'none', expectedRev: 0 },
+      { cookie: a, body: { item: ITEM, action: 'set', places: ['15'], expectedRev: 0 } });
+    assert.equal(lose.status, 409, 'la carrera se resuelve por UNIQUE (item_id, rev), no se pisa');
+    const body = await lose.json();
+    assert.equal(body.current.rev, 1);
+    assert.equal(body.current.action, 'set');
+    assert.equal(body.current.username, 'revisor01');
+    assert.equal((await env.GEO_DB.prepare('SELECT COUNT(*) AS n FROM corrections').first()).n, 1);
+    assert.equal((await env.GEO_DB.prepare("SELECT COUNT(*) AS n FROM audit WHERE event = 'correccion'").first()).n, 1,
+      'el lote perdedor no dejó nada (ni auditoría ni contador)');
+    // Sin carrera: el 409 también trae la vigente.
+    const stale = await handle(req('corrections', { method: 'POST', cookie: a, body: { item: ITEM, action: 'foreign', expectedRev: 0 } }), env);
+    assert.equal(stale.status, 409);
+    assert.equal((await stale.json()).current.rev, 1);
   });
 
   it('las rutas desconocidas o con otro método no hacen nada', async () => {

@@ -40,8 +40,21 @@ async function api(path, { method = 'GET', body } = {}) {
   try {
     data = await r.json();
   } catch { /* respuesta sin JSON: GitHub Pages u otro servidor sin la API */ }
-  if (!r.ok) throw Object.assign(new Error(data.error || `Error ${r.status}`), { status: r.status });
+  if (!r.ok) throw Object.assign(new Error(data.error || `Error ${r.status}`), { status: r.status, data });
   return data;
+}
+
+/** Un POST que se puede repetir sin efectos dobles (la API reconoce el mismo cambio: idempotente). Si la red falla
+ * antes de la respuesta (fetch rechaza, sin estado HTTP), no se sabe si llegó: se repite una vez tras una pausa
+ * corta con algo de azar, para que dos pestañas no reintenten a la vez. */
+async function postOnceMore(send, wait = (ms) => new Promise((r) => { setTimeout(r, ms); })) {
+  try {
+    return await send();
+  } catch (e) {
+    if (e.status !== undefined) throw e;
+    await wait(800 + Math.random() * 700);
+    return send();
+  }
 }
 
 // --- Nomenclátor ---------------------------------------------------------------------
@@ -194,7 +207,8 @@ async function save(it, change, li) {
   buttons.forEach((b) => { b.disabled = true; });
   const prev = latestFix(it);
   try {
-    const res = await api('corrections', { method: 'POST', body: { item: it.id, expectedRev: prev ? prev.rev : 0, before: snapshot(it), ...change } });
+    const body = { item: it.id, expectedRev: prev ? prev.rev : 0, before: snapshot(it), ...change };
+    const res = await postOnceMore(() => api('corrections', { method: 'POST', body }));
     state.latest.set(it.id, { ...res, item: it.id });
     say(`Guardado: «${it.title.slice(0, 60)}» ${ACTION[res.action]}.`);
     li.replaceWith(itemCard(it));
@@ -204,8 +218,16 @@ async function save(it, change, li) {
     if (e.status === 401) return showLogin('Su sesión venció. Vuelva a ingresar.');
     say(e.message);
     if (e.status === 409) {
-      // Otra persona la corrigió: la tarjeta se rehace con su cambio (y su revisión), no se deja la vieja.
-      try { await loadLatest(); li.replaceWith(itemCard(it)); return null; } catch { /* abajo */ }
+      // Otra persona la corrigió: la tarjeta se rehace con su cambio (y su revisión), no se deja la vieja. La
+      // respuesta trae la revisión vigente; sin ella (una API anterior) se vuelve a pedir la lista.
+      try {
+        const cur = e.data && e.data.current;
+        if (cur) state.latest.set(it.id, cur);
+        else if (e.data && 'current' in e.data) state.latest.delete(it.id);
+        else await loadLatest();
+        li.replaceWith(itemCard(it));
+        return null;
+      } catch { /* abajo */ }
     }
     buttons.forEach((b) => { b.disabled = false; });
   }
