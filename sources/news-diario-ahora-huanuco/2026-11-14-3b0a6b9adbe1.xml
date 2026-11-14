@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Sat, 14 Nov 2026 11:49:21 GMT</lastBuildDate>
+    <pubDate>Sat, 14 Nov 2026 03:50:06 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Papa León XIV a obispos de Perú: &quot;No dejen de caminar con el pueblo&quot;</title>
+    <link>https://ahora.com.pe/nacional/papa-leon-xiv-obispos-peru-caminar-pueblo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/papa-leon-xiv-obispos-peru-caminar-pueblo</guid>
+    <pubDate>Sat, 14 Nov 2026 03:50:06 GMT</pubDate>
+    <description><![CDATA[El Papa León XIV se reunió con los obispos de Perú en la Capilla del Palacio Arzobispal de Lima, en el marco de su visita apostólica. Pidió a los prelados caminar con el pueblo, responder a los abusos con verdad, justicia y reparación, y trabajar por la unidad del país.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Papa León XIV]]></category>
+    <category><![CDATA[obispos de Perú]]></category>
+    <category><![CDATA[visita apostólica]]></category>
+    <category><![CDATA[Iglesia peruana]]></category>
+    <category><![CDATA[abusos clero]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6f473a152716.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6f473a152716.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6f473a152716.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Mr. Peet elogia a Yotún como &quot;jugador emblema&quot; de la selección peruana</title>
+    <link>https://ahora.com.pe/deportes/mr-peet-yotun-jugador-emblema-seleccion-peruana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/mr-peet-yotun-jugador-emblema-seleccion-peruana</guid>
+    <pubDate>Sat, 14 Nov 2026 11:40:05 GMT</pubDate>
+    <description><![CDATA[Mr. Peet elogió a Yoshimar Yotún como &quot;jugador emblema&quot; de la selección peruana por firmar autógrafos a los hinchas en la concentración, en la antesala del amistoso ante Bolivia en Matute.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Yoshimar Yotún]]></category>
+    <category><![CDATA[Mr. Peet]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Perú vs Bolivia]]></category>
+    <category><![CDATA[Mano Menezes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ffa0cebc993b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ffa0cebc993b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ffa0cebc993b.jpg"/>
+    <media:description type="plain"><![CDATA[A pocas horas del Perú vs. Bolivia, Mr. Peet resaltó a un futbolista de la Bicolor y explicó por qué es un ejemplo para el grupo dirigido por Meno Menezes. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Dejounte Murray pide ser traspasado de los Pelicans</title>
+    <link>https://ahora.com.pe/deportes/dejounte-murray-pide-traspaso-pelicans</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/dejounte-murray-pide-traspaso-pelicans</guid>
+    <pubDate>Sat, 14 Nov 2026 10:50:06 GMT</pubDate>
+    <description><![CDATA[Dejounte Murray solicitó su traspaso a los New Orleans Pelicans tras 12 partidos de la temporada, con Phoenix Suns como posible destino según reportes de ESPN y Chris Haynes.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Dejounte Murray]]></category>
+    <category><![CDATA[New Orleans Pelicans]]></category>
+    <category><![CDATA[traspaso NBA]]></category>
+    <category><![CDATA[Phoenix Suns]]></category>
+    <category><![CDATA[Jamahl Mosley]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/01d51826a5fb.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/01d51826a5fb.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/01d51826a5fb.webp"/>
+    <media:description type="plain"><![CDATA[La unión entre Dejounte Murray y los New Orleans Pelicans ha llegado a su fin después de poco más de dos temporadas en sus filas. El escolta de 30 años, que llegó procedente de los Atlanta Hawks en 2024 a cambio de Larry Nance Jr. y Dyson Daniels, ha decidido cambiar de aires y así se lo hizo saber — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Luis Baasen, promesa del Dynamo Dresden, sueña con la Selección Peruana</title>
+    <link>https://ahora.com.pe/deportes/luis-baasen-promesa-dynamo-dresden-seleccion-peruana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/luis-baasen-promesa-dynamo-dresden-seleccion-peruana</guid>
+    <pubDate>Sat, 14 Nov 2026 10:00:11 GMT</pubDate>
+    <description><![CDATA[Luis Baasen, mediocampista de 18 años del Dynamo Dresden y de madre peruana, manifestó su deseo de jugar por la Selección Peruana y aparece en el radar de la Sub 20 que se prepara para el Sudamericano de 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Luis Baasen]]></category>
+    <category><![CDATA[Selección Peruana]]></category>
+    <category><![CDATA[Dynamo Dresden]]></category>
+    <category><![CDATA[FPF]]></category>
+    <category><![CDATA[Sub 20]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e02fc7fb9b16.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e02fc7fb9b16.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e02fc7fb9b16.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Lamine Yamal se incorpora a la selección española y Raphinha acapara portadas</title>
+    <link>https://ahora.com.pe/deportes/lamine-yamal-raphinha-portadas-deportivas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/lamine-yamal-raphinha-portadas-deportivas</guid>
+    <pubDate>Sat, 14 Nov 2026 09:10:05 GMT</pubDate>
+    <description><![CDATA[Lamine Yamal se incorpora a la selección española y Raphinha figura entre los protagonistas de las portadas deportivas de este sábado 14 de noviembre de 2026, según Mundo Deportivo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Lamine Yamal]]></category>
+    <category><![CDATA[Raphinha]]></category>
+    <category><![CDATA[selección española]]></category>
+    <category><![CDATA[portadas deportivas]]></category>
+    <category><![CDATA[Mundo Deportivo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/54bd191523a0.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/54bd191523a0.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/54bd191523a0.webp"/>
+    <media:description type="plain"><![CDATA[Como cada mañana, los <b>medios deportivos</b>, tanto nacionales como internacionales, llegan a los quioscos cargados de exclusivas: fichajes, renovaciones... A continuación, te dejamos las portadas de hoy,<b> sábado 14 de noviembre de 2026</b>. Desliza hacia la derecha para no perderte ninguna. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Kevin Quevedo solo sufrió un golpe y estará en la recta final con Alianza Lima</title>
+    <link>https://ahora.com.pe/deportes/kevin-quevedo-golpe-alianza-lima-recta-final</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/kevin-quevedo-golpe-alianza-lima-recta-final</guid>
+    <pubDate>Sat, 14 Nov 2026 08:20:05 GMT</pubDate>
+    <description><![CDATA[Kevin Quevedo no presenta lesión tras el golpe sufrido ante Los Chankas y se reincorporaría a los entrenamientos de Alianza Lima para la recta final de la Liga 1.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Kevin Quevedo]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cf21d327d7ac.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cf21d327d7ac.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cf21d327d7ac.jpg"/>
+    <media:description type="plain"><![CDATA[Alianza Lima se alista para encarar los playoffs por el título de la Liga 1 y se conoció que han recibido una trascendental noticia sobre el estado físico de Kevin Quevedo. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Sport Huancayo vs. Universitario: entradas a S/ 200 para la fecha 17 del Clausura</title>
+    <link>https://ahora.com.pe/deportes/sport-huancayo-universitario-entradas-200-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-huancayo-universitario-entradas-200-clausura</guid>
+    <pubDate>Sat, 14 Nov 2026 06:40:06 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo anunció entradas a S/ 200 para el duelo ante Universitario del domingo 22 de noviembre en el Estadio IPD Huancayo, con venta desde el lunes 16 en dos puntos y aforo de 10 mil en occidente.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[entradas S/ 200]]></category>
+    <category><![CDATA[Estadio IPD Huancayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/423cb03c8a37.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/423cb03c8a37.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/423cb03c8a37.webp"/>
+    <media:description type="plain"><![CDATA[Las entradas para el partido entre Sport Huancayo y Universitario, válido por la fecha 17, que definirá al ganador del Torneo Clausura y que se jugará en el Estadio IPD Huancayo, tendrá un costo único de 200 soles, así lo dio a conocer el vicepresidente del club local,  Raúl Rojas. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Papa León XIV celebra multitudinaria misa en Pampas de Pimentel</title>
+    <link>https://ahora.com.pe/regional/papa-leon-xiv-misa-pampas-pimentel</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/papa-leon-xiv-misa-pampas-pimentel</guid>
+    <pubDate>Sat, 14 Nov 2026 06:30:09 GMT</pubDate>
+    <description><![CDATA[El papa León XIV celebró una misa multitudinaria en las Pampas de Pimentel, Chiclayo, con más de un millón de asistentes, en el tercer día de su visita al Perú. La presidenta Keiko Fujimori y ministros de Estado participaron de la ceremonia litúrgica.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[Pampas de Pimentel]]></category>
+    <category><![CDATA[Chiclayo]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[visita papal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/af4e4c52493c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/af4e4c52493c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/af4e4c52493c.jpg"/>
+    <media:description type="plain"><![CDATA[El papa León XIV pronunció hoy una homilía en la santa misa oficiada ante más de un millón de fieles en la explanada de Pampas de Pimentel. A continuación, el texto completo de su discurso en esta celebración litúrgica que forma parte de la visita apostólica del sumo pontífice a Chiclayo, la ciudad — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>León de Huánuco busca reivindicarse ante Bagua FC en el Heraclio Tapia</title>
+    <link>https://ahora.com.pe/deportes/leon-huanuco-bagua-fc-torneo-tradicion-copera</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-huanuco-bagua-fc-torneo-tradicion-copera</guid>
+    <pubDate>Sat, 14 Nov 2026 06:10:05 GMT</pubDate>
+    <description><![CDATA[León de Huánuco enfrenta este domingo a Bagua FC por la tercera fecha del Grupo 1 del Torneo Tradición Copera en el estadio Heraclio Tapia, mientras Municipal de Chacos busca su tercer triunfo consecutivo en el Grupo 4.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León de Huánuco]]></category>
+    <category><![CDATA[Bagua FC]]></category>
+    <category><![CDATA[Torneo Tradición Copera]]></category>
+    <category><![CDATA[Municipal de Chacos]]></category>
+    <category><![CDATA[Heraclio Tapia]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/680d7d0d1464.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/680d7d0d1464.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/680d7d0d1464.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Avatar: Los siete refugios estrena su Libro 2 en Paramount+ en mayo de 2027</title>
+    <link>https://ahora.com.pe/entretenimiento/avatar-los-siete-refugios-libro-2-estreno-mayo-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/avatar-los-siete-refugios-libro-2-estreno-mayo-2027</guid>
+    <pubDate>Sat, 14 Nov 2026 05:40:06 GMT</pubDate>
+    <description><![CDATA[Paramount+ confirmó que el Libro 2: Descubrimiento de Avatar: Los siete refugios se estrenará el 21 de mayo de 2027 con tres episodios. La temporada tendrá 13 capítulos y el Libro 3 llegará también en 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Avatar: Los siete refugios]]></category>
+    <category><![CDATA[Paramount+]]></category>
+    <category><![CDATA[Libro 2: Descubrimiento]]></category>
+    <category><![CDATA[Pavi y Nisha]]></category>
+    <category><![CDATA[estreno 2027]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/db26f40d6669.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/db26f40d6669.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/db26f40d6669.jpg"/>
+    <media:description type="plain"><![CDATA[La serie animada llegará a la plataforma en mayo de 2027 con sus tres primeros episodios. Además, la tercera entrega también se estrenará el próximo año. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>León de Huánuco recibe a Bagua FC con la obligación de sumar su primer triunfo</title>
+    <link>https://ahora.com.pe/deportes/leon-huanuco-bagua-fc-tradicion-copera</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-huanuco-bagua-fc-tradicion-copera</guid>
+    <pubDate>Sat, 14 Nov 2026 05:10:07 GMT</pubDate>
+    <description><![CDATA[León de Huánuco, con un solo punto en dos fechas, recibe este domingo 15 de noviembre a Bagua FC, líder del Grupo 1 de la Tradición Copera 2026, en el estadio Heraclio Tapia León desde las 3:00 de la tarde.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León de Huánuco]]></category>
+    <category><![CDATA[Bagua FC]]></category>
+    <category><![CDATA[Tradición Copera 2026]]></category>
+    <category><![CDATA[Heraclio Tapia León]]></category>
+    <category><![CDATA[Grupo 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/44167b717463.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/44167b717463.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/44167b717463.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>JNE: proclamaciones de los JEE que acaten su disposición serán inapelables</title>
+    <link>https://ahora.com.pe/elecciones-2026/jne-proclamaciones-jee-inapelables</link>
+    <guid isPermaLink="true">https://ahora.com.pe/elecciones-2026/jne-proclamaciones-jee-inapelables</guid>
+    <pubDate>Sat, 14 Nov 2026 05:10:06 GMT</pubDate>
+    <description><![CDATA[El JNE estableció que las nuevas proclamaciones de los JEE serán inapelables si acatan la disposición de no reconocer como alcaldes a primeros regidores que fueron alcaldes en el periodo 2023-2026 e intenten reelegirse.]]></description>
+    <dc:creator><![CDATA[Ahora Elecciones]]></dc:creator>
+    <category><![CDATA[Elecciones 2026]]></category>
+    <category><![CDATA[JNE]]></category>
+    <category><![CDATA[JEE]]></category>
+    <category><![CDATA[proclamaciones]]></category>
+    <category><![CDATA[reelección]]></category>
+    <category><![CDATA[alcaldes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/53d5758544ad.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/53d5758544ad.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/53d5758544ad.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Europa alerta de las &quot;trampas&quot; de Rusia ante una posible mesa de paz en Ucrania</title>
+    <link>https://ahora.com.pe/mundo/europa-alerta-trampas-rusia-negociaciones-paz-ucrania</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/europa-alerta-trampas-rusia-negociaciones-paz-ucrania</guid>
+    <pubDate>Sat, 14 Nov 2026 05:10:05 GMT</pubDate>
+    <description><![CDATA[La Unión Europea advirtió sobre las &quot;trampas&quot; de Rusia en las negociaciones de paz para Ucrania. Bruselas y Kiev dan por hecha la presencia europea, pero Moscú condiciona su aceptación y exige definir un jefe negociador y una posición común.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Ucrania]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[Kaja Kallas]]></category>
+    <category><![CDATA[Rusia]]></category>
+    <category><![CDATA[negociaciones de paz]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b64645ca8a70.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b64645ca8a70.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b64645ca8a70.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>España incentiva el cambio de calderas comunitarias por aerotermia con multiplicadores de ahorro</title>
+    <link>https://ahora.com.pe/mundo/incentivos-aerotermia-calderas-comunitarias-espana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/incentivos-aerotermia-calderas-comunitarias-espana</guid>
+    <pubDate>Sat, 14 Nov 2026 04:10:06 GMT</pubDate>
+    <description><![CDATA[El Ministerio para la Transición Ecológica y el Reto Demográfico incentiva la sustitución de calderas comunitarias por aerotermia mediante multiplicadores de ahorro en los Certificados de Ahorro Energético (CAE). La medida, publicada en el BOE el 7 de noviembre, permite acogerse a actuaciones desde el 22 de marzo de 2026 y presentar solicitudes desde el 15 de enero de 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[aerotermia]]></category>
+    <category><![CDATA[calderas comunitarias]]></category>
+    <category><![CDATA[Certificados de Ahorro Energético]]></category>
+    <category><![CDATA[MITECO]]></category>
+    <category><![CDATA[eficiencia energética]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d8937f5f4d87.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d8937f5f4d87.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d8937f5f4d87.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Arnau Blanco explica su salto del fútbol formativo al staff de Flick en el Barça</title>
+    <link>https://ahora.com.pe/deportes/arnau-blanco-staff-flick-barca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/arnau-blanco-staff-flick-barca</guid>
+    <pubDate>Sat, 14 Nov 2026 04:10:05 GMT</pubDate>
+    <description><![CDATA[Arnau Blanco detalló en la 14ª edición del Día del Entrenador/a de la FCF su incorporación al staff de Hansi Flick en el FC Barcelona y su visión sobre la formación de jóvenes talentos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Arnau Blanco]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[La Masia]]></category>
+    <category><![CDATA[Día del Entrenador FCF]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3c2570c16f58.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3c2570c16f58.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3c2570c16f58.webp"/>
+    <media:description type="plain"><![CDATA[A mediados de agosto de 2024,<b> Arnau Blanco</b>, que había trabajado en el fútbol formativo del FC Barcelona durante once temporadas, se incorporó al staff técnico de<b> Hansi Flick</b>, que se había quedado sin el apoyo de<b> Thiago Alcantara&nbsp;</b>en sus primeras semanas en el club. Este vier — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Perú venció 2-0 a Bolivia en amistoso con gol de Maxloren Castro</title>
+    <link>https://ahora.com.pe/deportes/peru-vencio-bolivia-amistoso-maxloren-castro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-vencio-bolivia-amistoso-maxloren-castro</guid>
+    <pubDate>Sat, 14 Nov 2026 03:20:07 GMT</pubDate>
+    <description><![CDATA[Perú derrotó 2-0 a Bolivia en amistoso internacional disputado en el estadio Alejandro Villanueva, con gol de Maxloren Castro a los 87 minutos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Perú vs Bolivia]]></category>
+    <category><![CDATA[Maxloren Castro]]></category>
+    <category><![CDATA[amistoso internacional]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/32c98e2fd24f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/32c98e2fd24f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/32c98e2fd24f.jpg"/>
+    <media:description type="plain"><![CDATA[¡Pero dónde la puso! Maxloren Castro sacó un preciso disparo que dejó parado al portero Carlos Lampe para marcar el 2-0 ante Bolivia. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Piqué denuncia a la RFEF por no notificar sanciones antes del Almería-Andorra</title>
+    <link>https://ahora.com.pe/deportes/pique-denuncia-rfef-sanciones-andorra-almeria</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/pique-denuncia-rfef-sanciones-andorra-almeria</guid>
+    <pubDate>Sat, 14 Nov 2026 02:30:10 GMT</pubDate>
+    <description><![CDATA[Gerard Piqué criticó a la RFEF por no notificar las sanciones de tres futbolistas del Andorra antes del partido contra la UD Almería. El club viajó a Andalucía sin certeza sobre Akman, Lautaro de León y Owono.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gerard Piqué]]></category>
+    <category><![CDATA[Andorra]]></category>
+    <category><![CDATA[RFEF]]></category>
+    <category><![CDATA[UD Almería]]></category>
+    <category><![CDATA[sanciones]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/441fd51dc523.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/441fd51dc523.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/441fd51dc523.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Zambrano: &quot;Muchos jugadores no aguantan a Barcos&quot; tras pelea con Guede</title>
+    <link>https://ahora.com.pe/deportes/zambrano-barcos-guede-alianza-sporting-cristal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/zambrano-barcos-guede-alianza-sporting-cristal</guid>
+    <pubDate>Sat, 14 Nov 2026 01:40:06 GMT</pubDate>
+    <description><![CDATA[Carlos Zambrano criticó a Hernán Barcos tras la pelea con Pablo Guede en Sporting Cristal vs Alianza Lima y afirmó que muchos futbolistas no lo soportan.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Carlos Zambrano]]></category>
+    <category><![CDATA[Hernán Barcos]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/147555c2b18a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/147555c2b18a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/147555c2b18a.jpg"/>
+    <media:description type="plain"><![CDATA[Carlos Zambrano se refirió directamente a la polémica pelea entre Hernán Barcos y Pablo Guede en el Sporting Cristal vs Alianza Lima y no dudó en arremeter contra el 'Pirata'. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Alfon sufre rotura del cruzado y el Sevilla gana margen salarial para fichar en enero</title>
+    <link>https://ahora.com.pe/deportes/alfon-rotura-cruzado-sevilla-margen-fichar-enero</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alfon-rotura-cruzado-sevilla-margen-fichar-enero</guid>
+    <pubDate>Sat, 14 Nov 2026 00:50:06 GMT</pubDate>
+    <description><![CDATA[El Sevilla pierde a Alfon González por rotura del ligamento cruzado anterior y podrá usar el 80% de su ficha para fichar en enero, según el artículo 77 de LaLiga.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alfon González]]></category>
+    <category><![CDATA[Sevilla]]></category>
+    <category><![CDATA[lesión ligamento cruzado]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[mercado de fichajes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c403e2ed7149.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c403e2ed7149.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c403e2ed7149.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Álvarez Wallace: &quot;Ojalá podamos estar todos juntos el domingo para festejar&quot;</title>
+    <link>https://ahora.com.pe/deportes/alvarez-wallace-final-copa-liga-cristal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alvarez-wallace-final-copa-liga-cristal</guid>
+    <pubDate>Sat, 14 Nov 2026 00:00:11 GMT</pubDate>
+    <description><![CDATA[Agustín Álvarez Wallace, volante de Sporting Cristal, se refirió a la final de la Copa de la Liga ante Alianza Atlético este domingo en el Mansiche de Trujillo y al envión anímico que significaría el trofeo para el cierre del Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Agustín Álvarez Wallace]]></category>
+    <category><![CDATA[Copa de la Liga]]></category>
+    <category><![CDATA[Alianza Atlético]]></category>
+    <category><![CDATA[Clausura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/552279468d50.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/552279468d50.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/552279468d50.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>El papa León XIV recibe su nuevo DNI peruano con dirección en Chiclayo</title>
+    <link>https://ahora.com.pe/nacional/papa-leon-xiv-dni-peruano-chiclayo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/papa-leon-xiv-dni-peruano-chiclayo</guid>
+    <pubDate>Fri, 13 Nov 2026 23:40:07 GMT</pubDate>
+    <description><![CDATA[El papa León XIV recibió su nuevo DNI electrónico 3.0 en la Nunciatura Apostólica de Lima. El documento mantiene la dirección de Chiclayo y no tiene fecha de caducidad. El Reniec destacó que la tarjeta cuenta con 64 elementos de seguridad.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[DNI electrónico 3.0]]></category>
+    <category><![CDATA[Reniec]]></category>
+    <category><![CDATA[Chiclayo]]></category>
+    <category><![CDATA[nacionalidad peruana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0c4788ebd506.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0c4788ebd506.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0c4788ebd506.jpg"/>
+    <media:description type="plain"><![CDATA[El papa León XIV recibió su Documento Nacional de Identidad (DNI) electrónico 3.0 en el Perú, documento que conserva su dirección en la ciudad de Chiclayo, lugar que forma parte de su historia personal. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Sport Boys sumaría a Sebastián Aranda como primer refuerzo para su centenario</title>
+    <link>https://ahora.com.pe/deportes/sport-boys-sebastian-aranda-refuerzo-centenario</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-boys-sebastian-aranda-refuerzo-centenario</guid>
+    <pubDate>Fri, 13 Nov 2026 22:20:06 GMT</pubDate>
+    <description><![CDATA[Sport Boys incorporaría a Sebastián Aranda como primer refuerzo para la temporada de su centenario, según el periodista Diego Sotomayor. Mathias Llontop dejaría el club rumbo a Universitario.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Boys]]></category>
+    <category><![CDATA[Sebastián Aranda]]></category>
+    <category><![CDATA[Mathias Llontop]]></category>
+    <category><![CDATA[Liga 1 2027]]></category>
+    <category><![CDATA[centenario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0cfba47adabe.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0cfba47adabe.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0cfba47adabe.jpg"/>
+    <media:description type="plain"><![CDATA[Sport Boys incorporará a un tremendo futbolista que llegará del extranjero para defender la camiseta rosada en la Liga 1 2027. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>GTA VI: Rockstar censura armas en vallas publicitarias y recorta escenas en TV</title>
+    <link>https://ahora.com.pe/tecnologia/gta-vi-rockstar-publicidad-sin-armas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/gta-vi-rockstar-publicidad-sin-armas</guid>
+    <pubDate>Fri, 13 Nov 2026 21:30:10 GMT</pubDate>
+    <description><![CDATA[Rockstar adapta la publicidad de GTA VI según el soporte y el público: retira armas de vallas en París, Chicago y Times Square, y recorta escenas sexuales en el anuncio televisivo de la NBA.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[GTA VI]]></category>
+    <category><![CDATA[Rockstar]]></category>
+    <category><![CDATA[publicidad]]></category>
+    <category><![CDATA[ESRB]]></category>
+    <category><![CDATA[Take-Two]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f7744e51df02.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f7744e51df02.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f7744e51df02.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Aldo Olcese aconseja a Mathías Llontop: &quot;No hay que apurarse&quot; con Universitario</title>
+    <link>https://ahora.com.pe/deportes/aldo-olcese-consejo-mathias-llontop-universitario</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/aldo-olcese-consejo-mathias-llontop-universitario</guid>
+    <pubDate>Fri, 13 Nov 2026 20:40:07 GMT</pubDate>
+    <description><![CDATA[Aldo Olcese recomendó a Mathías Llontop, pretendido por Universitario, consolidarse en Sport Boys antes de fichar por un club grande. El defensor tiene contrato con los rosados hasta fin de año y su pase pertenece a Melgar.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Aldo Olcese]]></category>
+    <category><![CDATA[Mathías Llontop]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Sport Boys]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b152c9412775.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b152c9412775.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b152c9412775.jpg"/>
+    <media:description type="plain"><![CDATA[El exjugador dejó firme su postura al señalar que el futbolista no debe apresurarse por dar el gran salto y que primero debería consolidarse en su equipo. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Haití y El Salvador retoman el estadio Sylvio-Cator, en manos de bandas desde 2024</title>
+    <link>https://ahora.com.pe/mundo/haiti-el-salvador-recuperan-estadio-sylvio-cator</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/haiti-el-salvador-recuperan-estadio-sylvio-cator</guid>
+    <pubDate>Fri, 13 Nov 2026 20:00:11 GMT</pubDate>
+    <description><![CDATA[La Policía de Haití retomó el estadio Sylvio-Cator de Puerto Príncipe, ocupado por bandas desde 2024, con apoyo de la Task Force y de más de 2.000 militares salvadoreños que operarán desde el recinto.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[estadio Sylvio-Cator]]></category>
+    <category><![CDATA[Haití]]></category>
+    <category><![CDATA[El Salvador]]></category>
+    <category><![CDATA[Nayib Bukele]]></category>
+    <category><![CDATA[selección de Haití]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a8ad244be02d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a8ad244be02d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a8ad244be02d.jpg"/>
+    <media:description type="plain"><![CDATA[La policía haitiana anunció el jueves haber retomado, con la ayuda de mercenarios extranjeros, el "control total" del estadio Sylvio-Cator de Puerto Príncipe y de sus alrededores, que estaban en manos de bandas criminales desde 2024. El presidente de El Salvador, Nayib Bukele, aseguró que las tropas — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Pedro Sánchez recuerda Surquillo: atropello, comisaría y su frustrada carrera</title>
+    <link>https://ahora.com.pe/policiales/pedro-sanchez-surquillo-atropello-comisaria</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/pedro-sanchez-surquillo-atropello-comisaria</guid>
+    <pubDate>Fri, 13 Nov 2026 19:20:07 GMT</pubDate>
+    <description><![CDATA[Pedro Sánchez confesó en el programa de Puchungo que un atropello frustró su carrera como futbolista y recordó episodios de su infancia en Surquillo.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Pedro Sánchez]]></category>
+    <category><![CDATA[Surquillo]]></category>
+    <category><![CDATA[atropello]]></category>
+    <category><![CDATA[fútbol]]></category>
+    <category><![CDATA[comisaría]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/556c5cf1883e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/556c5cf1883e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/556c5cf1883e.jpg"/>
+    <media:description type="plain"><![CDATA[Un lugareño pasea junto a un edificio tradicional en Huamachuco, capturando la esencia de la vida callejera peruana. — Foto: Joshuan Barboza (pexels-free)]]></media:description>
+  </item>
+  <item>
+    <title>Mauro Cantoro cuestiona posible fichaje de Mathías Llontop por Universitario</title>
+    <link>https://ahora.com.pe/deportes/cantoro-critica-fichaje-llontop-universitario</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cantoro-critica-fichaje-llontop-universitario</guid>
+    <pubDate>Fri, 13 Nov 2026 19:00:12 GMT</pubDate>
+    <description><![CDATA[Mauro Cantoro criticó la posible llegada de Mathías Llontop a Universitario y puso en duda que pueda quitarle la titularidad a César Inga.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Mauro Cantoro]]></category>
+    <category><![CDATA[Mathías Llontop]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[César Inga]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0b54d18784a5.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0b54d18784a5.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0b54d18784a5.jpg"/>
+    <media:description type="plain"><![CDATA[El referente crema Mauro Cantoro sorprendió al referirse a uno de los posibles fichajes de Universitario para la siguiente temporada y no dudó en criticarlo. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Brenda Ortiz Clarke y Bloc Art Perú</title>
+    <link>https://ahora.com.pe/opinion/brenda-ortiz-clarke-y-bloc-art-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/brenda-ortiz-clarke-y-bloc-art-peru</guid>
+    <pubDate>Fri, 13 Nov 2026 18:20:24 GMT</pubDate>
+    <description><![CDATA[Israel Tolentino repasa la labor curatorial de Brenda Ortiz Clarke y Bloc Art Perú con artistas que crean en huacas, montañas y lagos del país.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[Israel Tolentino]]></category>
+    <category><![CDATA[Brenda Ortiz Clarke]]></category>
+    <category><![CDATA[Bloc Art Perú]]></category>
+    <category><![CDATA[Huaca Pucllana]]></category>
+    <category><![CDATA[Ivet Salazar]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f5879fbc0246.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f5879fbc0246.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f5879fbc0246.jpg"/>
+    <media:title type="plain"><![CDATA[Opinión de Israel Tolentino: Brenda Ortiz Clarke y Bloc Art Perú]]></media:title>
+  </item>
+  <item>
+    <title>Transformación digital en la contabilidad</title>
+    <link>https://ahora.com.pe/opinion/transformacion-digital-en-la-contabilidad</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/transformacion-digital-en-la-contabilidad</guid>
+    <pubDate>Fri, 13 Nov 2026 18:12:12 GMT</pubDate>
+    <description><![CDATA[César Augusto Kanashiro Castañeda analiza cómo la IA y el blockchain cambian la práctica contable y obligan a renovar la formación del contador.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[César Augusto Kanashiro Castañeda]]></category>
+    <category><![CDATA[contabilidad]]></category>
+    <category><![CDATA[transformación digital]]></category>
+    <category><![CDATA[inteligencia artificial]]></category>
+    <category><![CDATA[blockchain]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c5356faba1a2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c5356faba1a2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c5356faba1a2.jpg"/>
+    <media:title type="plain"><![CDATA[Opinión de César Augusto Kanashiro Castañeda: Transformación digital en la contabilidad]]></media:title>
+  </item>
+  <item>
+    <title>El espejismo del 100 %: Planificar con tecnología para el ciudadano, no para la burocracia</title>
+    <link>https://ahora.com.pe/opinion/el-espejismo-del-100-planificar-con-tecnologia-para-el-ciudadano-no-para-la</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/el-espejismo-del-100-planificar-con-tecnologia-para-el-ciudadano-no-para-la</guid>
+    <pubDate>Fri, 13 Nov 2026 18:10:33 GMT</pubDate>
+    <description><![CDATA[Nelson F. Núñez Vergara sostiene que el Gobierno Regional mide esfuerzo y no resultados, y propone datos e IA para planificar en favor del ciudadano.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[Nelson F. Núñez Vergara]]></category>
+    <category><![CDATA[Gobierno Regional de Huánuco]]></category>
+    <category><![CDATA[planeamiento]]></category>
+    <category><![CDATA[inteligencia artificial]]></category>
+    <category><![CDATA[POA 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f036cc7ffdf6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f036cc7ffdf6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f036cc7ffdf6.jpg"/>
+    <media:title type="plain"><![CDATA[Opinión de Nelson F. Núñez Vergara: El espejismo del 100 %]]></media:title>
+  </item>
+  <item>
+    <title>Euro 7 desde el 29 de noviembre: frenos y baterías bajo nuevas exigencias</title>
+    <link>https://ahora.com.pe/sociedad/euro-7-29-noviembre-frenos-baterias</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/euro-7-29-noviembre-frenos-baterias</guid>
+    <pubDate>Fri, 13 Nov 2026 17:30:12 GMT</pubDate>
+    <description><![CDATA[El reglamento Euro 7 de la Unión Europea se aplicará desde el 29 de noviembre de 2026 con nuevos límites de partículas de frenos y requisitos de durabilidad de baterías para turismos y furgonetas ligeras. La obligación alcanza inicialmente a los modelos que soliciten nueva homologación.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Euro 7]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[emisiones]]></category>
+    <category><![CDATA[frenos]]></category>
+    <category><![CDATA[baterías]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7796346829ee.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7796346829ee.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7796346829ee.jpg"/>
+    <media:description type="plain"><![CDATA[En los últimos años, <b>la Unión Europea ha ido aprobando nuevas medidas para reducir la contaminación y proteger el medioambiente. </b>Algunas están relacionadas con el uso de los plásticos o la gestión de los residuos, mientras que otras afectan directamente a la <b>movilidad.</b> Y es que las pol — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Diputados: grupo de trabajo contra la anemia aprueba plan para identificar fallas</title>
+    <link>https://ahora.com.pe/sociedad/diputados-aprueban-plan-contra-anemia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/diputados-aprueban-plan-contra-anemia</guid>
+    <pubDate>Fri, 13 Nov 2026 16:50:08 GMT</pubDate>
+    <description><![CDATA[El grupo de trabajo sobre primera infancia y lucha contra la anemia de la Cámara de Diputados aprobó por unanimidad su plan de trabajo. La instancia, liderada por Edwin Espinoza Huillca, enfocará su labor en seis regiones con alta prevalencia y coordinará con el Midis y el Minsa.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[anemia infantil]]></category>
+    <category><![CDATA[Cámara de Diputados]]></category>
+    <category><![CDATA[Edwin Espinoza Huillca]]></category>
+    <category><![CDATA[Midis]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/03900b09b87d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/03900b09b87d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/03900b09b87d.jpg"/>
+    <media:description type="plain"><![CDATA[El grupo de trabajo sobre primera infancia y lucha contra la anemia de la Cámara de Diputados aprobó por unanimidad su plan de trabajo, que busca identificar las causas institucionales y normativas que dificultan la articulación de las intervenciones contra la anemia y plantear soluciones. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Perú 4-2 Austria en Berlín 1936: el triunfo olímpico que la historia atribuye a la furia de Hitler</title>
+    <link>https://ahora.com.pe/deportes/peru-austria-berlin-1936-furia-hitler</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-austria-berlin-1936-furia-hitler</guid>
+    <pubDate>Fri, 13 Nov 2026 15:40:08 GMT</pubDate>
+    <description><![CDATA[La selección peruana venció 4-2 a Austria en los Juegos Olímpicos de Berlín 1936, con goles de &apos;Lolo&apos; Fernández y &apos;Manguera&apos; Villanueva en el tiempo suplementario. El partido fue anulado tras un reclamo austriaco y Perú se retiró del torneo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Juegos Olímpicos Berlín 1936]]></category>
+    <category><![CDATA[Lolo Fernández]]></category>
+    <category><![CDATA[Manguera Villanueva]]></category>
+    <category><![CDATA[Austria]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/af39d679ad1f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/af39d679ad1f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/af39d679ad1f.jpg"/>
+    <media:description type="plain"><![CDATA[Jugadores de Alianza Lima y Universitario lograron algo histórico al desencadenar juntos la molestia total de un temido dictador a nivel mundial. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Despistajes gratuitos de anemia infantil en Ate: fechas, sedes y horarios</title>
+    <link>https://ahora.com.pe/sociedad/despistajes-gratuitos-anemia-ate-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/despistajes-gratuitos-anemia-ate-noviembre</guid>
+    <pubDate>Fri, 13 Nov 2026 15:20:07 GMT</pubDate>
+    <description><![CDATA[Cencosud y United Way Perú realizarán despistajes gratuitos de anemia y orientación nutricional en tres supermercados de Ate durante noviembre. La iniciativa forma parte del programa Vive Bien y está dirigida a niños de 6 meses a 5 años.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[anemia infantil]]></category>
+    <category><![CDATA[despistaje gratuito]]></category>
+    <category><![CDATA[Ate]]></category>
+    <category><![CDATA[Vive Bien]]></category>
+    <category><![CDATA[United Way Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b5008e6e586c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b5008e6e586c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b5008e6e586c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Ralf Schumacher: &quot;Hamilton no es más rápido que Leclerc&quot;</title>
+    <link>https://ahora.com.pe/deportes/ralf-schumacher-hamilton-no-es-mas-rapido-que-leclerc</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/ralf-schumacher-hamilton-no-es-mas-rapido-que-leclerc</guid>
+    <pubDate>Fri, 13 Nov 2026 15:00:13 GMT</pubDate>
+    <description><![CDATA[Ralf Schumacher afirmó en Sky Sports Alemania que Hamilton no es más rápido que Leclerc y criticó su actitud en Ferrari tras el GP de México.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Ralf Schumacher]]></category>
+    <category><![CDATA[Lewis Hamilton]]></category>
+    <category><![CDATA[Charles Leclerc]]></category>
+    <category><![CDATA[Ferrari]]></category>
+    <category><![CDATA[Fórmula 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/aba66b740891.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/aba66b740891.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/aba66b740891.webp"/>
+    <media:description type="plain"><![CDATA[<b>Lewis Hamilton y Charles Leclerc </b>son dos de los pilotos más rápidos de la actual parrilla de <b>Fórmula 1</b> y se consideran dos gallos dentro de un mismo gallinero al compartir box en Ferrari las dos últimas temporadas. El británico llegó el año pasado como la leyenda que tenía que sacar a — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Perú Sub-20 debuta hoy ante Brasil en Belém con miras al Sudamericano 2027</title>
+    <link>https://ahora.com.pe/deportes/peru-sub-20-brasil-belem-amistosos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-sub-20-brasil-belem-amistosos</guid>
+    <pubDate>Fri, 13 Nov 2026 14:00:13 GMT</pubDate>
+    <description><![CDATA[La Selección Peruana Sub-20, con 24 convocados por Thiago Kosloski, enfrenta este viernes 13 y el lunes 16 a Brasil en Belém como preparación para el Sudamericano Sub-20 de 2027 en Colombia.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Selección Peruana Sub-20]]></category>
+    <category><![CDATA[Thiago Kosloski]]></category>
+    <category><![CDATA[Brasil Sub-20]]></category>
+    <category><![CDATA[amistosos Belém]]></category>
+    <category><![CDATA[Sudamericano Sub-20 2027]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6dca2be1b84c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6dca2be1b84c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6dca2be1b84c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Yabusele calienta el Panathinaikos-Barça: &quot;Podríamos vencer a varios equipos de la NBA&quot;</title>
+    <link>https://ahora.com.pe/deportes/yabusele-panathinaikos-vencer-equipos-nba</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/yabusele-panathinaikos-vencer-equipos-nba</guid>
+    <pubDate>Fri, 13 Nov 2026 13:20:07 GMT</pubDate>
+    <description><![CDATA[Guerschon Yabusele, del Panathinaikos, rival esta noche del Barça en la Euroliga, asegura en L&apos;Equipe que su equipo tiene talento para competir con franquicias NBA.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Yabusele]]></category>
+    <category><![CDATA[Panathinaikos]]></category>
+    <category><![CDATA[Barça]]></category>
+    <category><![CDATA[Euroliga]]></category>
+    <category><![CDATA[NBA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d67b3bfb97d1.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d67b3bfb97d1.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d67b3bfb97d1.webp"/>
+    <media:description type="plain"><![CDATA[<b>Guerschon Yabusele</b>, ala-pívot del <b>Panathinaikos</b>, rival esta noche (20:15 horas) del Barça en la 11ª jornada de la Euroliga, habló en una extensa entrevista con <b>L'Equipe</b>, sobre su decisión de regresar a Europa, la química dentro del vestuario del conjunto griego y su convicción d — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Facundo Callejo reveló que un club grande de Lima lo llamó en marzo para ficharlo</title>
+    <link>https://ahora.com.pe/deportes/facundo-callejo-club-lima-llamada-fichaje</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/facundo-callejo-club-lima-llamada-fichaje</guid>
+    <pubDate>Fri, 13 Nov 2026 12:20:06 GMT</pubDate>
+    <description><![CDATA[Facundo Callejo, delantero de Cusco FC, reveló en L1 MAX que un club grande de Lima lo llamó en marzo para consultar su situación contractual, pero el fichaje no se concretó porque su interlocutor salió de la institución.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Facundo Callejo]]></category>
+    <category><![CDATA[Cusco FC]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[fichajes]]></category>
+    <category><![CDATA[nacionalidad peruana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c67bba675b51.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c67bba675b51.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c67bba675b51.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Imágenes religiosas de todo el país llegan a Chiclayo para encuentro con el papa León XIV</title>
+    <link>https://ahora.com.pe/regional/imagenes-religiosas-chiclayo-papa-leon-xiv</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/imagenes-religiosas-chiclayo-papa-leon-xiv</guid>
+    <pubDate>Fri, 13 Nov 2026 12:10:07 GMT</pubDate>
+    <description><![CDATA[Hermandades y fieles trasladaron imágenes religiosas de diversas regiones a Chiclayo para el encuentro con el papa León XIV en Pimentel. La movilización recorrió calles de la ciudad y culminó en las Pampas de Pimentel, con presencia de devotos nacionales y extranjeros.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[Chiclayo]]></category>
+    <category><![CDATA[Pimentel]]></category>
+    <category><![CDATA[imágenes religiosas]]></category>
+    <category><![CDATA[peregrinaje]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/120a0c359aff.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/120a0c359aff.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/120a0c359aff.jpg"/>
+    <media:description type="plain"><![CDATA[Cientos de peregrinos acompañaron hoy jueves la peregrinación de imágenes sagradas que han sido trasladadas hasta las Pampas de Pimentel, escenario de la misa que celebrará el papa León XIV durante su visita a Chiclayo. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Sismo de magnitud 4.7 remeció Huánuco esta madrugada con epicentro cerca de Puerto Inca</title>
+    <link>https://ahora.com.pe/regional/sismo-magnitud-47-huanuco-puerto-inca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-magnitud-47-huanuco-puerto-inca</guid>
+    <pubDate>Fri, 13 Nov 2026 11:50:07 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 4.7 con epicentro a 65 kilómetros al noreste de Puerto Inca remeció la región Huánuco esta madrugada, según el IGP. No se reportaron daños ni víctimas.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo Huánuco]]></category>
+    <category><![CDATA[Puerto Inca]]></category>
+    <category><![CDATA[IGP]]></category>
+    <category><![CDATA[temblor]]></category>
+    <category><![CDATA[escala de Mercalli]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/486ab874addc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/486ab874addc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/486ab874addc.jpg"/>
+    <media:description type="plain"><![CDATA[El epicentro del sismo se ubicó a 65 kilómetros al noreste de Puerto Inca, reportó el Instituto Geofísico del Perú. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Louzán reclama a FIFA que la final del Mundial 2030 se juegue en España</title>
+    <link>https://ahora.com.pe/deportes/louzan-reclama-fifa-final-mundial-2030-espana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/louzan-reclama-fifa-final-mundial-2030-espana</guid>
+    <pubDate>Fri, 13 Nov 2026 11:50:06 GMT</pubDate>
+    <description><![CDATA[Rafael Louzán se reunió en Madrid con el equipo de FIFA que inspecciona las sedes del Mundial 2030 y reclamó que la final se dispute en España, en el marco de la candidatura conjunta con Portugal y Marruecos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Mundial 2030]]></category>
+    <category><![CDATA[Rafael Louzán]]></category>
+    <category><![CDATA[RFEF]]></category>
+    <category><![CDATA[FIFA]]></category>
+    <category><![CDATA[final del Mundial]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e6e8ca2bdc60.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e6e8ca2bdc60.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e6e8ca2bdc60.webp"/>
+    <media:description type="plain"><![CDATA[El presidente de la <b>Real Federación Española de Fútbol, Rafael Louzán</b>, ha mantenido este jueves un encuentro para dar la bienvenida a<b> Madrid </b>a todo el equipo de trabajo de <b>FIFA</b> que viaja durante estas semanas por España visitando las ciudades candidatas a sede para la <b>Copa Mu — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Marcus Smart, sancionado con tres partidos tras lanzar un puñetazo a Charles Bassey en la NBA</title>
+    <link>https://ahora.com.pe/deportes/marcus-smart-sancionado-tres-partidos-punetazo-nba</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/marcus-smart-sancionado-tres-partidos-punetazo-nba</guid>
+    <pubDate>Fri, 13 Nov 2026 10:10:06 GMT</pubDate>
+    <description><![CDATA[La NBA sancionó a Marcus Smart con tres partidos sin sueldo por lanzar un puñetazo a Charles Bassey durante el partido entre Houston Rockets y Golden State Warriors.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Marcus Smart]]></category>
+    <category><![CDATA[Charles Bassey]]></category>
+    <category><![CDATA[NBA]]></category>
+    <category><![CDATA[Houston Rockets]]></category>
+    <category><![CDATA[Golden State Warriors]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c682caf5b928.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c682caf5b928.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c682caf5b928.webp"/>
+    <media:description type="plain"><![CDATA[Tanto se fue el asunto de las manos en una pelea NBA, que uno de los combatientes soltó el puño. En el partido entre los Houston Rockets y los Golden State Warriors del miércoles, <b>Marcus Smart</b> y <b>Charles Bassey</b> protagonizaron un crudo enfrentamiento cara a cara con tintes de violencia. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>León se juega todo</title>
+    <link>https://ahora.com.pe/deportes/leon-se-juega-todo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-se-juega-todo</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:49 GMT</pubDate>
+    <description><![CDATA[León de Huánuco afrontará este domingo 15 de noviembre un partido decisivo frente a Bagua FC de Amazonas, en el estadio Heraclio Tapia León, desde las 3:00 de la tarde.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fb9325753268.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fb9325753268.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fb9325753268.jpg"/>
+    <media:description type="plain"><![CDATA[León se juega todo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Villegas opina sobre jugar en altura</title>
+    <link>https://ahora.com.pe/deportes/villegas-opina-sobre-jugar-en-altura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/villegas-opina-sobre-jugar-en-altura</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:45 GMT</pubDate>
+    <description><![CDATA[Óscar Villegas, entrenador de la Selección de Bolivia, consideró que la posibilidad de que Perú dispute partidos de Eliminatorias en ciudades de altura debe evaluarse más allá de las condiciones]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Villegas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/eee78b7e52f2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/eee78b7e52f2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/eee78b7e52f2.jpg"/>
+    <media:description type="plain"><![CDATA[Villegas opina sobre jugar en altura — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Sport Boys pretende fichar a Orlando Núñez</title>
+    <link>https://ahora.com.pe/deportes/sport-boys-pretende-fichar-a-orlando-nunez</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-boys-pretende-fichar-a-orlando-nunez</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:42 GMT</pubDate>
+    <description><![CDATA[Sport Boys evalúa incorporar al lateral izquierdo Orlando Núñez para la temporada 2027, año en que la institución chalaca celebrará su centenario.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Boys]]></category>
+    <category><![CDATA[Orlando Núñez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7fba2b0f34bc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7fba2b0f34bc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7fba2b0f34bc.jpg"/>
+    <media:description type="plain"><![CDATA[Sport Boys pretende fichar a Orlando Núñez — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Noriega seguiría en Gremio pese a rumores</title>
+    <link>https://ahora.com.pe/deportes/noriega-seguiria-en-gremio-pese-a-rumores</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/noriega-seguiria-en-gremio-pese-a-rumores</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:39 GMT</pubDate>
+    <description><![CDATA[El futuro de Erick Noriega continúa ligado a Gremio, al menos por ahora. Guillermo Zariquiey, representante del futbolista peruano, descartó que exista una oferta de la Fiorentina o del Como 1907]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Noriega]]></category>
+    <category><![CDATA[Gremio]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/67214df6c900.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/67214df6c900.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/67214df6c900.jpg"/>
+    <media:description type="plain"><![CDATA[Noriega seguiría en Gremio pese a rumores — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Saba evalúa ofertas de Alianza y Boys</title>
+    <link>https://ahora.com.pe/deportes/saba-evalua-ofertas-de-alianza-y-boys</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/saba-evalua-ofertas-de-alianza-y-boys</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:35 GMT</pubDate>
+    <description><![CDATA[Emilio Saba no define dónde jugará en la temporada 2027. El lateral derecho de Sport Boys fue consultado por las versiones que lo vinculan con Alianza Lima y reconoció que mantiene conversaciones]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Saba]]></category>
+    <category><![CDATA[Alianza]]></category>
+    <category><![CDATA[Boys]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/53ac318d1419.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/53ac318d1419.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/53ac318d1419.jpg"/>
+    <media:description type="plain"><![CDATA[Saba evalúa ofertas de Alianza y Boys — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco recibe regional de básquet U15</title>
+    <link>https://ahora.com.pe/deportes/huanuco-recibe-regional-de-basquet-u15</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/huanuco-recibe-regional-de-basquet-u15</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:31 GMT</pubDate>
+    <description><![CDATA[El torneo regional de básquet U15, en las ramas femenina y masculina, comenzará este viernes 13 de noviembre desde las 3:00 de la tarde en el polideportivo de la Universidad Nacional Hermilio]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1d0e12dece60.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1d0e12dece60.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1d0e12dece60.jpg"/>
+    <media:description type="plain"><![CDATA[Huánuco recibe regional de básquet U15 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Chacos busca mantener su invicto ante Gálvez</title>
+    <link>https://ahora.com.pe/deportes/chacos-busca-mantener-su-invicto-ante-galvez</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/chacos-busca-mantener-su-invicto-ante-galvez</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:28 GMT</pubDate>
+    <description><![CDATA[Municipal de Chacos afrontará este sábado 14 de noviembre un nuevo desafío en el torneo Tradición Copera.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Chacos]]></category>
+    <category><![CDATA[Gálvez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4d672f9f18c4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4d672f9f18c4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4d672f9f18c4.jpg"/>
+    <media:description type="plain"><![CDATA[Chacos busca mantener su invicto ante Gálvez — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Copa Perú define ocho clasificados a cuartos</title>
+    <link>https://ahora.com.pe/deportes/copa-peru-define-ocho-clasificados-a-cuartos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/copa-peru-define-ocho-clasificados-a-cuartos</guid>
+    <pubDate>Fri, 13 Nov 2026 09:02:24 GMT</pubDate>
+    <description><![CDATA[La etapa nacional de la Copa Perú ingresará este fin de semana en una fase decisiva, con ocho partidos de vuelta que determinarán a los clasificados a cuartos de final.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4f75273d3b27.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4f75273d3b27.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4f75273d3b27.jpg"/>
+    <media:description type="plain"><![CDATA[Copa Perú define ocho clasificados a cuartos — Licencia: propia]]></media:description>
+  </item>
+  </channel>
+</rss>
