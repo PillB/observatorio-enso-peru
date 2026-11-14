@@ -1,6 +1,6 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-13T04:31:51+00:00",
+ "at": "2026-11-14T02:10:04+00:00",
  "result": "ok",
  "reachable": "51/57",
  "summary": {
@@ -21,27 +21,16 @@
  },
  "failures": [
   {
-   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
-   "status": 200,
-   "class": "challenge",
-   "error": "página de verificación antirobots: no se guarda (no se evade)"
-  },
-  {
-   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/18-2026.pdf",
-   "status": 200,
-   "class": "challenge",
-   "error": "página de verificación antirobots: no se guarda (no se evade)"
-  },
-  {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf",
    "status": 200,
    "class": "challenge",
    "error": "página de verificación antirobots: no se guarda (no se evade)"
   },
   {
-   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-20-2026/",
-   "status": 404,
-   "class": "http-4xx"
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/19-2026.pdf",
+   "status": 200,
+   "class": "challenge",
+   "error": "página de verificación antirobots: no se guarda (no se evade)"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/21-2026.pdf",
@@ -51,6 +40,17 @@
   },
   {
    "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-21-2026/",
+   "status": 404,
+   "class": "http-4xx"
+  },
+  {
+   "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/22-2026.pdf",
+   "status": 200,
+   "class": "challenge",
+   "error": "página de verificación antirobots: no se guarda (no se evade)"
+  },
+  {
+   "url": "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-22-2026/",
    "status": 404,
    "class": "http-4xx"
   }
@@ -77,5 +77,6 @@
   "dns": 5,
   "empty": 1,
   "http-403": 2
- }
+ },
+ "carried": 2
 }
