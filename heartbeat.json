@@ -1,6 +1,6 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-14T02:10:04+00:00",
+ "at": "2026-11-15T02:47:22+00:00",
  "result": "ok",
  "reachable": "51/57",
  "summary": {
@@ -78,5 +78,5 @@
   "empty": 1,
   "http-403": 2
  },
- "carried": 2
+ "carried": 4
 }
