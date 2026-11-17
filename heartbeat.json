@@ -1,6 +1,6 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-15T02:47:22+00:00",
+ "at": "2026-11-17T02:02:21+00:00",
  "result": "ok",
  "reachable": "51/57",
  "summary": {
@@ -64,19 +64,19 @@
   "os": "macOS-26.6.2",
   "python": "3.12.15",
   "git": "2.50.1 (Apple Git-155)",
-  "consecutive_failures": 0,
+  "consecutive_failures": 1,
   "token_expires_at": "2027-05-10T05:00:00+00:00"
  },
  "registry": {
   "origin": "github",
-  "generated_at": "2026-11-10T06:04:57+00:00",
+  "generated_at": "2026-11-16T19:43:13+00:00",
   "sources": 220,
-  "peru_server": 21
+  "peru_server": 19
  },
  "probes": {
   "dns": 5,
   "empty": 1,
   "http-403": 2
  },
- "carried": 4
+ "carried": 2
 }
