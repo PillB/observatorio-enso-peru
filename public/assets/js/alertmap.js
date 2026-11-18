@@ -904,7 +904,7 @@ export async function mountAlertMap(el, { feed, getFilter, onFilter }) {
 const EXP_TITLE = {
   mapa: ['Versión del mapa de alertas', 'Noticias, vista Resumen: las cuatro formas de dibujar los avisos por departamento.'],
   memoria: ['Vista con que abre el mapa de la memoria', 'Memoria de desastres: el resumen por área o uno de sus tres detalles.'],
-  boletin: ['Mapa del Boletín', 'Boletín: el mapa del Perú o el mosaico de cuadros que lleva el correo.'],
+  boletin: ['Forma del Boletín', 'Boletín: la hoja con el mapa del Perú, la hoja con el mosaico de cuadros que lleva el correo o la ficha de impacto.'],
   noticias: ['Vista con que abre el mapa de Noticias', 'Noticias: el resumen (con su versión A–D) o uno de sus dos detalles.'],
   sitio: ['Versión de todo el sitio', 'A, clásica: las trece pestañas en una fila. B, agrupada: cinco secciones con submenús y lo largo plegado. Aquí «usaron» quiere decir que abrieron una segunda pestaña; el tiempo en cada pestaña está en la analítica de la consola.'],
 };

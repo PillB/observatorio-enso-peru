@@ -148,7 +148,7 @@ vínculos declarados. Para usarlos:
 - Las solicitudes a Functions cuentan contra el plan gratuito de Workers
   (100 000 al día); los archivos estáticos no.
 
-Hay cuatro Functions, todas bajo `/api/` (`functions/api/<ruta>/[[path]].js`,
+Hay cinco Functions, todas bajo `/api/` (`functions/api/<ruta>/[[path]].js`,
 con la lógica en `functions/_lib/`). Los vínculos y secretos se cargan en
 el panel: *Workers & Pages → el proyecto → Settings → Bindings* (la base
 D1) y *Variables and Secrets* (los secretos y variables).
@@ -159,9 +159,10 @@ D1) y *Variables and Secrets* (los secretos y variables).
 | `/api/docs/*` | Consola de documentos (`/admin/documentos.html`): un administrador sube el PDF que ninguna ruta automática trae; la Function lo guarda en la rama `data-manual` y pide una actualización (`enso-refresh`) | Las cuentas de la consola de lugares y su base `GEO_DB` (tabla `uploads`); el secreto `DOCS_GITHUB_TOKEN` (token de grano fino de GitHub, solo este repositorio, *Contents: Read and write*) y, opcionales, `DOCS_GITHUB_REPO` (por omisión `PillB/observatorio-enso-peru`) y `DOCS_UPLOAD_ROLES` (por omisión `admin`). Pasos en [documentos-manuales.md](documentos-manuales.md#configurar-una-vez) |
 | `/api/ab/*` | Analítica anónima de las versiones del mapa de alertas: suma contadores por día, versión y evento en la tabla `ab_daily` | La misma base `GEO_DB`; sin ella responde sin hacer nada. Resultados en `#/variantes`. Ver [mapa-alertas.md](mapa-alertas.md#analítica-anónima) |
 | `/api/uso/*` | Medición anónima del uso por versión del sitio (A clásica, B agrupada): sesiones, visitas repetidas, veces y segundos en cada pestaña y cambios de versión, en la tabla `uso_daily`. Sin IP, cookies ni identificador | La misma base `GEO_DB`; sin ella responde sin hacer nada. La lectura (`/api/uso/stats`) pide una sesión de la consola. Tablero en `/admin/analitica.html`. Ver [analitica-uso.md](analitica-uso.md) |
+| `/api/boletin/*` | Suscripción al boletín por correo (`#/boletin`): doble confirmación, preferencias (frecuencia y departamentos), baja en un clic (RFC 8058) y la lista de suscritos que lee n8n para enviar. Guarda correo, preferencias y fechas en la tabla `boletin_subs`; los topes contra abuso, en `boletin_limits` | La misma base `GEO_DB`; el secreto `BOLETIN_SECRET` (32 caracteres o más, firma los enlaces) y `BOLETIN_LIST_TOKEN` (24 o más, la clave con la que n8n lee la lista). Para enviar el correo de confirmación, o bien `BOLETIN_MAIL_WEBHOOK` y `BOLETIN_MAIL_WEBHOOK_SECRET` (el flujo de n8n que lo manda por Gmail) o bien `RESEND_API_KEY` y `BOLETIN_FROM`. Opcionales: `SITE_URL` (la dirección pública, para los enlaces) y `BOLETIN_DAILY_CAP` (correos de confirmación al día, por omisión 200). Sin `BOLETIN_SECRET` la página no muestra el formulario. Ver [boletin.md](boletin.md#suscripción-por-correo) |
 
 Sin `DOCS_GITHUB_TOKEN`, la consola de documentos dice «La subida no está
-configurada» y la API responde 503 al subir. Las cuatro rutas escriben en la
+configurada» y la API responde 503 al subir. Las cinco rutas escriben en la
 misma base D1, y el cupo gratuito de D1 (100 000 filas escritas al día) es
 por cuenta: por eso la analítica tiene un tope de 20 000 sumas al día
 (`DAILY_CAP` en `functions/_lib/ab.js`) y la medición del uso uno de 30 000
@@ -178,6 +179,7 @@ escrituras a las consolas. `ASSETS` (los archivos del sitio, con el que las cons
 | `functions/_lib/doc-uploads.js` (`/api/docs/*`) | `GEO_DB`, `DOCS_GITHUB_TOKEN`, `DOCS_GITHUB_REPO`, `DOCS_UPLOAD_ROLES`, `ASSETS` |
 | `functions/_lib/ab.js` (`/api/ab/*`) | `GEO_DB` (tabla `ab_daily`) |
 | `functions/_lib/uso.js` (`/api/uso/*`) | `GEO_DB` (tabla `uso_daily`); `GEO_USERS` para la sesión que pide la lectura |
+| `functions/_lib/boletin-subs.js` (`/api/boletin/*`) | `GEO_DB` (tablas `boletin_subs` y `boletin_limits`), `BOLETIN_SECRET`, `BOLETIN_LIST_TOKEN`, `BOLETIN_MAIL_WEBHOOK`, `BOLETIN_MAIL_WEBHOOK_SECRET`, `RESEND_API_KEY`, `BOLETIN_FROM`, `SITE_URL`, `BOLETIN_DAILY_CAP` |
 | `python/enso/geo_overrides.py` | `GEO_OVERRIDES_URL` (lo fija el flujo diario con Cloudflare) |
 | `.github/workflows/watchdog.yml` | `SITE_URL` |
 | `python/tools/cloudflare_pages.py` | Crea el proyecto si falta y devuelve su dirección |

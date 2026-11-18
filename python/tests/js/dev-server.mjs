@@ -1,4 +1,4 @@
-// Servidor de prueba que imita Cloudflare Pages: archivos estáticos de --site y /api/geo/*, /api/ab/* y /api/uso/*
+// Servidor de prueba que imita Cloudflare Pages: archivos estáticos de --site y /api/geo/*, /api/ab/*, /api/uso/* y /api/boletin/*
 // con las Functions reales (functions/_lib/) sobre una D1 de mentira. Usuarios en GEO_USERS.
 //   node dev-server.mjs --site ../public --port 8788
 import { readFile } from 'node:fs/promises';
@@ -8,6 +8,7 @@ import path from 'node:path';
 import { handle } from '../../../functions/_lib/geo-console.js';
 import { handle as handleAb } from '../../../functions/_lib/ab.js';
 import { handle as handleUso } from '../../../functions/_lib/uso.js';
+import { handle as handleBol } from '../../../functions/_lib/boletin-subs.js';
 import { FakeD1 } from './fake-d1.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).reduce((acc, a, i, all) => (a.startsWith('--') ? [...acc, [a.slice(2), all[i + 1]]] : acc), []));
@@ -26,7 +27,7 @@ async function asset(pathname) {
   }
 }
 
-const env = { GEO_DB: new FakeD1(), GEO_USERS: process.env.GEO_USERS || '{}', ASSETS: { fetch: (u) => asset(new URL(u).pathname) } };
+const env = { GEO_DB: new FakeD1(), GEO_USERS: process.env.GEO_USERS || '{}', BOLETIN_SECRET: process.env.BOLETIN_SECRET, BOLETIN_LIST_TOKEN: process.env.BOLETIN_LIST_TOKEN, BOLETIN_MAIL_WEBHOOK: process.env.BOLETIN_MAIL_WEBHOOK, BOLETIN_MAIL_WEBHOOK_SECRET: process.env.BOLETIN_MAIL_WEBHOOK_SECRET, ASSETS: { fetch: (u) => asset(new URL(u).pathname) } };
 
 http.createServer(async (req, res) => {
   const chunks = [];
@@ -37,7 +38,7 @@ http.createServer(async (req, res) => {
   headers.set('CF-Connecting-IP', req.socket.remoteAddress || '');
   const request = new Request(url, { method: req.method, headers, body: ['GET', 'HEAD'].includes(req.method) ? undefined : Buffer.concat(chunks) });
   const pathname = new URL(url).pathname;
-  const api = pathname.startsWith('/api/geo/') ? handle : pathname.startsWith('/api/ab/') ? handleAb : pathname.startsWith('/api/uso/') ? handleUso : null;
+  const api = pathname.startsWith('/api/geo/') ? handle : pathname.startsWith('/api/ab/') ? handleAb : pathname.startsWith('/api/uso/') ? handleUso : pathname.startsWith('/api/boletin/') ? handleBol : null;
   const r = api ? await api(request, env) : await asset(pathname);
   res.writeHead(r.status, Object.fromEntries(r.headers));
   res.end(Buffer.from(await r.arrayBuffer()));

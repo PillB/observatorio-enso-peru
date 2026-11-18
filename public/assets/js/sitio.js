@@ -50,7 +50,7 @@ export const LIST_MAX = 12;
 
 // Versiones de cada pestaña que el selector deja cambiar (los experimentos de ab.js).
 const TAB_EXPS = { noticias: ['mapa', 'noticias'], memoria: ['memoria'], boletin: ['boletin'] };
-const EXP_LABEL = { mapa: 'Mapa de alertas', noticias: 'Vista con que abre el mapa', memoria: 'Vista con que abre el mapa', boletin: 'Mapa del boletín' };
+const EXP_LABEL = { mapa: 'Mapa de alertas', noticias: 'Vista con que abre el mapa', memoria: 'Vista con que abre el mapa', boletin: 'Forma del boletín' };
 
 // ---------------------------------------------------------------------------
 // Versión del sitio

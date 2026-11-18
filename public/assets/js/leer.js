@@ -177,10 +177,10 @@ export const GUIDES = {
   },
   // --- Boletín ----------------------------------------------------------------------------------------------------
   'bol-h': {
-    que: 'Lo que cambió desde la edición anterior: avisos que empiezan, suben de nivel o terminan, por departamento.',
-    colores: [['alert', 'Rojo.'], ['orange', 'Naranja.'], ['watch', 'Amarillo.'], ['na', 'Gris: sin nivel o sin avisos.']],
-    valores: ['Los colores son los niveles que dio cada institución, con la misma leyenda que acompaña al mapa.', '«Qué se viene» lista lo que empieza en los próximos días; «más críticos», los departamentos con el nivel más alto.'],
-    ojo: 'Es un resumen de avisos oficiales, no una alerta propia.',
+    que: 'Una foto del corte: el estado del ENFEN, cuántos departamentos tienen avisos oficiales de lluvias, huaicos, inundaciones u oleaje en cada color, y los más críticos con qué podría pasar, cuándo y quién lo dice.',
+    colores: [['alert', 'Rojo: el nivel más alto que dio la institución.'], ['orange', 'Naranja.'], ['watch', 'Amarillo.'], ['na', 'Gris: aviso sin nivel en su fuente.'], ['ok', 'Verde: ningún aviso de El Niño vigente o próximo; no quiere decir que no haya riesgo.']],
+    valores: ['Cada departamento lleva el color de su aviso más alto. Rayado o «próx.»: el aviso todavía no empieza. Más claro: venció después del corte.', 'Los contadores de arriba filtran la lista; «Qué cambió» dice qué es nuevo desde la edición anterior.', 'Las probabilidades son las del informe técnico del ENFEN, con su página; el boletín no calcula ninguna.'],
+    ojo: 'Es un resumen de avisos oficiales, no una alerta propia: ante una emergencia, siga al INDECI, al SENAMHI y a su municipalidad.',
   },
   // --- Datos y Metodología ----------------------------------------------------------------------------------------
   'ex-h': { que: 'Cualquier serie publicada, con su gráfico, su tabla y su descarga.', valores: ['Debajo del selector están la descripción de la serie, su unidad y el periodo base de la anomalía.', 'La tabla muestra primero lo más reciente; «prelim.» marca un valor que la fuente todavía puede corregir.', HOVER], ojo: 'Las series tienen frecuencias distintas (semanal, mensual, trimestral): compare solo las que comparten periodo.' },
