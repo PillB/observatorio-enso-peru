@@ -26,7 +26,7 @@
 // las fechas. Sin IP: el tope por conexión usa un hash con sal del día, que se borra al día siguiente. Una suscripción
 // sin confirmar se borra a los 7 días; la baja borra la fila.
 
-export const FREQS = ['todo', 'importantes', 'diario'];
+export const FREQS = ['todo', 'importantes', 'diario', 'semanal'];
 export const DEPS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'];
 export const PENDING_DAYS = 7;
 export const PER_ADDRESS = 3; // correos de confirmación por dirección y día
@@ -278,7 +278,7 @@ async function list(request, env, url, db) {
   for (const r of results) {
     const baja = await token(env, 'baja', r.id, r.email);
     subs.push({
-      email: r.email, frecuencia: r.freq, deps: r.deps ? r.deps.split(',') : [],
+      id: r.id, email: r.email, frecuencia: r.freq, deps: r.deps ? r.deps.split(',') : [],
       baja: `${base}#/boletin?baja=${baja}`, bajaPost: `${api}?t=${baja}`,
       preferencias: `${base}#/boletin?preferencias=${await token(env, 'preferencias', r.id, r.email)}`,
     });

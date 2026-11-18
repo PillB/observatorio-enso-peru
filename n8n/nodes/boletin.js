@@ -29,6 +29,7 @@ if (cfg.use_list === true || cfg.use_list === 'true') {
   list = (typeof body === 'string' ? JSON.parse(body) : body).subs || [];
 }
 const st = $getWorkflowStaticData('global');
-const out = decide(doc, cfg, { lastEdition: st.lastEdition, lastEditionAt: st.lastEditionAt, lastDigestDay: st.lastDigestDay, dailyEdition: st.dailyEdition, dailyEditionAt: st.dailyEditionAt, dailyDay: st.dailyDay }, Date.now(), list);
+const keys = ['lastEdition', 'lastEditionAt', 'lastDigestDay', 'dailyEdition', 'dailyEditionAt', 'dailyDay', 'weeklyEdition', 'weeklyEditionAt', 'weeklyWeek', 'welcomed'];
+const out = decide(doc, cfg, Object.fromEntries(keys.map((k) => [k, st[k]])), Date.now(), list);
 out.lastEdition = st.lastEdition || 0;
 return [{ json: out }];

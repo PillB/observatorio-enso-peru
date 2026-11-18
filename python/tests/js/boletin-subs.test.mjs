@@ -64,6 +64,8 @@ describe('suscripción al boletín', () => {
     l = await (await req('lista', { method: 'GET', origin: null, headers: { Authorization: `Bearer ${LIST}` } })).json();
     assert.equal(l.count, 1);
     assert.deepEqual(l.subs[0].deps, ['20', '24']);
+    // El id (fijo mientras dure la suscripción) le sirve a n8n para saber a quién no le dio la bienvenida.
+    assert.match(l.subs[0].id, /^[0-9a-f]{32}$/);
     assert.match(l.subs[0].baja, /#\/boletin\?baja=[0-9a-f]{32}/);
     assert.match(l.subs[0].bajaPost, /\/api\/boletin\/baja\?t=/);
   });
@@ -107,6 +109,8 @@ describe('suscripción al boletín', () => {
     assert.equal(g.email, 'an***@example.pe');
     assert.equal((await req('preferencias', { body: { t, frecuencia: 'nada', deps: ['15', 'x'] } })).status, 200);
     assert.deepEqual(rows()[0], { email: 'analucia@example.pe', status: 'activa', freq: 'todo', deps: '15' });
+    assert.equal((await req('preferencias', { body: { t, frecuencia: 'semanal', deps: [] } })).status, 200);
+    assert.equal(rows()[0].freq, 'semanal');
     // La baja desde la página (JSON) borra la fila.
     const b = new URL(l.subs[0].baja.replace('#/boletin?', '?')).searchParams.get('baja');
     assert.equal((await req('baja', { body: { t: b } })).status, 200);

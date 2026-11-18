@@ -1296,9 +1296,12 @@ def bol(site):
     return _boletin_doc(site[1])
 
 
-def _bol_page(browser, site, doc, *, variant="mapa", **ctx_kw):
+def _bol_page(browser, site, doc, *, variant="mapa", wide=False, **ctx_kw):
     base, _ = site
     ctx = browser.new_context(**{"viewport": {"width": 1280, "height": 900}, "locale": "es-PE", **ctx_kw})
+    if wide:  # las letras del runner de la corrida diaria (DejaVu Sans) son más anchas que las de aquí
+        ctx.add_init_script(f"addEventListener('DOMContentLoaded', () => document.head.append(Object.assign("
+                            f"document.createElement('style'), {{textContent: {json.dumps(WIDE_TEXT)}}})));")
     ctx.add_init_script("if (!localStorage.getItem('enso-vista-boletin')) localStorage.setItem('enso-vista-boletin', JSON.stringify({v: '%s', chosen: true, at: '2000-01-01'}));" % variant)
     pg = ctx.new_page()
     pg.errors = []
@@ -1397,7 +1400,7 @@ def test_boletin_fits_phones_in_both_themes(site, browser, bol, w, scheme):
 
 @pytest.mark.parametrize("variant", ["mapa", "mosaico", "ficha"])
 def test_boletin_each_form_prints_on_one_a4_page(site, browser, bol, variant):
-    ctx, pg = _bol_page(browser, site, bol, variant=variant)
+    ctx, pg = _bol_page(browser, site, bol, variant=variant, wide=True)
     expect(pg.locator("#bol-sheet")).to_have_attribute("data-form", variant)
     pdf = pg.pdf(format="A4", print_background=True)
     assert len(re.findall(rb"/Type\s*/Page[^s]", pdf)) == 1, f"{variant}: más de una hoja"

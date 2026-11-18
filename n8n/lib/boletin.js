@@ -11,6 +11,10 @@
 //   - Solo cambios «resumen»: se manda en la hora del resumen diario (``digestHour``, hora de Lima), una vez al día.
 //   - Sin ediciones nuevas: nada.
 //   - Primera vez (sin estado): el boletín completo, como «primer boletín».
+//   - Suscripción nueva (que este flujo no conoce): el boletín completo en la revisión siguiente, a cualquier hora, como
+//     «bienvenida»; desde ahí, solo los cambios posteriores, según la frecuencia que eligió.
+//   - Frecuencia «diario» o «semanal»: un resumen al día o a la semana (el lunes) a la hora del resumen, con su propio
+//     puntero; en las demás revisiones de cada hora esas suscripciones no reciben nada.
 //   - Numeración reiniciada (la actualización no pudo leer el boletín anterior y volvió a la N° 1): una edición con
 //     número menor o igual al último enviado pero de fecha posterior (``editionAt``) es de una serie nueva y se
 //     manda completa, en vez de darla por enviada.
@@ -26,10 +30,11 @@ function parseRecipients(text) {
   return out;
 }
 
-/** Hora y día en Lima (UTC−5, sin horario de verano). */
+/** Hora, día y semana en Lima (UTC−5, sin horario de verano). ``week``: la fecha del lunes de esa semana. */
 function limaClock(now) {
   const d = new Date(now - 5 * 3600000);
-  return { hour: d.getUTCHours(), day: d.toISOString().slice(0, 10) };
+  const monday = new Date(d.getTime() - ((d.getUTCDay() + 6) % 7) * 86400000);
+  return { hour: d.getUTCHours(), day: d.toISOString().slice(0, 10), week: monday.toISOString().slice(0, 10) };
 }
 
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -194,6 +199,14 @@ function personalize(html, text, sub, names) {
   return { html: h, text: `${text}\n\n—\n${why}\nPreferencias: ${sub.preferencias}\nDarse de baja: ${sub.baja}` };
 }
 
+const FREQS = ['todo', 'importantes', 'diario', 'semanal'];
+const FREQ_TEXT = {
+  todo: 'los cambios importantes al momento y un resumen diario de los menores',
+  importantes: 'solo los cambios importantes, al momento',
+  diario: 'un resumen al día con lo que cambió',
+  semanal: 'un resumen a la semana, los lunes, con lo que cambió',
+};
+
 /** Suscripciones válidas de /api/boletin/lista (cada una con su correo, frecuencia, departamentos y enlaces). */
 function cleanSubs(list) {
   const seen = new Set();
@@ -202,7 +215,8 @@ function cleanSubs(list) {
     const [email] = parseRecipients(s && s.email);
     if (!email || seen.has(email) || !/^https:\/\//.test(String(s.baja || '')) || !/^https:\/\//.test(String(s.bajaPost || ''))) continue;
     seen.add(email);
-    out.push({ email, frecuencia: ['todo', 'importantes', 'diario'].includes(s.frecuencia) ? s.frecuencia : 'todo', deps: Array.isArray(s.deps) ? s.deps.map(String) : [], baja: s.baja, bajaPost: s.bajaPost, preferencias: String(s.preferencias || s.baja) });
+    const id = /^[0-9a-f]{32}$/.test(String(s.id || '')) ? String(s.id) : '';
+    out.push({ email, key: id || email, frecuencia: FREQS.includes(s.frecuencia) ? s.frecuencia : 'todo', deps: Array.isArray(s.deps) ? s.deps.map(String) : [], baja: s.baja, bajaPost: s.bajaPost, preferencias: String(s.preferencias || s.baja) });
   }
   return out;
 }
@@ -213,9 +227,11 @@ function cleanSubs(list) {
  * /api/boletin/lista (o nada). Devuelve {send, reason, messages, ...}: un mensaje para la lista fija de «to»/«bcc» y uno
  * por suscriptor, cada uno con su «raw» para la API de Gmail.
  *
- * Dos vías: la principal (avisos importantes al momento y el resumen diario de los menores) para «to», «bcc» y las
- * suscripciones «todo» e «importantes» (estas solo los importantes); y la diaria (un correo al día con todo lo que
- * cambió) para las suscripciones «diario», con su propio puntero de edición.
+ * Vías: la bienvenida (el boletín completo a cada suscripción nueva); la principal (avisos importantes al momento y el
+ * resumen diario de los menores) para «to», «bcc» y las suscripciones «todo» e «importantes» (estas solo los
+ * importantes); la diaria y la semanal (un correo al día o a la semana con todo lo que cambió) para las suscripciones
+ * «diario» y «semanal», cada una con su propio puntero de edición. ``st.welcomed``: {suscripción: edición con la que
+ * se le dio la bienvenida}; a cada suscripción solo le llegan los cambios de ediciones posteriores a esa.
  */
 function decide(doc, cfg, st, now, list = null) {
   if (!doc || doc.schema !== 'enso-boletin/1' || !Array.isArray(doc.segments) || !doc.email) {
@@ -241,26 +257,49 @@ function decide(doc, cfg, st, now, list = null) {
   const from = /^[^@\s<>"]+@[^@\s<>"]+$/.test(String(cfg.from_address || '')) ? `${encHeader(cfg.sender_name || 'Observatorio ENSO Perú')} <${cfg.from_address}>` : null;
   const listHeaders = { 'List-Id': `Boletin El Nino Peru <boletin.${host}>`, 'Auto-Submitted': 'auto-generated', Precedence: 'bulk' };
   const messages = [];
-  const personal = (sub, prefix, changes, gap, first, kind) => {
+  const personal = (sub, prefix, changes, gap, first, kind, intro = null) => {
     const b = body(doc, changes, gap, first, cfg.site);
+    if (intro) Object.assign(b, { html: withBlock(b.html, intro.html), text: `${intro.text}\n\n${b.text}` });
     const subject = subjectFor(doc, changes, first ? '' : prefix, first);
     const p = personalize(b.html, b.text, sub, names);
     const headers = { ...listHeaders, 'List-Unsubscribe': `<${sub.bajaPost}>, <${sub.baja}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' };
     messages.push({ to: sub.email, kind, frecuencia: sub.frecuencia, subject, headers, raw: mime({ from, to: sub.email, subject, html: p.html, text: p.text, headers }, sub.email) });
   };
 
+  // Bienvenida: sin «welcomed» (estado de antes de esta vía) nadie recibió aún el boletín completo, así que todas son
+  // nuevas. Una numeración reiniciada deja sin sentido las ediciones guardadas: cuentan como 0.
+  const prevWelcomed = st.welcomed && typeof st.welcomed === 'object' ? st.welcomed : {};
+  const welcomed = {};
+  const fresh = [];
+  for (const s of subs) {
+    if (Object.prototype.hasOwnProperty.call(prevWelcomed, s.key)) {
+      const e = Number(prevWelcomed[s.key]) || 0;
+      welcomed[s.key] = e > doc.edition ? 0 : e;
+    } else { fresh.push(s); welcomed[s.key] = doc.edition; }
+  }
+  for (const s of fresh) {
+    const how = FREQ_TEXT[s.frecuencia];
+    personal(s, '', [], false, true, 'Bienvenida', {
+      html: `<div style="background:#e8f3f8;border-left:4px solid #0b4f71;padding:8px 12px;margin:0 0 12px;font:13px/1.4 Arial,sans-serif"><strong>Bienvenida.</strong> Este es el boletín completo de hoy. Desde ahora le llegan ${esc(how)}.</div>`,
+      text: `Bienvenida. Este es el boletín completo de hoy. Desde ahora le llegan ${how}.`,
+    });
+  }
+  const isFresh = new Set(fresh.map((s) => s.key));
+  // Lo que le toca a una suscripción: sus departamentos y solo lo posterior a su bienvenida.
+  const forSub = (s, changes) => relevantChanges(changes, s.deps).filter((c) => !(Number(c.edition) <= welcomed[s.key]));
+  let reason = fresh.length ? `Bienvenida para ${fresh.length} ${fresh.length === 1 ? 'suscripción nueva' : 'suscripciones nuevas'}.` : '';
+
   // Vía principal.
-  let reason = '';
   let main = null;
   let pending = 0;
-  if (last >= doc.edition && last > 0) reason = `Sin ediciones nuevas (la última enviada es la N° ${last}).`;
+  if (last >= doc.edition && last > 0) reason = `${reason ? `${reason} ` : ''}Sin ediciones nuevas (la última enviada es la N° ${last}).`;
   else {
     const { editions, changes, gap } = pendingChanges(doc, last);
     const first = last === 0;
     const urgent = first || changes.some((c) => c.tier === 'inmediata');
     const digestDue = clock.hour >= digestHour && st.lastDigestDay !== clock.day;
     if (!urgent && !digestDue) {
-      reason = `Solo cambios para el resumen diario: se mandan a las ${digestHour}:00 (hora de Lima).`;
+      reason = `${reason ? `${reason} ` : ''}Solo cambios para el resumen diario: se mandan a las ${digestHour}:00 (hora de Lima).`;
       pending = changes.length;
     } else {
       const kind = restarted ? 'Boletín completo (numeración reiniciada)' : first ? 'Primer boletín' : urgent ? 'Aviso' : 'Resumen diario';
@@ -271,43 +310,46 @@ function decide(doc, cfg, st, now, list = null) {
         messages.push({ to: to.join(','), bcc: bcc.join(','), kind: 'lista', subject: main.subject, headers: listHeaders, raw: mime({ from, to: to.join(','), bcc: bcc.join(','), subject: main.subject, html: main.html, text: main.text, headers: listHeaders }) });
       }
       for (const s of subs) {
-        if (s.frecuencia === 'diario' || (s.frecuencia === 'importantes' && !urgent)) continue;
-        const rel = relevantChanges(changes, s.deps);
+        if (isFresh.has(s.key) || s.frecuencia === 'diario' || s.frecuencia === 'semanal' || (s.frecuencia === 'importantes' && !urgent)) continue;
+        const rel = first ? relevantChanges(changes, s.deps) : forSub(s, changes);
         if (!first && !rel.length) continue;
         personal(s, main.prefix, rel, gap, first, kind);
       }
-      reason = `${kind}: ediciones ${editions.join(', ') || doc.edition}, ${changes.length} cambios.`;
+      reason = `${reason ? `${reason} ` : ''}${kind}: ediciones ${editions.join(', ') || doc.edition}, ${changes.length} cambios.`;
     }
   }
 
-  // Vía diaria.
-  const dailySubs = subs.filter((s) => s.frecuencia === 'diario');
-  let daily = null;
-  const dRestart = restartedFor(st.dailyEdition, st.dailyEditionAt);
-  const dLast = dRestart ? 0 : Number(st.dailyEdition) || 0;
-  if (dailySubs.length && clock.hour >= digestHour && st.dailyDay !== clock.day && doc.edition > dLast) {
-    const p = pendingChanges(doc, dLast);
-    daily = { ...p, first: dLast === 0 };
+  // Vías diaria y semanal: a la hora del resumen, una vez por día o por semana, si hubo ediciones desde la última.
+  const periodic = (freq, edKey, atKey, periodKey, period, prefix, kind) => {
+    const list = subs.filter((s) => s.frecuencia === freq && !isFresh.has(s.key));
+    const restart = restartedFor(st[edKey], st[atKey]);
+    const ptr = restart ? 0 : Number(st[edKey]) || 0;
+    if (!list.length || clock.hour < digestHour || st[periodKey] === period || doc.edition <= ptr) return null;
+    const p = pendingChanges(doc, ptr);
     let n = 0;
-    for (const s of dailySubs) {
-      const rel = relevantChanges(p.changes, s.deps);
-      if (!daily.first && !rel.length) continue;
-      personal(s, '[Resumen diario] ', rel, p.gap, daily.first, 'Resumen diario');
+    for (const s of list) {
+      const rel = forSub(s, p.changes);
+      if (!rel.length) continue;
+      personal(s, prefix, rel, p.gap, false, kind);
       n++;
     }
-    reason = `${reason ? `${reason} ` : ''}Resumen diario para ${n} ${n === 1 ? 'suscripción' : 'suscripciones'}.`;
-  }
+    reason = `${reason ? `${reason} ` : ''}${kind} para ${n} ${n === 1 ? 'suscripción' : 'suscripciones'}.`;
+    return p;
+  };
+  const daily = periodic('diario', 'dailyEdition', 'dailyEditionAt', 'dailyDay', clock.day, '[Resumen diario] ', 'Resumen diario');
+  const weekly = periodic('semanal', 'weeklyEdition', 'weeklyEditionAt', 'weeklyWeek', clock.week, '[Resumen semanal] ', 'Resumen semanal');
+  const sentFlags = { mainSent: Boolean(main), dailySent: Boolean(daily), weeklySent: Boolean(weekly), welcomed: Array.isArray(list) ? welcomed : null, digestWeek: clock.week };
 
   if (!messages.length) {
     if (main && !to.length && !subs.length) reason = 'Falta la dirección «to» en Configuración y no hay suscripciones: no se manda nada.';
     else if (main) reason = `${reason} Ningún destinatario tiene cambios de sus departamentos.`;
-    return { ...base, send: false, reason: reason || 'Nada que mandar.', pending, messages: [], mainSent: Boolean(main), dailySent: Boolean(daily), digest: main ? !main.urgent : false, digestDay: clock.day };
+    return { ...base, send: false, reason: reason || 'Nada que mandar.', pending, messages: [], ...sentFlags, digest: main ? !main.urgent : false, digestDay: clock.day };
   }
   const willSend = cfg.send === true || cfg.send === 'true';
   const first = messages.find((m) => m.kind === 'lista') || messages[0];
   return {
-    ...base, send: willSend, simulate: !willSend, reason, kind: main ? main.kind : 'Resumen diario', digest: main ? !main.urgent : false,
-    digestDay: clock.day, mainSent: Boolean(main), dailySent: Boolean(daily), to: to.join(','), bcc: bcc.join(','),
+    ...base, send: willSend, simulate: !willSend, reason, kind: main ? main.kind : first.kind, digest: main ? !main.urgent : false,
+    digestDay: clock.day, ...sentFlags, to: to.join(','), bcc: bcc.join(','),
     subject: main ? main.subject : first.subject, html: main ? main.html : String(doc.email.html), text: main ? main.text : String(doc.email.text || ''),
     whatsapp: doc.whatsapp || '', messages,
   };
@@ -321,6 +363,9 @@ function nextState(st, sent) {
     if (sent.digest || !out.lastDigestDay) out.lastDigestDay = sent.digestDay;
   }
   if (sent.dailySent) Object.assign(out, { dailyEdition: sent.edition, dailyEditionAt: sent.editionAt || null, dailyDay: sent.digestDay });
+  if (sent.weeklySent) Object.assign(out, { weeklyEdition: sent.edition, weeklyEditionAt: sent.editionAt || null, weeklyWeek: sent.digestWeek });
+  // Las suscripciones de esta revisión, con la edición de su bienvenida (las bajas salen de aquí solas).
+  if (sent.welcomed && typeof sent.welcomed === 'object') out.welcomed = { ...sent.welcomed };
   return out;
 }
 
