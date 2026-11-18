@@ -13,7 +13,7 @@ let sent;
 
 globalThis.fetch = async (url, init) => {
   sent.push({ url: String(url), headers: init.headers, body: JSON.parse(init.body) });
-  return new Response('{}', { status: env.MAIL_FAILS ? 500 : 200 });
+  return new Response('{}', { status: env.MAIL_FAILS ? (typeof env.MAIL_FAILS === 'number' ? env.MAIL_FAILS : 500) : 200 });
 };
 
 const req = (path, { method = 'POST', body, origin = ORIGIN, headers = {}, ip = '1.2.3.4' } = {}) => {
@@ -147,6 +147,25 @@ describe('suscripción al boletín', () => {
     assert.equal((await subscribe('ana@example.pe')).status, 502);
     env.MAIL_FAILS = false;
     assert.equal((await subscribe('ana@example.pe')).status, 202);
+  });
+
+  it('el motivo de la falla queda en el registro de la función, sin la dirección', async () => {
+    const logs = [];
+    const orig = console.error;
+    console.error = (m) => logs.push(String(m));
+    try {
+      env.MAIL_FAILS = 404;
+      assert.equal((await subscribe('luis@example.pe')).status, 502);
+      env.MAIL_FAILS = 403;
+      assert.equal((await subscribe('luis@example.pe')).status, 502);
+      env.MAIL_FAILS = false;
+      env.BOLETIN_MAIL_WEBHOOK = 'https://n8n.example/webhook-test/enso-boletin-confirmar';
+      await subscribe('luis@example.pe');
+    } finally { console.error = orig; }
+    assert.match(logs[0], /HTTP 404.*no está publicado/);
+    assert.match(logs[1], /HTTP 403.*BOLETIN_MAIL_WEBHOOK_SECRET/);
+    assert.match(logs[2], /webhook-test/);
+    assert.ok(!logs.join(' ').includes('luis@'));
   });
 
   it('la lista pide su clave', async () => {

@@ -147,23 +147,40 @@ export function shortMail({ title, lead, button, href, note }) {
   return { html, text };
 }
 
+/** Manda un correo. Si falla, deja el motivo en el registro de la función (Cloudflare → Workers y Pages → enso-peru →
+ * Registros en tiempo real), sin direcciones: la página solo dice que no se pudo. */
 async function sendMail(env, msg) {
   const how = mailer(env);
-  if (how === 'resend') {
-    const r = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: env.BOLETIN_FROM, to: [msg.to], subject: msg.subject, html: msg.html, text: msg.text }),
-    });
-    return r.ok;
-  }
-  if (how === 'webhook') {
-    const r = await fetch(env.BOLETIN_MAIL_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET },
-      body: JSON.stringify({ to: msg.to, subject: msg.subject, html: msg.html, text: msg.text }),
-    });
-    return r.ok;
+  const why = async (r) => {
+    const body = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
+    let hint = '';
+    if (how === 'webhook' && r.status === 404) hint = ' El flujo «correo de confirmación» de n8n no está publicado (activo), o la ruta no es /webhook/enso-boletin-confirmar.';
+    if (how === 'webhook' && (r.status === 401 || r.status === 403)) hint = ' BOLETIN_MAIL_WEBHOOK_SECRET no coincide con la credencial «Header Auth» del disparador (cabecera X-Enso-Secret).';
+    if (how === 'webhook' && r.status >= 500) hint = ' El flujo de n8n corrió y falló: ver su ejecución en n8n (credencial de Gmail).';
+    console.error(`boletin: no se pudo mandar el correo de confirmación por ${how}: HTTP ${r.status} ${body}.${hint}`);
+  };
+  try {
+    if (how === 'resend') {
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: env.BOLETIN_FROM, to: [msg.to], subject: msg.subject, html: msg.html, text: msg.text }),
+      });
+      if (!r.ok) await why(r);
+      return r.ok;
+    }
+    if (how === 'webhook') {
+      if (/\/webhook-test\//.test(env.BOLETIN_MAIL_WEBHOOK)) console.error('boletin: BOLETIN_MAIL_WEBHOOK usa /webhook-test/, que solo responde mientras n8n escucha una prueba: usar la URL de producción (/webhook/).');
+      const r = await fetch(env.BOLETIN_MAIL_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET },
+        body: JSON.stringify({ to: msg.to, subject: msg.subject, html: msg.html, text: msg.text }),
+      });
+      if (!r.ok) await why(r);
+      return r.ok;
+    }
+  } catch (e) {
+    console.error(`boletin: no se pudo mandar el correo de confirmación por ${how}: ${String(e && e.message || e).slice(0, 200)} (¿la dirección de BOLETIN_MAIL_WEBHOOK es correcta y pública?)`);
   }
   return false;
 }

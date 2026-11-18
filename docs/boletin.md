@@ -228,6 +228,22 @@ fila al momento, y Gmail y Yahoo muestran su propio botón «Anular suscripción
 
 Sin backend (por ejemplo, en GitHub Pages) el formulario no aparece y nada se rompe.
 
+### «No se pudo mandar el correo de confirmación»
+
+El sitio pidió el correo y la vía de envío no respondió bien. El motivo queda en el registro de la función
+(Cloudflare: *Workers & Pages → enso-peru → Functions → Real-time logs*, o *Deployments → el último → Functions*), en
+una línea que empieza con `boletin:`:
+
+| Lo que dice | Qué hacer |
+| --- | --- |
+| `HTTP 404` | El flujo «correo de confirmación» de n8n no está publicado (activo). Publicarlo. Revisar que `BOLETIN_MAIL_WEBHOOK` termine en `/webhook/enso-boletin-confirmar` |
+| `webhook-test` | `BOLETIN_MAIL_WEBHOOK` tiene la *Test URL*: cambiarla por la *Production URL* y volver a desplegar |
+| `HTTP 401` o `403` | El valor de `BOLETIN_MAIL_WEBHOOK_SECRET` no es el de la credencial `X-Enso-Secret` del disparador |
+| `HTTP 500` | El flujo corrió y falló: ver la ejecución en n8n (casi siempre la credencial de Gmail en **Enviar por Gmail**) |
+| Sin `HTTP` | La dirección no responde: n8n no es accesible desde internet o la URL está mal escrita |
+
+Cambiar un secreto en Cloudflare pide volver a desplegar (correr el flujo `observatory` a mano).
+
 ## Correo: formato y pruebas
 
 El correo es una sola columna fluida de hasta 600 px (tabla para Outlook de escritorio), sin CSS que Gmail quite
