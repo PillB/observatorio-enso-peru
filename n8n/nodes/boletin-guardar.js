@@ -3,6 +3,6 @@
 // que una prueba a mano no impide el envío real de la hora siguiente.
 const sent = $('Decidir envío').first().json;
 const st = $getWorkflowStaticData('global');
-const next = nextState(st, { edition: sent.edition, editionAt: sent.editionAt, digest: sent.digest, digestDay: sent.digestDay, mainSent: sent.mainSent, dailySent: sent.dailySent, at: Date.now() });
+const next = nextState(st, { edition: sent.edition, editionAt: sent.editionAt, digest: sent.digest, digestDay: sent.digestDay, mainSent: sent.mainSent, dailySent: sent.dailySent, weeklySent: sent.weeklySent, digestWeek: sent.digestWeek, welcomed: sent.welcomed, at: Date.now() });
 Object.assign(st, next);
 return [{ json: { resultado: `Enviado: ${sent.kind}, edición N° ${sent.edition}`, correos: (sent.messages || []).length, asunto: sent.subject, estado: next } }];

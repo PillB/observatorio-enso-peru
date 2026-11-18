@@ -126,6 +126,17 @@ lo que pidió:
 | `todo` | Lo mismo que la lista fija: lo importante al momento y el resumen diario |
 | `importantes` | Solo los cambios importantes (naranja o rojo, estado del ENFEN), al momento |
 | `diario` | Un solo correo al día, a la hora del resumen, con todo lo que cambió |
+| `semanal` | Un solo correo a la semana, el lunes a la hora del resumen, con todo lo que cambió |
+
+El flujo es uno solo y corre cada hora, pero solo manda cuando hay algo: una edición nueva con cambios para esa
+suscripción, o una suscripción nueva. Las suscripciones `diario` y `semanal` tienen su propio puntero de edición
+(`dailyEdition`, `weeklyEdition`) y en las demás revisiones no reciben nada. Si el lunes n8n estuvo apagado, el resumen
+semanal sale en la primera revisión posterior a la hora del resumen de esa semana.
+
+**Bienvenida.** Una suscripción que este flujo no conoce (la lista trae el `id` de cada una) recibe el boletín
+completo en la revisión siguiente, a cualquier hora, con una línea que dice qué le llegará desde ahora. Después solo
+recibe los cambios de ediciones posteriores a esa bienvenida. El flujo guarda en sus datos estáticos (`welcomed`) el
+`id` de cada suscripción activa con la edición de su bienvenida; las bajas salen solas de ahí.
 
 Si eligió departamentos, solo le llegan los cambios de esos (los del ENFEN le llegan siempre).
 
@@ -135,8 +146,8 @@ Quien recibe varios correos al día no debe leer cinco veces lo mismo. Por eso:
 
 | Correo | Lleva | No lleva |
 | --- | --- | --- |
-| Primero (o serie reiniciada) | El boletín completo | — |
-| Aviso, resumen y resumen diario | «Qué cambió desde el último correo», la frase y los contadores de ahora, el botón al boletín completo; el recuadro del ENFEN solo si el ENFEN cambió | El mosaico, «Qué se viene», «Qué hacer según el color» y los diez más críticos (iguales a los del correo anterior y a un clic) |
+| Primero, bienvenida de una suscripción nueva (o serie reiniciada) | El boletín completo | — |
+| Aviso, resumen, resumen diario y semanal | «Qué cambió desde el último correo», la frase y los contadores de ahora, el botón al boletín completo; el recuadro del ENFEN solo si el ENFEN cambió | El mosaico, «Qué se viene», «Qué hacer según el color» y los diez más críticos (iguales a los del correo anterior y a un clic) |
 
 - **Cambios netos.** Entre dos correos se dice el cambio neto: un departamento que subió y volvió a su nivel, un aviso
   que salió y se canceló, o el ENFEN que cambió y volvió, no se cuentan; de dos comunicados seguidos queda el último;

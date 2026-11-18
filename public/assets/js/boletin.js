@@ -37,6 +37,7 @@ const FREQ = [
   ['todo', 'Avisos importantes al momento y un resumen diario', 'Recomendado para equipos de gestión del riesgo.'],
   ['importantes', 'Solo avisos importantes', 'Rojo o naranja nuevo, un departamento que sube, otro estado del ENFEN.'],
   ['diario', 'Un solo correo al día', 'El resumen de las 7:00 (hora de Lima), con todo lo que cambió.'],
+  ['semanal', 'Un solo correo a la semana', 'El resumen de los lunes a las 7:00 (hora de Lima), con todo lo que cambió.'],
 ];
 
 const fmtWhen = new Intl.DateTimeFormat('es-PE', { timeZone: 'America/Lima', weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });

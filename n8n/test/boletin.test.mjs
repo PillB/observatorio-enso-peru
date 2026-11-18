@@ -26,7 +26,7 @@ test('las direcciones se limpian, sin repetidas y sin las inválidas', () => {
 });
 
 test('la hora de Lima es UTC−5', () => {
-  assert.deepEqual(L.limaClock(Date.parse('2026-11-11T04:30:00Z')), { hour: 23, day: '2026-11-10' });
+  assert.deepEqual(L.limaClock(Date.parse('2026-11-11T04:30:00Z')), { hour: 23, day: '2026-11-10', week: '2026-11-09' });
 });
 
 test('primer boletín: se manda completo, sin bloque de cambios', () => {
@@ -209,6 +209,10 @@ const SUBS = [
   { email: 'yo@example.com', frecuencia: 'todo', deps: [], baja: 'https://s/#/boletin?baja=t5', bajaPost: 'https://s/api/boletin/baja?t=t5', preferencias: 'https://s/#/boletin?preferencias=p5' },
   { email: 'mala', frecuencia: 'todo', baja: 'javascript:x', bajaPost: 'x' },
 ];
+// Suscripciones que ya recibieron su bienvenida (con la edición 0: les toca todo lo que haya en «recent»).
+// Para revisiones días después del corte del boletín de prueba.
+const LATE = { ...CFG, to: '', max_age_hours: 1000 };
+const KNOWN = { welcomed: Object.fromEntries(SUBS.map((s) => [String(s.email).toLowerCase(), 0])) };
 const decode = (raw) => Buffer.from(raw.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
 const part = (mail, type) => {
   const m = mail.match(new RegExp(`Content-Type: ${type}; charset=UTF-8\\r\\nContent-Transfer-Encoding: base64\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`));
@@ -217,7 +221,7 @@ const part = (mail, type) => {
 
 test('un correo por suscripción, con su baja en un clic (RFC 8058) y su pie', () => {
   const d = doc(6, [{ edition: 6, changes: [{ ...imm('Tumbes sube a rojo.'), deps: ['24'] }] }], { segments: [{ code: '20', name: 'Piura' }, { code: '24', name: 'Tumbes' }], email: { subject: 'Boletín El Niño N° 6: 1 en rojo', text: 'texto', html: '<p>x</p><!--cambios--><!--/cambios--><!--baja-->genérico<!--/baja-->' } });
-  const r = L.decide(d, CFG, { lastEdition: 5 }, NOW, SUBS);
+  const r = L.decide(d, CFG, { lastEdition: 5, ...KNOWN }, NOW, SUBS);
   const to = r.messages.map((m) => m.to);
   // La lista fija, «todo» e «importantes» (es un cambio importante); Piura no (el cambio es de Tumbes); «diario» espera
   // a su resumen (ya es la hora: sale como resumen diario); «yo@example.com» ya está en «to»; la inválida no.
@@ -242,24 +246,77 @@ test('un correo por suscripción, con su baja en un clic (RFC 8058) y su pie', (
 
 test('«importantes» no recibe el resumen; quien eligió departamentos recibe solo los suyos y los del país', () => {
   const d = doc(6, [{ edition: 6, changes: [{ ...dig('Nuevo aviso amarillo en Piura.'), deps: ['20'] }, { rule: 'enfen-comunicado', tier: 'resumen', deps: [], text: 'Nuevo comunicado del ENFEN.' }] }], { segments: [{ code: '20', name: 'Piura' }] });
-  const r = L.decide(d, { ...CFG, to: '' }, { lastEdition: 5, dailyEdition: 6, dailyDay: '2026-11-11' }, NOW, SUBS);
+  const r = L.decide(d, { ...CFG, to: '' }, { lastEdition: 5, dailyEdition: 6, dailyDay: '2026-11-11', ...KNOWN }, NOW, SUBS);
   assert.deepEqual(r.messages.map((m) => m.to).sort(), ['piura@x.pe', 'todo@x.pe', 'yo@example.com']);
   assert.deepEqual(L.relevantChanges([{ deps: ['24'] }, { deps: [] }, { text: 'viejo' }], ['20']).length, 2);
 });
 
 test('la vía diaria tiene su propio puntero y un día', () => {
   const d = doc(8, [{ edition: 8, changes: [dig('a')] }, { edition: 7, changes: [imm('b')] }]);
-  const early = L.decide(d, { ...CFG, to: '' }, { lastEdition: 8, dailyEdition: 6 }, Date.parse('2026-11-11T10:00:00Z'), SUBS);
+  const early = L.decide(d, { ...CFG, to: '' }, { lastEdition: 8, dailyEdition: 6, ...KNOWN }, Date.parse('2026-11-11T10:00:00Z'), SUBS);
   assert.equal(early.messages.length, 0);
-  const due = L.decide(d, { ...CFG, to: '' }, { lastEdition: 8, dailyEdition: 6 }, NOW, SUBS);
+  const due = L.decide(d, { ...CFG, to: '' }, { lastEdition: 8, dailyEdition: 6, ...KNOWN }, NOW, SUBS);
   assert.deepEqual(due.messages.map((m) => m.to), ['dia@x.pe']);
   assert.equal(due.mainSent, false);
   assert.match(due.messages[0].subject, /^\[Resumen diario\]/);
-  const st = L.nextState({ lastEdition: 8, dailyEdition: 6 }, { ...due, at: NOW });
+  const st = L.nextState({ lastEdition: 8, dailyEdition: 6, ...KNOWN }, { ...due, at: NOW });
   assert.equal(st.lastEdition, 8);
   assert.equal(st.dailyEdition, 8);
   assert.equal(st.dailyDay, '2026-11-11');
   assert.equal(L.decide(d, { ...CFG, to: '' }, st, NOW + H, SUBS).messages.length, 0);
+});
+
+test('una suscripción nueva recibe el boletín completo en la revisión siguiente, y después solo lo posterior', () => {
+  const ID = 'a'.repeat(32);
+  const ana = { ...SUBS[0], id: ID, email: 'ana@x.pe', frecuencia: 'semanal' };
+  const d = doc(6, [{ edition: 6, changes: [imm('Tumbes sube a rojo.')] }, { edition: 5, changes: [dig('viejo')] }]);
+  // 3:00 en Lima, sin ediciones nuevas para la vía principal: igual sale la bienvenida, a cualquier hora.
+  const at3 = Date.parse('2026-11-11T08:00:00Z');
+  const r = L.decide(d, LATE, { lastEdition: 6, ...KNOWN }, at3, [...SUBS, ana]);
+  assert.deepEqual(r.messages.map((m) => [m.to, m.kind]), [['ana@x.pe', 'Bienvenida']]);
+  assert.equal(r.send, true);
+  assert.equal(r.kind, 'Bienvenida');
+  const html = part(decode(r.messages[0].raw), 'text/html');
+  assert.match(html, /Bienvenida\.<\/strong> Este es el boletín completo de hoy\. Desde ahora le llegan un resumen a la semana/);
+  assert.equal(r.messages[0].subject, 'Boletín El Niño N° 6: 1 en rojo, 0 en naranja');
+  assert.equal(r.welcomed[ID], 6);
+  assert.equal(r.welcomed['todo@x.pe'], 0);
+  const st = L.nextState({ lastEdition: 6, ...KNOWN }, { ...r, at: at3 });
+  assert.equal(st.welcomed[ID], 6);
+  // La hora siguiente ya no es nueva: nada.
+  assert.equal(L.decide(d, LATE, st, at3 + H, [...SUBS, ana]).messages.length, 0);
+  // Su resumen semanal no repite lo que ya estaba en la bienvenida: con la N° 7 recibe solo lo de la N° 7.
+  const d7 = doc(7, [{ edition: 7, changes: [dig('Nuevo aviso amarillo en Loreto.')] }, ...d.recent]);
+  const monday = Date.parse('2026-11-16T13:00:00Z'); // lunes, 8:00 en Lima
+  const w = L.decide(d7, LATE, { ...st, lastEdition: 7, dailyDay: '2026-11-16' }, monday, [...SUBS, ana]);
+  const m = w.messages.find((x) => x.to === 'ana@x.pe');
+  assert.match(m.subject, /^\[Resumen semanal\] Nuevo aviso amarillo en Loreto · Boletín El Niño N° 7$/);
+  // Una baja sale de «welcomed»; sin la lista (use_list apagado) «welcomed» no se toca.
+  assert.deepEqual(Object.keys(L.decide(d7, LATE, st, at3, [ana]).welcomed), [ID]);
+  assert.equal(L.decide(d7, CFG, st, NOW).welcomed, null);
+});
+
+test('la vía semanal: el lunes a la hora del resumen, una vez por semana, con su propio puntero', () => {
+  const sem = [{ ...SUBS[0], email: 'sem@x.pe', frecuencia: 'semanal' }];
+  const known = { welcomed: { 'sem@x.pe': 0 } };
+  const d = doc(9, [{ edition: 9, changes: [imm('Piura sube a rojo.')] }, { edition: 8, changes: [dig('a')] }]);
+  // Un aviso importante el miércoles no le llega a «semanal».
+  assert.equal(L.decide(d, LATE, { lastEdition: 8, weeklyEdition: 8, weeklyWeek: '2026-11-09', ...known }, NOW, sem).messages.length, 0);
+  assert.equal(L.limaClock(NOW).week, '2026-11-09');
+  assert.equal(L.limaClock(Date.parse('2026-11-16T04:00:00Z')).week, '2026-11-09'); // domingo 23:00 en Lima
+  const early = Date.parse('2026-11-16T11:00:00Z'); // lunes 6:00 en Lima
+  assert.equal(L.decide(d, LATE, { lastEdition: 9, weeklyEdition: 7, weeklyWeek: '2026-11-09', ...known }, early, sem).messages.length, 0);
+  const due = L.decide(d, LATE, { lastEdition: 9, weeklyEdition: 7, weeklyWeek: '2026-11-09', ...known }, early + 2 * H, sem);
+  assert.deepEqual(due.messages.map((m) => m.to), ['sem@x.pe']);
+  assert.match(due.messages[0].subject, /^\[Resumen semanal\] Piura sube a rojo \(\+1 cambio\)/);
+  const st = L.nextState({ lastEdition: 9, weeklyEdition: 7, ...known }, { ...due, at: early + 2 * H });
+  assert.equal(st.weeklyEdition, 9);
+  assert.equal(st.weeklyWeek, '2026-11-16');
+  assert.equal(st.lastEdition, 9);
+  // El resto de la semana, nada aunque haya ediciones nuevas.
+  const d10 = doc(10, [{ edition: 10, changes: [imm('Lima sube a rojo.')] }, ...d.recent]);
+  assert.equal(L.decide(d10, LATE, { ...st, lastEdition: 10 }, early + 30 * H, sem).messages.length, 0);
+  assert.deepEqual(L.cleanSubs([{ ...sem[0], frecuencia: 'semanal' }, { ...SUBS[1], frecuencia: 'mensual' }]).map((s) => s.frecuencia), ['semanal', 'todo']);
 });
 
 test('las cabeceras no admiten saltos de línea (inyección de cabeceras)', () => {
