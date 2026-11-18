@@ -263,7 +263,7 @@ function decide(doc, cfg, st, now, list = null) {
     const subject = subjectFor(doc, changes, first ? '' : prefix, first);
     const p = personalize(b.html, b.text, sub, names);
     const headers = { ...listHeaders, 'List-Unsubscribe': `<${sub.bajaPost}>, <${sub.baja}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' };
-    messages.push({ to: sub.email, kind, frecuencia: sub.frecuencia, subject, headers, raw: mime({ from, to: sub.email, subject, html: p.html, text: p.text, headers }, sub.email) });
+    messages.push({ to: sub.email, kind, frecuencia: sub.frecuencia, subject, html: p.html, headers, raw: mime({ from, to: sub.email, subject, html: p.html, text: p.text, headers }, sub.email) });
   };
 
   // Bienvenida: sin «welcomed» (estado de antes de esta vía) nadie recibió aún el boletín completo, así que todas son
@@ -307,7 +307,7 @@ function decide(doc, cfg, st, now, list = null) {
       main = { editions, changes, gap, first, urgent, kind, prefix, subject: subjectFor(doc, changes, prefix, first) };
       Object.assign(main, body(doc, changes, gap, first, cfg.site));
       if (to.length) {
-        messages.push({ to: to.join(','), bcc: bcc.join(','), kind: 'lista', subject: main.subject, headers: listHeaders, raw: mime({ from, to: to.join(','), bcc: bcc.join(','), subject: main.subject, html: main.html, text: main.text, headers: listHeaders }) });
+        messages.push({ to: to.join(','), bcc: bcc.join(','), kind: 'lista', subject: main.subject, html: main.html, headers: listHeaders, raw: mime({ from, to: to.join(','), bcc: bcc.join(','), subject: main.subject, html: main.html, text: main.text, headers: listHeaders }) });
       }
       for (const s of subs) {
         if (isFresh.has(s.key) || s.frecuencia === 'diario' || s.frecuencia === 'semanal' || (s.frecuencia === 'importantes' && !urgent)) continue;

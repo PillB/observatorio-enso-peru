@@ -116,10 +116,10 @@ El flujo es `n8n/dist/enso-n8n-boletin.json`: **Cada hora** → **Configuración
 **Guardar estado**. El estado se guarda solo después de que Gmail respondió bien: si Gmail falla, la hora siguiente
 lo vuelve a intentar.
 
-Cada correo sale por la API de Gmail (`users.messages.send`, nodo HTTP con la credencial de Gmail), no por el nodo
-Gmail, porque solo así se pueden poner las cabeceras `List-Unsubscribe` y `List-Unsubscribe-Post` que Gmail y Yahoo
-exigen desde 2024 a quien manda a muchos. A cada suscriptor le llega su propio correo, con su enlace de baja y solo
-lo que pidió:
+Cada correo sale por el nodo Gmail de n8n (*Send a message*, sin la firma de n8n), con la credencial Gmail OAuth2
+como cualquier nodo Gmail. Ese nodo no deja poner cabeceras propias, así que no lleva `List-Unsubscribe` (la baja en
+un clic que Gmail y Yahoo exigen a quien manda más de 5000 correos al día): la baja es el enlace del pie de cada
+correo. A cada suscriptor le llega su propio correo, con su enlace de baja y solo lo que pidió:
 
 | Frecuencia | Qué recibe |
 | --- | --- |
@@ -177,8 +177,7 @@ Viene con `send = false`: hasta que se cambie, arma el correo y no lo manda (sim
    - `bcc`: copias ocultas (para una lista más larga sin mostrar las direcciones).
    - `use_list`: `true` para mandar también a las suscripciones confirmadas del sitio (ver abajo); `list_url` solo si
      la lista no está en `<site>/api/boletin/lista`.
-   - `from_address`: la dirección de la cuenta de Gmail (o un alias suyo), para que el «De:» lleve el nombre.
-   - `sender_name`, `digest_hour` (hora de Lima del resumen) y `site` si el sitio cambia de dirección.
+   - `sender_name` (el nombre del remitente; la dirección es la de la cuenta de Gmail), `digest_hour` (hora de Lima del resumen) y `site` si el sitio cambia de dirección.
 4. Probar con **Ejecutar a mano** y `send = false`: la salida de **Decidir envío** muestra el asunto, a quién iría
    y el HTML. Con `send = true` y solo la propia dirección en `to`, llega un correo de prueba.
 5. Poner `send = true` y activar el flujo (n8n 1.x) o publicarlo (n8n 2.x).
@@ -198,7 +197,7 @@ estado no se guarda si Gmail falla): `n8n/test/e2e-boletin.sh n8nio/n8n:2.44.4 /
 Cualquiera puede suscribirse desde la pestaña (**Recibir por correo**): pone su correo, elige frecuencia y,
 si quiere, departamentos, y acepta el aviso de privacidad. Nada se activa hasta que pulsa **Confirmar** en el correo
 que le llega (doble confirmación). Cada correo trae **Cambiar preferencias** y **Darse de baja**; la baja borra la
-fila al momento, y Gmail y Yahoo muestran su propio botón «Anular suscripción» (baja en un clic, RFC 8058).
+fila al momento.
 
 | Riesgo | Qué lo evita |
 | --- | --- |

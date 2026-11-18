@@ -353,16 +353,17 @@ const GMAIL_CRED = { gmailOAuth2: { id: process.env.N8N_GMAIL_CRED_ID || 'EnsoGm
 // el token no queda escrito en el flujo exportado.
 const LIST_CRED = { httpHeaderAuth: { id: process.env.N8N_LIST_CRED_ID || 'EnsoListaCred001', name: 'Lista del boletín ENSO' } };
 const BOL_HOOK_CRED = { httpHeaderAuth: { id: process.env.N8N_BOL_HOOK_CRED_ID || 'EnsoBolHook0001', name: 'Boletín: secreto del sitio' } };
-/** Envío por la API de Gmail (users.messages.send) con el «raw» que arma lib/boletin.js: deja poner List-Unsubscribe. */
-const gmailApi = (name, extra = {}) => node(name, 'n8n-nodes-base.httpRequest', 4.2, {
-  method: 'POST',
-  url: 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
-  authentication: 'predefinedCredentialType',
-  nodeCredentialType: 'gmailOAuth2',
-  sendBody: true,
-  specifyBody: 'json',
-  jsonBody: '={{ JSON.stringify({ raw: $json.raw }) }}',
-  options: { timeout: 30000, batching: { batch: { batchSize: 10, batchInterval: 1000 } } },
+/** Envío con el nodo Gmail de n8n («Send a message»), uno por ítem: {to, bcc, subject, html}. Usa la credencial «Gmail
+ * OAuth2» como cualquier nodo Gmail, sin la firma «sent automatically with n8n». No admite cabeceras propias: la baja
+ * va como enlace en el pie de cada correo (lib/boletin.js, ``personalize``). */
+const gmailSend = (name, extra = {}) => node(name, 'n8n-nodes-base.gmail', 2.1, {
+  resource: 'message',
+  operation: 'send',
+  sendTo: '={{ $json.to }}',
+  subject: '={{ $json.subject }}',
+  emailType: 'html',
+  message: '={{ $json.html }}',
+  options: { appendAttribution: false, senderName: '={{ $json.senderName }}', bccList: '={{ $json.bcc }}' },
 }, { credentials: GMAIL_CRED, retryOnFail: true, maxTries: 3, waitBetweenTries: 5000, ...extra });
 nextX = -240;
 const bulletin = workflow('EnsoBoletin00001', 'ENSO · Boletín de eventos El Niño por correo (Gmail)', [
@@ -377,8 +378,6 @@ const bulletin = workflow('EnsoBoletin00001', 'ENSO · Boletín de eventos El Ni
     ['use_list', false, 'boolean'],
     ['list_url', ''],
     ['sender_name', 'Observatorio ENSO Perú'],
-    // La dirección de la cuenta de Gmail (o un alias suyo) para el «De:» con nombre. Vacío: Gmail pone la de la cuenta.
-    ['from_address', ''],
     // Hora de Lima del resumen diario (cambios menores). Los cambios importantes salen en la hora en que llegan.
     ['digest_hour', 7, 'number'],
     ['max_age_hours', 36, 'number'],
@@ -415,7 +414,7 @@ const bulletin = workflow('EnsoBoletin00001', 'ENSO · Boletín de eventos El Ni
     options: {},
   }),
   code('Repartir correos', 'boletin-repartir', {}),
-  gmailApi('Enviar por Gmail'),
+  gmailSend('Enviar por Gmail'),
   code('Guardar estado', 'boletin-guardar', {}),
 ], (() => {
   const c = chain(['Cada hora', 'Configuración', 'Leer boletín', '¿Con lista?']);
@@ -436,9 +435,9 @@ const confirmFlow = workflow('EnsoBoletinConf1', 'ENSO · Boletín: correo de co
   node('Pedido del sitio', 'n8n-nodes-base.webhook', 2, {
     httpMethod: 'POST', path: 'enso-boletin-confirmar', authentication: 'headerAuth', responseMode: 'responseNode', options: {},
   }, { credentials: BOL_HOOK_CRED, webhookId: 'a4f1c2d3-5e6f-4a7b-8c9d-0e1f2a3b4c5d' }),
-  setNode('Configuración', [['sender_name', 'Observatorio ENSO Perú'], ['from_address', '']]),
+  setNode('Configuración', [['sender_name', 'Observatorio ENSO Perú']]),
   code('Armar correo', 'boletin-confirmar', {}),
-  gmailApi('Enviar por Gmail'),
+  gmailSend('Enviar por Gmail'),
   node('Responder', 'n8n-nodes-base.respondToWebhook', 1.1, { respondWith: 'json', responseBody: '={{ JSON.stringify({ ok: true }) }}', options: { responseCode: 202 } }),
 ], chain(['Pedido del sitio', 'Configuración', 'Armar correo', 'Enviar por Gmail', 'Responder']));
 
