@@ -3,7 +3,7 @@
 //   mapa      la versión del mapa de alertas de Noticias («Versión A / B / C / D»)
 //   memoria   la vista con que abre el mapa de la memoria: el resumen por área o uno de sus detalles
 //   noticias  la vista con que abre el mapa de Noticias: el resumen (la versión A–D) o uno de sus detalles
-//   boletin   el mapa del Boletín: el del Perú o un mosaico de cuadros (el que lleva el correo)
+//   boletin   la forma del Boletín: hoja con el mapa del Perú, hoja con el mosaico (el del correo) o ficha de impacto
 //
 // La primera visita recibe una versión de cada uno: al azar mientras no haya una ganadora; si ya la hay
 // (/api/ab/defaults: la que más se usa, con su intervalo), la ganadora a 4 de cada 5 personas y otra al azar al
@@ -26,7 +26,7 @@ export const EXPERIMENTS = {
   },
   boletin: {
     key: 'enso-vista-boletin',
-    variants: [['mapa', 'Mapa del Perú'], ['mosaico', 'Mosaico de cuadros (como en el correo)']],
+    variants: [['mapa', 'A · Hoja con el mapa del Perú'], ['mosaico', 'B · Hoja con el mosaico de cuadros (como en el correo)'], ['ficha', 'C · Ficha de impacto: estado, cuándo y qué hacer']],
   },
   noticias: {
     key: 'enso-vista-noticias',

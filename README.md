@@ -89,7 +89,8 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Lugares de los PDF del COEN: prueba hacia atrás](docs/documentos-backtest.md): qué tan bien se leen los lugares de los avisos y reportes del COEN, y qué se corrigió
 - [Mapa de alertas](docs/mapa-alertas.md): nivel y vigencia de cada aviso según su institución, versiones A–D y su analítica anónima
 - [Memoria de desastres](docs/memoria-desastres.md): catálogo de desastres de origen climático desde 1970 por distrito, con fuentes, indicadores de recurrencia y la evidencia sobre la prevención desde los años 90
-- [Boletín de eventos El Niño](docs/boletin.md): una hoja con el mapa por nivel, qué se viene y los diez departamentos más críticos; el correo por n8n y Gmail, sus reglas de aviso y la decisión sobre WhatsApp
+- [Boletín de eventos El Niño](docs/boletin.md): una hoja en tres formas (mapa, mosaico y ficha de impacto) con el mapa por nivel, qué se viene y los diez departamentos más críticos; la suscripción por correo con doble confirmación, el correo por n8n y Gmail, sus reglas de aviso, el canal Atom y la decisión sobre WhatsApp
+- [Revisión del boletín](docs/boletin-revision.md): seis problemas por sección con su arreglo, y la investigación (NOAA, BoM, Met Office, OMM, Gmail) que dio la forma C
 - [Mi zona](docs/mi-zona.md): para un departamento, provincia o distrito, su historia, los meses críticos y los avisos oficiales de hoy en una página
 - [Tutorial guiado](docs/tutorial-guiado.md): un recorrido interactivo por pestaña, que nunca tapa lo que muestra, y sus pruebas
 - [Máquinas de estado implícitas](docs/maquinas-de-estado.md): cada estado que guarda el sitio (ruta, versiones, tutorial, mapas, consola), sus diagramas, los estados errados que se encontraron y su corrección

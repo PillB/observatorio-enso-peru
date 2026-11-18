@@ -38,6 +38,8 @@ const NODE_LIBS = {
   'extraer-respuesta': [],
   'boletin': ['boletin'],
   'boletin-guardar': ['boletin'],
+  'boletin-repartir': [],
+  'boletin-confirmar': ['boletin'],
 };
 
 /** Código final de un nodo Code: bibliotecas + cuerpo, con los marcadores reemplazados. */
@@ -347,20 +349,40 @@ const extractor = workflow('EnsoExtractor001', 'ENSO · Extractor de informes (O
 // Gmail. Las fuentes geobloqueadas ya llegan al boletín por el recolector del Perú. «send» empieza en false: el flujo
 // arma el correo pero no lo manda hasta que alguien configure la cuenta de Gmail y la lista (docs/boletin.md).
 const GMAIL_CRED = { gmailOAuth2: { id: process.env.N8N_GMAIL_CRED_ID || 'EnsoGmailCred001', name: 'Gmail boletín ENSO' } };
+// La lista de suscripciones (/api/boletin/lista) se lee con una credencial «Header Auth» (Authorization: Bearer …), así
+// el token no queda escrito en el flujo exportado.
+const LIST_CRED = { httpHeaderAuth: { id: process.env.N8N_LIST_CRED_ID || 'EnsoListaCred001', name: 'Lista del boletín ENSO' } };
+const BOL_HOOK_CRED = { httpHeaderAuth: { id: process.env.N8N_BOL_HOOK_CRED_ID || 'EnsoBolHook0001', name: 'Boletín: secreto del sitio' } };
+/** Envío por la API de Gmail (users.messages.send) con el «raw» que arma lib/boletin.js: deja poner List-Unsubscribe. */
+const gmailApi = (name, extra = {}) => node(name, 'n8n-nodes-base.httpRequest', 4.2, {
+  method: 'POST',
+  url: 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
+  authentication: 'predefinedCredentialType',
+  nodeCredentialType: 'gmailOAuth2',
+  sendBody: true,
+  specifyBody: 'json',
+  jsonBody: '={{ JSON.stringify({ raw: $json.raw }) }}',
+  options: { timeout: 30000, batching: { batch: { batchSize: 10, batchInterval: 1000 } } },
+}, { credentials: GMAIL_CRED, retryOnFail: true, maxTries: 3, waitBetweenTries: 5000, ...extra });
 nextX = -240;
 const bulletin = workflow('EnsoBoletin00001', 'ENSO · Boletín de eventos El Niño por correo (Gmail)', [
   node('Cada hora', 'n8n-nodes-base.scheduleTrigger', 1.2, { rule: { interval: [{ field: 'hours', hoursInterval: 1 }] } }, { y: -120 }),
   node('Ejecutar a mano', 'n8n-nodes-base.manualTrigger', 1, {}, { x: 0, y: 120 }),
   setNode('Configuración', [
     ['site', process.env.N8N_SITE_URL || 'https://enso-peru.pages.dev/'],
-    // Para quién: «to» va visible (por ejemplo, la misma cuenta que manda); «bcc», la lista, en copia oculta.
+    // Para quién: «to» va visible (por ejemplo, la misma cuenta que manda); «bcc», una lista fija, en copia oculta.
     ['to', ''],
     ['bcc', ''],
+    // true: además, a cada suscripción confirmada del sitio (/api/boletin/lista), con su enlace de baja.
+    ['use_list', false, 'boolean'],
+    ['list_url', ''],
     ['sender_name', 'Observatorio ENSO Perú'],
+    // La dirección de la cuenta de Gmail (o un alias suyo) para el «De:» con nombre. Vacío: Gmail pone la de la cuenta.
+    ['from_address', ''],
     // Hora de Lima del resumen diario (cambios menores). Los cambios importantes salen en la hora en que llegan.
     ['digest_hour', 7, 'number'],
     ['max_age_hours', 36, 'number'],
-    // false: arma el correo y lo deja en la salida de «Decidir envío», sin mandarlo (simulacro).
+    // false: arma los correos y los deja en la salida de «Decidir envío», sin mandarlos (simulacro).
     ['send', false, 'boolean'],
   ]),
   node('Leer boletín', 'n8n-nodes-base.httpRequest', 4.2, {
@@ -369,6 +391,20 @@ const bulletin = workflow('EnsoBoletin00001', 'ENSO · Boletín de eventos El Ni
     headerParameters: { parameters: [{ name: 'User-Agent', value: UA.replace("$('Configuración').first().json.contact", "'https://github.com/PillB/observatorio-enso-peru'") }, { name: 'Cache-Control', value: 'no-cache' }] },
     options: { timeout: 30000, response: { response: { fullResponse: true, neverError: true, responseFormat: 'text' } } },
   }, { onError: 'continueRegularOutput', retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
+  node('¿Con lista?', 'n8n-nodes-base.if', 2, {
+    conditions: {
+      options: { caseSensitive: true, leftValue: '', typeValidation: 'loose' },
+      conditions: [{ id: '7c2e1a90-3b4d-4e5f-8a6b-1c2d3e4f5a6b', leftValue: "={{ $('Configuración').first().json.use_list }}", rightValue: '', operator: { type: 'boolean', operation: 'true', singleValue: true } }],
+      combinator: 'and',
+    },
+    options: {},
+  }),
+  node('Leer suscripciones', 'n8n-nodes-base.httpRequest', 4.2, {
+    url: "={{ $('Configuración').first().json.list_url || ($('Configuración').first().json.site.replace(/\\/?$/, '/') + 'api/boletin/lista') }}",
+    authentication: 'genericCredentialType',
+    genericAuthType: 'httpHeaderAuth',
+    options: { timeout: 30000, response: { response: { fullResponse: true, neverError: true, responseFormat: 'text' } } },
+  }, { credentials: LIST_CRED, onError: 'continueRegularOutput', retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
   code('Decidir envío', 'boletin', {}),
   node('¿Enviar?', 'n8n-nodes-base.if', 2, {
     conditions: {
@@ -378,22 +414,33 @@ const bulletin = workflow('EnsoBoletin00001', 'ENSO · Boletín de eventos El Ni
     },
     options: {},
   }),
-  node('Enviar por Gmail', 'n8n-nodes-base.gmail', 2.1, {
-    resource: 'message',
-    operation: 'send',
-    sendTo: '={{ $json.to }}',
-    subject: '={{ $json.subject }}',
-    emailType: 'html',
-    message: '={{ $json.html }}',
-    options: { bccList: '={{ $json.bcc }}', senderName: "={{ $('Configuración').first().json.sender_name }}", appendAttribution: false },
-  }, { credentials: GMAIL_CRED, retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
+  code('Repartir correos', 'boletin-repartir', {}),
+  gmailApi('Enviar por Gmail'),
   code('Guardar estado', 'boletin-guardar', {}),
 ], (() => {
-  const c = chain(['Cada hora', 'Configuración', 'Leer boletín', 'Decidir envío', '¿Enviar?']);
+  const c = chain(['Cada hora', 'Configuración', 'Leer boletín', '¿Con lista?']);
   chain(['Ejecutar a mano', 'Configuración'], c);
-  c['¿Enviar?'] = { main: [[{ node: 'Enviar por Gmail', type: 'main', index: 0 }], []] };
-  return chain(['Enviar por Gmail', 'Guardar estado'], c);
+  c['¿Con lista?'] = { main: [[{ node: 'Leer suscripciones', type: 'main', index: 0 }], [{ node: 'Decidir envío', type: 'main', index: 0 }]] };
+  chain(['Leer suscripciones', 'Decidir envío', '¿Enviar?'], c);
+  c['¿Enviar?'] = { main: [[{ node: 'Repartir correos', type: 'main', index: 0 }], []] };
+  return chain(['Repartir correos', 'Enviar por Gmail', 'Guardar estado'], c);
 })());
+// «Guardar estado» corre una vez, después de todos los correos.
+bulletin.nodes.find((n) => n.name === 'Guardar estado').executeOnce = true;
+
+// ---------------------------------------------------------------- confirmación de la suscripción
+// El sitio (functions/_lib/boletin-subs.js, con BOLETIN_MAIL_WEBHOOK) pide aquí el correo de confirmación; se manda
+// con la misma cuenta de Gmail. El disparador exige la cabecera X-Enso-Secret (credencial «Header Auth»).
+nextX = -240;
+const confirmFlow = workflow('EnsoBoletinConf1', 'ENSO · Boletín: correo de confirmación de la suscripción', [
+  node('Pedido del sitio', 'n8n-nodes-base.webhook', 2, {
+    httpMethod: 'POST', path: 'enso-boletin-confirmar', authentication: 'headerAuth', responseMode: 'responseNode', options: {},
+  }, { credentials: BOL_HOOK_CRED, webhookId: 'a4f1c2d3-5e6f-4a7b-8c9d-0e1f2a3b4c5d' }),
+  setNode('Configuración', [['sender_name', 'Observatorio ENSO Perú'], ['from_address', '']]),
+  code('Armar correo', 'boletin-confirmar', {}),
+  gmailApi('Enviar por Gmail'),
+  node('Responder', 'n8n-nodes-base.respondToWebhook', 1.1, { respondWith: 'json', responseBody: '={{ JSON.stringify({ ok: true }) }}', options: { responseCode: 202 } }),
+], chain(['Pedido del sitio', 'Configuración', 'Armar correo', 'Enviar por Gmail', 'Responder']));
 
 export const WORKFLOWS = {
   'enso-n8n-validacion.json': validation,
@@ -401,6 +448,7 @@ export const WORKFLOWS = {
   'enso-n8n-vigilante.json': watcher,
   'enso-n8n-extractor.json': extractor,
   'enso-n8n-boletin.json': bulletin,
+  'enso-n8n-boletin-confirmar.json': confirmFlow,
 };
 
 if (import.meta.url === `file://${process.argv[1]}`) {

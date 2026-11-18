@@ -657,8 +657,8 @@
     "row": 1,
     "name_es": "Colega que opera n8n",
     "name_en": "n8n operator (colleague)",
-    "what_es": "Importa los 5 flujos de n8n/dist (recolector, vigilante, validación, el extractor opcional de informes y «ENSO · Boletín de eventos El Niño por correo (Gmail)») en su n8n de AWS, elige las credenciales de GitHub y de Gmail y activa los programados; asignarles un Error workflow es opcional.",
-    "what_en": "Imports the 5 n8n/dist flows (collector, watchdog, validation, the optional report extractor and «ENSO · Boletín de eventos El Niño por correo (Gmail)») into their AWS n8n, picks the GitHub and Gmail credentials and activates the scheduled ones; assigning an Error workflow is optional.",
+    "what_es": "Importa los 6 flujos de n8n/dist (recolector, vigilante, validación, el extractor opcional de informes, «ENSO · Boletín de eventos El Niño por correo (Gmail)» y «ENSO · Boletín: correo de confirmación de la suscripción») en su n8n de AWS, elige las credenciales de GitHub y de Gmail y activa los programados; asignarles un Error workflow es opcional.",
+    "what_en": "Imports the 6 n8n/dist flows (collector, watchdog, validation, the optional report extractor, «ENSO · Boletín de eventos El Niño por correo (Gmail)» and «ENSO · Boletín: correo de confirmación de la suscripción») into their AWS n8n, picks the GitHub and Gmail credentials and activates the scheduled ones; assigning an Error workflow is optional.",
     "evidence": "n8n/README.md; n8n/build.mjs:1-8, 327-332; docs/n8n.md; docs/boletin.md"
    },
    {

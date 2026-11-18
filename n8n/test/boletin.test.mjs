@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { libSource, nodeCode, WORKFLOWS } from '../build.mjs';
 
-const L = new Function(`${libSource('boletin')}\nreturn { parseRecipients, limaClock, pendingChanges, changesHtml, decide, nextState };`)();
+const L = new Function(`${libSource('boletin')}\nreturn { parseRecipients, limaClock, pendingChanges, consolidate, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };`)();
 const H = 3600000;
 const NOW = Date.parse('2026-11-11T15:00:00Z'); // 10:00 en Lima
 
@@ -50,11 +50,54 @@ test('un cambio inmediato sale ya y junta los cambios de todas las ediciones nue
   const r = L.decide(d, CFG, { lastEdition: 4 }, NOW);
   assert.equal(r.send, true);
   assert.equal(r.kind, 'Aviso');
-  assert.match(r.subject, /^\[Aviso\] Boletín El Niño N° 6/);
+  // El asunto dice el cambio principal, no el estado de siempre.
+  assert.equal(r.subject, '[Aviso] Tumbes sube de naranja a rojo (+1 cambio) · Boletín El Niño N° 6');
   assert.ok(r.html.includes('Tumbes sube de naranja a rojo.') && r.html.includes('Nuevo aviso amarillo en Loreto.'));
   assert.ok(!r.html.includes('ya enviado') && !r.html.includes('viejo'));
-  assert.ok(r.html.indexOf('Loreto') < r.html.indexOf('Tumbes'), 'de la edición más vieja a la más nueva');
-  assert.match(r.text, /^Qué cambió desde el último correo:\n- Nuevo aviso amarillo/);
+  assert.ok(r.html.indexOf('Tumbes') < r.html.indexOf('Loreto'), 'lo importante primero');
+  assert.match(r.text, /^Qué cambió desde el último correo:\n- Tumbes sube/);
+});
+
+test('un correo de cambios no repite el boletín: sin el detalle ni el ENFEN si no cambió', () => {
+  const html = '<p>x</p><!--cambios--><!--/cambios--><p>FRASE</p><!--enfen--><div>ENFEN</div><!--/enfen--><!--detalle--><div>MAPA y LOS 10</div><!--/detalle--><a>Ver el boletín completo</a><!--baja--><!--/baja-->';
+  const base = { email: { subject: 'Boletín El Niño N° 6: 1 en rojo', text: 'TEXTO COMPLETO', html }, summary: 'Ahora hay 1 en rojo.' };
+  const upd = L.decide(doc(6, [{ edition: 6, changes: [imm('Nuevo aviso rojo en Piura.')] }], base), CFG, { lastEdition: 5 }, NOW);
+  assert.ok(upd.html.includes('FRASE') && upd.html.includes('Ver el boletín completo') && upd.html.includes('Nuevo aviso rojo en Piura.'));
+  assert.ok(!upd.html.includes('MAPA') && !upd.html.includes('ENFEN'));
+  assert.ok(!upd.text.includes('TEXTO COMPLETO') && upd.text.includes('Ahora: Ahora hay 1 en rojo.'));
+  assert.ok(!/Importante:/.test(upd.html), 'si todos son importantes, la etiqueta no dice nada');
+  // Si cambió el ENFEN, su recuadro va.
+  const enfen = L.decide(doc(6, [{ edition: 6, changes: [{ rule: 'enfen-estado', tier: 'inmediata', from: 'A', to: 'B', text: 'El ENFEN cambió.' }] }], base), CFG, { lastEdition: 5 }, NOW);
+  assert.ok(enfen.html.includes('ENFEN</div>') && !enfen.html.includes('MAPA'));
+  // El primero va completo.
+  const first = L.decide(doc(6, [{ edition: 6, changes: [] }], base), CFG, {}, NOW);
+  assert.ok(first.html.includes('MAPA') && first.html.includes('ENFEN') && first.text === 'TEXTO COMPLETO');
+});
+
+test('los cambios entre dos correos se dicen netos, sin repetir ni contar lo que se deshizo', () => {
+  const C = (edition, c) => ({ edition, changes: [c] });
+  const ups = [
+    C(2, { rule: 'departamento-sube', dep: '20', from: 1, rank: 3, tier: 'inmediata', text: 'Piura sube de amarillo a rojo: lluvias.' }),
+    C(3, { rule: 'departamento-baja', dep: '20', from: 3, rank: 1, tier: 'resumen', text: 'Piura baja de rojo a amarillo.' }),
+    C(4, { rule: 'departamento-sube', dep: '24', from: 1, rank: 2, tier: 'inmediata', text: 'Tumbes sube de amarillo a naranja.' }),
+    C(5, { rule: 'departamento-sube', dep: '24', from: 2, rank: 3, tier: 'inmediata', text: 'Tumbes sube de naranja a rojo.' }),
+    C(2, { rule: 'aviso-nuevo', key: 'k1', rank: 3, tier: 'inmediata', text: 'Nuevo aviso rojo: oleaje.' }),
+    C(4, { rule: 'aviso-cancelado', key: 'k1', tier: 'inmediata', text: 'Cancelado: oleaje.' }),
+    C(3, { rule: 'aviso-nuevo', key: 'k2', rank: 1, tier: 'resumen', text: 'Nuevo aviso amarillo: lluvias.' }),
+    C(5, { rule: 'aviso-sube', key: 'k2', rank: 2, tier: 'inmediata', text: 'Sube a naranja: lluvias.' }),
+    C(2, { rule: 'enfen-comunicado', tier: 'resumen', text: 'Comunicado N° 20.' }),
+    C(3, { rule: 'enfen-comunicado', tier: 'resumen', text: 'Comunicado N° 21.' }),
+    C(4, { rule: 'noaa-estado', from: 'El Niño', to: 'Neutral', tier: 'resumen', text: 'La NOAA pasó de «El Niño» a «Neutral».' }),
+    C(5, { rule: 'noaa-estado', from: 'Neutral', to: 'El Niño', tier: 'resumen', text: 'La NOAA pasó de «Neutral» a «El Niño».' }),
+    C(5, { rule: 'aviso-nuevo', tier: 'resumen', text: 'Texto viejo sin clave.' }),
+    C(5, { rule: 'aviso-nuevo', tier: 'resumen', text: 'Texto viejo sin clave.' }),
+  ];
+  const d = doc(5, ups, { segments: [{ code: '20', name: 'Piura' }, { code: '24', name: 'Tumbes' }] });
+  const texts = L.pendingChanges(d, 1).changes.map((c) => c.text);
+  assert.deepEqual(texts, ['Tumbes sube de amarillo a rojo.', 'Sube a naranja: lluvias.', 'Comunicado N° 21.', 'Texto viejo sin clave.']);
+  // Un cambio de estado del ENFEN ya trae su comunicado.
+  const e = L.consolidate([{ rule: 'enfen-comunicado', tier: 'resumen', text: 'Comunicado' }, { rule: 'enfen-estado', from: 'A', to: 'B', tier: 'inmediata', text: 'Estado' }]);
+  assert.deepEqual(e.map((c) => c.text), ['Estado']);
 });
 
 test('solo cambios menores: esperan a la hora del resumen, una vez por día', () => {
@@ -113,9 +156,9 @@ test('el estado guarda la edición enviada y el día del resumen', () => {
 });
 
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-function runNode(name, { cfg, input, prior = {}, decided }) {
+function runNode(name, { cfg, input, prior = {}, decided, list }) {
   const st = { ...prior };
-  const $ = (n) => ({ first: () => ({ json: n === 'Configuración' ? cfg : decided }) });
+  const $ = (n) => ({ first: () => ({ json: n === 'Configuración' ? cfg : n === 'Leer boletín' ? input : n === 'Leer suscripciones' ? list : decided }) });
   const fn = new AsyncFunction('$', '$input', '$getWorkflowStaticData', nodeCode(name, { VERSION: 'test' }));
   return fn($, { first: () => ({ json: input }) }, () => st).then((out) => ({ out, st }));
 }
@@ -136,12 +179,100 @@ test('el flujo empieza sin mandar, y Gmail solo corre por la rama «true» de «
   const wf = WORKFLOWS['enso-n8n-boletin.json'];
   const cfg = wf.nodes.find((n) => n.name === 'Configuración').parameters.assignments.assignments;
   assert.equal(cfg.find((a) => a.name === 'send').value, false);
+  assert.equal(cfg.find((a) => a.name === 'use_list').value, false);
   assert.equal(cfg.find((a) => a.name === 'bcc').value, '');
-  assert.deepEqual(wf.connections['¿Enviar?'].main[0], [{ node: 'Enviar por Gmail', type: 'main', index: 0 }]);
+  assert.deepEqual(wf.connections['¿Enviar?'].main[0], [{ node: 'Repartir correos', type: 'main', index: 0 }]);
   assert.deepEqual(wf.connections['¿Enviar?'].main[1], []);
+  assert.deepEqual(wf.connections['Repartir correos'].main[0], [{ node: 'Enviar por Gmail', type: 'main', index: 0 }]);
   const gmail = wf.nodes.find((n) => n.name === 'Enviar por Gmail');
-  assert.equal(gmail.type, 'n8n-nodes-base.gmail');
-  assert.equal(gmail.parameters.options.appendAttribution, false);
+  assert.equal(gmail.type, 'n8n-nodes-base.httpRequest');
+  assert.equal(gmail.parameters.url, 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send');
+  assert.equal(gmail.parameters.nodeCredentialType, 'gmailOAuth2');
   assert.ok(gmail.credentials.gmailOAuth2);
+  // La lista se lee con una credencial, nunca con un token escrito en el flujo.
+  const list = wf.nodes.find((n) => n.name === 'Leer suscripciones');
+  assert.ok(list.credentials.httpHeaderAuth);
+  assert.ok(!JSON.stringify(wf).match(/Bearer [A-Za-z0-9]/));
+  assert.equal(wf.nodes.find((n) => n.name === 'Guardar estado').executeOnce, true);
   assert.equal(wf.active, false);
+  const conf = WORKFLOWS['enso-n8n-boletin-confirmar.json'];
+  const hook = conf.nodes.find((n) => n.type === 'n8n-nodes-base.webhook');
+  assert.equal(hook.parameters.authentication, 'headerAuth');
+  assert.ok(hook.credentials.httpHeaderAuth);
+});
+
+const SUBS = [
+  { email: 'Todo@x.pe', frecuencia: 'todo', deps: [], baja: 'https://s/#/boletin?baja=t1', bajaPost: 'https://s/api/boletin/baja?t=t1', preferencias: 'https://s/#/boletin?preferencias=p1' },
+  { email: 'imp@x.pe', frecuencia: 'importantes', deps: [], baja: 'https://s/#/boletin?baja=t2', bajaPost: 'https://s/api/boletin/baja?t=t2', preferencias: 'https://s/#/boletin?preferencias=p2' },
+  { email: 'piura@x.pe', frecuencia: 'todo', deps: ['20'], baja: 'https://s/#/boletin?baja=t3', bajaPost: 'https://s/api/boletin/baja?t=t3', preferencias: 'https://s/#/boletin?preferencias=p3' },
+  { email: 'dia@x.pe', frecuencia: 'diario', deps: [], baja: 'https://s/#/boletin?baja=t4', bajaPost: 'https://s/api/boletin/baja?t=t4', preferencias: 'https://s/#/boletin?preferencias=p4' },
+  { email: 'yo@example.com', frecuencia: 'todo', deps: [], baja: 'https://s/#/boletin?baja=t5', bajaPost: 'https://s/api/boletin/baja?t=t5', preferencias: 'https://s/#/boletin?preferencias=p5' },
+  { email: 'mala', frecuencia: 'todo', baja: 'javascript:x', bajaPost: 'x' },
+];
+const decode = (raw) => Buffer.from(raw.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8');
+const part = (mail, type) => {
+  const m = mail.match(new RegExp(`Content-Type: ${type}; charset=UTF-8\\r\\nContent-Transfer-Encoding: base64\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`));
+  return Buffer.from(m[1].replace(/\r\n/g, ''), 'base64').toString('utf8');
+};
+
+test('un correo por suscripción, con su baja en un clic (RFC 8058) y su pie', () => {
+  const d = doc(6, [{ edition: 6, changes: [{ ...imm('Tumbes sube a rojo.'), deps: ['24'] }] }], { segments: [{ code: '20', name: 'Piura' }, { code: '24', name: 'Tumbes' }], email: { subject: 'Boletín El Niño N° 6: 1 en rojo', text: 'texto', html: '<p>x</p><!--cambios--><!--/cambios--><!--baja-->genérico<!--/baja-->' } });
+  const r = L.decide(d, CFG, { lastEdition: 5 }, NOW, SUBS);
+  const to = r.messages.map((m) => m.to);
+  // La lista fija, «todo» e «importantes» (es un cambio importante); Piura no (el cambio es de Tumbes); «diario» espera
+  // a su resumen (ya es la hora: sale como resumen diario); «yo@example.com» ya está en «to»; la inválida no.
+  assert.deepEqual(to.sort(), ['dia@x.pe', 'imp@x.pe', 'todo@x.pe', 'yo@example.com'].sort());
+  const m = r.messages.find((x) => x.to === 'todo@x.pe');
+  const mail = decode(m.raw);
+  assert.match(mail, /^To: todo@x\.pe\r\n/m);
+  assert.match(mail, /List-Unsubscribe: <https:\/\/s\/api\/boletin\/baja\?t=t1>, <https:\/\/s\/#\/boletin\?baja=t1>/);
+  assert.match(mail, /List-Unsubscribe-Post: List-Unsubscribe=One-Click/);
+  assert.match(mail, /Subject: =\?UTF-8\?B\?/);
+  const html = part(mail, 'text/html');
+  assert.ok(html.includes('Darse de baja') && html.includes('preferencias=p1') && !html.includes('genérico'));
+  assert.ok(html.includes('Tumbes sube a rojo.'));
+  assert.match(part(mail, 'text/plain'), /Darse de baja: https:\/\/s\/#\/boletin\?baja=t1/);
+  // La lista fija va con Bcc y sin enlaces personales.
+  const list = decode(r.messages.find((x) => x.kind === 'lista').raw);
+  assert.match(list, /^Bcc: a@x\.pe,b@y\.com\r\n/m);
+  assert.ok(!list.includes('List-Unsubscribe:'));
+  assert.equal(r.dailySent, true);
+  assert.equal(r.mainSent, true);
+});
+
+test('«importantes» no recibe el resumen; quien eligió departamentos recibe solo los suyos y los del país', () => {
+  const d = doc(6, [{ edition: 6, changes: [{ ...dig('Nuevo aviso amarillo en Piura.'), deps: ['20'] }, { rule: 'enfen-comunicado', tier: 'resumen', deps: [], text: 'Nuevo comunicado del ENFEN.' }] }], { segments: [{ code: '20', name: 'Piura' }] });
+  const r = L.decide(d, { ...CFG, to: '' }, { lastEdition: 5, dailyEdition: 6, dailyDay: '2026-11-11' }, NOW, SUBS);
+  assert.deepEqual(r.messages.map((m) => m.to).sort(), ['piura@x.pe', 'todo@x.pe', 'yo@example.com']);
+  assert.deepEqual(L.relevantChanges([{ deps: ['24'] }, { deps: [] }, { text: 'viejo' }], ['20']).length, 2);
+});
+
+test('la vía diaria tiene su propio puntero y un día', () => {
+  const d = doc(8, [{ edition: 8, changes: [dig('a')] }, { edition: 7, changes: [imm('b')] }]);
+  const early = L.decide(d, { ...CFG, to: '' }, { lastEdition: 8, dailyEdition: 6 }, Date.parse('2026-11-11T10:00:00Z'), SUBS);
+  assert.equal(early.messages.length, 0);
+  const due = L.decide(d, { ...CFG, to: '' }, { lastEdition: 8, dailyEdition: 6 }, NOW, SUBS);
+  assert.deepEqual(due.messages.map((m) => m.to), ['dia@x.pe']);
+  assert.equal(due.mainSent, false);
+  assert.match(due.messages[0].subject, /^\[Resumen diario\]/);
+  const st = L.nextState({ lastEdition: 8, dailyEdition: 6 }, { ...due, at: NOW });
+  assert.equal(st.lastEdition, 8);
+  assert.equal(st.dailyEdition, 8);
+  assert.equal(st.dailyDay, '2026-11-11');
+  assert.equal(L.decide(d, { ...CFG, to: '' }, st, NOW + H, SUBS).messages.length, 0);
+});
+
+test('las cabeceras no admiten saltos de línea (inyección de cabeceras)', () => {
+  const mail = decode(L.mime({ to: 'a@b.pe', subject: 'Hola\r\nBcc: victima@x.pe', html: '<p>x</p>', text: 'x' }));
+  assert.ok(!/^Bcc:/m.test(mail));
+  assert.equal(L.encHeader('Año\nnuevo').includes('\n '), false);
+});
+
+test('el nodo de confirmación arma un correo para una sola dirección válida', async () => {
+  const cfg = { sender_name: 'Observatorio', from_address: 'boletin@example.pe' };
+  const ok = await runNode('boletin-confirmar', { cfg, input: { body: { to: 'ana@x.pe', subject: 'Confirme', html: '<p>hola</p>', text: 'hola' } } });
+  const mail = decode(ok.out[0].json.raw);
+  assert.match(mail, /^To: ana@x\.pe\r\n/m);
+  assert.match(mail, /^From: Observatorio <boletin@example\.pe>/m);
+  await assert.rejects(runNode('boletin-confirmar', { cfg, input: { body: { to: 'a@x.pe, b@x.pe', subject: 's', html: 'h' } } }), /inválido/);
 });

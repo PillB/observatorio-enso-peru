@@ -4,15 +4,20 @@ Una hoja con lo que pasa hoy por El Niño en el Perú: arriba el país (mapa por
 cada nivel y qué se viene), abajo los diez departamentos más críticos con qué podría pasar, cuándo y quién lo dice.
 Está en la pestaña **Boletín** (`#/boletin`), sale en cada actualización diaria y es la misma que llega por correo.
 
+La revisión de noviembre de 2026 (seis problemas por sección, con su arreglo y las fuentes) está en
+[boletin-revision.md](boletin-revision.md).
+
 Código:
 
 | Archivo | Qué hace |
 | --- | --- |
-| `python/enso/boletin.py` | Arma `data/boletin.json` desde lo que ya publica el sitio: el mapa de alertas (`feed.json`), el ENFEN (`dashboard.json`) y el escenario del CENEPRED. También el correo (`data/boletin-correo.html`), el texto para WhatsApp y dos CSV |
+| `python/enso/boletin.py` | Arma `data/boletin.json` desde lo que ya publica el sitio: el mapa de alertas (`feed.json`), el ENFEN (`dashboard.json`) y el escenario del CENEPRED. También el correo (`data/boletin-correo.html`), el texto para WhatsApp, dos CSV y el canal Atom de ediciones (`data/boletin.xml`) |
 | `python/enso/observatory.py` | Lo llama al final de la publicación; si falla, la publicación sigue sin boletín (`boletin-exception`) |
 | `public/assets/js/boletin.js` | La pestaña. No calcula nada: presenta el JSON |
-| `n8n/lib/boletin.js`, `n8n/nodes/boletin*.js` | Cuándo y a quién se manda el correo (flujo «ENSO · Boletín de eventos El Niño por correo») |
-| `python/tests/test_boletin.py`, `n8n/test/boletin.test.mjs`, `n8n/test/e2e-boletin.sh` | Pruebas, con la publicación real del 10 de noviembre de 2026 (`python/tests/fixtures/boletin/`) |
+| `python/enso/boletin_img.py` | La imagen para compartir (`data/boletin.png`, 1200 × 630: mosaico, contadores, ENFEN y qué cambió) y su página con Open Graph (`data/boletin-compartir.html`), sin dependencias |
+| `functions/_lib/boletin-subs.js` (`/api/boletin/*`) | La suscripción por correo: doble confirmación, preferencias, baja en un clic y la lista que lee n8n |
+| `n8n/lib/boletin.js`, `n8n/nodes/boletin*.js` | Cuándo y a quién se manda el correo (flujos «ENSO · Boletín de eventos El Niño por correo» y «ENSO · Boletín: correo de confirmación de la suscripción») |
+| `python/tests/test_boletin.py`, `python/tests/js/boletin-subs.test.mjs`, `n8n/test/boletin.test.mjs`, `n8n/test/e2e-boletin.sh` | Pruebas, con la publicación real del 10 de noviembre de 2026 (`python/tests/fixtures/boletin/`) |
 
 ## Qué se muestra y de dónde sale
 
@@ -42,16 +47,32 @@ El Niño (heladas, friaje, calor en la selva, volcanes) se cuentan aparte y no p
 
 El mismo orden está escrito al pie de la tabla y en el JSON (`order`).
 
-### Versiones A/B del mapa
+### Tres formas (experimento A/B/C)
 
-La mitad de las visitas ve el mapa real del Perú y la otra mitad un mosaico (un cuadrado por departamento, norte
-arriba y costa a la izquierda), que se lee igual de bien en un celular y es el que va en el correo, porque Gmail no
-muestra SVG. Quien elige una a mano la conserva. La analítica anónima es la del mapa de alertas
-([mapa-alertas](mapa-alertas.md)), experimento `boletin`: vistas, selecciones, detalle y elección.
+Cada visita ve una de tres formas, al azar y en partes iguales; quien elige una a mano la conserva. La analítica
+anónima es la del mapa de alertas ([mapa-alertas](mapa-alertas.md)), experimento `boletin`: vistas, selecciones,
+detalle y elección.
+
+| Forma | Qué es |
+| --- | --- |
+| A · `mapa` | El mapa real del Perú, con la tabla de los diez debajo |
+| B · `mosaico` | Un cuadrado por departamento (norte arriba, costa a la izquierda), que se lee igual en un celular y es el que va en el correo, porque Gmail no muestra SVG. Se recorre con las flechas |
+| C · `ficha` | Ficha de impacto, armada con lo que hacen los mejores boletines (abajo): el estado del ENFEN en su escalera (No activo → Vigilancia → Alerta), «El boletín en 30 segundos», cuándo (hoy, próximas 24 h, 24 a 72 h, más adelante), qué hacer según el color y una tarjeta por departamento |
+
+Las tres comparten: una frase de resumen arriba, contadores que filtran la tabla, la ficha del departamento elegido
+(también con `#/boletin?dep=20`), los avisos vencidos atenuados, la nota de empate cuando hay más de diez en rojo y
+«Qué hacer según el color» (orientación de INDECI y SENAMHI, nunca una alerta propia).
+
+**De dónde sale la forma C.** El *ENSO Diagnostic Discussion* de la NOAA abre con el estado del sistema de alerta, una
+sinopsis de una frase y la fecha de la próxima edición; la Met Office y la OMM (avisos basados en impactos) dicen,
+por color, qué se espera y qué hacer; Meteoalarm junta los avisos oficiales sin crear niveles propios; el BoM de
+Australia retiró en 2024 su «dial» de vigilancia/alerta porque se leía como pronóstico, por eso la escalera del ENFEN
+se presenta como su estado oficial y no como una probabilidad. Detalle y enlaces en
+[boletin-revision.md](boletin-revision.md#investigación).
 
 ### Impresión
 
-«Imprimir o guardar en PDF» deja una sola hoja A4 con los diez primeros (dos con los 25). Las pruebas de navegador
+«Imprimir o PDF» deja una sola hoja A4 con los diez primeros en las tres formas (dos con los 25). Las pruebas de navegador
 lo comprueban con el PDF de Chromium.
 
 ## Ediciones y reglas de aviso
@@ -90,9 +111,46 @@ Compara con la última edición que **ese n8n** mandó y junta los cambios de to
 pierde ninguno si salieron dos entre dos revisiones. Si el boletín publicado tiene más de 36 h, la ejecución falla
 (lo ve el «Error workflow» de n8n): la actualización diaria no corrió.
 
-El flujo es `n8n/dist/enso-n8n-boletin.json`: **Cada hora** → **Configuración** → **Leer boletín** → **Decidir envío**
-→ **¿Enviar?** → **Enviar por Gmail** → **Guardar estado**. El estado se guarda solo después de que Gmail respondió
-bien: si Gmail falla, la hora siguiente lo vuelve a intentar.
+El flujo es `n8n/dist/enso-n8n-boletin.json`: **Cada hora** → **Configuración** → **Leer boletín** → **¿Con lista?**
+(→ **Leer suscripciones**) → **Decidir envío** → **¿Enviar?** → **Repartir correos** → **Enviar por Gmail** →
+**Guardar estado**. El estado se guarda solo después de que Gmail respondió bien: si Gmail falla, la hora siguiente
+lo vuelve a intentar.
+
+Cada correo sale por la API de Gmail (`users.messages.send`, nodo HTTP con la credencial de Gmail), no por el nodo
+Gmail, porque solo así se pueden poner las cabeceras `List-Unsubscribe` y `List-Unsubscribe-Post` que Gmail y Yahoo
+exigen desde 2024 a quien manda a muchos. A cada suscriptor le llega su propio correo, con su enlace de baja y solo
+lo que pidió:
+
+| Frecuencia | Qué recibe |
+| --- | --- |
+| `todo` | Lo mismo que la lista fija: lo importante al momento y el resumen diario |
+| `importantes` | Solo los cambios importantes (naranja o rojo, estado del ENFEN), al momento |
+| `diario` | Un solo correo al día, a la hora del resumen, con todo lo que cambió |
+
+Si eligió departamentos, solo le llegan los cambios de esos (los del ENFEN le llegan siempre).
+
+### Qué lleva cada correo (sin repetir)
+
+Quien recibe varios correos al día no debe leer cinco veces lo mismo. Por eso:
+
+| Correo | Lleva | No lleva |
+| --- | --- | --- |
+| Primero (o serie reiniciada) | El boletín completo | — |
+| Aviso, resumen y resumen diario | «Qué cambió desde el último correo», la frase y los contadores de ahora, el botón al boletín completo; el recuadro del ENFEN solo si el ENFEN cambió | El mosaico, «Qué se viene», «Qué hacer según el color» y los diez más críticos (iguales a los del correo anterior y a un clic) |
+
+- **Cambios netos.** Entre dos correos se dice el cambio neto: un departamento que subió y volvió a su nivel, un aviso
+  que salió y se canceló, o el ENFEN que cambió y volvió, no se cuentan; de dos comunicados seguidos queda el último;
+  con un cambio de estado del ENFEN no se repite su comunicado (`consolidate` en `n8n/lib/boletin.js`).
+- **Una línea por aviso.** Un aviso nuevo para quince departamentos era una línea del aviso y quince de «sube a
+  naranja»; ahora es una: «Nuevo aviso naranja de SENAMHI: … (suben a naranja: Piura, Tumbes y …)» (`fold_departments`
+  en `python/enso/boletin.py`). Igual con un aviso cancelado y los departamentos que bajan.
+- **El asunto dice el cambio**, no el estado de siempre: «[Aviso] Nuevo aviso rojo de SENAMHI: … (+1 cambio) ·
+  Boletín El Niño N° 6». «Importante» solo marca cuando el correo mezcla cambios importantes y menores.
+- **Sin repetir dentro del correo.** «Qué se viene» ya no repite el estado del ENFEN, el comunicado y las
+  probabilidades (están en su recuadro) ni los conteos por nivel (están en la frase y los contadores): cada línea
+  tiene su versión corta (`brief`), que usan también las formas A y B de la página.
+
+Un correo de cambios pesa unos 14 KB, contra 41 KB del completo.
 
 ### Paso de configuración (lo hace Pablo o el colega de n8n)
 
@@ -106,6 +164,9 @@ Viene con `send = false`: hasta que se cambie, arma el correo y no lo manda (sim
 3. En **Configuración**:
    - `to`: las direcciones que reciben, separadas por comas.
    - `bcc`: copias ocultas (para una lista más larga sin mostrar las direcciones).
+   - `use_list`: `true` para mandar también a las suscripciones confirmadas del sitio (ver abajo); `list_url` solo si
+     la lista no está en `<site>/api/boletin/lista`.
+   - `from_address`: la dirección de la cuenta de Gmail (o un alias suyo), para que el «De:» lleve el nombre.
    - `sender_name`, `digest_hour` (hora de Lima del resumen) y `site` si el sitio cambia de dirección.
 4. Probar con **Ejecutar a mano** y `send = false`: la salida de **Decidir envío** muestra el asunto, a quién iría
    y el HTML. Con `send = true` y solo la propia dirección en `to`, llega un correo de prueba.
@@ -121,10 +182,75 @@ mayor conviene un grupo de Google como único destinatario.
 Prueba con n8n real (sin Gmail de verdad: la credencial es falsa y se comprueba que el correo llega al nodo y que el
 estado no se guarda si Gmail falla): `n8n/test/e2e-boletin.sh n8nio/n8n:2.44.4 /tmp/bol`. Corre en `n8n.yml`.
 
+## Suscripción por correo
+
+Cualquiera puede suscribirse desde la pestaña (**Recibir por correo**): pone su correo, elige frecuencia y,
+si quiere, departamentos, y acepta el aviso de privacidad. Nada se activa hasta que pulsa **Confirmar** en el correo
+que le llega (doble confirmación). Cada correo trae **Cambiar preferencias** y **Darse de baja**; la baja borra la
+fila al momento, y Gmail y Yahoo muestran su propio botón «Anular suscripción» (baja en un clic, RFC 8058).
+
+| Riesgo | Qué lo evita |
+| --- | --- |
+| Suscribir a otro | Doble confirmación; una dirección recibe como máximo 3 correos de confirmación por día |
+| Averiguar quién está suscrito | La respuesta es la misma para una dirección nueva y una ya suscrita (a esta le llega «ya está suscrito» con su enlace de preferencias) |
+| Programas que llenan formularios | Campo trampa invisible, tiempo mínimo de llenado, 5 pedidos por conexión al día y un tope diario total |
+| Enlaces falsificados | Cada enlace lleva una firma (HMAC) con su uso (confirmar, baja, preferencias); uno alterado o de otro uso no sirve |
+| Pedidos desde otra web | Confirmar y cambiar preferencias exigen el mismo origen; la baja en un clic no (así funciona en Gmail) |
+| Datos personales (Ley 29733 y su reglamento, DS 016-2024-JUS) | Solo se guarda el correo, las preferencias y las fechas; se usan solo para el boletín; las pendientes se borran a los 7 días; el aviso de privacidad está junto al formulario |
+
+### Puesta en marcha (una vez)
+
+1. En Cloudflare (*Workers & Pages → el proyecto → Settings → Variables and Secrets*), crear los secretos
+   `BOLETIN_SECRET` (32 caracteres al azar o más: `openssl rand -base64 36`) y `BOLETIN_LIST_TOKEN` (24 o más). La
+   base `GEO_DB` ya está vinculada. Ver [despliegue-cloudflare.md](despliegue-cloudflare.md).
+2. Para el correo de confirmación, una de dos:
+   - **Con n8n y la misma cuenta de Gmail (recomendado, sin costo):** importar
+     `n8n/dist/enso-n8n-boletin-confirmar.json`; crear una credencial **Header Auth** llamada
+     `Boletín: secreto del sitio` con nombre `X-Enso-Secret` y un valor al azar; elegirla en **Pedido del sitio** y la
+     de Gmail en **Enviar por Gmail**; activar el flujo. En Cloudflare: `BOLETIN_MAIL_WEBHOOK` = la *Production URL*
+     del disparador y `BOLETIN_MAIL_WEBHOOK_SECRET` = el mismo valor.
+   - **Con Resend:** `RESEND_API_KEY` y `BOLETIN_FROM` (una dirección de un dominio verificado en Resend).
+3. En el flujo del boletín: crear una credencial **Header Auth** `Lista del boletín ENSO` con nombre `Authorization`
+   y valor `Bearer <BOLETIN_LIST_TOKEN>`, elegirla en **Leer suscripciones** y poner `use_list = true`.
+4. Volver a publicar el sitio. La pestaña muestra el formulario solo cuando `/api/boletin/estado` dice que está
+   habilitada; si falta algo, ofrece el canal Atom y el correo de ejemplo.
+
+Sin backend (por ejemplo, en GitHub Pages) el formulario no aparece y nada se rompe.
+
+## Correo: formato y pruebas
+
+El correo es una sola columna fluida de hasta 600 px (tabla para Outlook de escritorio), sin CSS que Gmail quite
+(nada de grid, flex ni degradados), con modo oscuro (`color-scheme`), un texto previo para la bandeja, un resumen
+de una frase arriba, una tarjeta por departamento en vez de una tabla ancha y el pie con el enlace de baja. Pesa muy
+por debajo de los 102 KB a partir de los cuales Gmail lo corta. Las pruebas (`python/tests/test_boletin.py` y
+`test_browser.py`) lo
+revisan a 320, 375, 414, 600 y 1024 px de ancho, en claro y oscuro, y sin la hoja de estilos (como lo muestran
+algunos clientes), sin desborde horizontal; también el contraste (AA) de los colores.
+
+## Imagen para compartir y vista previa
+
+Cada edición publica `data/boletin.png` (1200 × 630): el mosaico del Perú con el color de cada departamento, los
+contadores, el estado del ENFEN, los más críticos y, si hubo, qué cambió. Se dibuja en Python sin dependencias.
+
+- **WhatsApp, Telegram, Slack, Teams, Facebook:** el texto para WhatsApp termina con
+  `data/boletin-compartir.html?n=<edición>`, una página con etiquetas Open Graph: al pegar el enlace, la aplicación
+  muestra la imagen del mapa como vista previa, y quien lo abre va a `#/boletin`. El número de edición evita que
+  WhatsApp muestre la imagen de una edición vieja (la guarda por dirección).
+- **«Compartir» en el teléfono** manda la imagen junto con el texto (Web Share con archivos); donde no se puede,
+  manda el texto y el enlace.
+- **«Más → Imagen para compartir (PNG)»** la descarga, para un estado de WhatsApp, una presentación o un grupo.
+
+## Canal Atom
+
+`data/boletin.xml` lista las últimas ediciones con sus cambios, para lectores de noticias, Slack, Teams o cualquier
+automatización; la edición actual lleva la imagen del mapa. Se anuncia en la página (`<link rel="alternate">`).
+
 ## WhatsApp
 
 **Elegido: compartir a mano, gratis.** La pestaña tiene «Compartir por WhatsApp» (un enlace `wa.me` con el resumen
-ya escrito, que abre WhatsApp para elegir el chat o el grupo) y «Copiar resumen». El texto es `whatsapp` del JSON.
+ya escrito, que abre WhatsApp para elegir el chat o el grupo) y «Copiar resumen». El texto es `whatsapp` del JSON:
+primero «Qué cambió» (hasta tres cambios), después el estado de ahora (ENFEN, conteos y hasta cinco departamentos) y
+el enlace que muestra el mapa como vista previa.
 
 **Fase 2, automática: no es gratis.** Mandar mensajes sin que alguien los pulse exige la API de WhatsApp Business
 (Cloud API de Meta): un número dedicado, verificación de la empresa, plantillas aprobadas y, desde el 1 de julio de

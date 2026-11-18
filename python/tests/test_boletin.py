@@ -128,9 +128,11 @@ def test_same_content_keeps_the_edition_and_a_change_makes_a_new_one(doc, inputs
     new = B.build(feed, off["official"], esc, NOW, prev, off["freshness"])
     assert new["edition"] == 2 and new["alert"]
     rules = [c["rule"] for c in new["changes"]]
-    assert "enfen-estado" in rules and "departamento-sube" in rules and "aviso-nuevo" in rules
-    tumbes = next(c for c in new["changes"] if c.get("dep") == "24")
-    assert tumbes["tier"] == "inmediata" and tumbes["text"].startswith("Tumbes sube de amarillo a rojo")
+    assert "enfen-estado" in rules and "aviso-nuevo" in rules
+    # Tumbes sube por su cuenta o dentro de la línea del aviso que lo explica, nunca dos veces.
+    tumbes = [c for c in new["changes"] if c.get("dep") == "24" or "24" in c.get("folded", [])]
+    assert len(tumbes) == 1 and tumbes[0]["tier"] == "inmediata"
+    assert tumbes[0]["text"].startswith("Tumbes sube de amarillo a rojo") or "Tumbes" in tumbes[0]["text"]
     assert new["changes"][0]["tier"] == "inmediata"
     assert [r["edition"] for r in new["recent"]] == [2, 1]
     assert rank >= 0
@@ -147,7 +149,7 @@ def test_minor_changes_go_to_the_digest(inputs, doc):
         if code != low["code"]:
             prev["state"]["deps"][code] = next(s["rank"] for s in doc["segments"] if s["code"] == code)
     new = B.build(feed, off["official"], esc, NOW, prev, off["freshness"])
-    mine = [c for c in new["changes"] if c.get("dep") == low["code"]]
+    mine = [c for c in new["changes"] if c.get("dep") == low["code"] or low["code"] in c.get("folded", [])]
     assert mine and all(c["tier"] == "resumen" for c in mine)
 
 
@@ -165,7 +167,9 @@ def test_cancelled_aviso_that_was_sent_is_announced():
     second = B.build({"groups": [{"id": "alertas", "items": [it2]}]}, {}, None, now, first)
     rules = {c["rule"]: c for c in second["changes"]}
     assert rules["aviso-cancelado"]["tier"] == "inmediata"
-    assert rules["departamento-baja"]["tier"] == "resumen"
+    # Tumbes baja a verde: dicho en la misma línea del aviso cancelado, no en otra.
+    assert "departamento-baja" not in rules and rules["aviso-cancelado"]["folded"] == ["24"]
+    assert "Tumbes baja a" in rules["aviso-cancelado"]["text"]
     assert second["counts"]["verde"] == 25
 
 
@@ -177,7 +181,7 @@ def test_upcoming_aviso_is_shown_as_expected_not_current():
     d = B.build({"groups": [{"id": "alertas", "items": [it]}]}, {}, None, NOW)
     piura = d["segments"][0]
     assert piura["name"] == "Piura" and piura["rank"] == 2 and piura["now"] is False
-    assert piura["since"] == "2026-11-11T05:00:00Z"
+    assert piura["since"] == "2026-11-11T05:00:00+00:00"  # fechas normalizadas a ISO 8601 con zona
     assert piura["hazards"] == ["lluvias intensas"]  # del título: «precipitaciones»
     assert d["counts"]["avisosProximos"] == 1
     assert "desde mié 11 nov, 00:00" in next(h for h in d["headline"] if h["id"] == "avisos")["text"]
@@ -214,7 +218,7 @@ def test_email_is_self_contained_and_escapes_text(doc):
     evil["headline"][0]["text"] = '<img src=x onerror=alert(1)>'
     assert "<img src=x" not in B.email_html(evil, "https://x/")
     assert doc["email"]["subject"].startswith("Boletín El Niño N° 1: ")
-    assert "Tumbes" in doc["email"]["text"] and "#/boletin" in doc["whatsapp"]
+    assert "Tumbes" in doc["email"]["text"] and "data/boletin-compartir.html?n=1" in doc["whatsapp"]
     assert len(doc["whatsapp"]) < 1000
 
 
@@ -251,3 +255,198 @@ def test_pipeline_publishes_the_bulletin(tmp_path):
     assert (out / "csv" / "boletin-departamentos.csv").exists() and (out / "csv" / "boletin-avisos.csv").exists()
     man = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert "boletin.json" in man["files"] and "boletin-correo.html" in man["files"]
+    assert (out / "boletin.xml").read_text(encoding="utf-8").startswith("<?xml")
+
+
+# --- Revisión de noviembre de 2026 (docs/boletin-revision.md): prueba de estrés, correo adaptable, suscripción ------
+
+def _item(**k):
+    base = {"id": "x1", "institution": "SENAMHI", "kind": "pronostico", "title": "Lluvias", "date": "2026-11-10T15:00:00Z",
+            "hazards": ["lluvias"], "severity": {"rank": 3, "label": "Nivel 4"},
+            "valid": {"from": "2026-11-10T14:00:00Z", "until": "2026-11-10T20:00:00Z"},
+            "geo": {"places": [{"code": "24", "level": "departamento", "name": "Tumbes", "confidence": 0.9}]},
+            "url": "https://www.senamhi.gob.pe/"}
+    base.update(k)
+    return {"groups": [{"id": "alertas", "items": [base]}]}
+
+
+@pytest.mark.parametrize("feed, official, esc, prev", [
+    (None, None, None, None),
+    ({"groups": None}, None, None, None),
+    ({"groups": [{"id": "alertas", "items": [{"kind": None}, {"geo": {"places": [{"code": None}]}}, {"severity": {"rank": "3"}}]}]}, None, None, None),
+    (_item(date="no", valid={"from": "x", "until": "2026-13-40"}), None, None, None),
+    ({}, {"enfen": {"status": "Alerta"}}, None, None),
+    ({}, {"enfen": {"status": "Alerta", "number": None, "issued": "2026"}}, None, None),
+    ({}, None, None, {"schema": B.SCHEMA, "state": "x", "edition": "abc"}),
+    ({}, None, None, {"schema": B.SCHEMA, "state": {"deps": {"24": "x"}, "events": []}, "edition": 3}),
+    ({}, None, None, {"schema": B.SCHEMA, "state": {"deps": {"24": 3}}, "edition": "tres", "recent": "x"}),
+    ({}, None, {"districts": {"240101": "x", "2401": [[None]], "999999": [[0]]}}, None),
+    ({}, {"enfen": {"status": "A", "number": "1", "informe": {"probabilities": [{"region": "nino12", "summer": {"x": 5, "neutro": True, "calida_fuerte": 300}}]}}}, None, None),
+])
+def test_broken_inputs_never_take_the_bulletin_down(feed, official, esc, prev):
+    """Lo que llegue roto (una fuente, el boletín anterior, el ENFEN) se descarta: nunca una excepción, que dejaría el
+    sitio sin boletín (boletin-exception) y el correo sin enviar."""
+    d = B.build(feed, official, esc, NOW, prev)
+    assert d["edition"] >= 1 and len(d["segments"]) == 25
+    assert "None" not in d["headline"][0]["text"] and "N° None" not in d["email"]["html"]
+    B.csv_events(d), B.csv_segments(d), B.atom_feed(d, "https://x/")
+
+
+def test_links_from_sources_are_http_only_and_dates_are_iso():
+    d = B.build(_item(url="javascript:alert(1)", document="data:text/html,x"), {}, None, NOW)
+    assert d["events"][0]["url"] is None
+    assert "javascript:" not in json.dumps(d)
+    d = B.build(_item(valid={"from": "2026-11-10 14:00:00+00:00", "until": "2026-11-10T20:00:00Z"}), {}, None, NOW)
+    assert d["events"][0]["from"] == "2026-11-10T14:00:00+00:00"  # Safari no entiende la fecha con espacio
+
+
+def test_csv_cells_never_start_a_formula():
+    d = B.build(_item(title="=HYPERLINK(\"http://x\")", institution="+SENAMHI", geo={"places": [
+        {"code": "2401", "level": "provincia", "name": "@Tumbes", "confidence": 0.9}]}), {}, None, NOW)
+    for text in (B.csv_events(d), B.csv_segments(d)):
+        for row in csv.reader(io.StringIO(text)):
+            assert not any(re.match(r"^[=+\-@\t\r]", c) for c in row if not re.match(r"^-?\d", c)), row
+
+
+def test_quick_reading_fields(doc):
+    assert doc["summary"].startswith("19 departamentos en rojo") and "ENFEN" in doc["summary"]
+    assert [w["id"] for w in doc["timeline"]] == ["ahora", "24h", "72h", "despues"]
+    assert {g["rank"] for g in doc["guidance"]} == {3, 2, 1, -1} and doc["guidanceSource"]
+    p = next(x for x in doc["enso"]["probabilities"] if x["region"] == "nino12")
+    assert p["other"] == round(sum(x["pct"] for x in p["all"]) - sum(x["pct"] for x in p["summer"]), 1)
+    assert doc["enso"]["enfen"]["step"] == 2 and doc["enso"]["enfen"]["phase"] == "nino"
+    # «… y Tumbes y otros» era un error de redacción.
+    assert not re.search(r" y [A-ZÁÉÍÓÚ][a-záéíóú]+ y otros", " ".join(h["text"] for h in doc["headline"]))
+    seg = next(s for s in doc["segments"] if s["code"] == "15")
+    assert set(seg["institutions"]) <= set(seg["institutionsAll"])
+
+
+def test_changes_carry_their_departments_for_subscribers(inputs):
+    feed, off, esc = inputs
+    first = B.build(feed, off["official"], esc, NOW, None, off["freshness"])
+    quiet = B.build({"groups": [{"id": "alertas", "items": []}]}, off["official"], esc, NOW, first, off["freshness"])
+    assert quiet["edition"] == 2
+    for c in quiet["changes"]:
+        assert isinstance(c["deps"], list)
+    assert any(c["deps"] for c in quiet["changes"])
+
+
+def test_email_is_responsive_accessible_and_small(doc):
+    h = doc["email"]["html"]
+    # Gmail corta los correos de más de 102 KB.
+    assert len(h.encode("utf-8")) < 90_000
+    assert 'name="viewport"' in h and 'lang="es"' in h and 'name="color-scheme"' in h
+    assert "<!--[if mso]>" in h  # ancho fijo para Outlook para Windows
+    assert "<!--baja-->" in h and "<!--/baja-->" in h
+    # Nada que los clientes de correo quiten o rompan: ni grid, ni flex, ni position, ni degradados, ni SVG.
+    style = " ".join(re.findall(r'style="([^"]*)"', h))
+    for bad in ("display:grid", "display:flex", "position:", "linear-gradient", "background-image"):
+        assert bad not in style, bad
+    # Una sola columna fluida: ninguna tabla de contenido con ancho fijo en píxeles mayor que 320.
+    no_mso = re.sub(r"<!--\[if mso\]>.*?<!\[endif\]-->", "", h, flags=re.S)
+    assert not [w for w in re.findall(r'width="(\d+)"', no_mso) if int(w) > 320]
+    assert "max-width:600px" in h
+    # El preencabezado no deja asomar el resto del correo.
+    assert "&#847;&zwnj;&nbsp;" in h
+    # Contraste: el verde del correo cumple 4,5:1 con texto blanco.
+    def lum(hx):
+        c = [int(hx[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+        c = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+        return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+    for r in (3, -1):
+        bg = B.LEVELS[r][2]
+        assert (1.05) / (lum(bg) + 0.05) >= 4.5, bg
+
+
+def test_whatsapp_says_how_many_more_and_that_it_is_not_official(doc):
+    assert "y 18 departamentos más" in doc["whatsapp"] and "No es una alerta oficial" in doc["whatsapp"]
+
+
+def test_atom_feed_is_valid_xml(doc):
+    import xml.etree.ElementTree as ET
+
+    root = ET.fromstring(B.atom_feed(doc, "https://enso-peru.pages.dev/"))
+    ns = {"a": "http://www.w3.org/2005/Atom"}
+    assert root.find("a:title", ns).text.startswith("Boletín")
+    assert len(root.findall("a:entry", ns)) == len(doc["recent"])
+
+
+def test_email_does_not_repeat_what_the_enfen_box_and_counters_say(doc):
+    h = B.email_html(doc, "https://x/")
+    pr = next((p for p in doc["enso"]["probabilities"] if p["region"] == "nino12"), None)
+    if pr:
+        assert "Para el verano, el ENFEN estima" not in h  # ya están las barras
+    assert "Departamentos con avisos oficiales:" not in h  # ya están la frase y los contadores
+    assert h.count("<!--detalle-->") == 2 and h.count("<!--enfen-->") == 1
+
+
+def test_one_aviso_for_many_departments_is_one_line():
+    it = {"id": "m", "institution": "SENAMHI", "kind": "pronostico", "title": "SENAMHI: lluvias, nivel 3",
+          "hazards": ["lluvias"], "date": "2026-11-10T10:00:00Z", "severity": {"rank": 2, "label": "Nivel 3"},
+          "valid": {"from": "2026-11-10T05:00:00Z", "until": "2026-11-12T04:59:00Z"}, "aviso": {"num": 7, "year": 2026},
+          "geo": {"places": [{"code": c, "level": "departamento"} for c in ("20", "24", "14")]}}
+    first = B.build({"groups": [{"id": "alertas", "items": []}]}, {}, None, NOW)
+    second = B.build({"groups": [{"id": "alertas", "items": [it]}]}, {}, None, NOW, first)
+    assert [c["rule"] for c in second["changes"]] == ["aviso-nuevo"]
+    c = second["changes"][0]
+    assert sorted(c["folded"]) == ["14", "20", "24"] and "suben a naranja" in c["text"] and c["key"]
+
+
+def test_whatsapp_leads_with_what_changed_and_links_the_preview(doc):
+    d = copy.deepcopy(doc)
+    d["changes"] = [{"rule": "aviso-nuevo", "tier": "inmediata", "text": f"Cambio {i}."} for i in range(5)]
+    t = B.whatsapp_text(d, "https://x.pe/")
+    assert t.index("*Qué cambió:*") < t.index("Departamentos:") and "• y 2 cambios más" in t
+    assert t.rstrip().endswith(f"https://x.pe/data/boletin-compartir.html?n={d['edition']}")
+    assert "*Qué cambió:*" not in B.whatsapp_text(doc, "https://x.pe/")  # la primera edición no tiene cambios
+
+
+def test_share_image_and_page():
+    import struct
+    import zlib
+
+    from enso import boletin_img as I
+
+    d = B.build(*_inputs_for_share(), NOW)
+    png = I.share_png(d)
+    assert png[:8] == b"\x89PNG\r\n\x1a\n" and len(png) < 300_000
+    w, h = struct.unpack(">II", png[16:24])
+    assert (w, h) == (1200, 630)
+    i = png.index(b"IDAT")
+    n = struct.unpack(">I", png[i - 4:i])[0]
+    assert len(zlib.decompress(png[i + 4:i + 4 + n])) == h * (1 + w * 3)
+    # Los colores de los niveles están en la imagen (rojo del mosaico y de los contadores).
+    raw = zlib.decompress(png[i + 4:i + 4 + n])
+    assert bytes.fromhex(B.LEVELS[3][2][1:]) in raw
+    evil = dict(d, summary='"><script>alert(1)</script>')
+    page = I.share_page(evil, "https://x.pe/")
+    assert "<script>" not in page and 'property="og:image" content="https://x.pe/data/boletin.png?n=' in page
+    assert f'og:url" content="https://x.pe/data/boletin-compartir.html?n={d["edition"]}"' in page
+    assert 'http-equiv="refresh"' in page and "#/boletin" in page
+    assert I._plain("Ñuñoa «Alerta» · N°") == "NUNOA ALERTA · N°"
+
+
+def _inputs_for_share():
+    import json as _json
+
+    fix = Path(__file__).parent / "fixtures" / "boletin"
+    rd = lambda n: _json.loads((fix / n).read_text(encoding="utf-8"))  # noqa: E731
+    off = rd("oficial-2026-11-10.json")
+    return rd("feed-alertas-2026-11-10.json"), off["official"], rd("escenario-distritos-2026-11-10.json")
+
+
+def test_atom_feed_carries_the_map_of_the_current_edition(doc):
+    x = B.atom_feed(doc, "https://x.pe/")
+    assert x.count('rel="enclosure" type="image/png"') == 1 and "data/boletin.png?n=1" in x
+
+
+def test_subscription_api_with_node():
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node no está instalado")
+    r = subprocess.run([node, "--test", str(Path(__file__).parent / "js" / "boletin-subs.test.mjs")], capture_output=True, text=True, timeout=300)
+    assert r.returncode == 0, r.stdout[-4000:] + r.stderr[-2000:]
+    assert re.search(r"# fail 0", r.stdout), r.stdout[-2000:]
