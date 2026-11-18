@@ -136,8 +136,8 @@ def share_png(doc: dict) -> bytes:
     c.text(40, 64, f"EDICION N° {doc.get('edition', '')} · {cut} (HORA DE LIMA)", 2, "#ffffff")
     # Mosaico: 6 columnas × 8 filas de 52 px.
     by = {s["code"]: s for s in doc.get("segments") or []}
-    size, gap, mx, my = 48, 6, 48, 122
-    c.rect(mx - 18, my - 12, 6 * (size + gap) + 30, 8 * (size + gap) + 36, "#ffffff")
+    size, gap, mx, my = 54, 6, 44, 126
+    c.rect(mx - 16, my - 14, 6 * (size + gap) + 26, 8 * (size + gap) + 22, "#ffffff")
     for code, (r, col) in B.TILES.items():
         s = by.get(code)
         if not s:
@@ -152,7 +152,7 @@ def share_png(doc: dict) -> bytes:
     c.text(mx, my + 7 * (size + gap) + 6, "NORTE", 2, muted)
     c.text(mx, my + 7 * (size + gap) + 26, "ARRIBA", 2, muted)
     # Contadores.
-    cx, cy, bw, bh = 430, 126, 140, 96
+    cx, cy, bw, bh = 432, 126, 140, 100
     counts = doc.get("counts") or {}
     for i, (r, k, lbl) in enumerate(((3, "rojo", "EN ROJO"), (2, "naranja", "EN NARANJA"), (1, "amarillo", "EN AMARILLO"),
                                      (0, "sinNivel", "SIN NIVEL"), (-1, "verde", "SIN AVISOS"))):
@@ -161,7 +161,7 @@ def share_png(doc: dict) -> bytes:
         c.rect(x, cy, bw, bh, bg)
         n = str(counts.get(k, 0))
         c.text(x + (bw - c.text_width(n, 6)) // 2, cy + 14, n, 6, fg)
-        c.text(x + (bw - c.text_width(lbl, 2)) // 2, cy + 70, lbl, 2, fg)
+        c.text(x + (bw - c.text_width(lbl, 2)) // 2, cy + 74, lbl, 2, fg)
     c.text(cx, cy + bh + 12, "DEPARTAMENTOS SEGUN EL NIVEL MAS ALTO DE SUS AVISOS OFICIALES", 2, muted)
     # ENFEN.
     y = cy + bh + 52
@@ -185,9 +185,9 @@ def share_png(doc: dict) -> bytes:
     if changes:
         c.text(cx, y, "QUE CAMBIO EN ESTA EDICION", 2, muted)
         y += 22
-        for x in changes[:2]:
-            for line in wrap("- " + x["text"], 2, 740, 2):
-                if y > H - 70:
+        for x in changes[:3]:
+            for line in wrap("- " + x["text"], 2, 740, 3):
+                if y > H - 34:
                     break
                 c.text(cx, y, line, 2, ink)
                 y += 22
@@ -196,9 +196,6 @@ def share_png(doc: dict) -> bytes:
         for line in wrap(brief, 2, 740, 3):
             c.text(cx, y, line, 2, ink)
             y += 22
-    # Pie.
-    c.rect(0, H - 44, W, 44, "#ffffff")
-    c.text(40, H - 30, "NO ES UNA ALERTA OFICIAL: SIGA AL SENAMHI, AL INDECI Y A SU MUNICIPALIDAD.", 2, muted)
     return c.png()
 
 
