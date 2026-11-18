@@ -128,9 +128,11 @@ def test_same_content_keeps_the_edition_and_a_change_makes_a_new_one(doc, inputs
     new = B.build(feed, off["official"], esc, NOW, prev, off["freshness"])
     assert new["edition"] == 2 and new["alert"]
     rules = [c["rule"] for c in new["changes"]]
-    assert "enfen-estado" in rules and "departamento-sube" in rules and "aviso-nuevo" in rules
-    tumbes = next(c for c in new["changes"] if c.get("dep") == "24")
-    assert tumbes["tier"] == "inmediata" and tumbes["text"].startswith("Tumbes sube de amarillo a rojo")
+    assert "enfen-estado" in rules and "aviso-nuevo" in rules
+    # Tumbes sube por su cuenta o dentro de la línea del aviso que lo explica, nunca dos veces.
+    tumbes = [c for c in new["changes"] if c.get("dep") == "24" or "24" in c.get("folded", [])]
+    assert len(tumbes) == 1 and tumbes[0]["tier"] == "inmediata"
+    assert tumbes[0]["text"].startswith("Tumbes sube de amarillo a rojo") or "Tumbes" in tumbes[0]["text"]
     assert new["changes"][0]["tier"] == "inmediata"
     assert [r["edition"] for r in new["recent"]] == [2, 1]
     assert rank >= 0
@@ -147,7 +149,7 @@ def test_minor_changes_go_to_the_digest(inputs, doc):
         if code != low["code"]:
             prev["state"]["deps"][code] = next(s["rank"] for s in doc["segments"] if s["code"] == code)
     new = B.build(feed, off["official"], esc, NOW, prev, off["freshness"])
-    mine = [c for c in new["changes"] if c.get("dep") == low["code"]]
+    mine = [c for c in new["changes"] if c.get("dep") == low["code"] or low["code"] in c.get("folded", [])]
     assert mine and all(c["tier"] == "resumen" for c in mine)
 
 
@@ -165,7 +167,9 @@ def test_cancelled_aviso_that_was_sent_is_announced():
     second = B.build({"groups": [{"id": "alertas", "items": [it2]}]}, {}, None, now, first)
     rules = {c["rule"]: c for c in second["changes"]}
     assert rules["aviso-cancelado"]["tier"] == "inmediata"
-    assert rules["departamento-baja"]["tier"] == "resumen"
+    # Tumbes baja a verde: dicho en la misma línea del aviso cancelado, no en otra.
+    assert "departamento-baja" not in rules and rules["aviso-cancelado"]["folded"] == ["24"]
+    assert "Tumbes baja a" in rules["aviso-cancelado"]["text"]
     assert second["counts"]["verde"] == 25
 
 
@@ -214,7 +218,7 @@ def test_email_is_self_contained_and_escapes_text(doc):
     evil["headline"][0]["text"] = '<img src=x onerror=alert(1)>'
     assert "<img src=x" not in B.email_html(evil, "https://x/")
     assert doc["email"]["subject"].startswith("Boletín El Niño N° 1: ")
-    assert "Tumbes" in doc["email"]["text"] and "#/boletin" in doc["whatsapp"]
+    assert "Tumbes" in doc["email"]["text"] and "data/boletin-compartir.html?n=1" in doc["whatsapp"]
     assert len(doc["whatsapp"]) < 1000
 
 
@@ -365,6 +369,75 @@ def test_atom_feed_is_valid_xml(doc):
     ns = {"a": "http://www.w3.org/2005/Atom"}
     assert root.find("a:title", ns).text.startswith("Boletín")
     assert len(root.findall("a:entry", ns)) == len(doc["recent"])
+
+
+def test_email_does_not_repeat_what_the_enfen_box_and_counters_say(doc):
+    h = B.email_html(doc, "https://x/")
+    pr = next((p for p in doc["enso"]["probabilities"] if p["region"] == "nino12"), None)
+    if pr:
+        assert "Para el verano, el ENFEN estima" not in h  # ya están las barras
+    assert "Departamentos con avisos oficiales:" not in h  # ya están la frase y los contadores
+    assert h.count("<!--detalle-->") == 2 and h.count("<!--enfen-->") == 1
+
+
+def test_one_aviso_for_many_departments_is_one_line():
+    it = {"id": "m", "institution": "SENAMHI", "kind": "pronostico", "title": "SENAMHI: lluvias, nivel 3",
+          "hazards": ["lluvias"], "date": "2026-11-10T10:00:00Z", "severity": {"rank": 2, "label": "Nivel 3"},
+          "valid": {"from": "2026-11-10T05:00:00Z", "until": "2026-11-12T04:59:00Z"}, "aviso": {"num": 7, "year": 2026},
+          "geo": {"places": [{"code": c, "level": "departamento"} for c in ("20", "24", "14")]}}
+    first = B.build({"groups": [{"id": "alertas", "items": []}]}, {}, None, NOW)
+    second = B.build({"groups": [{"id": "alertas", "items": [it]}]}, {}, None, NOW, first)
+    assert [c["rule"] for c in second["changes"]] == ["aviso-nuevo"]
+    c = second["changes"][0]
+    assert sorted(c["folded"]) == ["14", "20", "24"] and "suben a naranja" in c["text"] and c["key"]
+
+
+def test_whatsapp_leads_with_what_changed_and_links_the_preview(doc):
+    d = copy.deepcopy(doc)
+    d["changes"] = [{"rule": "aviso-nuevo", "tier": "inmediata", "text": f"Cambio {i}."} for i in range(5)]
+    t = B.whatsapp_text(d, "https://x.pe/")
+    assert t.index("*Qué cambió:*") < t.index("Departamentos:") and "• y 2 cambios más" in t
+    assert t.rstrip().endswith(f"https://x.pe/data/boletin-compartir.html?n={d['edition']}")
+    assert "*Qué cambió:*" not in B.whatsapp_text(doc, "https://x.pe/")  # la primera edición no tiene cambios
+
+
+def test_share_image_and_page():
+    import struct
+    import zlib
+
+    from enso import boletin_img as I
+
+    d = B.build(*_inputs_for_share(), NOW)
+    png = I.share_png(d)
+    assert png[:8] == b"\x89PNG\r\n\x1a\n" and len(png) < 300_000
+    w, h = struct.unpack(">II", png[16:24])
+    assert (w, h) == (1200, 630)
+    i = png.index(b"IDAT")
+    n = struct.unpack(">I", png[i - 4:i])[0]
+    assert len(zlib.decompress(png[i + 4:i + 4 + n])) == h * (1 + w * 3)
+    # Los colores de los niveles están en la imagen (rojo del mosaico y de los contadores).
+    raw = zlib.decompress(png[i + 4:i + 4 + n])
+    assert bytes.fromhex(B.LEVELS[3][2][1:]) in raw
+    evil = dict(d, summary='"><script>alert(1)</script>')
+    page = I.share_page(evil, "https://x.pe/")
+    assert "<script>" not in page and 'property="og:image" content="https://x.pe/data/boletin.png?n=' in page
+    assert f'og:url" content="https://x.pe/data/boletin-compartir.html?n={d["edition"]}"' in page
+    assert 'http-equiv="refresh"' in page and "#/boletin" in page
+    assert I._plain("Ñuñoa «Alerta» · N°") == "NUNOA ALERTA · N°"
+
+
+def _inputs_for_share():
+    import json as _json
+
+    fix = Path(__file__).parent / "fixtures" / "boletin"
+    rd = lambda n: _json.loads((fix / n).read_text(encoding="utf-8"))  # noqa: E731
+    off = rd("oficial-2026-11-10.json")
+    return rd("feed-alertas-2026-11-10.json"), off["official"], rd("escenario-distritos-2026-11-10.json")
+
+
+def test_atom_feed_carries_the_map_of_the_current_edition(doc):
+    x = B.atom_feed(doc, "https://x.pe/")
+    assert x.count('rel="enclosure" type="image/png"') == 1 and "data/boletin.png?n=1" in x
 
 
 def test_subscription_api_with_node():

@@ -36,20 +36,70 @@ const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&':
 
 /** Los cambios de las ediciones posteriores a ``lastEdition``, de la más vieja a la más nueva. */
 function pendingChanges(doc, lastEdition) {
+  const names = Object.fromEntries((Array.isArray(doc.segments) ? doc.segments : []).map((s) => [s.code, s.name]));
   const recent = Array.isArray(doc.recent) ? doc.recent : [];
   const eds = recent.filter((r) => Number(r.edition) > lastEdition).sort((a, b) => a.edition - b.edition);
   // Si n8n estuvo apagado más de lo que guarda ``recent``, se avisa: faltan ediciones de por medio.
   const gap = eds.length && lastEdition > 0 && Number(eds[0].edition) > lastEdition + 1;
   const changes = [];
   for (const r of eds) for (const c of r.changes || []) changes.push({ ...c, edition: r.edition });
-  return { editions: eds.map((r) => r.edition), changes, gap };
+  return { editions: eds.map((r) => r.edition), changes: consolidate(changes, names), gap };
+}
+
+const LEVEL_WORD = { 3: 'rojo', 2: 'naranja', 1: 'amarillo', 0: 'sin nivel', '-1': 'sin avisos' };
+
+/**
+ * Los cambios de varias ediciones, sin lo que se repite ni lo que se deshizo antes de mandarlos: un departamento que
+ * subió y volvió a su nivel, un aviso que salió y se canceló, el ENFEN que cambió y volvió, dos comunicados seguidos
+ * (cuenta el último). Lo que queda dice el cambio neto desde el último correo. Los cambios de ediciones viejas, sin
+ * ``key``/``from``, pasan como están (sin repetir el mismo texto).
+ */
+function consolidate(changes, names = {}) {
+  const groups = new Map();
+  const order = [];
+  changes.forEach((c, i) => {
+    const k = c.rule === 'inicial' ? `i${i}`
+      : /^departamento-/.test(c.rule) && c.dep && c.from !== undefined ? `dep:${c.dep}`
+        : /^aviso-/.test(c.rule) && c.key ? `aviso:${c.key}`
+          : (c.rule === 'enfen-estado' || c.rule === 'noaa-estado') && c.from !== undefined ? c.rule
+            : c.rule === 'enfen-comunicado' || c.rule === 'escenario-nuevo' ? c.rule
+              : `t:${c.text}`;
+    if (!groups.has(k)) { groups.set(k, []); order.push(k); }
+    groups.get(k).push(c);
+  });
+  const out = [];
+  for (const k of order) {
+    const g = groups.get(k);
+    const last = g[g.length - 1];
+    if (k.startsWith('dep:')) {
+      const from = Number(g[0].from);
+      const to = Number(last.rank);
+      if (from === to) continue; // subió y volvió (o al revés): nada que contar
+      if (g.length === 1) { out.push(last); continue; }
+      const up = to > from;
+      const name = names[last.dep] || String(last.text).split(' ')[0];
+      out.push({ ...last, from, rule: up ? 'departamento-sube' : 'departamento-baja', tier: up && to >= 2 ? 'inmediata' : 'resumen', text: `${name} ${up ? 'sube' : 'baja'} de ${LEVEL_WORD[from]} a ${LEVEL_WORD[to]}.` });
+    } else if (k.startsWith('aviso:')) {
+      if (g[0].rule === 'aviso-nuevo' && last.rule === 'aviso-cancelado') continue; // salió y se canceló entre dos correos
+      out.push(g[0].rule === 'aviso-nuevo' && last.rule !== 'aviso-nuevo' ? { ...last, tier: g.some((c) => c.tier === 'inmediata') && last.rule !== 'aviso-cancelado' ? 'inmediata' : last.tier } : last);
+    } else if (k === 'enfen-estado' || k === 'noaa-estado') {
+      if (g[0].from === last.to) continue;
+      out.push(g.length === 1 ? last : { ...last, from: g[0].from, text: k === 'enfen-estado' ? `El ENFEN cambió su estado: de «${g[0].from}» a «${last.to}».` : `La NOAA pasó de «${g[0].from}» a «${last.to}».` });
+    } else out.push(last);
+  }
+  // Con un cambio de estado del ENFEN, el comunicado que lo trae ya está dicho.
+  const res = out.some((c) => c.rule === 'enfen-estado') ? out.filter((c) => c.rule !== 'enfen-comunicado') : out;
+  const rank = { inmediata: 0, resumen: 1 };
+  return res.map((c, i) => [c, i]).sort((a, b) => (rank[a[0].tier] ?? 2) - (rank[b[0].tier] ?? 2) || (b[0].rank || 0) - (a[0].rank || 0) || a[1] - b[1]).map(([c]) => c);
 }
 
 /** Bloque «Qué cambió» del correo, con los cambios de todas las ediciones nuevas. */
 function changesHtml(changes, gap) {
   const list = changes.filter((c) => c.rule !== 'inicial');
   if (!list.length && !gap) return '';
-  const tag = (c) => (c.tier === 'inmediata' ? '<strong style="color:#a3141f">Importante:</strong> ' : '');
+  // «Importante» solo distingue algo cuando hay de los dos tipos; si todos lo son, ya lo dice el asunto.
+  const mixed = list.some((c) => c.tier === 'inmediata') && list.some((c) => c.tier !== 'inmediata');
+  const tag = (c) => (mixed && c.tier === 'inmediata' ? '<strong style="color:#a3141f">Importante:</strong> ' : '');
   const items = list.slice(0, 12).map((c) => `<li style="margin:0 0 4px">${tag(c)}${esc(c.text)}</li>`).join('');
   return '<div style="background:#fff8e1;border-left:4px solid #ef8a2b;padding:8px 12px;margin:0 0 12px">'
     + '<div style="font:700 13px Arial,sans-serif;margin:0 0 4px">Qué cambió desde el último correo</div>'
@@ -98,7 +148,42 @@ function mime({ from, to, bcc, subject, html, text, headers = {} }, seed = '') {
 }
 
 const withBlock = (html, block) => (/<!--cambios-->[\s\S]*?<!--\/cambios-->/.test(html) ? html.replace(/<!--cambios-->[\s\S]*?<!--\/cambios-->/, `<!--cambios-->${block}<!--/cambios-->`) : html);
-const textFor = (changes, block, base) => (block ? `Qué cambió desde el último correo:\n${changes.filter((c) => c.rule !== 'inicial').slice(0, 12).map((c) => `- ${c.text}`).join('\n')}\n\n` : '') + String(base || '');
+const cut = (html, tag) => html.replace(new RegExp(`<!--${tag}-->[\\s\\S]*?<!--\\/${tag}-->`, 'g'), '');
+
+/**
+ * El cuerpo de un correo. El primero lleva el boletín completo. Los demás, solo lo nuevo: qué cambió, la frase y los
+ * contadores de ahora y el botón al boletín; sin el mapa, los más críticos ni «qué hacer» (iguales a los del correo
+ * anterior y a un clic en el sitio), y sin el recuadro del ENFEN si el ENFEN no cambió.
+ */
+function body(doc, changes, gap, full, siteUrl = '') {
+  const block = full ? '' : changesHtml(changes, gap);
+  let html = withBlock(String(doc.email.html), block);
+  if (!full) {
+    html = cut(html, 'detalle');
+    if (!changes.some((c) => /^enfen-/.test(c.rule))) html = cut(html, 'enfen');
+  }
+  if (full) return { block, html, text: String(doc.email.text || '') };
+  const list = changes.filter((c) => c.rule !== 'inicial');
+  const site = String(siteUrl || '').replace(/\/?$/, '/');
+  const text = [`Qué cambió desde el último correo:\n${list.slice(0, 12).map((c) => `- ${c.text}`).join('\n')}`
+    + (list.length > 12 ? `\n- Y ${list.length - 12} cambios más en el sitio.` : '') + (gap ? '\n(Hubo ediciones que este correo no alcanzó a cubrir.)' : ''),
+  doc.summary ? `Ahora: ${doc.summary}` : '',
+  `Boletín completo (N° ${doc.edition}): ${siteUrl ? `${site}#/boletin` : 'en el sitio'}`,
+  'Este boletín no es una alerta oficial: los niveles son los de cada institución.'].filter(Boolean).join('\n\n');
+  return { block, html, text };
+}
+
+/** El asunto: en un correo de cambios, el cambio principal (lo que hay que saber sin abrirlo), no el estado de siempre. */
+function subjectFor(doc, changes, prefix, full) {
+  const base = oneLine(doc.email.subject);
+  if (full) return `${prefix}${base}`;
+  const list = changes.filter((c) => c.rule !== 'inicial');
+  if (!list.length) return `${prefix}${base}`;
+  let lead = oneLine(list[0].text).replace(/\.$/, '');
+  if (lead.length > 90) lead = `${lead.slice(0, 89).replace(/\s+\S*$/, '')}…`;
+  const more = list.length > 1 ? ` (+${list.length - 1} ${list.length === 2 ? 'cambio' : 'cambios'})` : '';
+  return `${prefix}${lead}${more} · Boletín El Niño N° ${doc.edition}`;
+}
 
 /** El pie de cada suscriptor: por qué le llega y sus enlaces de preferencias y de baja. */
 function personalize(html, text, sub, names) {
@@ -156,9 +241,10 @@ function decide(doc, cfg, st, now, list = null) {
   const from = /^[^@\s<>"]+@[^@\s<>"]+$/.test(String(cfg.from_address || '')) ? `${encHeader(cfg.sender_name || 'Observatorio ENSO Perú')} <${cfg.from_address}>` : null;
   const listHeaders = { 'List-Id': `Boletin El Nino Peru <boletin.${host}>`, 'Auto-Submitted': 'auto-generated', Precedence: 'bulk' };
   const messages = [];
-  const personal = (sub, subject, changes, gap, first, kind) => {
-    const block = first ? '' : changesHtml(changes, gap);
-    const p = personalize(withBlock(String(doc.email.html), block), textFor(changes, block, doc.email.text), sub, names);
+  const personal = (sub, prefix, changes, gap, first, kind) => {
+    const b = body(doc, changes, gap, first, cfg.site);
+    const subject = subjectFor(doc, changes, first ? '' : prefix, first);
+    const p = personalize(b.html, b.text, sub, names);
     const headers = { ...listHeaders, 'List-Unsubscribe': `<${sub.bajaPost}>, <${sub.baja}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' };
     messages.push({ to: sub.email, kind, frecuencia: sub.frecuencia, subject, headers, raw: mime({ from, to: sub.email, subject, html: p.html, text: p.text, headers }, sub.email) });
   };
@@ -178,10 +264,9 @@ function decide(doc, cfg, st, now, list = null) {
       pending = changes.length;
     } else {
       const kind = restarted ? 'Boletín completo (numeración reiniciada)' : first ? 'Primer boletín' : urgent ? 'Aviso' : 'Resumen diario';
-      main = { editions, changes, gap, first, urgent, kind, subject: `${first ? '' : urgent ? '[Aviso] ' : '[Resumen] '}${oneLine(doc.email.subject)}` };
-      main.block = first ? '' : changesHtml(changes, gap);
-      main.html = withBlock(String(doc.email.html), main.block);
-      main.text = textFor(changes, main.block, doc.email.text);
+      const prefix = first ? '' : urgent ? '[Aviso] ' : '[Resumen] ';
+      main = { editions, changes, gap, first, urgent, kind, prefix, subject: subjectFor(doc, changes, prefix, first) };
+      Object.assign(main, body(doc, changes, gap, first, cfg.site));
       if (to.length) {
         messages.push({ to: to.join(','), bcc: bcc.join(','), kind: 'lista', subject: main.subject, headers: listHeaders, raw: mime({ from, to: to.join(','), bcc: bcc.join(','), subject: main.subject, html: main.html, text: main.text, headers: listHeaders }) });
       }
@@ -189,7 +274,7 @@ function decide(doc, cfg, st, now, list = null) {
         if (s.frecuencia === 'diario' || (s.frecuencia === 'importantes' && !urgent)) continue;
         const rel = relevantChanges(changes, s.deps);
         if (!first && !rel.length) continue;
-        personal(s, main.subject, rel, gap, first, kind);
+        personal(s, main.prefix, rel, gap, first, kind);
       }
       reason = `${kind}: ediciones ${editions.join(', ') || doc.edition}, ${changes.length} cambios.`;
     }
@@ -203,12 +288,11 @@ function decide(doc, cfg, st, now, list = null) {
   if (dailySubs.length && clock.hour >= digestHour && st.dailyDay !== clock.day && doc.edition > dLast) {
     const p = pendingChanges(doc, dLast);
     daily = { ...p, first: dLast === 0 };
-    const subject = `${daily.first ? '' : '[Resumen diario] '}${oneLine(doc.email.subject)}`;
     let n = 0;
     for (const s of dailySubs) {
       const rel = relevantChanges(p.changes, s.deps);
       if (!daily.first && !rel.length) continue;
-      personal(s, subject, rel, p.gap, daily.first, 'Resumen diario');
+      personal(s, '[Resumen diario] ', rel, p.gap, daily.first, 'Resumen diario');
       n++;
     }
     reason = `${reason ? `${reason} ` : ''}Resumen diario para ${n} ${n === 1 ? 'suscripción' : 'suscripciones'}.`;
@@ -241,4 +325,4 @@ function nextState(st, sent) {
 }
 
 // @export
-if (typeof module !== 'undefined') module.exports = { parseRecipients, limaClock, pendingChanges, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };
+if (typeof module !== 'undefined') module.exports = { parseRecipients, limaClock, pendingChanges, consolidate, changesHtml, body, subjectFor, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };

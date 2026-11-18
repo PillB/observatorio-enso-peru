@@ -14,6 +14,7 @@ Código:
 | `python/enso/boletin.py` | Arma `data/boletin.json` desde lo que ya publica el sitio: el mapa de alertas (`feed.json`), el ENFEN (`dashboard.json`) y el escenario del CENEPRED. También el correo (`data/boletin-correo.html`), el texto para WhatsApp, dos CSV y el canal Atom de ediciones (`data/boletin.xml`) |
 | `python/enso/observatory.py` | Lo llama al final de la publicación; si falla, la publicación sigue sin boletín (`boletin-exception`) |
 | `public/assets/js/boletin.js` | La pestaña. No calcula nada: presenta el JSON |
+| `python/enso/boletin_img.py` | La imagen para compartir (`data/boletin.png`, 1200 × 630: mosaico, contadores, ENFEN y qué cambió) y su página con Open Graph (`data/boletin-compartir.html`), sin dependencias |
 | `functions/_lib/boletin-subs.js` (`/api/boletin/*`) | La suscripción por correo: doble confirmación, preferencias, baja en un clic y la lista que lee n8n |
 | `n8n/lib/boletin.js`, `n8n/nodes/boletin*.js` | Cuándo y a quién se manda el correo (flujos «ENSO · Boletín de eventos El Niño por correo» y «ENSO · Boletín: correo de confirmación de la suscripción») |
 | `python/tests/test_boletin.py`, `python/tests/js/boletin-subs.test.mjs`, `n8n/test/boletin.test.mjs`, `n8n/test/e2e-boletin.sh` | Pruebas, con la publicación real del 10 de noviembre de 2026 (`python/tests/fixtures/boletin/`) |
@@ -128,6 +129,29 @@ lo que pidió:
 
 Si eligió departamentos, solo le llegan los cambios de esos (los del ENFEN le llegan siempre).
 
+### Qué lleva cada correo (sin repetir)
+
+Quien recibe varios correos al día no debe leer cinco veces lo mismo. Por eso:
+
+| Correo | Lleva | No lleva |
+| --- | --- | --- |
+| Primero (o serie reiniciada) | El boletín completo | — |
+| Aviso, resumen y resumen diario | «Qué cambió desde el último correo», la frase y los contadores de ahora, el botón al boletín completo; el recuadro del ENFEN solo si el ENFEN cambió | El mosaico, «Qué se viene», «Qué hacer según el color» y los diez más críticos (iguales a los del correo anterior y a un clic) |
+
+- **Cambios netos.** Entre dos correos se dice el cambio neto: un departamento que subió y volvió a su nivel, un aviso
+  que salió y se canceló, o el ENFEN que cambió y volvió, no se cuentan; de dos comunicados seguidos queda el último;
+  con un cambio de estado del ENFEN no se repite su comunicado (`consolidate` en `n8n/lib/boletin.js`).
+- **Una línea por aviso.** Un aviso nuevo para quince departamentos era una línea del aviso y quince de «sube a
+  naranja»; ahora es una: «Nuevo aviso naranja de SENAMHI: … (suben a naranja: Piura, Tumbes y …)» (`fold_departments`
+  en `python/enso/boletin.py`). Igual con un aviso cancelado y los departamentos que bajan.
+- **El asunto dice el cambio**, no el estado de siempre: «[Aviso] Nuevo aviso rojo de SENAMHI: … (+1 cambio) ·
+  Boletín El Niño N° 6». «Importante» solo marca cuando el correo mezcla cambios importantes y menores.
+- **Sin repetir dentro del correo.** «Qué se viene» ya no repite el estado del ENFEN, el comunicado y las
+  probabilidades (están en su recuadro) ni los conteos por nivel (están en la frase y los contadores): cada línea
+  tiene su versión corta (`brief`), que usan también las formas A y B de la página.
+
+Un correo de cambios pesa unos 14 KB, contra 41 KB del completo.
+
 ### Paso de configuración (lo hace Pablo o el colega de n8n)
 
 Viene con `send = false`: hasta que se cambie, arma el correo y no lo manda (simulacro). Para ponerlo en marcha:
@@ -203,15 +227,30 @@ por debajo de los 102 KB a partir de los cuales Gmail lo corta. Las pruebas (`py
 revisan a 320, 375, 414, 600 y 1024 px de ancho, en claro y oscuro, y sin la hoja de estilos (como lo muestran
 algunos clientes), sin desborde horizontal; también el contraste (AA) de los colores.
 
+## Imagen para compartir y vista previa
+
+Cada edición publica `data/boletin.png` (1200 × 630): el mosaico del Perú con el color de cada departamento, los
+contadores, el estado del ENFEN, los más críticos y, si hubo, qué cambió. Se dibuja en Python sin dependencias.
+
+- **WhatsApp, Telegram, Slack, Teams, Facebook:** el texto para WhatsApp termina con
+  `data/boletin-compartir.html?n=<edición>`, una página con etiquetas Open Graph: al pegar el enlace, la aplicación
+  muestra la imagen del mapa como vista previa, y quien lo abre va a `#/boletin`. El número de edición evita que
+  WhatsApp muestre la imagen de una edición vieja (la guarda por dirección).
+- **«Compartir» en el teléfono** manda la imagen junto con el texto (Web Share con archivos); donde no se puede,
+  manda el texto y el enlace.
+- **«Más → Imagen para compartir (PNG)»** la descarga, para un estado de WhatsApp, una presentación o un grupo.
+
 ## Canal Atom
 
-`data/boletin.xml` lista las últimas ediciones con su resumen y sus cambios, para lectores de noticias, Slack,
-Teams o cualquier automatización. Se anuncia en la página (`<link rel="alternate">`).
+`data/boletin.xml` lista las últimas ediciones con sus cambios, para lectores de noticias, Slack, Teams o cualquier
+automatización; la edición actual lleva la imagen del mapa. Se anuncia en la página (`<link rel="alternate">`).
 
 ## WhatsApp
 
 **Elegido: compartir a mano, gratis.** La pestaña tiene «Compartir por WhatsApp» (un enlace `wa.me` con el resumen
-ya escrito, que abre WhatsApp para elegir el chat o el grupo) y «Copiar resumen». El texto es `whatsapp` del JSON.
+ya escrito, que abre WhatsApp para elegir el chat o el grupo) y «Copiar resumen». El texto es `whatsapp` del JSON:
+primero «Qué cambió» (hasta tres cambios), después el estado de ahora (ENFEN, conteos y hasta cinco departamentos) y
+el enlace que muestra el mapa como vista previa.
 
 **Fase 2, automática: no es gratis.** Mandar mensajes sin que alguien los pulse exige la API de WhatsApp Business
 (Cloud API de Meta): un número dedicado, verificación de la empresa, plantillas aprobadas y, desde el 1 de julio de

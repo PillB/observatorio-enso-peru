@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { libSource, nodeCode, WORKFLOWS } from '../build.mjs';
 
-const L = new Function(`${libSource('boletin')}\nreturn { parseRecipients, limaClock, pendingChanges, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };`)();
+const L = new Function(`${libSource('boletin')}\nreturn { parseRecipients, limaClock, pendingChanges, consolidate, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };`)();
 const H = 3600000;
 const NOW = Date.parse('2026-11-11T15:00:00Z'); // 10:00 en Lima
 
@@ -50,11 +50,54 @@ test('un cambio inmediato sale ya y junta los cambios de todas las ediciones nue
   const r = L.decide(d, CFG, { lastEdition: 4 }, NOW);
   assert.equal(r.send, true);
   assert.equal(r.kind, 'Aviso');
-  assert.match(r.subject, /^\[Aviso\] Boletín El Niño N° 6/);
+  // El asunto dice el cambio principal, no el estado de siempre.
+  assert.equal(r.subject, '[Aviso] Tumbes sube de naranja a rojo (+1 cambio) · Boletín El Niño N° 6');
   assert.ok(r.html.includes('Tumbes sube de naranja a rojo.') && r.html.includes('Nuevo aviso amarillo en Loreto.'));
   assert.ok(!r.html.includes('ya enviado') && !r.html.includes('viejo'));
-  assert.ok(r.html.indexOf('Loreto') < r.html.indexOf('Tumbes'), 'de la edición más vieja a la más nueva');
-  assert.match(r.text, /^Qué cambió desde el último correo:\n- Nuevo aviso amarillo/);
+  assert.ok(r.html.indexOf('Tumbes') < r.html.indexOf('Loreto'), 'lo importante primero');
+  assert.match(r.text, /^Qué cambió desde el último correo:\n- Tumbes sube/);
+});
+
+test('un correo de cambios no repite el boletín: sin el detalle ni el ENFEN si no cambió', () => {
+  const html = '<p>x</p><!--cambios--><!--/cambios--><p>FRASE</p><!--enfen--><div>ENFEN</div><!--/enfen--><!--detalle--><div>MAPA y LOS 10</div><!--/detalle--><a>Ver el boletín completo</a><!--baja--><!--/baja-->';
+  const base = { email: { subject: 'Boletín El Niño N° 6: 1 en rojo', text: 'TEXTO COMPLETO', html }, summary: 'Ahora hay 1 en rojo.' };
+  const upd = L.decide(doc(6, [{ edition: 6, changes: [imm('Nuevo aviso rojo en Piura.')] }], base), CFG, { lastEdition: 5 }, NOW);
+  assert.ok(upd.html.includes('FRASE') && upd.html.includes('Ver el boletín completo') && upd.html.includes('Nuevo aviso rojo en Piura.'));
+  assert.ok(!upd.html.includes('MAPA') && !upd.html.includes('ENFEN'));
+  assert.ok(!upd.text.includes('TEXTO COMPLETO') && upd.text.includes('Ahora: Ahora hay 1 en rojo.'));
+  assert.ok(!/Importante:/.test(upd.html), 'si todos son importantes, la etiqueta no dice nada');
+  // Si cambió el ENFEN, su recuadro va.
+  const enfen = L.decide(doc(6, [{ edition: 6, changes: [{ rule: 'enfen-estado', tier: 'inmediata', from: 'A', to: 'B', text: 'El ENFEN cambió.' }] }], base), CFG, { lastEdition: 5 }, NOW);
+  assert.ok(enfen.html.includes('ENFEN</div>') && !enfen.html.includes('MAPA'));
+  // El primero va completo.
+  const first = L.decide(doc(6, [{ edition: 6, changes: [] }], base), CFG, {}, NOW);
+  assert.ok(first.html.includes('MAPA') && first.html.includes('ENFEN') && first.text === 'TEXTO COMPLETO');
+});
+
+test('los cambios entre dos correos se dicen netos, sin repetir ni contar lo que se deshizo', () => {
+  const C = (edition, c) => ({ edition, changes: [c] });
+  const ups = [
+    C(2, { rule: 'departamento-sube', dep: '20', from: 1, rank: 3, tier: 'inmediata', text: 'Piura sube de amarillo a rojo: lluvias.' }),
+    C(3, { rule: 'departamento-baja', dep: '20', from: 3, rank: 1, tier: 'resumen', text: 'Piura baja de rojo a amarillo.' }),
+    C(4, { rule: 'departamento-sube', dep: '24', from: 1, rank: 2, tier: 'inmediata', text: 'Tumbes sube de amarillo a naranja.' }),
+    C(5, { rule: 'departamento-sube', dep: '24', from: 2, rank: 3, tier: 'inmediata', text: 'Tumbes sube de naranja a rojo.' }),
+    C(2, { rule: 'aviso-nuevo', key: 'k1', rank: 3, tier: 'inmediata', text: 'Nuevo aviso rojo: oleaje.' }),
+    C(4, { rule: 'aviso-cancelado', key: 'k1', tier: 'inmediata', text: 'Cancelado: oleaje.' }),
+    C(3, { rule: 'aviso-nuevo', key: 'k2', rank: 1, tier: 'resumen', text: 'Nuevo aviso amarillo: lluvias.' }),
+    C(5, { rule: 'aviso-sube', key: 'k2', rank: 2, tier: 'inmediata', text: 'Sube a naranja: lluvias.' }),
+    C(2, { rule: 'enfen-comunicado', tier: 'resumen', text: 'Comunicado N° 20.' }),
+    C(3, { rule: 'enfen-comunicado', tier: 'resumen', text: 'Comunicado N° 21.' }),
+    C(4, { rule: 'noaa-estado', from: 'El Niño', to: 'Neutral', tier: 'resumen', text: 'La NOAA pasó de «El Niño» a «Neutral».' }),
+    C(5, { rule: 'noaa-estado', from: 'Neutral', to: 'El Niño', tier: 'resumen', text: 'La NOAA pasó de «Neutral» a «El Niño».' }),
+    C(5, { rule: 'aviso-nuevo', tier: 'resumen', text: 'Texto viejo sin clave.' }),
+    C(5, { rule: 'aviso-nuevo', tier: 'resumen', text: 'Texto viejo sin clave.' }),
+  ];
+  const d = doc(5, ups, { segments: [{ code: '20', name: 'Piura' }, { code: '24', name: 'Tumbes' }] });
+  const texts = L.pendingChanges(d, 1).changes.map((c) => c.text);
+  assert.deepEqual(texts, ['Tumbes sube de amarillo a rojo.', 'Sube a naranja: lluvias.', 'Comunicado N° 21.', 'Texto viejo sin clave.']);
+  // Un cambio de estado del ENFEN ya trae su comunicado.
+  const e = L.consolidate([{ rule: 'enfen-comunicado', tier: 'resumen', text: 'Comunicado' }, { rule: 'enfen-estado', from: 'A', to: 'B', tier: 'inmediata', text: 'Estado' }]);
+  assert.deepEqual(e.map((c) => c.text), ['Estado']);
 });
 
 test('solo cambios menores: esperan a la hora del resumen, una vez por día', () => {

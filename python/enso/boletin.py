@@ -420,18 +420,23 @@ def headline(enso: dict, segs: list[dict], evs: list[dict], reports: list[dict],
         ref = join_es([f"comunicado oficial N° {e['number']}" if e.get("number") else "comunicado oficial",
                        day(e.get("issued"))]).replace(" y ", ", ", 1)
         txt = f"El ENFEN mantiene «{e['status']}» ({ref})."
+        # «brief»: lo que no dicen ya el recuadro del ENFEN, sus barras de probabilidad y los contadores (la página y
+        # el correo los muestran al lado; repetirlos alarga sin informar).
+        brief = ""
         if e["stale"]:
-            txt = (f"El último comunicado del ENFEN leído es «{e['status']}»"
-                   f"{' (N° ' + str(e['number']) + ')' if e.get('number') else ''}; ya debió salir uno más reciente.")
+            txt = brief = (f"El último comunicado del ENFEN leído es «{e['status']}»"
+                           f"{' (N° ' + str(e['number']) + ')' if e.get('number') else ''}; ya debió salir uno más reciente.")
         ol = next((o for o in enso["outlook"] if o["region"] == "nino12"), None)
         if ol and ol.get("magnitude"):
-            txt += (f" En la costa norte, El Niño tendría magnitud {MAG_ES.get(ol['magnitude'], ol['magnitude'])}"
-                    f"{' hasta ' + month(ol['until']) if ol.get('until') else ''}.")
+            mag = (f"En la costa norte, El Niño tendría magnitud {MAG_ES.get(ol['magnitude'], ol['magnitude'])}"
+                   f"{' hasta ' + month(ol['until']) if ol.get('until') else ''}.")
+            txt += " " + mag
+            brief = f"{brief} {mag}".strip()
         pr = next((p for p in enso["probabilities"] if p["region"] == "nino12"), None)
         if pr:
             txt += (" Para el verano, el ENFEN estima " + join_es([f"{x['pct']} % de {x['label']}" for x in pr["summer"]])
                     + f" en {REGION_ES['nino12']} (informe técnico N° {pr['informe']}).")
-        lines.append({"id": "enso", "title": "El Niño", "text": txt})
+        lines.append({"id": "enso", "title": "El Niño", "text": txt, "brief": brief})
     by = {r: [s for s in segs if s["rank"] == r] for r in (3, 2, 1, 0)}
     if any(by[r] for r in (3, 2, 1, 0)):
         parts = []
@@ -443,14 +448,16 @@ def headline(enso: dict, segs: list[dict], evs: list[dict], reports: list[dict],
             parts.append(f"{len(by[0])} con avisos sin nivel")
         top = next((x for x in evs if x["phase"] in ACTIVE), None)
         txt = f"Departamentos con avisos oficiales: {join_es(parts)}."
+        brief = ""
         if top:
             w = (f"desde {when(top['from'])}" if top["phase"] == "proxima" and top["from"]
                  else f"hasta {when(top['until'])}" if top["until"] else "en curso")
             lvl = (top["level"].lower() if re.match(r"nivel", top["level"] or "", re.I)
                    else f"nivel {top['level'].lower()}" if top["level"] else "sin nivel")
-            txt += (f" El aviso más alto es del {top['institution']} ({lvl}): {top['what']} en "
-                    f"{join_es([DEP_NAMES[d] for d in top['deps']], 3)}, {w}.")
-        lines.append({"id": "avisos", "title": "Qué se viene", "text": txt})
+            brief = (f"El aviso más alto es del {top['institution']} ({lvl}): {top['what']} en "
+                     f"{join_es([DEP_NAMES[d] for d in top['deps']], 3)}, {w}.")
+            txt += " " + brief
+        lines.append({"id": "avisos", "title": "Qué se viene", "text": txt, "brief": brief})
     else:
         lines.append({"id": "avisos", "title": "Qué se viene",
                       "text": "Ninguna institución tiene hoy un aviso vigente o próximo relacionado con El Niño. "
@@ -517,14 +524,14 @@ def diff(prev: Optional[dict], cur: dict, doc: dict) -> list[dict]:
     out = []
     pe, ce = prev.get("enfen") or {}, cur["enfen"]
     if ce.get("status") and pe.get("status") and ce["status"] != pe["status"]:
-        out.append({"rule": "enfen-estado", "tier": "inmediata", "deps": [],
+        out.append({"rule": "enfen-estado", "tier": "inmediata", "deps": [], "from": pe["status"], "to": ce["status"],
                     "text": f"El ENFEN cambió su estado: de «{pe['status']}» a «{ce['status']}»"
                             + (f" (comunicado N° {ce['number']})." if ce.get("number") else ".")})
     elif ce.get("number") and ce.get("number") != pe.get("number"):
         out.append({"rule": "enfen-comunicado", "tier": "resumen", "deps": [],
                     "text": f"Nuevo comunicado oficial del ENFEN N° {ce['number']}: mantiene «{ce['status']}»."})
     if cur.get("noaa") and prev.get("noaa") and cur["noaa"] != prev["noaa"]:
-        out.append({"rule": "noaa-estado", "tier": "resumen", "deps": [], "text": f"La NOAA pasó de «{prev['noaa']}» a «{cur['noaa']}»."})
+        out.append({"rule": "noaa-estado", "tier": "resumen", "deps": [], "from": prev["noaa"], "to": cur["noaa"], "text": f"La NOAA pasó de «{prev['noaa']}» a «{cur['noaa']}»."})
     if cur.get("escenario") and prev.get("escenario") and cur["escenario"] != prev["escenario"]:
         sc = doc.get("scenario") or {}
         out.append({"rule": "escenario-nuevo", "tier": "resumen", "deps": [],
@@ -537,7 +544,7 @@ def diff(prev: Optional[dict], cur: dict, doc: dict) -> list[dict]:
         up = b > a
         txt = (f"{s['name']} {'sube' if up else 'baja'} de {LEVELS[a][1].lower()} a {LEVELS[b][1].lower()}"
                + (f": {join_es(s['hazards'][:3])}" if up and s["hazards"] else "") + ".")
-        out.append({"rule": "departamento-sube" if up else "departamento-baja", "dep": s["code"], "deps": [s["code"]],
+        out.append({"rule": "departamento-sube" if up else "departamento-baja", "dep": s["code"], "deps": [s["code"]], "from": a,
                     "tier": "inmediata" if up and b >= 2 else "resumen", "rank": b, "text": txt})
     pev = prev.get("events") or {}
     for e in doc.get("events") or []:
@@ -546,27 +553,68 @@ def diff(prev: Optional[dict], cur: dict, doc: dict) -> list[dict]:
         if e["phase"] == "cancelado":
             if old and old.get("phase") != "cancelado":
                 out.append({"rule": "aviso-cancelado", "tier": "inmediata" if old.get("rank", 0) >= 2 else "resumen",
-                            "deps": e["deps"],
+                            "deps": e["deps"], "key": e["key"],
                             "text": f"Cancelado: {e['title']} ({e['institution']})."})
             continue
         if old is None:
             out.append({"rule": "aviso-nuevo", "tier": "inmediata" if e["rank"] >= 2 else "resumen", "rank": e["rank"],
-                        "deps": e["deps"],
+                        "deps": e["deps"], "key": e["key"],
                         "text": f"Nuevo aviso {e['level'] or 'sin nivel'} de {e['institution']}: {e['what']} en {place}"
                                 + (f", desde {when(e['from'])}" if e["phase"] == "proxima" and e["from"] else
                                    f", hasta {when(e['until'])}" if e["until"] else "") + "."})
         elif e["rank"] > old.get("rank", 0):
             out.append({"rule": "aviso-sube", "tier": "inmediata" if e["rank"] >= 2 else "resumen", "rank": e["rank"],
-                        "deps": e["deps"],
+                        "deps": e["deps"], "key": e["key"],
                         "text": f"Sube a {e['level']}: {e['title']} ({e['institution']})."})
         elif old.get("phase") == "proxima" and e["phase"] in ("vigente", "en-curso"):
             # El aviso esperado ya rige: cambia el «cuándo» del departamento aunque el nivel sea el mismo.
             out.append({"rule": "aviso-empieza", "tier": "inmediata" if e["rank"] >= 2 else "resumen", "rank": e["rank"],
-                        "deps": e["deps"],
+                        "deps": e["deps"], "key": e["key"],
                         "text": f"Ya rige: {e['title']} ({e['institution']})"
                                 + (f", hasta {when(e['until'])}" if e["until"] else "") + "."})
+    out = fold_departments(out)
     order = {"inmediata": 0, "resumen": 1}
     out.sort(key=lambda c: (order.get(c["tier"], 2), -c.get("rank", 0)))
+    return out
+
+
+def fold_departments(changes: list[dict]) -> list[dict]:
+    """Un aviso nuevo del SENAMHI para quince departamentos subía a esos quince a naranja: eran dieciséis líneas para
+    una noticia. Cada «departamento sube» que explica un aviso nuevo o que sube (mismo departamento, mismo nivel) se
+    dice dentro de esa línea; lo mismo con «departamento baja» y el aviso cancelado. Las demás quedan como estaban."""
+    deps = [c for c in changes if c["rule"] in ("departamento-sube", "departamento-baja")]
+    if not deps:
+        return changes
+    used: set[int] = set()
+    out = []
+    avisos = sorted((c for c in changes if c["rule"] in ("aviso-nuevo", "aviso-sube", "aviso-cancelado")),
+                    key=lambda c: -c.get("rank", 0))
+    extra: dict[int, list[dict]] = {}
+    for a in avisos:
+        up = a["rule"] != "aviso-cancelado"
+        for i, d in enumerate(deps):
+            if i in used or d["dep"] not in (a.get("deps") or []):
+                continue
+            if up and d["rule"] == "departamento-sube" and d["rank"] == a.get("rank"):
+                used.add(i)
+                extra.setdefault(id(a), []).append(d)
+            elif not up and d["rule"] == "departamento-baja":
+                used.add(i)
+                extra.setdefault(id(a), []).append(d)
+    for c in changes:
+        if c in deps and deps.index(c) in used:
+            continue
+        got = extra.get(id(c))
+        if got:
+            names = [DEP_NAMES[d["dep"]] for d in got]
+            if c["rule"] == "aviso-cancelado":
+                tail = "; ".join(f"{DEP_NAMES[d['dep']]} baja a {LEVELS[d['rank']][1].lower()}" for d in got)
+            else:
+                tail = f"{'sube' if len(got) == 1 else 'suben'} a {LEVELS[c['rank']][1].lower()}: {join_es(names, 6)}"
+            c = {**c, "text": c["text"].rstrip(".") + f" ({tail}).",
+                 "tier": "inmediata" if any(d["tier"] == "inmediata" for d in got) else c["tier"],
+                 "folded": [d["dep"] for d in got]}
+        out.append(c)
     return out
 
 
@@ -739,7 +787,9 @@ def email_html(doc: dict, site: str) -> str:
     """Correo del boletín: una columna fluida de 600 px como máximo (se lee igual en 320 px que en una pantalla
     grande sin media queries, que Gmail quita en cuentas que no son de Google), tablas para la estructura (Outlook
     para Windows usa el motor de Word), colores con ``bgcolor`` además de CSS, contraste AA y modo oscuro declarado.
-    Los bloques ``<!--cambios-->`` y ``<!--baja-->`` los reemplaza n8n para cada envío."""
+    Los bloques ``<!--cambios-->`` y ``<!--baja-->`` los reemplaza n8n para cada envío. En un correo de cambios (no el
+    primero) n8n quita ``<!--detalle-->`` (mapa, qué se viene, qué hacer, los más críticos: está en el sitio, a un
+    botón) y ``<!--enfen-->`` si el ENFEN no cambió, para no repetir en cada aviso lo que la persona ya recibió."""
     segs, c = doc["segments"], doc["counts"]
     top = [s for s in segs if s["rank"] >= 0][:TOP]
     site = site.rstrip("/") + "/"
@@ -751,7 +801,9 @@ def email_html(doc: dict, site: str) -> str:
         f'<div style="font:600 12px/1.2 {FONT};color:{INK[r]}">{_e(lbl)}</div></td>'
         for r, k, lbl in ((3, "rojo", "en rojo"), (2, "naranja", "en naranja"), (1, "amarillo", "en amarillo"),
                           (0, "sinNivel", "sin nivel"), (-1, "verde", "sin avisos")))
-    lines = "".join(_p(f'<strong>{_e(x["title"])}.</strong> {_e(x["text"])}', 15) for x in doc["headline"])
+    # Sin lo que ya dicen la frase de arriba, los contadores y el recuadro del ENFEN.
+    lines = "".join(_p(f'<strong>{_e(x["title"])}.</strong> {_e(x.get("brief", x["text"]))}', 15)
+                    for x in doc["headline"] if x.get("brief", x["text"]))
     legend = "".join(f'<div class="tx" style="font:12px/1.45 {FONT};color:#333333;margin:0 0 3px"><span style="display:inline-block;'
                      f'width:10px;height:10px;background-color:{LEVELS[r][2]};margin-right:6px"></span>{_e(t)}</div>'
                      for r, t in LEGEND) + (f'<div class="tx" style="font:12px/1.45 {FONT};color:#333333">Con «&middot;» y borde '
@@ -858,8 +910,8 @@ a{{color:{BRAND}}}
 {_p("<strong>En una frase:</strong> " + _e(doc.get("summary") or ""), 16, "#1f1f1f", "0 0 14px") if doc.get("summary") else ""}
 <table role="presentation" class="lv" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 6px;table-layout:fixed"><tr>{counters}</tr></table>
 {_p("Departamentos según el nivel más alto de sus avisos oficiales vigentes o próximos (de 25).", 12, MUTED, "0 0 14px")}
-{enfen}
-<h2 style="font:700 16px/1.3 {FONT};color:#1f1f1f;margin:4px 0 8px">Mapa del Perú por departamento</h2>
+<!--enfen-->{enfen}<!--/enfen-->
+<!--detalle--><h2 style="font:700 16px/1.3 {FONT};color:#1f1f1f;margin:4px 0 8px">Mapa del Perú por departamento</h2>
 {tile_map(segs)}
 <div style="margin:10px 0 14px">{legend}</div>
 <h2 style="font:700 16px/1.3 {FONT};color:#1f1f1f;margin:14px 0 8px">Qué se viene</h2>
@@ -868,10 +920,10 @@ a{{color:{BRAND}}}
 <h2 style="font:700 16px/1.3 {FONT};color:#1f1f1f;margin:18px 0 4px">Los {len(top) or ""} departamentos más críticos</h2>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0">{cards}</table>
 {_p(f"Y {more} departamentos más con avisos: véalos todos en el sitio.", 13, MUTED, "6px 0 0") if more > 0 else ""}
-{_p("Sin avisos relacionados con El Niño: " + _e(join_es(green)) + ".", 13, MUTED, "6px 0 0") if green else ""}
+{_p("Sin avisos relacionados con El Niño: " + _e(join_es(green)) + ".", 13, MUTED, "6px 0 0") if green else ""}<!--/detalle-->
 {button}
 {_p(f'<a href="{_e(wa)}" style="color:{BRAND}">Compartir el resumen por WhatsApp</a>', 14, "#1f1f1f", "12px 0 0")}
-<p style="margin:18px 0 0;font:12px/1.5 {FONT};color:{MUTED}"><strong>Este boletín no es una alerta oficial.</strong> Los niveles son los de cada institución (SENAMHI, INDECI, DHN, IGP, ANA); las probabilidades, las del ENFEN. Ante una emergencia, siga al INDECI, al SENAMHI y a su municipalidad. Orden de la lista: {_e("; ".join(ORDER))}.</p>
+<p style="margin:18px 0 0;font:12px/1.5 {FONT};color:{MUTED}"><strong>Este boletín no es una alerta oficial.</strong> Los niveles son los de cada institución (SENAMHI, INDECI, DHN, IGP, ANA); las probabilidades, las del ENFEN. Ante una emergencia, siga al INDECI, al SENAMHI y a su municipalidad.<!--detalle--> Orden de la lista: {_e("; ".join(ORDER))}.<!--/detalle--></p>
 <p style="margin:8px 0 0;font:12px/1.5 {FONT};color:{MUTED}">Observatorio ENSO Perú · <a href="{_e(site)}" style="color:{BRAND}">{_e(site)}</a> · datos abiertos: <a href="{_e(site)}data/boletin.json" style="color:{BRAND}">boletin.json</a></p>
 <!--baja-->{unsubscribe_footer(site)}<!--/baja-->
 </td></tr></table>
@@ -880,11 +932,23 @@ a{{color:{BRAND}}}
 """
 
 
+def share_url(doc: dict, site: str) -> str:
+    return f"{site.rstrip('/')}/data/boletin-compartir.html?n={doc['edition']}"
+
+
 def whatsapp_text(doc: dict, site: str) -> str:
     c = doc["counts"]
     rated = [s for s in doc["segments"] if s["rank"] >= 1]
     emo = {3: "🔴", 2: "🟠", 1: "🟡"}
     lines = [f"*Boletín El Niño · Perú* (N° {doc['edition']}, {when(doc['cutoff'])}, hora de Lima)"]
+    # Lo nuevo primero: quien ya recibió el anterior lee solo esto.
+    ch = [x for x in doc.get("changes") or [] if x.get("rule") != "inicial"]
+    if ch:
+        lines.append("*Qué cambió:*")
+        lines += [f"• {x['text']}" for x in ch[:3]]
+        if len(ch) > 3:
+            lines.append(f"• y {len(ch) - 3} {'cambio' if len(ch) == 4 else 'cambios'} más en el boletín.")
+        lines.append("*Ahora:*")
     e = (doc["enso"] or {}).get("enfen")
     if e:
         lines.append(f"ENFEN: {e['status']}" + (f" (comunicado N° {e['number']})." if e.get("number") else "."))
@@ -894,7 +958,9 @@ def whatsapp_text(doc: dict, site: str) -> str:
     if len(rated) > 5:
         lines.append(f"… y {len(rated) - 5} departamentos más con avisos.")
     lines.append("No es una alerta oficial: siga al SENAMHI, al INDECI y a su municipalidad.")
-    lines.append(f"Detalle: {site.rstrip('/')}/#/boletin")
+    # El enlace a la página para compartir: WhatsApp muestra el mapa como vista previa (Open Graph); el número de
+    # edición evita que muestre la imagen de una edición vieja, que WhatsApp guarda por dirección.
+    lines.append(f"Mapa y detalle: {share_url(doc, site)}")
     return "\n".join(lines)
 
 
@@ -914,7 +980,8 @@ def email_text(doc: dict, site: str) -> str:
     ch = [x for x in doc.get("changes") or [] if x["rule"] != "inicial"]
     if ch:
         out += ["Qué cambió:"] + [f"- {x['text']}" for x in ch[:8]] + [""]
-    out += [f"{x['title']}: {x['text']}" for x in doc["headline"]] + ["", "Los más críticos:"]
+    out += [f"{x['title']}: {x.get('brief', x['text']) if x['id'] == 'avisos' else x['text']}" for x in doc["headline"]
+            if x["id"] != "avisos" or x.get("brief", x["text"])] + ["", "Los más críticos:"]
     for s in [s for s in doc["segments"] if s["rank"] >= 0][:TOP]:
         out.append(f"{s['position']}. {s['name']} — {s['label']} — {join_es(s['hazards'][:3])} — {_when_seg(s)}")
     out += ["", f"Detalle: {site.rstrip('/')}/#/boletin",
@@ -934,10 +1001,16 @@ def atom_feed(doc: dict, site: str) -> str:
         title = (doc["email"]["subject"] if r["edition"] == doc["edition"] else
                  f"Boletín El Niño N° {r['edition']}: {ch[0]['text'] if ch else 'sin cambios'}")
         body = "".join(f"<li>{x(c['text'])}</li>" for c in ch) or "<li>Sin cambios.</li>"
+        img = f"{site}data/boletin.png?n={r['edition']}"
+        cur = r["edition"] == doc["edition"]
+        # La edición actual lleva el mapa: Slack, Teams y los lectores lo muestran junto a los cambios.
+        pic = (f'<p><img src="{x(img)}" alt="Mapa del Perú por nivel de aviso, contadores y estado del ENFEN" width="600"></p>'
+               if cur else "")
         entries.append(
             f"<entry><id>{x(site)}boletin/{r['edition']}</id><title>{x(title)}</title><updated>{x(iso(r.get('at')) or doc['cutoff'])}</updated>"
             f'<link rel="alternate" type="text/html" href="{x(link)}"/>'
-            f'<content type="html">{x("<ul>" + body + "</ul>")}</content></entry>')
+            + (f'<link rel="enclosure" type="image/png" href="{x(img)}"/>' if cur else "")
+            + f'<content type="html">{x(pic + "<ul>" + body + "</ul>")}</content></entry>')
     return ('<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="es">'
             f"<id>{x(site)}boletin</id><title>Boletín de eventos El Niño · Perú</title>"
             f'<subtitle>Una edición nueva cada vez que cambia algo en los avisos oficiales, el ENFEN o el CENEPRED.</subtitle>'

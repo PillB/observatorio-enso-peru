@@ -128,7 +128,9 @@ function legend(doc, now) {
 }
 
 function headline(doc) {
-  return html`<div class="bol-head">${(doc.headline || []).map((h) => html`<p data-line="${h.id}"><strong>${h.title}.</strong> ${h.text}</p>`)}</div>`;
+  // «brief»: sin lo que ya dicen la línea del ENFEN, sus barras y los contadores de arriba.
+  const lines = (doc.headline || []).map((h) => [h, h.brief ?? h.text]).filter(([, t]) => t);
+  return html`<div class="bol-head">${lines.map(([h, t]) => html`<p data-line="${h.id}"><strong>${h.title}.</strong> ${t}</p>`)}</div>`;
 }
 
 function probBars(doc) {
@@ -509,6 +511,7 @@ export const boletinView = {
           <a class="btn ghost" id="bol-mail" href="data/boletin-correo.html" target="_blank" rel="noopener">Ver como correo</a>
           <a class="btn ghost" href="data/csv/boletin-departamentos.csv" download>CSV de departamentos</a>
           <a class="btn ghost" href="data/csv/boletin-avisos.csv" download>CSV de avisos</a>
+          <a class="btn ghost" href="data/boletin.png" download="boletin-el-nino.png" id="bol-img">Imagen para compartir (PNG)</a>
           <a class="btn ghost" href="data/boletin.xml">Canal Atom</a></div></details>
         <span class="small muted" id="bol-st" role="status" aria-live="polite"></span>
       </div></div>
@@ -627,7 +630,20 @@ export const boletinView = {
     const share = $('#bol-share');
     if (share && navigator.share) {
       share.hidden = false;
-      share.addEventListener('click', () => navigator.share({ title: `Boletín El Niño N° ${doc.edition}`, text: doc.whatsapp || '', url: `${location.origin}${location.pathname}#/boletin` }).catch(() => {}));
+      // En el teléfono se comparte la imagen del mapa con el texto (WhatsApp, Telegram, correo…); si el navegador no
+      // comparte archivos, el texto y el enlace (que en WhatsApp muestra la misma imagen como vista previa).
+      // La imagen se baja antes: Safari solo deja compartir en el mismo gesto del clic, sin esperas de red de por medio.
+      let file = null;
+      if (navigator.canShare) {
+        fetch(`data/boletin.png?n=${doc.edition}`).then((r) => (r.ok ? r.blob() : null)).then((b) => {
+          const f = b && new File([b], `boletin-el-nino-${doc.edition}.png`, { type: 'image/png' });
+          if (f && navigator.canShare({ files: [f] })) file = f;
+        }).catch(() => {});
+      }
+      share.addEventListener('click', () => {
+        const data = { title: `Boletín El Niño N° ${doc.edition}`, text: doc.whatsapp || '' };
+        navigator.share(file ? { ...data, files: [file] } : { ...data, url: `${location.origin}${location.pathname}#/boletin` }).catch(() => {});
+      });
     }
     $('#bol-print')?.addEventListener('click', () => window.print());
     $('#bol-copy')?.addEventListener('click', async () => {

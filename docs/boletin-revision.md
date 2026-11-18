@@ -121,6 +121,15 @@ canal Atom) se explica en [boletin.md](boletin.md).
 5. El asunto del correo podía llevar saltos de línea y romper las cabeceras. → `subject` sin saltos.
 6. El ENFEN sin número de comunicado dejaba «N° None». → El número solo cuando existe.
 
+### Actualizaciones (segunda pasada, a pedido)
+
+1. Cada aviso reenviaba el boletín entero (mapa, diez departamentos, qué hacer). → Solo qué cambió, la frase, los contadores y el botón; el completo va en el primer correo.
+2. El estado del ENFEN salía tres veces (frase, recuadro y «Qué se viene») y las probabilidades dos. → «Qué se viene» usa su versión corta; el recuadro del ENFEN solo va en un correo de cambios si el ENFEN cambió.
+3. Un aviso para muchos departamentos daba una línea por departamento. → Una línea con «(suben a naranja: …)».
+4. Un cambio que se deshizo entre dos correos se contaba dos veces. → Cambio neto, o nada.
+5. El asunto repetía el estado («19 en rojo…») en cada aviso. → Lleva el cambio principal.
+6. WhatsApp y los demás canales iban sin imagen. → `data/boletin.png` con el mosaico, vista previa Open Graph, «Compartir» con la imagen y la imagen en el canal Atom.
+
 ## Pruebas
 
 - `python/tests/test_boletin.py`: entradas rotas, enlaces seguros, fórmulas en CSV, peso y contraste del correo, WhatsApp, Atom.
