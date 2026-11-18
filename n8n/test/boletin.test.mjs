@@ -185,9 +185,12 @@ test('el flujo empieza sin mandar, y Gmail solo corre por la rama «true» de «
   assert.deepEqual(wf.connections['¿Enviar?'].main[1], []);
   assert.deepEqual(wf.connections['Repartir correos'].main[0], [{ node: 'Enviar por Gmail', type: 'main', index: 0 }]);
   const gmail = wf.nodes.find((n) => n.name === 'Enviar por Gmail');
-  assert.equal(gmail.type, 'n8n-nodes-base.httpRequest');
-  assert.equal(gmail.parameters.url, 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send');
-  assert.equal(gmail.parameters.nodeCredentialType, 'gmailOAuth2');
+  // El nodo Gmail propio de n8n, sin la firma de n8n, con el HTML y la copia oculta de cada ítem.
+  assert.equal(gmail.type, 'n8n-nodes-base.gmail');
+  assert.equal(gmail.parameters.operation, 'send');
+  assert.equal(gmail.parameters.emailType, 'html');
+  assert.equal(gmail.parameters.message, '={{ $json.html }}');
+  assert.equal(gmail.parameters.options.appendAttribution, false);
   assert.ok(gmail.credentials.gmailOAuth2);
   // La lista se lee con una credencial, nunca con un token escrito en el flujo.
   const list = wf.nodes.find((n) => n.name === 'Leer suscripciones');
@@ -325,11 +328,23 @@ test('las cabeceras no admiten saltos de línea (inyección de cabeceras)', () =
   assert.equal(L.encHeader('Año\nnuevo').includes('\n '), false);
 });
 
+test('«Repartir correos» da al nodo Gmail un ítem por correo, con su HTML personal', async () => {
+  const d = doc(6, [{ edition: 6, changes: [imm('Tumbes sube a rojo.')] }], { email: { subject: 'B', text: 't', html: '<p>x</p><!--cambios--><!--/cambios--><!--baja--><!--/baja-->' } });
+  const decided = L.decide(d, CFG, { lastEdition: 5, ...KNOWN }, NOW, SUBS);
+  const { out } = await runNode('boletin-repartir', { cfg: { sender_name: 'Obs' }, decided });
+  const lista = out.find((o) => o.json.kind === 'lista').json;
+  assert.equal(lista.to, 'yo@example.com');
+  assert.equal(lista.bcc, 'a@x.pe,b@y.com');
+  const todo = out.find((o) => o.json.to === 'todo@x.pe').json;
+  assert.ok(todo.html.includes('baja=t1') && todo.html.includes('Tumbes sube a rojo.'));
+  assert.equal(todo.bcc, '');
+  assert.equal(todo.senderName, 'Obs');
+  assert.ok(!('raw' in todo));
+});
+
 test('el nodo de confirmación arma un correo para una sola dirección válida', async () => {
-  const cfg = { sender_name: 'Observatorio', from_address: 'boletin@example.pe' };
-  const ok = await runNode('boletin-confirmar', { cfg, input: { body: { to: 'ana@x.pe', subject: 'Confirme', html: '<p>hola</p>', text: 'hola' } } });
-  const mail = decode(ok.out[0].json.raw);
-  assert.match(mail, /^To: ana@x\.pe\r\n/m);
-  assert.match(mail, /^From: Observatorio <boletin@example\.pe>/m);
+  const cfg = { sender_name: 'Observatorio' };
+  const ok = await runNode('boletin-confirmar', { cfg, input: { body: { to: 'ANA@x.pe', subject: 'Confirme\r\nBcc: x@y.pe', html: '<p>hola</p>', text: 'hola' } } });
+  assert.deepEqual(ok.out[0].json, { to: 'ana@x.pe', bcc: '', subject: 'Confirme Bcc: x@y.pe', html: '<p>hola</p>', senderName: 'Observatorio' });
   await assert.rejects(runNode('boletin-confirmar', { cfg, input: { body: { to: 'a@x.pe, b@x.pe', subject: 's', html: 'h' } } }), /inválido/);
 });
