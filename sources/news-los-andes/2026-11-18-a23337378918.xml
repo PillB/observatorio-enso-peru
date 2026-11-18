@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Diario los Andes</title>
+	<atom:link href="https://losandes.com.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://losandes.com.pe/</link>
+	<description></description>
+	<lastBuildDate>Tue, 17 Nov 2026 22:38:48 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.10</generator>
+
+<image>
+	<url>https://losandes.com.pe/wp-content/uploads/2024/06/cropped-ICONO-LOS-ANDES-32x32.png</url>
+	<title>Diario los Andes</title>
+	<link>https://losandes.com.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>La leche materna bajo el microscopio: investigación de la UNSA revela por primera vez su perfil bacteriano en Arequipa</title>
+		<link>https://losandes.com.pe/microbiota-leche-materna-arequipa-unsa/</link>
+					<comments>https://losandes.com.pe/microbiota-leche-materna-arequipa-unsa/#respond</comments>
+		
+		<dc:creator><![CDATA[admineditor]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 22:38:43 +0000</pubDate>
+				<category><![CDATA[EDUCACIÓN]]></category>
+		<category><![CDATA[Diario Los Andes]]></category>
+		<category><![CDATA[UNSA]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135704</guid>
+
+					<description><![CDATA[<p>Un equipo de investigadores de la Universidad Nacional de San Agustín identificó las principales bacterias presentes en la leche materna de mujeres arequipeñas durante el primer mes de lactancia. El estudio, desarrollado con tecnología de secuenciación genética y colaboración internacional, abre nuevas posibilidades para comprender la relación entre la microbiota materna y el desarrollo del [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/microbiota-leche-materna-arequipa-unsa/">La leche materna bajo el microscopio: investigación de la UNSA revela por primera vez su perfil bacteriano en Arequipa</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>Un equipo de investigadores de la Universidad Nacional de San Agustín identificó las principales bacterias presentes en la leche materna de mujeres arequipeñas durante el primer mes de lactancia. El estudio, desarrollado con tecnología de secuenciación genética y colaboración internacional, abre nuevas posibilidades para comprender la relación entre la microbiota materna y el desarrollo del sistema inmunológico infantil.</p>
+
+
+
+<p>La leche materna es reconocida por su importancia en la alimentación y protección de los recién nacidos. Sin embargo, su composición todavía guarda aspectos que la ciencia busca comprender. En Arequipa, investigadores de la Universidad Nacional de San Agustín (UNSA) dieron un paso en esa dirección al identificar, por primera vez en la región, el perfil microbiológico de la leche materna y las principales bacterias que forman parte de ella.</p>
+
+
+
+<p>El hallazgo es resultado de una investigación científica que analizó la composición y diversidad bacteriana de la leche materna durante el primer mes después del parto. El trabajo fue publicado en la revista internacional <em>Applied Microbiology</em>, bajo el título “Breast Milk Microbiota at One Month Postpartum in Women from Arequipa, Peru, Assessed by Full-Length 16S rRNA Gene Nanopore Sequencing”. La investigación representa una primera aproximación científica a la microbiota de la leche materna en la población estudiada y establece una referencia para futuros trabajos sobre salud materno-infantil en la región.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>¿Qué encontraron los investigadores en la leche materna?</strong></h2>
+
+
+
+<p>Uno de los principales resultados fue la identificación de una comunidad bacteriana dominada por el filo Bacillota, que representó el 92 % en promedio de la composición analizada. Dentro de este grupo destacaron los géneros Streptococcus, con 62.9 %, y Staphylococcus, con 21.8 %, considerados los componentes centrales de la microbiota identificada.</p>
+
+
+
+<p>A nivel de especies, los investigadores encontraron principalmente Streptococcus mitis, Streptococcus salivarius y Staphylococcus epidermidis, microorganismos que suelen encontrarse en ambientes orales y cutáneos. Su presencia forma parte de la diversidad microbiana detectada en las muestras y no significa, por sí misma, que la leche esté contaminada o represente un riesgo para el bebé.</p>
+
+
+
+<p>Este resultado permite comprender que la leche materna no está compuesta únicamente por nutrientes, grasas, proteínas y anticuerpos, sino que también alberga comunidades de microorganismos cuya composición constituye un campo de estudio para la ciencia.</p>
+
+
+
+<p>La identificación de estas bacterias resulta relevante porque la microbiota materna es una de las áreas que se investigan para comprender los primeros procesos de colonización microbiana del organismo infantil. No obstante, los resultados de este trabajo describen la composición bacteriana de las muestras estudiadas y no demuestran por sí solos efectos directos sobre la salud o la inmunidad de los recién nacidos.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>La tecnología que permitió identificar las bacterias</strong></h2>
+
+
+
+<p>Para desarrollar el estudio, el equipo de la UNSA utilizó una tecnología de secuenciación genética de tercera generación conocida como Nanopore. Este procedimiento permitió analizar el gen 16S rRNA de longitud completa, una herramienta molecular utilizada para identificar y caracterizar bacterias presentes en una muestra.</p>
+
+
+
+<p>A diferencia de los métodos convencionales de observación microbiológica, la secuenciación genética permite obtener información sobre la diversidad y clasificación de los microorganismos a partir de su material genético. De esta manera, los investigadores pudieron reconocer distintos grupos bacterianos y establecer cuáles predominaban en las muestras analizadas.</p>
+
+
+
+<p>El trabajo fue desarrollado por especialistas del Laboratorio de Investigación en Microbiología Molecular y del Departamento de Morfología Humana de la Facultad de Medicina de la UNSA, con la colaboración de la Universiteit Antwerpen de Bélgica.</p>
+
+
+
+<p>La investigación estuvo liderada por la doctora Cinthya J. Lovon-Luque y contó con la participación de Loisa R. Hancco-Vera, Ana M. Ahuate-Toribio, Kevin W. Lévano-Olín, Rodrigo A. Suarez-Silva, Yndalú K. Huillca-Pari, Luis C. Lizarraga-Vargas y Sandra Condori-Catachura.</p>
+
+
+
+<figure class="wp-block-image size-full"><img fetchpriority="high" decoding="async" width="768" height="430" src="https://losandes.com.pe/wp-content/uploads/2026/11/image.png?wsr" alt="" class="wp-image-135706" srcset="https://losandes.com.pe/wp-content/uploads/2026/11/image.png 768w, https://losandes.com.pe/wp-content/uploads/2026/11/image-300x168.png 300w, https://losandes.com.pe/wp-content/uploads/2026/11/image-750x420.png 750w, https://losandes.com.pe/wp-content/uploads/2026/11/image-150x84.png 150w, https://losandes.com.pe/wp-content/uploads/2026/11/image-696x390.png 696w, https://losandes.com.pe/wp-content/uploads/2026/11/image-600x336.png 600w" sizes="(max-width: 768px) 100vw, 768px" /></figure>
+
+
+
+<h2 class="wp-block-heading"><strong>El peso de los factores maternos en la diversidad bacteriana</strong></h2>
+
+
+
+<p>Otro aspecto identificado durante la investigación fue la relación entre las características maternas y la riqueza bacteriana. Según los resultados difundidos por la universidad, las muestras de leche materna de mujeres con un índice de masa corporal (IMC) dentro del rango normal presentaron una mayor riqueza bacteriana.</p>
+
+
+
+<p>Este hallazgo incorpora una variable adicional al estudio de la microbiota materna y plantea nuevas preguntas sobre los factores que podrían influir en su composición. Sin embargo, no significa que las mujeres con un IMC diferente tengan una leche de menor calidad ni que exista una relación directa de causa y efecto entre el peso materno y la salud del bebé.</p>
+
+
+
+<p>La composición de la leche materna es un campo complejo que requiere investigaciones adicionales para comprender cómo intervienen las condiciones biológicas y ambientales de cada madre. Por ello, los resultados obtenidos en Arequipa constituyen una línea de referencia para continuar estudiando estas relaciones.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>¿Por qué es importante estudiar la microbiota de la leche materna?</strong></h2>
+
+
+
+<p>El interés científico por la microbiota de la leche materna está relacionado con su posible participación en los primeros procesos de desarrollo del organismo infantil. Durante los primeros meses de vida, el sistema digestivo y las defensas del recién nacido atraviesan una etapa de adaptación, en la que la interacción con diferentes microorganismos es objeto de investigación.</p>
+
+
+
+<p>En ese contexto, conocer qué bacterias están presentes en la leche materna permite ampliar la comprensión de la relación entre la madre y el desarrollo microbiano del niño. También puede contribuir a establecer nuevas líneas de investigación sobre la colonización intestinal y el funcionamiento del sistema inmunológico durante las primeras etapas de vida.</p>
+
+
+
+<p>Sin embargo, todavía es necesario desarrollar estudios que permitan determinar cómo evoluciona esta comunidad bacteriana durante los distintos meses de lactancia y qué relación tiene con otros factores maternos y neonatales.</p>
+
+
+
+<p>La investigación de la UNSA se concentró específicamente en muestras correspondientes al primer mes posparto, entre los días 30 y 33 de lactancia, por lo que sus resultados no representan necesariamente la composición de la leche materna durante todo el periodo de amamantamiento.</p>
+
+
+
+<figure class="wp-block-image size-large"><img decoding="async" width="574" height="1024" src="https://losandes.com.pe/wp-content/uploads/2026/11/image-1-574x1024.png?wsr" alt="" class="wp-image-135707" srcset="https://losandes.com.pe/wp-content/uploads/2026/11/image-1-574x1024.png 574w, https://losandes.com.pe/wp-content/uploads/2026/11/image-1-168x300.png 168w, https://losandes.com.pe/wp-content/uploads/2026/11/image-1-235x420.png 235w, https://losandes.com.pe/wp-content/uploads/2026/11/image-1-150x268.png 150w, https://losandes.com.pe/wp-content/uploads/2026/11/image-1-300x536.png 300w, https://losandes.com.pe/wp-content/uploads/2026/11/image-1-696x1243.png 696w, https://losandes.com.pe/wp-content/uploads/2026/11/image-1-600x1071.png 600w, https://losandes.com.pe/wp-content/uploads/2026/11/image-1.png 717w" sizes="(max-width: 574px) 100vw, 574px" /></figure>
+
+
+
+<h2 class="wp-block-heading"><strong>Una primera línea de investigación para Arequipa</strong></h2>
+
+
+
+<p>Más allá de los porcentajes identificados, el aporte de este trabajo está en establecer una primera referencia sobre la composición bacteriana de la leche materna en mujeres de la provincia de Arequipa. Esta información puede servir como punto de partida para futuras investigaciones que amplíen el número de participantes, incorporen otras etapas de lactancia y analicen diferentes condiciones maternas.</p>
+
+
+
+<p>La colaboración entre investigadores de la UNSA y especialistas de Bélgica también evidencia la importancia del trabajo científico conjunto y de la incorporación de nuevas tecnologías para estudiar aspectos de la salud humana.</p>
+
+
+
+<p>El estudio deja abiertas nuevas interrogantes sobre la diversidad microbiana de la leche materna y su relación con el desarrollo infantil. Por ahora, el principal aporte es contar con una primera caracterización científica regional que permitirá profundizar en un campo de investigación que todavía tiene mucho por descubrir.</p>
+
+
+
+<p>R: Y.H.</p>
+<p>La entrada <a href="https://losandes.com.pe/microbiota-leche-materna-arequipa-unsa/">La leche materna bajo el microscopio: investigación de la UNSA revela por primera vez su perfil bacteriano en Arequipa</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/microbiota-leche-materna-arequipa-unsa/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Visita del papa León XIV al Perú deja un mensaje de unidad, diálogo y lucha contra la corrupción</title>
+		<link>https://losandes.com.pe/visita-papa-leon-xiv-peru-mensajes-unidad-dialogo/</link>
+					<comments>https://losandes.com.pe/visita-papa-leon-xiv-peru-mensajes-unidad-dialogo/#respond</comments>
+		
+		<dc:creator><![CDATA[Diario los Andes]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 20:49:10 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[Diario Los Andes]]></category>
+		<category><![CDATA[Puno]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135697</guid>
+
+					<description><![CDATA[<p>La visita apostólica del papa León XIV al Perú concluyó, pero sus mensajes dejaron importantes reflexiones para la sociedad. Durante su recorrido por el país, el pontífice destacó la capacidad de los peruanos para superar sus diferencias y construir un futuro en común. Asimismo, resaltó el comportamiento de la población, que acompañó sus actividades con [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/visita-papa-leon-xiv-peru-mensajes-unidad-dialogo/">Visita del papa León XIV al Perú deja un mensaje de unidad, diálogo y lucha contra la corrupción</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>La visita apostólica del papa León XIV al Perú concluyó, pero sus mensajes dejaron importantes reflexiones para la sociedad. Durante su recorrido por el país, el pontífice destacó la capacidad de los peruanos para superar sus diferencias y construir un futuro en común. Asimismo, resaltó el comportamiento de la población, que acompañó sus actividades con orden, disciplina y muestras de alegría, proyectando una imagen positiva del país ante el mundo.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>León XIV alertó sobre los problemas que afectan al Perú y América Latina</strong></h2>
+
+
+
+<p>En sus intervenciones, el santo padre abordó diversos desafíos que enfrenta la sociedad, entre ellos el machismo, el narcotráfico, la tala ilegal en la Amazonía, la corrupción, la trata de personas y el desempleo juvenil. También expresó su preocupación por los riesgos éticos relacionados con el desarrollo de la ciencia y la inteligencia artificial.</p>
+
+
+
+<p>Otro de los mensajes centrales estuvo relacionado con la necesidad de combatir el crimen organizado transnacional mediante la cooperación entre los países. El pontífice sostuvo que estos problemas requieren respuestas conjuntas y un compromiso firme de las autoridades y la sociedad.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>El papa pidió dejar atrás la polarización y fortalecer el diálogo</strong></h2>
+
+
+
+<p>Desde la Basílica Catedral de Lima, León XIV hizo un llamado a construir una «paz desarmada y desarmante» y advirtió sobre los efectos de la polarización, que debilita la democracia y divide a la sociedad. Frente a este escenario, planteó promover una cultura del encuentro, basada en el diálogo y la búsqueda de consensos.</p>
+
+
+
+<p>Asimismo, impulsó la importancia de una Iglesia sinodal, en la que obispos y sacerdotes escuchen a las comunidades y caminen junto a ellas. Esta reflexión también fue dirigida a los líderes políticos, sociales y gremiales, a quienes exhortó a mantener una actitud de cercanía y apertura frente a las necesidades de la población.</p>
+
+
+
+<p>De esta manera, la visita del pontífice deja como principal desafío convertir sus mensajes en acciones concretas. La unidad, el respeto, la lucha contra la corrupción y la construcción de acuerdos fueron algunos de los principios que marcaron su paso por el Perú.</p>
+
+
+
+<p>R: Y.H.</p>
+<p>La entrada <a href="https://losandes.com.pe/visita-papa-leon-xiv-peru-mensajes-unidad-dialogo/">Visita del papa León XIV al Perú deja un mensaje de unidad, diálogo y lucha contra la corrupción</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/visita-papa-leon-xiv-peru-mensajes-unidad-dialogo/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>San Román registra 247 casos de nacimientos prematuros hasta octubre</title>
+		<link>https://losandes.com.pe/san-roman-registra-247-casos-de-nacimientos-prematuros-hasta-octubre/</link>
+					<comments>https://losandes.com.pe/san-roman-registra-247-casos-de-nacimientos-prematuros-hasta-octubre/#respond</comments>
+		
+		<dc:creator><![CDATA[admineditor]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 20:44:30 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135689</guid>
+
+					<description><![CDATA[<p>La Red Integrada de Salud (RIS) San Román registró 247 nacimientos prematuros de más de 3 mil partos atendidos hasta octubre de este año. La cifra fue dada a conocer durante una conferencia de prensa por el Día Mundial del Niño Prematuro, realizada bajo el lema “Poquito a poco, crezco con tus cuidados”. La coordinadora [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/san-roman-registra-247-casos-de-nacimientos-prematuros-hasta-octubre/">San Román registra 247 casos de nacimientos prematuros hasta octubre</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>La Red Integrada de Salud (RIS) San Román registró 247 nacimientos prematuros de más de 3 mil partos atendidos hasta octubre de este año. La cifra fue dada a conocer durante una conferencia de prensa por el Día Mundial del Niño Prematuro, realizada bajo el lema “Poquito a poco, crezco con tus cuidados”.</p>
+
+
+
+<p>La coordinadora de Atención Integral de Salud Neonatal, Rosalía Cruz Tuco, señaló que los casos de prematuridad vienen incrementándose cada año. Por su parte, el ginecólogo Pedro Chambi indicó que la prevención requiere cumplir los controles prenatales, mantener una adecuada alimentación durante el embarazo e identificar los signos de alarma.</p>
+
+
+
+<p>El jefe de Neonatología del Hospital Carlos Monge Medrano, Alberto Flores Guzmán, advirtió que los bebés prematuros enfrentan riesgos como dificultades respiratorias y cardíacas, infecciones y problemas para regular su temperatura. Por ello, destacó la necesidad de brindarles atención especializada desde sus primeros momentos de vida.</p>
+
+
+
+<p><em>Redacción: Patricia Cari</em></p>
+<p>La entrada <a href="https://losandes.com.pe/san-roman-registra-247-casos-de-nacimientos-prematuros-hasta-octubre/">San Román registra 247 casos de nacimientos prematuros hasta octubre</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/san-roman-registra-247-casos-de-nacimientos-prematuros-hasta-octubre/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Empresas peruanas que exportan a China se quintuplicaron en los últimos 25 años</title>
+		<link>https://losandes.com.pe/empresas-peruanas-exportadoras-china-quintuplicaron/</link>
+					<comments>https://losandes.com.pe/empresas-peruanas-exportadoras-china-quintuplicaron/#respond</comments>
+		
+		<dc:creator><![CDATA[Diario los Andes]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 20:43:43 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[Diario Los Andes]]></category>
+		<category><![CDATA[Perú]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135692</guid>
+
+					<description><![CDATA[<p>El número de empresas peruanas que exportan productos al mercado chino se quintuplicó en los últimos 25 años y alcanzó las 704 compañías al cierre de 2025. Este crecimiento refleja el fortalecimiento de las relaciones comerciales entre Perú y China, país que se ha consolidado como uno de los principales destinos de las exportaciones nacionales, [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/empresas-peruanas-exportadoras-china-quintuplicaron/">Empresas peruanas que exportan a China se quintuplicaron en los últimos 25 años</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>El número de empresas peruanas que exportan productos al mercado chino se quintuplicó en los últimos 25 años y alcanzó las 704 compañías al cierre de 2025. Este crecimiento refleja el fortalecimiento de las relaciones comerciales entre Perú y China, país que se ha consolidado como uno de los principales destinos de las exportaciones nacionales, según información presentada por la Asociación de Exportadores (Adex).</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Exportaciones peruanas a China alcanzaron los US$ 33,500 millones</strong></h2>
+
+
+
+<p>De acuerdo con el gremio empresarial, las exportaciones peruanas hacia China registraron un crecimiento promedio anual de 19.2 % durante este periodo, hasta alcanzar los 33,500 millones de dólares en 2025. Los envíos estuvieron concentrados principalmente en productos de la minería tradicional, así como en los sectores pesquero y acuícola.</p>
+
+
+
+<p>Por otro lado, China también mantiene una posición importante como proveedor de productos para el mercado peruano. Durante 2025, alrededor de 28,900 empresas nacionales importaron desde ese país cerca de 5,000 productos. Entre los principales bienes adquiridos destacaron los celulares, por 888 millones de dólares; laptops, por 584 millones; vehículos, por 477 millones; relojes, por 240 millones, y televisores, por 217 millones de dólares.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Puerto de Chancay representa una oportunidad comercial</strong></h2>
+
+
+
+<p>En este contexto, proyectos como el puerto de Chancay representan una oportunidad para fortalecer la conexión comercial con Asia y desarrollar una plataforma logística regional. El reto para el Perú será aprovechar esta infraestructura para atraer inversiones, impulsar industrias y diversificar su oferta exportadora con productos de mayor valor agregado.</p>
+
+
+
+<p>R: Y.H.</p>
+<p>La entrada <a href="https://losandes.com.pe/empresas-peruanas-exportadoras-china-quintuplicaron/">Empresas peruanas que exportan a China se quintuplicaron en los últimos 25 años</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/empresas-peruanas-exportadoras-china-quintuplicaron/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Diciembre tendrá tres feriados nacionales en Perú y trabajadores podrán acceder al pago triple</title>
+		<link>https://losandes.com.pe/feriados-diciembre-2026-peru-derechos-laborales/</link>
+					<comments>https://losandes.com.pe/feriados-diciembre-2026-peru-derechos-laborales/#respond</comments>
+		
+		<dc:creator><![CDATA[Diario los Andes]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 20:36:33 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[Diario Los Andes]]></category>
+		<category><![CDATA[Perú]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135688</guid>
+
+					<description><![CDATA[<p>El último mes de 2026 tendrá tres feriados nacionales para los trabajadores de los sectores público y privado. Las fechas corresponden al martes 8 de diciembre, por la celebración de la Inmaculada Concepción; miércoles 9, en conmemoración de la Batalla de Ayacucho; y viernes 25, por Navidad. Estos días permitirán organizar actividades familiares y disfrutar [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/feriados-diciembre-2026-peru-derechos-laborales/">Diciembre tendrá tres feriados nacionales en Perú y trabajadores podrán acceder al pago triple</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>El último mes de 2026 tendrá tres feriados nacionales para los trabajadores de los sectores público y privado. Las fechas corresponden al martes 8 de diciembre, por la celebración de la Inmaculada Concepción; miércoles 9, en conmemoración de la Batalla de Ayacucho; y viernes 25, por Navidad. Estos días permitirán organizar actividades familiares y disfrutar de jornadas de descanso antes de finalizar el año.</p>
+
+
+
+<p>Los feriados del 8 y 9 de diciembre serán consecutivos, por lo que los trabajadores podrán contar con dos días seguidos de descanso. Asimismo, Navidad caerá viernes, lo que permitirá disfrutar de un fin de semana largo. Estas fechas están reconocidas en el Decreto Legislativo N.° 713, que establece el derecho al descanso remunerado para los trabajadores del régimen laboral privado.</p>
+
+
+
+<p>De acuerdo con el artículo 9 de esta norma, quienes trabajen durante un feriado nacional y no reciban un día de descanso sustitutorio tienen derecho al pago de la jornada realizada más una sobretasa del 100 %. En la práctica, esto equivale a tres remuneraciones diarias: una correspondiente al feriado, que ya está incluida en el sueldo, y dos adicionales por haber trabajado durante esa fecha.</p>
+
+
+
+<p>Por ejemplo, si un trabajador percibe S/100 diarios y labora durante uno de estos feriados sin recibir descanso sustitutorio, le corresponderá un total de S/300 por esa jornada. Sin embargo, si el empleador le otorga otro día de descanso en compensación, no corresponde el pago adicional de la sobretasa.</p>
+
+
+
+<p>Es importante distinguir los feriados nacionales de los días no laborables compensables. Los primeros otorgan descanso remunerado y no requieren recuperar las horas dejadas de trabajar; en cambio, los días no laborables son establecidos por disposiciones específicas y contemplan la compensación de las horas, según las condiciones aplicables.</p>
+
+
+
+<p></p>
+<p>La entrada <a href="https://losandes.com.pe/feriados-diciembre-2026-peru-derechos-laborales/">Diciembre tendrá tres feriados nacionales en Perú y trabajadores podrán acceder al pago triple</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/feriados-diciembre-2026-peru-derechos-laborales/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Cuna Más fortalece capacidades en San Martín para atender emergencias ante posible fenómeno El Niño</title>
+		<link>https://losandes.com.pe/cuna-mas-san-martin-capacitacion-emergencias-el-nino/</link>
+					<comments>https://losandes.com.pe/cuna-mas-san-martin-capacitacion-emergencias-el-nino/#respond</comments>
+		
+		<dc:creator><![CDATA[Diario los Andes]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 20:31:07 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[Diario Los Andes]]></category>
+		<category><![CDATA[Perú]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135685</guid>
+
+					<description><![CDATA[<p>El equipo territorial del Programa Nacional Cuna Más en San Martín fortaleció sus capacidades para responder ante posibles emergencias relacionadas con el fenómeno El Niño. Para ello, sus integrantes participaron en un curso taller de Evaluación de Daños y Análisis de Necesidades (EDAN), organizado por el Instituto Nacional de Defensa Civil (Indeci), con el propósito [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/cuna-mas-san-martin-capacitacion-emergencias-el-nino/">Cuna Más fortalece capacidades en San Martín para atender emergencias ante posible fenómeno El Niño</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>El equipo territorial del Programa Nacional Cuna Más en San Martín fortaleció sus capacidades para responder ante posibles emergencias relacionadas con el fenómeno El Niño. Para ello, sus integrantes participaron en un curso taller de Evaluación de Daños y Análisis de Necesidades (EDAN), organizado por el Instituto Nacional de Defensa Civil (Indeci), con el propósito de mejorar la identificación de daños y las necesidades de la población afectada por desastres.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Capacitación permitirá priorizar atención a familias vulnerables</strong></h2>
+
+
+
+<p>La formación busca que el personal cuente con herramientas para evaluar las condiciones de las comunidades después de una emergencia y determinar qué necesidades requieren atención inmediata. Esta información permitirá organizar una respuesta más eficiente y priorizar a las poblaciones en situación de vulnerabilidad, especialmente a las niñas y niños de la primera infancia que reciben los servicios del programa.</p>
+
+
+
+<p>Desde el Ministerio de Desarrollo e Inclusión Social (Midis) se destacó que contar con trabajadores capacitados resulta fundamental para proteger la integridad y el bienestar de los menores, así como para garantizar que la atención social llegue oportunamente a quienes más la necesitan.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Cuna Más se prepara ante posibles efectos de El Niño</strong></h2>
+
+
+
+<p>La participación del equipo territorial en esta capacitación forma parte de las acciones preventivas que se desarrollan en San Martín frente a los posibles efectos del fenómeno El Niño. Mediante el fortalecimiento de conocimientos sobre evaluación de daños y análisis de necesidades, el programa busca mejorar su capacidad de coordinación y respuesta ante situaciones que puedan afectar la continuidad de sus servicios.</p>
+
+
+
+<p>De esta manera, Cuna Más busca reforzar la protección de los niños y sus familias ante eventuales emergencias, mediante una intervención que permita identificar riesgos, establecer prioridades y articular la atención con las instituciones responsables de la gestión del riesgo de desastres.</p>
+
+
+
+<p>R: Y.H.</p>
+<p>La entrada <a href="https://losandes.com.pe/cuna-mas-san-martin-capacitacion-emergencias-el-nino/">Cuna Más fortalece capacidades en San Martín para atender emergencias ante posible fenómeno El Niño</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/cuna-mas-san-martin-capacitacion-emergencias-el-nino/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Puno: Docentes rendirán prueba de aimara y quechua este 22 de noviembre en tres sedes</title>
+		<link>https://losandes.com.pe/puno-docentes-rendiran-prueba-de-aimara-y-quechua-este-22-de-noviembre-en-tres-sedes/</link>
+					<comments>https://losandes.com.pe/puno-docentes-rendiran-prueba-de-aimara-y-quechua-este-22-de-noviembre-en-tres-sedes/#respond</comments>
+		
+		<dc:creator><![CDATA[admineditor]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 17:45:41 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135682</guid>
+
+					<description><![CDATA[<p>La Dirección Regional de Educación de Puno informó que este domingo 22 de noviembre se desarrollará la evaluación escrita de dominio de lengua originaria aimara y quechua, dirigida a los participantes inscritos en este proceso. La evaluación tendrá como sedes Azángaro, Juliaca y Puno. En Azángaro se realizará en las instituciones IES Pedro Vilcapaza, IES [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/puno-docentes-rendiran-prueba-de-aimara-y-quechua-este-22-de-noviembre-en-tres-sedes/">Puno: Docentes rendirán prueba de aimara y quechua este 22 de noviembre en tres sedes</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>La Dirección Regional de Educación de Puno informó que este domingo 22 de noviembre se desarrollará la evaluación escrita de dominio de lengua originaria aimara y quechua, dirigida a los participantes inscritos en este proceso.</p>
+
+
+
+<p>La evaluación tendrá como sedes Azángaro, Juliaca y Puno. En Azángaro se realizará en las instituciones IES Pedro Vilcapaza, IES Perú BIRF, IES Aplicación e IES Pedagógico Azángaro; mientras que en Juliaca será en las instituciones educativas 71016 María Auxiliadora, 71015 San Juan Bosco, 70047 Manco Cápac, 70565 Mariano Núñez y 70545 Túpac Amaru.</p>
+
+
+
+<p>En la ciudad de Puno, la evaluación se desarrollará en la Universidad Nacional del Altiplano. Entre los útiles autorizados para rendir la prueba figuran lápiz 2B, lapiceros de color azul o negro, borrador y tajador.</p>
+
+
+
+<p><em>Redacción: Patricia Cari</em></p>
+<p>La entrada <a href="https://losandes.com.pe/puno-docentes-rendiran-prueba-de-aimara-y-quechua-este-22-de-noviembre-en-tres-sedes/">Puno: Docentes rendirán prueba de aimara y quechua este 22 de noviembre en tres sedes</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/puno-docentes-rendiran-prueba-de-aimara-y-quechua-este-22-de-noviembre-en-tres-sedes/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>JNE declara infundada vacancia contra alcaldesa de Amantaní</title>
+		<link>https://losandes.com.pe/jne-declara-infundada-vacancia-contra-alcaldesa-de-amantani/</link>
+					<comments>https://losandes.com.pe/jne-declara-infundada-vacancia-contra-alcaldesa-de-amantani/#respond</comments>
+		
+		<dc:creator><![CDATA[admineditor]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 17:18:46 +0000</pubDate>
+				<category><![CDATA[REGIONAL]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135679</guid>
+
+					<description><![CDATA[<p>La alcaldesa de Amantaní, Reyna N. Juli Calsín, continuará en el cargo luego de que el Pleno del Jurado Nacional de Elecciones (JNE), mediante la Resolución N.º 4396-2026-JNE, declarara fundado su recurso de apelación y revocara los acuerdos de concejo que aprobaban su vacancia por presunto nepot1smo e infr4cción a las restricciones de contratación. El [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/jne-declara-infundada-vacancia-contra-alcaldesa-de-amantani/">JNE declara infundada vacancia contra alcaldesa de Amantaní</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>La alcaldesa de Amantaní, Reyna N. Juli Calsín, continuará en el cargo luego de que el Pleno del Jurado Nacional de Elecciones (JNE), mediante la Resolución N.º 4396-2026-JNE, declarara fundado su recurso de apelación y revocara los acuerdos de concejo que aprobaban su vacancia por presunto nepot1smo e infr4cción a las restricciones de contratación. El pronunciamiento fue emitido en última y definitiva instancia.</p>
+
+
+
+<p>El organismo electoral determinó que los solicitantes no acreditaron con pruebas la existencia de un vínculo laboral o contractual entre la municipalidad y Abrahan Quispe durante los años 2023 y 2024. Para ello, contrastó información de la SUNAT, el MEF y el SEACE, sin encontrar registros en planillas, recibos por honorarios ni órdenes de servicio que sustentaran la causal de nepot1smo.</p>
+
+
+
+<p>El JNE dispuso remitir copias del expediente al Ministerio Público y a la Contraloría para que investiguen las presuntas irregularidades administrativas durante el trámite del proceso.</p>
+
+
+
+<p></p>
+<p>La entrada <a href="https://losandes.com.pe/jne-declara-infundada-vacancia-contra-alcaldesa-de-amantani/">JNE declara infundada vacancia contra alcaldesa de Amantaní</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/jne-declara-infundada-vacancia-contra-alcaldesa-de-amantani/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Conjuntos de Ácora cancelan viaje a Lima para presentación de la Candelaria 2027 por falta de presupuesto</title>
+		<link>https://losandes.com.pe/conjuntos-de-acora-cancelan-viaje-a-lima-para-presentacion-de-la-candelaria-2027-por-falta-de-presupuesto/</link>
+					<comments>https://losandes.com.pe/conjuntos-de-acora-cancelan-viaje-a-lima-para-presentacion-de-la-candelaria-2027-por-falta-de-presupuesto/#respond</comments>
+		
+		<dc:creator><![CDATA[admineditor]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 17:06:22 +0000</pubDate>
+				<category><![CDATA[CULTURA]]></category>
+		<category><![CDATA[REGIONAL]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135676</guid>
+
+					<description><![CDATA[<p>La Federación Distrital de Folklore y Cultura de Acora (FEDIFOC) y los conjuntos unificados de Chacareros y Lawak&#8217;umus anunciaron la cancelación del viaje a Lima, donde tenían previsto participar el próximo 22 de noviembre en la presentación oficial de la Festividad Virgen de la Candelaria 2027, en el Estadio Nacional. Mediante un pronunciamiento, la organización [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/conjuntos-de-acora-cancelan-viaje-a-lima-para-presentacion-de-la-candelaria-2027-por-falta-de-presupuesto/">Conjuntos de Ácora cancelan viaje a Lima para presentación de la Candelaria 2027 por falta de presupuesto</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>La Federación Distrital de Folklore y Cultura de Acora (FEDIFOC) y los conjuntos unificados de Chacareros y Lawak&#8217;umus anunciaron la cancelación del viaje a Lima, donde tenían previsto participar el próximo 22 de noviembre en la presentación oficial de la Festividad Virgen de la Candelaria 2027, en el Estadio Nacional.</p>
+
+
+
+<p>Mediante un pronunciamiento, la organización atribuyó esta decisión a la falta de presupuesto de la Municipalidad Distrital de Acora. Cuestionó al alcalde por no otorgar los recursos para el desplazamiento y a los funcionarios por no buscar soluciones al pedido de los conjuntos, situación que calificó como un desplante a la cultura acoreña y falta de voluntad política del Concejo Municipal.</p>
+
+
+
+<p>La organización lamentó que, pese a la unificación de los seis conjuntos participantes y la disposición de instituciones públicas, privadas y personas que buscaron apoyar la iniciativa, no se concretara el viaje para representar a la cultura acoreña en Lima.</p>
+
+
+
+<p><em>Redacción: Patricia Cari</em></p>
+<p>La entrada <a href="https://losandes.com.pe/conjuntos-de-acora-cancelan-viaje-a-lima-para-presentacion-de-la-candelaria-2027-por-falta-de-presupuesto/">Conjuntos de Ácora cancelan viaje a Lima para presentación de la Candelaria 2027 por falta de presupuesto</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/conjuntos-de-acora-cancelan-viaje-a-lima-para-presentacion-de-la-candelaria-2027-por-falta-de-presupuesto/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+		<item>
+		<title>Congreso aprueba recorte de casi S/450 millones en su presupuesto para 2027</title>
+		<link>https://losandes.com.pe/congreso-aprueba-recorte-de-casi-s-450-millones-en-su-presupuesto-para-2027/</link>
+					<comments>https://losandes.com.pe/congreso-aprueba-recorte-de-casi-s-450-millones-en-su-presupuesto-para-2027/#respond</comments>
+		
+		<dc:creator><![CDATA[admineditor]]></dc:creator>
+		<pubDate>Tue, 17 Nov 2026 17:01:04 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[POLÍTICA]]></category>
+		<guid isPermaLink="false">https://losandes.com.pe/?p=135673</guid>
+
+					<description><![CDATA[<p>Un recorte de casi 450 millones de soles en el presupuesto del Congreso para el año 2027 fue aprobado por unanimidad por la Comisión Directiva, tras un acuerdo entre las mesas directivas de la Cámara de Diputados y el Senado. Miguel Torres, señaló que los recursos ahorrados podrían destinarse a otras prioridades del país, como [&#8230;]</p>
+<p>La entrada <a href="https://losandes.com.pe/congreso-aprueba-recorte-de-casi-s-450-millones-en-su-presupuesto-para-2027/">Congreso aprueba recorte de casi S/450 millones en su presupuesto para 2027</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>Un recorte de casi 450 millones de soles en el presupuesto del Congreso para el año 2027 fue aprobado por unanimidad por la Comisión Directiva, tras un acuerdo entre las mesas directivas de la Cámara de Diputados y el Senado.</p>
+
+
+
+<p>Miguel Torres, señaló que los recursos ahorrados podrían destinarse a otras prioridades del país, como la prevención de los efectos del Fenómeno El Niño y la lucha contra la inseguridad ciudadana. También indicó que, durante su gestión, el Legislativo devolvió más de S/300 millones al tesoro público.</p>
+
+
+
+<p>La decisión forma parte del proceso de adecuación presupuestal del Congreso bajo el nuevo sistema bicameral. Según Torres, ambas mesas directivas asumieron el compromiso de optimizar el uso de los recursos públicos y evitar gastos adicionales.</p>
+
+
+
+<p>Redacción: Patricia Cari</p>
+<p>La entrada <a href="https://losandes.com.pe/congreso-aprueba-recorte-de-casi-s-450-millones-en-su-presupuesto-para-2027/">Congreso aprueba recorte de casi S/450 millones en su presupuesto para 2027</a> se publicó primero en <a href="https://losandes.com.pe">Diario los Andes</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://losandes.com.pe/congreso-aprueba-recorte-de-casi-s-450-millones-en-su-presupuesto-para-2027/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+			</item>
+	</channel>
+</rss>

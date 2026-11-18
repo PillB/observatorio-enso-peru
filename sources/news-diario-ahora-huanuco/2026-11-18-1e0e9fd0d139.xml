@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Wed, 18 Nov 2026 02:11:55 GMT</lastBuildDate>
+    <pubDate>Tue, 17 Nov 2026 17:40:09 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Ocho sismos de hasta magnitud 5.4 sacudieron Ica en menos de 12 horas</title>
+    <link>https://ahora.com.pe/nacional/ocho-sismos-ica-menos-12-horas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/ocho-sismos-ica-menos-12-horas</guid>
+    <pubDate>Tue, 17 Nov 2026 17:40:09 GMT</pubDate>
+    <description><![CDATA[La región Ica registró ocho sismos en menos de 12 horas el lunes 16 de noviembre, con magnitudes entre 4.2 y 5.4, según el IGP. Los epicentros se ubicaron en Nasca y Palpa. No se reportaron daños materiales ni víctimas.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[sismos Ica]]></category>
+    <category><![CDATA[IGP]]></category>
+    <category><![CDATA[Nasca]]></category>
+    <category><![CDATA[Palpa]]></category>
+    <category><![CDATA[actividad sísmica]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/eb089e844a0c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/eb089e844a0c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/eb089e844a0c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Keiko Fujimori se reúne con Sheinbaum y líderes de APEC este miércoles en Shenzhen</title>
+    <link>https://ahora.com.pe/deportes/keiko-fujimori-reunion-sheinbaum-shenzhen</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/keiko-fujimori-reunion-sheinbaum-shenzhen</guid>
+    <pubDate>Wed, 18 Nov 2026 02:00:11 GMT</pubDate>
+    <description><![CDATA[Keiko Fujimori tiene prevista para este miércoles 18 de noviembre una reunión bilateral con la presidenta de México, Claudia Sheinbaum, en Shenzhen, como parte de su agenda en la cumbre APEC 2026, según la agenda oficial difundida por la Presidencia.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[Claudia Sheinbaum]]></category>
+    <category><![CDATA[APEC 2026]]></category>
+    <category><![CDATA[Shenzhen]]></category>
+    <category><![CDATA[reunión bilateral]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2d1243a2d88f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2d1243a2d88f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2d1243a2d88f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Huelga de transportistas en Huánuco: mercados anuncian cierre y gremio denuncia división</title>
+    <link>https://ahora.com.pe/regional/huelga-transportistas-huanuco-mercados-cierre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huelga-transportistas-huanuco-mercados-cierre</guid>
+    <pubDate>Wed, 18 Nov 2026 01:50:05 GMT</pubDate>
+    <description><![CDATA[La huelga de transportistas de carga pesada en Huánuco entra a su tercer día con el anuncio de cierre de mercados. El dirigente Evaristo Bueno Tafur denuncia división gremial y cuestiona propuestas de subsidios. El transporte urbano opera con normalidad, pero el interprovincial registra restricciones en San Rafael y Ambo.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[huelga de transportistas]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[alza de combustibles]]></category>
+    <category><![CDATA[cierre de mercados]]></category>
+    <category><![CDATA[Evaristo Bueno Tafur]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d56662557fbd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d56662557fbd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d56662557fbd.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Cristian Neira dejaría Alianza Lima rumbo a Everton de Chile</title>
+    <link>https://ahora.com.pe/deportes/cristian-neira-everton-chile-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cristian-neira-everton-chile-alianza-lima</guid>
+    <pubDate>Wed, 18 Nov 2026 01:10:05 GMT</pubDate>
+    <description><![CDATA[Cristian Neira, volante de Alianza Lima, estaría cerca de fichar por Everton de Chile, quinto en la tabla del fútbol chileno, en lo que sería su primera experiencia internacional.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Cristian Neira]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Everton de Chile]]></category>
+    <category><![CDATA[fichajes]]></category>
+    <category><![CDATA[peruanos en el exterior]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e347ca1d1490.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e347ca1d1490.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e347ca1d1490.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Bella Esperanza jugará ante ADA Cajabamba en cuartos de final de la Copa Perú</title>
+    <link>https://ahora.com.pe/deportes/bella-esperanza-ada-cajabamba-cuartos-copa-peru-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/bella-esperanza-ada-cajabamba-cuartos-copa-peru-2026</guid>
+    <pubDate>Wed, 18 Nov 2026 00:20:06 GMT</pubDate>
+    <description><![CDATA[Bella Esperanza clasificó a los cuartos de final de la Etapa Nacional de la Copa Perú 2026 y enfrentará a ADA de Cajabamba el viernes 20 de noviembre en Lima.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Bella Esperanza]]></category>
+    <category><![CDATA[Copa Perú 2026]]></category>
+    <category><![CDATA[ADA Cajabamba]]></category>
+    <category><![CDATA[cuartos de final]]></category>
+    <category><![CDATA[Cerro Azul]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6cc6c0da3dcc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6cc6c0da3dcc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6cc6c0da3dcc.jpg"/>
+    <media:description type="plain"><![CDATA[Copa Uruguay (Perú) trophy — Foto: Ericbaudouin (wikimedia-cc0)]]></media:description>
+  </item>
+  <item>
+    <title>Boxeador irlandés Lee Reeves murió tras tres meses en coma por un nocaut</title>
+    <link>https://ahora.com.pe/deportes/lee-reeves-murio-coma-nocaut</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/lee-reeves-murio-coma-nocaut</guid>
+    <pubDate>Tue, 17 Nov 2026 23:50:08 GMT</pubDate>
+    <description><![CDATA[Lee Reeves, boxeador irlandés de 31 años, murió tras tres meses en coma por un nocaut sufrido el 1 de agosto en el 3Arena de Dublín. Habría contraído una infección durante su hospitalización.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Lee Reeves]]></category>
+    <category><![CDATA[boxeador irlandés]]></category>
+    <category><![CDATA[nocaut]]></category>
+    <category><![CDATA[coma]]></category>
+    <category><![CDATA[Dublín]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9a57769b821d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9a57769b821d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9a57769b821d.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Deslizamiento bloquea vía Quechualla-Cotahuasi y aísla a población en La Unión</title>
+    <link>https://ahora.com.pe/regional/deslizamiento-quechualla-cotahuasi-la-union</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/deslizamiento-quechualla-cotahuasi-la-union</guid>
+    <pubDate>Tue, 17 Nov 2026 23:50:07 GMT</pubDate>
+    <description><![CDATA[Un deslizamiento de tierra interrumpió el tránsito vehicular y peatonal en la vía Quechualla-Cotahuasi, en la provincia de La Unión, Arequipa. Las autoridades locales evalúan la emergencia y el COER Arequipa monitorea la zona. No hay daños personales reportados.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[deslizamiento]]></category>
+    <category><![CDATA[Quechualla]]></category>
+    <category><![CDATA[Cotahuasi]]></category>
+    <category><![CDATA[La Unión]]></category>
+    <category><![CDATA[Arequipa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6965a1427f0e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6965a1427f0e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6965a1427f0e.jpg"/>
+    <media:description type="plain"><![CDATA[Deslizamiento de tierra en la vía que comunica el distrito de Quechualla con Cotahuasi, capital de la provincia de La Unión, región Arequipa, interrumpió el tránsito vehicular y peatonal dejando temporalmente aislada a la población de la zona. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Louzán: &quot;La final del Mundial 2030 solo puede ser en España y va a ser en España&quot;</title>
+    <link>https://ahora.com.pe/deportes/louzan-final-mundial-2030-espana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/louzan-final-mundial-2030-espana</guid>
+    <pubDate>Tue, 17 Nov 2026 23:30:11 GMT</pubDate>
+    <description><![CDATA[Rafael Louzán afirmó que la final del Mundial 2030 se jugará en España y reclamó al Gobierno acelerar la organización; la FIFA ya evaluó las sedes propuestas y la decisión definitiva se espera para diciembre.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Mundial 2030]]></category>
+    <category><![CDATA[Rafael Louzán]]></category>
+    <category><![CDATA[RFEF]]></category>
+    <category><![CDATA[sedes Mundial 2030]]></category>
+    <category><![CDATA[final Mundial 2030]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/767a3fbc43eb.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/767a3fbc43eb.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/767a3fbc43eb.webp"/>
+    <media:description type="plain"><![CDATA[El presidente de la Real Federación Española de Fútbol (RFEF), <b>Rafael Louzán</b>, aseguró que la final del Mundial 2030 "solo puede ser en España y va a ser en España" y dijo al Gobierno que "es momento de actuar y ponerse manos a la obra". — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Universitario no arriesga a Alzugaray ante Sport Huancayo</title>
+    <link>https://ahora.com.pe/deportes/universitario-descarta-alzugaray-sport-huancayo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-descarta-alzugaray-sport-huancayo</guid>
+    <pubDate>Tue, 17 Nov 2026 22:40:06 GMT</pubDate>
+    <description><![CDATA[Universitario decidió no arriesgar a Lisandro Alzugaray en el duelo ante Sport Huancayo del domingo 22 de noviembre en el Estadio IPD de Huancayo, para evitar una recaída muscular y reservarlo para los playoffs o la final del Torneo Clausura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Lisandro Alzugaray]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6be8ec9d160a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6be8ec9d160a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6be8ec9d160a.jpg"/>
+    <media:description type="plain"><![CDATA[Universitario de Deportes jugará de visitante en Huancayo por la última fecha del Torneo Clausura 2026. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Gales y Portugal se mantienen igualados 1-1 en Cardiff con goles de Bruno Fernandes y Brooks</title>
+    <link>https://ahora.com.pe/deportes/gales-portugal-empate-nations-league</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gales-portugal-empate-nations-league</guid>
+    <pubDate>Tue, 17 Nov 2026 21:50:07 GMT</pubDate>
+    <description><![CDATA[Gales y Portugal se mantenían igualados 1-1 al minuto 13 de su partido de la jornada 6 del Grupo J de la Nations League en el Cardiff City Stadium, con goles de Bruno Fernandes y David Brooks.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gales]]></category>
+    <category><![CDATA[Portugal]]></category>
+    <category><![CDATA[Nations League]]></category>
+    <category><![CDATA[Bruno Fernandes]]></category>
+    <category><![CDATA[David Brooks]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/24b874025817.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/24b874025817.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/24b874025817.webp"/>
+    <media:description type="plain"><![CDATA[Buenas tardes y bienvenidos a la narración, en directo, del partido de fútbol de la Nations League que enfrenta al Gales contra el Portugal correspondiente a Fase Grupos J-6. Desde Mundo Deportivo, te ofrecemos toda la cobertura minuto a minuto, la previa, las alineaciones, las mejores jugadas y gol — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Intervienen minería ilegal en Panguana, Puerto Inca: destruyen maquinaria por S/ 2.6 millones</title>
+    <link>https://ahora.com.pe/regional/intervienen-mineria-ilegal-panguana-puerto-inca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/intervienen-mineria-ilegal-panguana-puerto-inca</guid>
+    <pubDate>Tue, 17 Nov 2026 21:30:11 GMT</pubDate>
+    <description><![CDATA[La Primera Fiscalía Provincial Especializada en Materia Ambiental de Ucayali dirigió un operativo contra la minería ilegal en el Área de Conservación Privada Panguana, en Yuyapichis, Puerto Inca, donde se interdictaron tres excavadoras y 1000 galones de combustible valorizados en unos S/ 2.6 millones.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Puerto Inca]]></category>
+    <category><![CDATA[Panguana]]></category>
+    <category><![CDATA[Yuyapichis]]></category>
+    <category><![CDATA[FEMA Ucayali]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4237ede9148e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4237ede9148e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4237ede9148e.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Los descalabros del neoliberalismo en América Latina</title>
+    <link>https://ahora.com.pe/opinion/los-descalabros-del-neoliberalismo-en-america-latina</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/los-descalabros-del-neoliberalismo-en-america-latina</guid>
+    <pubDate>Tue, 17 Nov 2026 21:09:04 GMT</pubDate>
+    <description><![CDATA[Von Mises acusaba a los socialistas de panfletarios. Hoy, dice el autor, son los neoliberales de Milei, Espriella y Fujimori los que acumulan descalabros.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[J. Miguel Vargas Rosas]]></category>
+    <category><![CDATA[neoliberalismo]]></category>
+    <category><![CDATA[Javier Milei]]></category>
+    <category><![CDATA[América Latina]]></category>
+    <category><![CDATA[Ludwig Von Mises]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9695bba8df5c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9695bba8df5c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9695bba8df5c.jpg"/>
+    <media:title type="plain"><![CDATA[Columna de J. Miguel Vargas Rosas: Los descalabros del neoliberalismo en América Latina]]></media:title>
+  </item>
+  <item>
+    <title>Seda Huánuco y la Sunass, ¿por qué esperar a 2027?</title>
+    <link>https://ahora.com.pe/opinion/seda-huanuco-y-la-sunass-por-que-esperar-a-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/seda-huanuco-y-la-sunass-por-que-esperar-a-2027</guid>
+    <pubDate>Tue, 17 Nov 2026 21:07:56 GMT</pubDate>
+    <description><![CDATA[La Sunass dice que la evaluación a Seda Huánuco toca en 2027. Su propio informe muestra que el vacío de datos que frenó la salida ya podría estar cubierto.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[editorial]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <category><![CDATA[Sunass]]></category>
+    <category><![CDATA[Otass]]></category>
+    <category><![CDATA[Régimen de Apoyo Transitorio]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4d447e223ca1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4d447e223ca1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4d447e223ca1.jpg"/>
+    <media:title type="plain"><![CDATA[Editorial del Diario Ahora: Seda Huánuco y la Sunass, ¿por qué esperar a 2027?]]></media:title>
+  </item>
+  <item>
+    <title>El águila no caza ratones: el Gobierno Regional de Huánuco y sus prioridades</title>
+    <link>https://ahora.com.pe/opinion/el-aguila-no-caza-ratones-el-gobierno-regional-de-huanuco-y-sus-prioridades</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/el-aguila-no-caza-ratones-el-gobierno-regional-de-huanuco-y-sus-prioridades</guid>
+    <pubDate>Tue, 17 Nov 2026 21:07:29 GMT</pubDate>
+    <description><![CDATA[A dos meses de dejar el cargo, Antonio Pulgar destina S/ 56 millones a una alameda y una laguna en la ciudad, mientras el campo sigue esperando carreteras.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[Gustavo Figueroa y Coz]]></category>
+    <category><![CDATA[Antonio Pulgar Lucas]]></category>
+    <category><![CDATA[Gobierno Regional de Huánuco]]></category>
+    <category><![CDATA[Alameda de la República]]></category>
+    <category><![CDATA[laguna Viña del Río]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bc04f41e3308.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bc04f41e3308.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bc04f41e3308.jpg"/>
+    <media:title type="plain"><![CDATA[Columna de Gustavo Figueroa y Coz: El águila no caza ratones]]></media:title>
+  </item>
+  <item>
+    <title>Transportistas bloquean la Carretera Central en Huánuco y dejan varados a decenas de pasajeros</title>
+    <link>https://ahora.com.pe/regional/huanuco-transportistas-bloquean-carretera-central-17-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/huanuco-transportistas-bloquean-carretera-central-17-noviembre</guid>
+    <pubDate>Tue, 17 Nov 2026 21:00:14 GMT</pubDate>
+    <description><![CDATA[Transportistas acatan un paro de 72 horas en Huánuco contra el alza de combustibles y bloquean tramos de la Carretera Central, dejando varados a decenas de pasajeros y afectando a pacientes con citas médicas.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[paro de transportistas]]></category>
+    <category><![CDATA[Carretera Central]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[bloqueo de carreteras]]></category>
+    <category><![CDATA[pasajeros varados]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c4c13f776eb3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c4c13f776eb3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c4c13f776eb3.jpg"/>
+    <media:description type="plain"><![CDATA[Road — Foto: tacowitte (openverse-by)]]></media:description>
+  </item>
+  <item>
+    <title>Sporting Cristal clasifica a la final de la Recopa de la Liga 2026, según el reglamento</title>
+    <link>https://ahora.com.pe/deportes/sporting-cristal-final-recopa-liga-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sporting-cristal-final-recopa-liga-2026</guid>
+    <pubDate>Tue, 17 Nov 2026 21:00:12 GMT</pubDate>
+    <description><![CDATA[Sporting Cristal se clasificó de forma directa a la final de la Recopa de la Liga 2026 por haber ganado la Copa de la Liga Caliente, según el reglamento de la Liga de Fútbol Profesional. Su rival saldrá de Alianza Atlético o del campeón de la Liga 1, que se definirá entre Alianza Lima, Universitario y Sport Huancayo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Recopa de la Liga]]></category>
+    <category><![CDATA[Copa de la Liga]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[Roberto Mosquera]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a1d4c46e3629.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a1d4c46e3629.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a1d4c46e3629.jpg"/>
+    <media:description type="plain"><![CDATA[Sporting Cristal, gracias a los detalles del reglamento, obtuvo la clasificación directa a la gran final del fútbol peruano. Repasa lo sucedido. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Muere en Argentina el juvenil Abel Núñez tras un pelotazo en la cabeza</title>
+    <link>https://ahora.com.pe/deportes/muere-abel-nunez-juvenil-fc-ezeiza-pelotazo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/muere-abel-nunez-juvenil-fc-ezeiza-pelotazo</guid>
+    <pubDate>Tue, 17 Nov 2026 20:10:06 GMT</pubDate>
+    <description><![CDATA[Abel Núñez, juvenil del FC Ezeiza, murió tras recibir un pelotazo en la cabeza el jueves 12 de noviembre en un partido ante Deportivo Muñiz por el torneo de Juveniles C de la AFA. Fue operado por un traumatismo craneal y falleció el domingo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Abel Núñez]]></category>
+    <category><![CDATA[FC Ezeiza]]></category>
+    <category><![CDATA[fútbol juvenil]]></category>
+    <category><![CDATA[AFA]]></category>
+    <category><![CDATA[pelotazo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/981ed1717974.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/981ed1717974.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/981ed1717974.jpg"/>
+    <media:description type="plain"><![CDATA[Dominar — Foto: Jhan Castillón (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Campaña busca rescatar animales durante huaicos e inundaciones en Perú</title>
+    <link>https://ahora.com.pe/sociedad/campana-rescate-animales-huaicos-inundaciones-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/campana-rescate-animales-huaicos-inundaciones-peru</guid>
+    <pubDate>Tue, 17 Nov 2026 19:50:06 GMT</pubDate>
+    <description><![CDATA[La campaña &apos;Juntos por los Animales en Desastres&apos; articula una red de rescate y atención veterinaria para perros, gatos, animales de granja y especies silvestres en emergencias. También impulsa una propuesta legislativa para incorporar a los animales en la gestión del riesgo de desastres.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[animales en desastres]]></category>
+    <category><![CDATA[huaicos]]></category>
+    <category><![CDATA[inundaciones]]></category>
+    <category><![CDATA[ASPPA]]></category>
+    <category><![CDATA[rescate animal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/071e26f016af.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/071e26f016af.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/071e26f016af.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Fleischman pide renovar a Guede en Alianza Lima y advierte por caso Universitario</title>
+    <link>https://ahora.com.pe/deportes/fleischman-renovar-guede-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fleischman-renovar-guede-alianza-lima</guid>
+    <pubDate>Tue, 17 Nov 2026 19:20:06 GMT</pubDate>
+    <description><![CDATA[Eddie Fleischman consideró que Alianza Lima debe renovar a Pablo Guede por su regularidad en el acumulado, su conocimiento del plantel y del torneo, y advirtió que un cambio de técnico podría repetir la experiencia de Universitario.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Eddie Fleischman]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e0bd495f0202.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e0bd495f0202.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e0bd495f0202.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Brasil goleó 0-7 a Singapur y la prensa vincula el resultado con la ausencia de Raphinha</title>
+    <link>https://ahora.com.pe/deportes/brasil-0-7-singapur-ausencia-raphinha</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/brasil-0-7-singapur-ausencia-raphinha</guid>
+    <pubDate>Tue, 17 Nov 2026 18:30:10 GMT</pubDate>
+    <description><![CDATA[Brasil goleó 0-7 a Singapur con hat trick de Vinicius Junior y la prensa brasileña asoció la ausencia de Raphinha, sancionado, al resultado.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Raphinha]]></category>
+    <category><![CDATA[Vinicius Junior]]></category>
+    <category><![CDATA[Brasil]]></category>
+    <category><![CDATA[Singapur]]></category>
+    <category><![CDATA[selección brasileña]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6f6675b02dad.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6f6675b02dad.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6f6675b02dad.webp"/>
+    <media:description type="plain"><![CDATA[El fútbol es un deporte que obliga al análisis inmediato y lo cierto es que esta ventana de partidos de la <b>selección de Brasil</b> le ha pasado factura a <b>Raphinha Dias</b>. Solamente faltó que la 'seleçao', sin el delantero del <b>Barça </b>por sanción, goleara <b>0-7 </b>a la de <b>Singapur</ — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>León XIV regresó al Perú: multitudes lo recibieron en Lima, Chiclayo, Cusco y Pucallpa</title>
+    <link>https://ahora.com.pe/regional/leon-xiv-regreso-peru-recorrido-mensaje</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/leon-xiv-regreso-peru-recorrido-mensaje</guid>
+    <pubDate>Tue, 17 Nov 2026 18:10:05 GMT</pubDate>
+    <description><![CDATA[León XIV visitó Lima, Chiclayo, Cusco y Pucallpa el 11 de noviembre, en una jornada de multitudinaria recepción y mensajes sobre familia, dignidad y Amazonía.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[León XIV]]></category>
+    <category><![CDATA[visita papal Perú]]></category>
+    <category><![CDATA[Chiclayo]]></category>
+    <category><![CDATA[Cusco]]></category>
+    <category><![CDATA[Pucallpa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ea90d35e85fb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ea90d35e85fb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ea90d35e85fb.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Dengue en Leoncio Prado llega a 619 casos y el Consejo Provincial de Salud intensifica acciones</title>
+    <link>https://ahora.com.pe/regional/dengue-leoncio-prado-619-casos-consejo-salud</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/dengue-leoncio-prado-619-casos-consejo-salud</guid>
+    <pubDate>Tue, 17 Nov 2026 17:50:08 GMT</pubDate>
+    <description><![CDATA[Los casos confirmados de dengue en la Red de Salud Leoncio Prado ascendieron a 619 hasta la semana 45, según su epidemióloga. El Consejo Provincial de Salud acordó intensificar las acciones de prevención y limpieza.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[dengue]]></category>
+    <category><![CDATA[Leoncio Prado]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <category><![CDATA[Consejo Provincial de Salud]]></category>
+    <category><![CDATA[Aedes aegypti]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e67ea29f99e8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e67ea29f99e8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e67ea29f99e8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Minería ilegal de oro en Ecuador movería US$ 1000 millones al año, según documentos militares</title>
+    <link>https://ahora.com.pe/mundo/mineria-ilegal-oro-ecuador-1000-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/mineria-ilegal-oro-ecuador-1000-millones</guid>
+    <pubDate>Tue, 17 Nov 2026 17:50:06 GMT</pubDate>
+    <description><![CDATA[La minería ilegal de oro en Ecuador representaría ingresos de unos 1000 millones de dólares anuales, más de un cuarto de las exportaciones legales de minerales, según documentos militares. Comunidades del Napo resisten a las bandas que controlan la extracción, mientras la actividad se ha vuelto más poderosa en la última década, según la Cámara de Minería.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Ecuador]]></category>
+    <category><![CDATA[oro]]></category>
+    <category><![CDATA[Amazonía]]></category>
+    <category><![CDATA[bandas criminales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9ac4c9b671c7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9ac4c9b671c7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9ac4c9b671c7.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Marcos Llorente critica la propuesta de Frente Amplio de limitar las herencias</title>
+    <link>https://ahora.com.pe/politica/marcos-llorente-critica-propuesta-herencias-frente-amplio</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/marcos-llorente-critica-propuesta-herencias-frente-amplio</guid>
+    <pubDate>Tue, 17 Nov 2026 17:20:07 GMT</pubDate>
+    <description><![CDATA[Marcos Llorente cuestionó en redes la propuesta de Frente Amplio de limitar las grandes herencias a 10 millones de euros por heredero con un gravamen del 100% sobre el excedente. La iniciativa forma parte del programa electoral de la coalición que lidera Ada Colau.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Marcos Llorente]]></category>
+    <category><![CDATA[Frente Amplio]]></category>
+    <category><![CDATA[herencias]]></category>
+    <category><![CDATA[Pablo Bustinduy]]></category>
+    <category><![CDATA[Ada Colau]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ea068198a6f0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ea068198a6f0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ea068198a6f0.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Crédito vehicular crece 16% y supera los S/5.000 millones a septiembre</title>
+    <link>https://ahora.com.pe/economia/credito-vehicular-crece-16-supera-5000-millones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/credito-vehicular-crece-16-supera-5000-millones</guid>
+    <pubDate>Tue, 17 Nov 2026 17:20:06 GMT</pubDate>
+    <description><![CDATA[La cartera de créditos vehiculares del sistema financiero peruano superó los S/5.000 millones a septiembre de 2026, con un crecimiento interanual superior al 16%, según la AAP. La morosidad bajó en bancos, financieras y empresas de créditos, mientras los bancos redujeron su participación de 73,1% a 51,9%.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[crédito vehicular]]></category>
+    <category><![CDATA[AAP]]></category>
+    <category><![CDATA[morosidad]]></category>
+    <category><![CDATA[financiamiento vehicular]]></category>
+    <category><![CDATA[parque automotor]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/763075932aeb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/763075932aeb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/763075932aeb.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El Valencia arranca la elección de asientos en el Nou Mestalla</title>
+    <link>https://ahora.com.pe/deportes/valencia-arranca-eleccion-asientos-nou-mestalla</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/valencia-arranca-eleccion-asientos-nou-mestalla</guid>
+    <pubDate>Tue, 17 Nov 2026 16:50:06 GMT</pubDate>
+    <description><![CDATA[El Valencia inició este martes la segunda fase del traslado al Nou Mestalla con la selección de asientos de sus abonados, un proceso que se extenderá hasta mayo de 2027 y en el que José Benet, socio número 1, fue el primero en elegir.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Nou Mestalla]]></category>
+    <category><![CDATA[Valencia CF]]></category>
+    <category><![CDATA[José Benet]]></category>
+    <category><![CDATA[abonados]]></category>
+    <category><![CDATA[selección de asientos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bb633988961c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bb633988961c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bb633988961c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Fieles despiden al papa León XIV en Las Palmas con historias de fe y gratitud</title>
+    <link>https://ahora.com.pe/regional/fieles-despiden-papa-leon-xiv-las-palmas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/fieles-despiden-papa-leon-xiv-las-palmas</guid>
+    <pubDate>Tue, 17 Nov 2026 16:00:13 GMT</pubDate>
+    <description><![CDATA[La despedida del papa León XIV en la base aérea Las Palmas reunió a miles de fieles que, pese al calor y las largas esperas, aguardaron su recorrido para recibir la bendición. Historias de gratitud y memoria marcaron la última jornada del pontífice en Lima.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[Las Palmas]]></category>
+    <category><![CDATA[despedida]]></category>
+    <category><![CDATA[fieles]]></category>
+    <category><![CDATA[visita al Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5c175545f393.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5c175545f393.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5c175545f393.jpg"/>
+    <media:description type="plain"><![CDATA[Durante la rueda de prensa a bordo del avión papal en su retorno a Roma, en la que participó el enviado especial de RPP Carlos Villarreal; el sumo pontífice tomó con humor el incidente sufrido en Lima y destacó la devoción de los fieles peruanos en cada ciudad visitada. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Rainer Torres revela que Universitario le debe 150 mil dólares</title>
+    <link>https://ahora.com.pe/deportes/rainer-torres-universitario-deuda-150-mil-dolares</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/rainer-torres-universitario-deuda-150-mil-dolares</guid>
+    <pubDate>Tue, 17 Nov 2026 16:00:12 GMT</pubDate>
+    <description><![CDATA[Rainer Torres reveló que Universitario le debe 150 mil dólares y que su proyecto Embajadur le ahorró 5 millones al club, en medio de la recta final del Torneo Clausura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Rainer Torres]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[deuda]]></category>
+    <category><![CDATA[Embajadur]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/20e852d39e8d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/20e852d39e8d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/20e852d39e8d.jpg"/>
+    <media:description type="plain"><![CDATA[En medio de lo que concierne a la recta final del Torneo Clausura 2026, Rainer Torres da fuerte revelación sobre una deuda que le tiene pendiente Universitario. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Congreso aprueba reducir casi S/ 450 millones su presupuesto 2027</title>
+    <link>https://ahora.com.pe/politica/congreso-reduce-presupuesto-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/congreso-reduce-presupuesto-2027</guid>
+    <pubDate>Tue, 17 Nov 2026 15:20:07 GMT</pubDate>
+    <description><![CDATA[La Comisión Directiva del Congreso aprobó por unanimidad reducir en casi S/ 450 millones su presupuesto para 2027. El acuerdo, firmado por los presidentes del Senado y de la Cámara de Diputados, deberá ser ratificado por el pleno de cada cámara.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Congreso]]></category>
+    <category><![CDATA[presupuesto 2027]]></category>
+    <category><![CDATA[Comisión Directiva]]></category>
+    <category><![CDATA[bicameralidad]]></category>
+    <category><![CDATA[fenómeno El Niño]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c7ac13c6b7bc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c7ac13c6b7bc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c7ac13c6b7bc.jpg"/>
+    <media:description type="plain"><![CDATA[Technologie — Foto: Finn Mund (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Carmona se fractura tibia y peroné y deja al Sevilla sin otro lateral</title>
+    <link>https://ahora.com.pe/deportes/carmona-fractura-tibia-perone-sevilla</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/carmona-fractura-tibia-perone-sevilla</guid>
+    <pubDate>Tue, 17 Nov 2026 15:10:07 GMT</pubDate>
+    <description><![CDATA[José Ángel Carmona sufrió una fractura de tibia y peroné en la pierna derecha durante un entrenamiento del Sevilla y será operado, según el parte médico del club.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[José Ángel Carmona]]></category>
+    <category><![CDATA[Sevilla FC]]></category>
+    <category><![CDATA[fractura tibia y peroné]]></category>
+    <category><![CDATA[Luis García Plaza]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1221e69d5385.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1221e69d5385.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1221e69d5385.webp"/>
+    <media:description type="plain"><![CDATA[Sólo unos días después de conocer la dura noticia de<a href="https://www.mundodeportivo.com/futbol/sevilla/20261113/1004250540/palo-sevilla-comunicado-demoledor.html" target="_blank"> la lesión de <b>Alfon</b>, que se perderá lo que resta de temporada por una rotura del ligamento cruzado anterior</a — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Transportistas radicalizan paro y bloquean la Carretera Central en Huánuco</title>
+    <link>https://ahora.com.pe/regional/paro-transportistas-bloqueo-carretera-central-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/paro-transportistas-bloqueo-carretera-central-huanuco</guid>
+    <pubDate>Tue, 17 Nov 2026 14:50:07 GMT</pubDate>
+    <description><![CDATA[Gremios de transportistas radicalizaron su paro en Huánuco y bloquean la Carretera Central en Yanag, Las Pampas, Tomaykichua y La Esperanza en rechazo al incremento del precio de los combustibles.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[paro de transportistas]]></category>
+    <category><![CDATA[Carretera Central]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[bloqueo]]></category>
+    <category><![CDATA[precio de combustibles]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6e0c4da6b928.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6e0c4da6b928.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6e0c4da6b928.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Vocero del Observatorio de Minería Ilegal: &quot;Ampliar el REINFO es dar más tiempo para que sigan operando en la impunidad&quot;</title>
+    <link>https://ahora.com.pe/economia/observatorio-mineria-ilegal-cuestiona-ampliacion-reinfo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/observatorio-mineria-ilegal-cuestiona-ampliacion-reinfo</guid>
+    <pubDate>Tue, 17 Nov 2026 14:20:08 GMT</pubDate>
+    <description><![CDATA[El vocero del Observatorio de Minería Ilegal, César Ipenza, criticó la propuesta para ampliar el REINFO hasta 2028 y la falta de convocatoria a su organización en el debate de la Ley MAPE. También cuestionó que no se considere una sentencia del Tribunal Constitucional sobre los mecanismos de impunidad en la formalización minera.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[REINFO]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Ley MAPE]]></category>
+    <category><![CDATA[César Ipenza]]></category>
+    <category><![CDATA[Congreso]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4f2162b86c7e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4f2162b86c7e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4f2162b86c7e.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Universitario gana 3-1 a Alianza Lima en la final de ida del Clausura femenino</title>
+    <link>https://ahora.com.pe/deportes/universitario-3-1-alianza-lima-final-ida-clausura-femenino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-3-1-alianza-lima-final-ida-clausura-femenino</guid>
+    <pubDate>Tue, 17 Nov 2026 14:20:07 GMT</pubDate>
+    <description><![CDATA[Universitario de Deportes venció 3-1 a Alianza Lima en el partido de ida de la final del Torneo Clausura de la Liga Femenina 2026 y quedó cerca del título nacional.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Liga Femenina 2026]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[final femenina]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/04ae80f3392d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/04ae80f3392d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/04ae80f3392d.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Wayne Rooney revela que pensó en suicidarse por la presión mediática</title>
+    <link>https://ahora.com.pe/entretenimiento/wayne-rooney-penso-suicidarse-presion-mediatica</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/wayne-rooney-penso-suicidarse-presion-mediatica</guid>
+    <pubDate>Tue, 17 Nov 2026 13:30:11 GMT</pubDate>
+    <description><![CDATA[Wayne Rooney confesó en el podcast Life at the Midpoint que la fama y la presión mediática lo llevaron a plantearse el suicidio durante su etapa como futbolista.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Wayne Rooney]]></category>
+    <category><![CDATA[salud mental]]></category>
+    <category><![CDATA[Manchester United]]></category>
+    <category><![CDATA[presión mediática]]></category>
+    <category><![CDATA[podcast]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ef727e6eed0e.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ef727e6eed0e.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ef727e6eed0e.webp"/>
+    <media:description type="plain"><![CDATA[<b>Wayne Rooney</b> ha repasado alguno de los capítulos más oscuros de su pasado como futbolista. El ex jugador del <b>Manchester United</b>, de 41 años, ha desvelado en el <a href="https://open.spotify.com/episode/7C9dtUEnHr8TSl5ZN6emKB" rel="nofollow noreferrer" target="_blank" title="Enlace al po — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Papa León XIV cierra gira en Perú y parte a Roma tras multitudinaria misa en Las Palmas</title>
+    <link>https://ahora.com.pe/nacional/papa-leon-xiv-cierra-gira-peru-parte-roma</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/papa-leon-xiv-cierra-gira-peru-parte-roma</guid>
+    <pubDate>Tue, 17 Nov 2026 12:00:16 GMT</pubDate>
+    <description><![CDATA[El papa León XIV culminó su gira de 12 días por Uruguay, Argentina y Perú con una misa multitudinaria en la Base Aérea Las Palmas y una visita al Asilo de las Hermanitas de los Ancianos Desamparados en el Callao. En su última homilía afirmó que &quot;los únicos que no pueden esperar son los pobres&quot; y partió rumbo a Roma.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Papa León XIV]]></category>
+    <category><![CDATA[gira apostólica Perú]]></category>
+    <category><![CDATA[Base Aérea Las Palmas]]></category>
+    <category><![CDATA[Callao]]></category>
+    <category><![CDATA[misa multitudinaria]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f966ef0fa8a0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f966ef0fa8a0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f966ef0fa8a0.jpg"/>
+    <media:description type="plain"><![CDATA[El papa León XIV dejó un último mensaje al país tras culminar su visita apostólica y partir desde Lima con dirección a Roma, expresando su admiración por la fe y devoción de los peruanos. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Villa Rica acoge dos días de competencias, catas y torneo escolar de café</title>
+    <link>https://ahora.com.pe/policiales/villa-rica-dos-dias-cultura-cafetalera</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/villa-rica-dos-dias-cultura-cafetalera</guid>
+    <pubDate>Tue, 17 Nov 2026 11:50:07 GMT</pubDate>
+    <description><![CDATA[DEVIDA y Moali Laboratorio &amp; Tostaduría realizan un encuentro de cultura cafetalera en Villa Rica (Pasco) el 21 y 22 de noviembre, con competencias de tostado, catas demostrativas y un torneo interescolar de filtrados.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Villa Rica]]></category>
+    <category><![CDATA[cultura cafetalera]]></category>
+    <category><![CDATA[DEVIDA]]></category>
+    <category><![CDATA[Moali]]></category>
+    <category><![CDATA[torneo de filtrados]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/36e54ce5c442.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/36e54ce5c442.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/36e54ce5c442.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Sergio Gómez vuelve del parón como único realista con 16 partidos jugados</title>
+    <link>https://ahora.com.pe/deportes/sergio-gomez-unico-realista-16-partidos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sergio-gomez-unico-realista-16-partidos</guid>
+    <pubDate>Tue, 17 Nov 2026 11:50:05 GMT</pubDate>
+    <description><![CDATA[Sergio Gómez es el único jugador de la Real Sociedad que ha disputado los 16 partidos de la temporada entre Liga y Europa League, con 14 titularidades y casi 1.300 minutos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sergio Gómez]]></category>
+    <category><![CDATA[Real Sociedad]]></category>
+    <category><![CDATA[Pellegrino Matarazzo]]></category>
+    <category><![CDATA[Europa League]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cb9af9a1a6c3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cb9af9a1a6c3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cb9af9a1a6c3.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>CD Moquegua se salva y FC Cajamarca queda al borde del descenso en la Liga 1 2026</title>
+    <link>https://ahora.com.pe/deportes/cd-moquegua-se-salva-fc-cajamarca-descenso-liga-1-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cd-moquegua-se-salva-fc-cajamarca-descenso-liga-1-2026</guid>
+    <pubDate>Tue, 17 Nov 2026 11:10:06 GMT</pubDate>
+    <description><![CDATA[CD Moquegua aseguró su permanencia en la Liga 1 2026 tras vencer a Atlético Grau, mientras FC Cajamarca es, de momento, el segundo equipo que está perdiendo la categoría y necesita una goleada ante Alianza Lima para salvarse.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[descenso]]></category>
+    <category><![CDATA[FC Cajamarca]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[ADT]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fbfd712afb1b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fbfd712afb1b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fbfd712afb1b.jpg"/>
+    <media:description type="plain"><![CDATA[A falta de que se juegue el partido entre Alianza Lima vs FC Cajamarca, acá podrás revisar cómo marcha la parte baja del acumulado de la Liga 1 2026. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Universitario recupera a Inga y Calcaterra para la última fecha del Clausura</title>
+    <link>https://ahora.com.pe/deportes/universitario-recupera-inga-calcaterra-sport-huancayo-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-recupera-inga-calcaterra-sport-huancayo-clausura</guid>
+    <pubDate>Tue, 17 Nov 2026 09:30:08 GMT</pubDate>
+    <description><![CDATA[Universitario podría contar con César Inga y Horacio Calcaterra para enfrentar a Sport Huancayo por la última fecha del Torneo Clausura 2026, mientras busca el título y espera un tropiezo de Sporting Cristal.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[César Inga]]></category>
+    <category><![CDATA[Horacio Calcaterra]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/342d2d16031f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/342d2d16031f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/342d2d16031f.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Chacos manda y León revive</title>
+    <link>https://ahora.com.pe/deportes/chacos-manda-y-leon-revive</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/chacos-manda-y-leon-revive</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:48 GMT</pubDate>
+    <description><![CDATA[El Municipal de Chacos se consolidó como líder absoluto del grupo 4 del campeonato Tradición Copera, mientras que León de Huánuco recuperó terreno en el grupo 1 tras conseguir su primera victoria.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Chacos]]></category>
+    <category><![CDATA[León]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/841e0a8d878d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/841e0a8d878d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/841e0a8d878d.jpg"/>
+    <media:description type="plain"><![CDATA[Chacos manda y León revive — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Gareca podría dirigir a Peñarol</title>
+    <link>https://ahora.com.pe/deportes/gareca-podria-dirigir-a-penarol</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gareca-podria-dirigir-a-penarol</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:41 GMT</pubDate>
+    <description><![CDATA[Ricardo Gareca aparece como posible entrenador de Peñarol para la temporada 2027, aunque su llegada depende de las elecciones presidenciales del club uruguayo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gareca]]></category>
+    <category><![CDATA[Peñarol]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ceb22bb44406.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ceb22bb44406.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ceb22bb44406.jpg"/>
+    <media:description type="plain"><![CDATA[Gareca podría dirigir a Peñarol — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Universitario pierde a Lapadula</title>
+    <link>https://ahora.com.pe/deportes/universitario-pierde-a-lapadula</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-pierde-a-lapadula</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:38 GMT</pubDate>
+    <description><![CDATA[Universitario de Deportes afrontará su visita a Sport Huancayo sin Gianluca Lapadula, quien sufrió una distensión muscular durante el amistoso de la selección peruana frente a Bolivia en Matute.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Lapadula]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a6bc401704f5.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a6bc401704f5.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a6bc401704f5.jpg"/>
+    <media:description type="plain"><![CDATA[Universitario pierde a Lapadula — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Moquegua logra salvación con gol agónico</title>
+    <link>https://ahora.com.pe/deportes/moquegua-logra-salvacion-con-gol-agonico</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/moquegua-logra-salvacion-con-gol-agonico</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:34 GMT</pubDate>
+    <description><![CDATA[CD Moquegua consiguió este lunes una victoria decisiva sobre Atlético Grau al imponerse por 2-1 en el estadio 25 de Noviembre, por la fecha 17 del Torneo Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Moquegua]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f411f2d05146.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f411f2d05146.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f411f2d05146.jpg"/>
+    <media:description type="plain"><![CDATA[Moquegua logra salvación con gol agónico — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Torres FC queda fuera del ascenso</title>
+    <link>https://ahora.com.pe/deportes/torres-fc-queda-fuera-del-ascenso</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/torres-fc-queda-fuera-del-ascenso</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:31 GMT</pubDate>
+    <description><![CDATA[Torres FC de Huánuco quedó eliminado de la Liga de Ascenso Femenina tras caer 3-1 ante Colmillo Comas de Lima, en un partido disputado en el estadio municipal de Oxapampa, Pasco, elegido como sede]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Torres FC]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4de3b24165c0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4de3b24165c0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4de3b24165c0.jpg"/>
+    <media:description type="plain"><![CDATA[Torres FC queda fuera del ascenso — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Cremas admiten fallas pese al triunfo</title>
+    <link>https://ahora.com.pe/deportes/cremas-admiten-fallas-pese-al-triunfo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cremas-admiten-fallas-pese-al-triunfo</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:27 GMT</pubDate>
+    <description><![CDATA[El triunfo por 3-2 sobre Bagua FC permitió a León de Huánuco sumar tres puntos en el campeonato Tradición Copera, pero no ocultó las dificultades que el equipo arrastra en sus primeros encuentros.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ee9cda579327.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ee9cda579327.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ee9cda579327.jpg"/>
+    <media:description type="plain"><![CDATA[Cremas admiten fallas pese al triunfo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Bernabéu cierra torneo con empate ante Cristal</title>
+    <link>https://ahora.com.pe/deportes/bernabeu-cierra-torneo-con-empate-ante-cristal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/bernabeu-cierra-torneo-con-empate-ante-cristal</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:24 GMT</pubDate>
+    <description><![CDATA[La Escuela de Formación de Fútbol Bernabéu de Huánuco cerró su participación en la etapa nacional del Torneo Juvenil Élite Regional sub-15 con un empate 1-1 frente a Sporting Cristal.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Bernabéu]]></category>
+    <category><![CDATA[Cristal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b77f9da194df.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b77f9da194df.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b77f9da194df.jpg"/>
+    <media:description type="plain"><![CDATA[Bernabéu cierra torneo con empate ante Cristal — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Vecinos frustran desmantelamiento de motocicleta robada a policía en Nauyán Rondos</title>
+    <link>https://ahora.com.pe/policiales/vecinos-frustran-desmantelamiento-de-motocicleta-robada-a-policia-en-nauyan</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/vecinos-frustran-desmantelamiento-de-motocicleta-robada-a-policia-en-nauyan</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:20 GMT</pubDate>
+    <description><![CDATA[Dos sospechosos huyeron al ser descubiertos y abandonaron accesorios del vehículo, sustraído el 26 de octubre en Amarilis.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Nauyán Rondos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f64a051750cc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f64a051750cc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f64a051750cc.jpg"/>
+    <media:description type="plain"><![CDATA[Vecinos frustran desmantelamiento de motocicleta robada a policía en Nauyán Rondos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Hallan 11 armas punzocortantes y 46 pipas en penal de Huánuco</title>
+    <link>https://ahora.com.pe/policiales/hallan-11-armas-punzocortantes-y-46-pipas-en-penal-de-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/hallan-11-armas-punzocortantes-y-46-pipas-en-penal-de-huanuco</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:16 GMT</pubDate>
+    <description><![CDATA[Agentes del INPE realizaron una requisa sorpresiva en el pabellón 5 e incautaron cocinas artesanales, cables y otros objetos durante el operativo de seguridad.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6b31d1035f03.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6b31d1035f03.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6b31d1035f03.jpg"/>
+    <media:description type="plain"><![CDATA[Hallan 11 armas punzocortantes y 46 pipas en penal de Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Un hombre muerto y una mujer grave: detienen a sospechoso en Puerto Súngaro</title>
+    <link>https://ahora.com.pe/policiales/un-hombre-muerto-y-una-mujer-grave-detienen-a-sospechoso-en-puerto-sungaro</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/un-hombre-muerto-y-una-mujer-grave-detienen-a-sospechoso-en-puerto-sungaro</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:12 GMT</pubDate>
+    <description><![CDATA[Un hombre de 35 años fue encontrado muerto en un grifo de Puerto Súngaro, mientras una mujer quedó gravemente herida. La Policía capturó al presunto agresor horas después]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Puerto Súngaro]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/adcd273c40db.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/adcd273c40db.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/adcd273c40db.jpg"/>
+    <media:description type="plain"><![CDATA[Un hombre muerto y una mujer grave: detienen a sospechoso en Puerto Súngaro — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Mineros ilegales intentan atacar a policías con excavadora durante operativo en Panguana</title>
+    <link>https://ahora.com.pe/policiales/mineros-ilegales-intentan-atacar-a-policias-con-excavadora-durante-operativo-en</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/mineros-ilegales-intentan-atacar-a-policias-con-excavadora-durante-operativo-en</guid>
+    <pubDate>Tue, 17 Nov 2026 09:02:08 GMT</pubDate>
+    <description><![CDATA[Fiscalía y Policía intervinieron maquinaria pesada, combustible y otros bienes valorizados en S/ 2,6 millones durante una operación en Yuyapichis, Puerto Inca.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Panguana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/16d2df81289f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/16d2df81289f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/16d2df81289f.jpg"/>
+    <media:description type="plain"><![CDATA[Mineros ilegales intentan atacar a policías con excavadora durante operativo en Panguana — Licencia: propia]]></media:description>
+  </item>
+  </channel>
+</rss>
