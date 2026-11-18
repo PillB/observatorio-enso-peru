@@ -1328,7 +1328,8 @@ table.grd .chip { white-space: normal; }
   .bol-summary { padding: 3px 6px; font-size: 8.5pt; }
   .bol-compass, .bol-abbr, .fc-switch, .bol-tie button { display: none !important; }
   .bol-ficha { gap: 4px; zoom: 0.74; }
-  .bol-ficha .bol-order, .bol-ficha .fc-tl .muted, .bol-ficha .bol-tie { display: none; }
+  /* En papel sobra lo que explica la pantalla (el orden está en el sitio): deja aire para letras más anchas. */
+  .bol-sheet .bol-order, .bol-sheet .bol-tie, .bol-ficha .fc-tl .muted { display: none !important; }
   .bol-ficha .fc-lead { font-size: 9pt; margin-bottom: 3px; } .bol-ficha .fc-key ul { gap: 1px; }
   .bol-ficha .bol-tiles { max-width: 190px; gap: 2px; } .bol-ficha .bol-tile { min-height: 0; }
   .bol-ficha .fc-status { padding: 4px 8px; gap: 8px; grid-template-columns: 1fr 1.3fr; }
@@ -1337,7 +1338,10 @@ table.grd .chip { white-space: normal; }
   .bol-ficha .fc-cards { grid-template-columns: repeat(3, 1fr); gap: 4px; }
   .bol-ficha .fc-card .fc-what { font-size: 7.5pt; }
   .bol-ficha .fc-card { padding: 3px 6px; gap: 1px; }
-  .bol-ficha .fc-facts { grid-template-columns: repeat(2, auto); gap: 0 6px; }
+  /* Los datos de cada tarjeta en una línea: «Venció … · DHN (3) · 81 % muy alto · 0 daños». */
+  .bol-ficha .fc-facts { display: block; font-size: 7.5pt; line-height: 1.3; }
+  .bol-ficha .fc-facts dt { display: none; }
+  .bol-ficha .fc-facts > div, .bol-ficha .fc-facts dd { display: inline; } .bol-ficha .fc-facts > div + div::before { content: ' · '; }
   .bol-ficha .fc-do .table-wrap { font-size: 7.5pt; }
   .bol-ficha .fc-do td, .bol-ficha .fc-do th { padding: 1px 4px; }
   .bol-ficha .fc-tl > li { padding-left: 6px; }
