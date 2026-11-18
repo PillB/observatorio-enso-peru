@@ -1,8 +1,8 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-17T02:02:21+00:00",
+ "at": "2026-11-18T02:02:41+00:00",
  "result": "ok",
- "reachable": "51/57",
+ "reachable": "53/59",
  "summary": {
   "enfen": "4/4",
   "igp": "1/1",
@@ -16,7 +16,7 @@
   "midagri": "1/1",
   "unsa": "1/1",
   "enfen-docs": "2/8",
-  "imarpe-repo": "17/17",
+  "imarpe-repo": "19/19",
   "enlaces": "3/3"
  },
  "failures": [
@@ -64,7 +64,7 @@
   "os": "macOS-26.6.2",
   "python": "3.12.15",
   "git": "2.50.1 (Apple Git-155)",
-  "consecutive_failures": 1,
+  "consecutive_failures": 0,
   "token_expires_at": "2027-05-10T05:00:00+00:00"
  },
  "registry": {
@@ -77,6 +77,5 @@
   "dns": 5,
   "empty": 1,
   "http-403": 2
- },
- "carried": 2
+ }
 }
