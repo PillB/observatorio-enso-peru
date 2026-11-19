@@ -465,6 +465,42 @@ async function wireToken(kind, token, doc) {
   });
 }
 
+/** Diagnóstico para quien administra (#/boletin?diagnostico): huellas de los secretos y prueba del webhook de n8n. */
+function diagPanel() {
+  return html`<section class="card bol-token" id="bol-diag" aria-labelledby="bol-diag-h"><h2 id="bol-diag-h">Diagnóstico de la suscripción</h2>
+    <p class="small">Para quien administra el sitio. La clave es el valor de <code>BOLETIN_LIST_TOKEN</code> (el de Cloudflare). No se muestra ningún secreto: solo su huella (SHA-256, 12 caracteres) para compararla con la de n8n.</p>
+    <form id="bol-diag-f" class="bol-sub-row">
+      <label>Clave <input type="password" name="clave" autocomplete="off" required></label>
+      <label>Mandar un correo de prueba a (opcional) <input type="email" name="enviar_a" autocomplete="email"></label>
+      <button type="submit" class="btn">Probar</button></form>
+    <div id="bol-diag-out" role="status" aria-live="polite"></div></section>`;
+}
+
+function diagReport(r) {
+  if (!r.ok) return html`<p>${r.error || 'No se pudo.'}</p>`;
+  const sec = Object.entries(r.secrets).map(([k, v]) => html`<tr><th scope="row"><code>${k}</code></th><td>${v.set ? html`${v.length} caracteres${v.min && v.length < v.min ? html` <strong>(mínimo ${v.min})</strong>` : ''}` : 'no está'}</td><td>${v.set ? html`<code>${v.sha256_12}</code>` : ''}${v.n8n_header_value_sha256_12 ? html`<br><span class="small">En n8n («Bearer …»): <code>${v.n8n_header_value_sha256_12}</code></span>` : ''}</td><td>${(v.issues || []).join('; ') || (v.set ? 'bien' : '')}</td></tr>`);
+  const w = r.webhook;
+  return html`<p>Vía de correo: <strong>${r.mailer}</strong> · base de datos: ${r.base ? 'vinculada' : html`<strong>falta GEO_DB</strong>`}</p>
+    <table class="tbl"><thead><tr><th>Secreto</th><th>Largo</th><th>Huella</th><th>Revisión</th></tr></thead><tbody>${sec}</tbody></table>
+    ${w ? html`<h3>Webhook de n8n</h3><p class="small"><code>${w.url}</code>${w.issues.length ? html`<br><strong>${w.issues.join('; ')}</strong>` : ''}</p>
+      <p><strong>${w.verdict}</strong></p>
+      <p class="small">Sin secreto: HTTP ${w.sin_secreto.status} · secreto falso: HTTP ${w.secreto_falso.status} · secreto de Cloudflare: HTTP ${w.con_secreto.status} ${w.con_secreto.body}</p>` : ''}
+    ${r.prueba ? html`<p><strong>${r.prueba.sent ? 'Correo de prueba enviado: revise la bandeja (y spam).' : 'El correo de prueba no salió.'}</strong> <span class="small">${r.prueba.detail}</span></p>` : ''}
+    <p class="small">Para comparar una huella con un valor de n8n, en una terminal: <code>printf %s 'VALOR' | shasum -a 256 | cut -c1-12</code></p>`;
+}
+
+function wireDiag() {
+  const f = $('#bol-diag-f');
+  const out = $('#bol-diag-out');
+  if (!f) return;
+  f.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    out.textContent = 'Probando (hasta 20 segundos)…';
+    const r = await api('diagnostico', { clave: f.clave.value, enviar_a: f.enviar_a.value || undefined });
+    out.innerHTML = String(diagReport(r));
+  });
+}
+
 async function wireSub(enabled) {
   const f = $('#bol-sub');
   if (!f || !enabled) return;
@@ -618,10 +654,11 @@ export const boletinView = {
     root.addEventListener('mouseover', (ev) => { if (ev.target.closest?.('.bol-svg [data-dep], .bol-tiles [data-dep]')) exp.mark('hover'); }, { passive: true });
     // Tres partes: el enlace del correo (si lo hay), la hoja (se redibuja al elegir) y la suscripción, que no se
     // redibuja para no borrar lo que la persona está escribiendo.
-    root.innerHTML = String(html`${tokenKind ? tokenPanel(tokenKind) : ''}<div id="bol-main"></div>${deliveryCard(doc, enabled)}`);
+    root.innerHTML = String(html`${q.has('diagnostico') ? diagPanel() : ''}${tokenKind ? tokenPanel(tokenKind) : ''}<div id="bol-main"></div>${deliveryCard(doc, enabled)}`);
     const main = $('#bol-main');
     draw();
     wireSub(enabled);
+    if (q.has('diagnostico')) { wireDiag(); $('#bol-diag')?.scrollIntoView({ block: 'start' }); }
     if (tokenKind) { wireToken(tokenKind, q.get(tokenKind), doc); $('#bol-token')?.scrollIntoView({ block: 'start' }); }
     else if (q.has('suscribir')) $('#bol-sub')?.scrollIntoView({ block: 'start' });
     else if (st.sel) $('#bol-dep')?.scrollIntoView({ block: 'nearest' });

@@ -12,7 +12,14 @@ let env;
 let sent;
 
 globalThis.fetch = async (url, init) => {
-  sent.push({ url: String(url), headers: init.headers, body: JSON.parse(init.body) });
+  const body = JSON.parse(init.body);
+  // Un n8n de mentira para el diagnóstico: 404 si el flujo no está publicado, 403 con otro secreto y 500 con el bueno
+  // (el pedido vacío hace fallar «Armar correo»).
+  if (body.diagnostico) {
+    if (env.HOOK_404) return new Response('{"message":"not registered"}', { status: 404 });
+    return new Response('{"message":"x"}', { status: init.headers['X-Enso-Secret'] === env.N8N_SECRET ? 500 : 403 });
+  }
+  sent.push({ url: String(url), headers: init.headers, body });
   return new Response('{}', { status: env.MAIL_FAILS ? (typeof env.MAIL_FAILS === 'number' ? env.MAIL_FAILS : 500) : 200 });
 };
 
@@ -147,6 +154,36 @@ describe('suscripción al boletín', () => {
     assert.equal((await subscribe('ana@example.pe')).status, 502);
     env.MAIL_FAILS = false;
     assert.equal((await subscribe('ana@example.pe')).status, 202);
+  });
+
+  it('el diagnóstico pide la clave, da huellas sin los valores y prueba el webhook', async () => {
+    const diag = (body, opts) => req('diagnostico', { body, ...opts });
+    assert.equal((await diag({ clave: 'otra' })).status, 401);
+    assert.equal((await diag({ clave: LIST }, { origin: 'https://otro.example' })).status, 403);
+    env.N8N_SECRET = 's3cr3t';
+    env.BOLETIN_MAIL_WEBHOOK_SECRET = 's3cr3t\n';
+    let r = await (await diag({ clave: LIST })).json();
+    const text = JSON.stringify(r);
+    assert.ok(!text.includes(LIST) && !text.includes('s3cr3t') && !text.includes('xxxxxxxx'));
+    assert.equal(r.secrets.BOLETIN_MAIL_WEBHOOK_SECRET.length, 7);
+    assert.match(r.secrets.BOLETIN_MAIL_WEBHOOK_SECRET.issues[0], /espacios o saltos de línea/);
+    assert.match(r.secrets.BOLETIN_LIST_TOKEN.sha256_12, /^[0-9a-f]{12}$/);
+    assert.equal(r.webhook.con_secreto.status, 403); // el salto de línea sobrante
+    assert.match(r.webhook.verdict, /rechaza el secreto/);
+    env.BOLETIN_MAIL_WEBHOOK_SECRET = 's3cr3t';
+    r = await (await diag({ clave: LIST })).json();
+    assert.equal(r.webhook.secreto_falso.status, 403);
+    assert.match(r.webhook.verdict, /^Bien/);
+    assert.match(r.webhook.issues[0], /enso-boletin-confirmar/);
+    env.HOOK_404 = true;
+    r = await (await diag({ clave: LIST })).json();
+    assert.match(r.webhook.verdict, /no está publicado/);
+    env.HOOK_404 = false;
+    // Con «enviar_a», un correo de verdad por la misma vía.
+    r = await (await diag({ clave: LIST, enviar_a: 'Yo@Example.pe' })).json();
+    assert.equal(r.prueba.sent, true);
+    assert.equal(sent.at(-1).body.to, 'yo@example.pe');
+    assert.equal((await diag({ clave: LIST, enviar_a: 'no' })).status, 422);
   });
 
   it('el motivo de la falla queda en el registro de la función, sin la dirección', async () => {
