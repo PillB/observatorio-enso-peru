@@ -480,7 +480,7 @@ function diagReport(r) {
   if (!r.ok) return html`<p>${r.error || 'No se pudo.'}</p>`;
   const sec = Object.entries(r.secrets).map(([k, v]) => html`<tr><th scope="row"><code>${k}</code></th><td>${v.set ? html`${v.length} caracteres${v.min && v.length < v.min ? html` <strong>(mínimo ${v.min})</strong>` : ''}` : 'no está'}</td><td>${v.set ? html`<code>${v.sha256_12}</code>` : ''}${v.n8n_header_value_sha256_12 ? html`<br><span class="small">En n8n («Bearer …»): <code>${v.n8n_header_value_sha256_12}</code></span>` : ''}</td><td>${(v.issues || []).join('; ') || (v.set ? 'bien' : '')}</td></tr>`);
   const w = r.webhook;
-  return html`<p>Vía de correo: <strong>${r.mailer}</strong> · base de datos: ${r.base ? 'vinculada' : html`<strong>falta GEO_DB</strong>`}</p>
+  return html`${r.faltan && r.faltan.length ? html`<p><strong>La suscripción está apagada: falta ${r.faltan.join(', ')}.</strong> Se configura en Cloudflare (Workers y Pages → enso-peru → Configuración → Variables y secretos, entorno «Producción») y vale desde el despliegue siguiente.</p>` : ''}<p>Vía de correo: <strong>${r.mailer}</strong> · base de datos: ${r.base ? 'vinculada' : html`<strong>falta GEO_DB</strong>`}</p>
     <table class="tbl"><thead><tr><th>Secreto</th><th>Largo</th><th>Huella</th><th>Revisión</th></tr></thead><tbody>${sec}</tbody></table>
     ${w ? html`<h3>Webhook de n8n</h3><p class="small"><code>${w.url}</code>${w.issues.length ? html`<br><strong>${w.issues.join('; ')}</strong>` : ''}</p>
       <p><strong>${w.verdict}</strong></p>
