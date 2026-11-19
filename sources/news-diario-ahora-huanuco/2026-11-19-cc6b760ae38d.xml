@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Thu, 19 Nov 2026 20:34:55 GMT</lastBuildDate>
+    <pubDate>Thu, 19 Nov 2026 12:00:12 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Un 19 de noviembre: la renuncia de Fujimori, el homenaje a Horna y el Día del Hombre</title>
+    <link>https://ahora.com.pe/nacional/19-noviembre-fujimori-horna-dia-del-hombre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/19-noviembre-fujimori-horna-dia-del-hombre</guid>
+    <pubDate>Thu, 19 Nov 2026 12:00:12 GMT</pubDate>
+    <description><![CDATA[El 19 de noviembre se recuerda la renuncia de Alberto Fujimori a la Presidencia en 2000, el reconocimiento a Luis Horna tras su título en Roland Garros y el nacimiento de la cantante Karina. La jornada también coincide con el Día Internacional del Hombre y el Día Mundial del Retrete.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[19 de noviembre]]></category>
+    <category><![CDATA[Alberto Fujimori]]></category>
+    <category><![CDATA[Luis Horna]]></category>
+    <category><![CDATA[Día Internacional del Hombre]]></category>
+    <category><![CDATA[Día Mundial del Retrete]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c513ad3bfda1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c513ad3bfda1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c513ad3bfda1.jpg"/>
+    <media:description type="plain"><![CDATA[Peruvian #291 — Foto: The Urban Scot (openverse-by-nd)]]></media:description>
+  </item>
+  <item>
+    <title>Kozo Tashima, el japonés que quiere presidir la FIFA con la ética como bandera</title>
+    <link>https://ahora.com.pe/deportes/kozo-tashima-candidatura-fifa-etica</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/kozo-tashima-candidatura-fifa-etica</guid>
+    <pubDate>Thu, 19 Nov 2026 20:10:05 GMT</pubDate>
+    <description><![CDATA[Kozo Tashima, expresidente de la JFA, busca la presidencia de la FIFA con una propuesta centrada en la ética y la integridad, frente a Gianni Infantino y Philippe Diallo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Kozo Tashima]]></category>
+    <category><![CDATA[FIFA]]></category>
+    <category><![CDATA[Gianni Infantino]]></category>
+    <category><![CDATA[elecciones FIFA]]></category>
+    <category><![CDATA[fútbol japonés]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b9d8614ef567.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b9d8614ef567.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b9d8614ef567.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Perú debuta este viernes en el Panamericano de BMX Freestyle en Santiago</title>
+    <link>https://ahora.com.pe/deportes/peru-panamericano-bmx-freestyle-santiago-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-panamericano-bmx-freestyle-santiago-2026</guid>
+    <pubDate>Thu, 19 Nov 2026 19:20:09 GMT</pubDate>
+    <description><![CDATA[La selección peruana de BMX Freestyle compite desde este viernes 20 en el Campeonato Panamericano Park y Flatland 2026 en Santiago de Chile, con cinco representantes y Williams Pérez como integrante del PAD del IPD.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[BMX Freestyle]]></category>
+    <category><![CDATA[Panamericano 2026]]></category>
+    <category><![CDATA[Williams Pérez]]></category>
+    <category><![CDATA[IPD PAD]]></category>
+    <category><![CDATA[Santiago de Chile]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8f5947c9bbdd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8f5947c9bbdd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8f5947c9bbdd.jpg"/>
+    <media:description type="plain"><![CDATA[La selección peruana de BMX Freestyle ya se encuentra en Santiago de Chile para competir en el Campeonato Panamericano de BMX Freestyle Park y Flatland 2026, que reunirá a representantes de nueve países del continente este 20 y 21 de noviembre. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Día Internacional del Hombre: por qué se conmemora cada 19 de noviembre</title>
+    <link>https://ahora.com.pe/sociedad/dia-internacional-del-hombre-19-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/dia-internacional-del-hombre-19-noviembre</guid>
+    <pubDate>Thu, 19 Nov 2026 19:20:06 GMT</pubDate>
+    <description><![CDATA[El Día Internacional del Hombre se conmemora cada 19 de noviembre desde 1999, con el respaldo de la UNESCO y la OPS, para promover la salud masculina y modelos positivos.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Día Internacional del Hombre]]></category>
+    <category><![CDATA[19 de noviembre]]></category>
+    <category><![CDATA[salud masculina]]></category>
+    <category><![CDATA[Thomas Oaster]]></category>
+    <category><![CDATA[Jerome Teelucksingh]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2c0effb459b7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2c0effb459b7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2c0effb459b7.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>López Chau: &quot;No me ha convencido&quot; explicación del canciller por misa papal</title>
+    <link>https://ahora.com.pe/politica/lopez-chau-cuestiona-canciller-misa-papal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/lopez-chau-cuestiona-canciller-misa-papal</guid>
+    <pubDate>Thu, 19 Nov 2026 18:50:07 GMT</pubDate>
+    <description><![CDATA[El senador Alfonso López Chau calificó de insuficiente la explicación del canciller Carlos Espá sobre las fallas en la misa del papa León XIV en la base aérea Las Palmas. También se opuso a nuevas ampliaciones del Reinfo y respaldó la posición de su partido sobre la amnistía a Pedro Castillo.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Alfonso López Chau]]></category>
+    <category><![CDATA[canciller Carlos Espá]]></category>
+    <category><![CDATA[misa papal]]></category>
+    <category><![CDATA[base aérea Las Palmas]]></category>
+    <category><![CDATA[Reinfo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/178959c41baf.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/178959c41baf.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/178959c41baf.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Velarde: bancos centrales deben buscar evitar crisis, no solo estabilidad de precios</title>
+    <link>https://ahora.com.pe/economia/velarde-bancos-centrales-evitar-crisis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/velarde-bancos-centrales-evitar-crisis</guid>
+    <pubDate>Thu, 19 Nov 2026 18:50:06 GMT</pubDate>
+    <description><![CDATA[Julio Velarde, presidente del BCRP, afirmó que los bancos centrales deben aprender a evitar crisis además de buscar la estabilidad de precios. Recordó que la crisis de los años 80 hizo retroceder al Perú 36 años y subrayó que desde 1990 la entidad no financia al Gobierno.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Julio Velarde]]></category>
+    <category><![CDATA[BCRP]]></category>
+    <category><![CDATA[bancos centrales]]></category>
+    <category><![CDATA[estabilidad de precios]]></category>
+    <category><![CDATA[crisis económica]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fe96bdbc3e2f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fe96bdbc3e2f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fe96bdbc3e2f.jpg"/>
+    <media:description type="plain"><![CDATA[El presidente del Banco Central de Reserva, Julio Velarde, expone en la Comisión de Economía, entre otros temas, sobre la situación y perspectivas de la economía peruana. La sesión es dirigida por el congresista Rafael Yamashiro. — Foto: Congreso de la República del Perú (wikimedia-cc by 2.0)]]></media:description>
+  </item>
+  <item>
+    <title>La FIFA rechaza la sede única compartida entre Bilbao y San Sebastián para el Mundial 2030</title>
+    <link>https://ahora.com.pe/deportes/fifa-rechaza-sede-compartida-bilbao-san-sebastian-mundial-2030</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fifa-rechaza-sede-compartida-bilbao-san-sebastian-mundial-2030</guid>
+    <pubDate>Thu, 19 Nov 2026 18:30:09 GMT</pubDate>
+    <description><![CDATA[La FIFA descarta la candidatura conjunta de Bilbao y San Sebastián para el Mundial 2030 y devuelve a las instituciones vascas la decisión de mantener sus aspiraciones por separado o desistir.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Mundial 2030]]></category>
+    <category><![CDATA[FIFA]]></category>
+    <category><![CDATA[Bilbao]]></category>
+    <category><![CDATA[San Sebastián]]></category>
+    <category><![CDATA[Anoeta]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0368cae0b155.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0368cae0b155.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0368cae0b155.webp"/>
+    <media:description type="plain"><![CDATA[Jarro de agua fría para las aspiraciones institucionales vascas de cara a la cita mundialista. La FIFA ha rechazado de manera oficial la propuesta para que <b>Bilbao y San Sebastián</b> compartan sede durante el Mundial de 2030, torneo que se celebrará en <b>España, Portugal y Marruecos</b>. El máxi — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Perú y Colombia suscriben convenio de cooperación en seguridad y defensa</title>
+    <link>https://ahora.com.pe/politica/peru-colombia-convenio-seguridad-defensa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/peru-colombia-convenio-seguridad-defensa</guid>
+    <pubDate>Thu, 19 Nov 2026 18:20:07 GMT</pubDate>
+    <description><![CDATA[El Centro de Estudios Geopolíticos y de Seguridad Nacional (CEGESEN) de Perú y el Centro de Pensamiento Houding de Colombia firmaron un convenio de cooperación en geopolítica, seguridad y defensa. Sus directivos explicaron en RPP que el acuerdo permitirá compartir información sobre narcotráfico y realizar estudios conjuntos sobre la frontera de 1.626 kilómetros.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[CEGESEN]]></category>
+    <category><![CDATA[convenio Perú Colombia]]></category>
+    <category><![CDATA[seguridad nacional]]></category>
+    <category><![CDATA[narcotráfico]]></category>
+    <category><![CDATA[geopolítica]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/948bbce9bb47.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/948bbce9bb47.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/948bbce9bb47.jpg"/>
+    <media:description type="plain"><![CDATA[En conversación con Ampliación de Noticias de RPP, los especialistas mencionaron que el convenio tiene como objetivo compartir información sobre temas de seguridad y narcotráfico. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Campaña gratuita de despistaje de anemia atenderá a niños de Ate en noviembre</title>
+    <link>https://ahora.com.pe/sociedad/campana-gratuita-despistaje-anemia-ate-noviembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/campana-gratuita-despistaje-anemia-ate-noviembre</guid>
+    <pubDate>Thu, 19 Nov 2026 18:10:06 GMT</pubDate>
+    <description><![CDATA[Una campaña gratuita de despistaje de anemia infantil atenderá a niños de seis meses a cinco años en Ate, distrito con 48,2% de prevalencia en menores de tres años. Los módulos funcionarán los fines de semana del 21 y 22, y 28 y 29 de noviembre, de 9:00 a 16:00.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[anemia infantil]]></category>
+    <category><![CDATA[Ate]]></category>
+    <category><![CDATA[despistaje gratuito]]></category>
+    <category><![CDATA[Vive Bien]]></category>
+    <category><![CDATA[Cencosud]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/67de1b5b90c2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/67de1b5b90c2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/67de1b5b90c2.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Pedro García imaginó el retiro ideal de Barcos: doblete a Alianza y título con Cristal</title>
+    <link>https://ahora.com.pe/deportes/pedro-garcia-retiro-ideal-barcos-sporting-cristal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/pedro-garcia-retiro-ideal-barcos-sporting-cristal</guid>
+    <pubDate>Thu, 19 Nov 2026 17:40:08 GMT</pubDate>
+    <description><![CDATA[Pedro García sugirió que Hernán Barcos podría retirarse si anota un doblete ante Alianza Lima en la final y sale campeón con Sporting Cristal. Además, pidió su renovación para la próxima temporada.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Hernán Barcos]]></category>
+    <category><![CDATA[Pedro García]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/13ed14100c16.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/13ed14100c16.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/13ed14100c16.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Keiko Fujimori y Claudia Sheinbaum sostuvieron una &quot;breve reunión&quot; en APEC</title>
+    <link>https://ahora.com.pe/politica/keiko-fujimori-sheinbaum-reunion-apec-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/keiko-fujimori-sheinbaum-reunion-apec-2026</guid>
+    <pubDate>Thu, 19 Nov 2026 16:50:06 GMT</pubDate>
+    <description><![CDATA[Claudia Sheinbaum confirmó una breve reunión con Keiko Fujimori en Shenzhen durante APEC 2026 para restablecer relaciones entre Perú y México, rotas en noviembre de 2025 por el asilo a Betssy Chávez.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Keiko Fujimori]]></category>
+    <category><![CDATA[Claudia Sheinbaum]]></category>
+    <category><![CDATA[APEC 2026]]></category>
+    <category><![CDATA[relaciones Perú México]]></category>
+    <category><![CDATA[Betssy Chávez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/52cfdefa1a36.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/52cfdefa1a36.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/52cfdefa1a36.jpg"/>
+    <media:description type="plain"><![CDATA[En una rueda de prensa al término de su visita al gigante asiático, donde participó en la cumbre de líderes del Foro de Cooperación Económica Asia-Pacífico (APEC), la presidenta mexicana recalcó que el restablecimiento de las relaciones bilaterales "fue una decisión" de Fujimori. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Athletic Bilbao recibe al Espanyol por la fecha 13 de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/athletic-bilbao-espanyol-fecha-13-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/athletic-bilbao-espanyol-fecha-13-laliga</guid>
+    <pubDate>Thu, 19 Nov 2026 16:00:12 GMT</pubDate>
+    <description><![CDATA[Athletic Bilbao y Espanyol se enfrentan en La Catedral por la fecha 13 de LaLiga, con el local séptimo (16 puntos) y la visita decimotercera (12). Ambos empataron en la jornada previa.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Athletic Bilbao]]></category>
+    <category><![CDATA[Espanyol]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[fecha 13]]></category>
+    <category><![CDATA[La Catedral]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/54a51a9f4a11.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/54a51a9f4a11.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/54a51a9f4a11.jpg"/>
+    <media:description type="plain"><![CDATA[Athletic Bilbao y Espanyol se miden  en la Catedral mañana a las 15:00 horas. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Espanyol visita San Mamés con Sarabia en el banquillo y la sombra de la lesión de Cala</title>
+    <link>https://ahora.com.pe/deportes/espanyol-san-mames-sarabia-banquillo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/espanyol-san-mames-sarabia-banquillo</guid>
+    <pubDate>Thu, 19 Nov 2026 15:10:06 GMT</pubDate>
+    <description><![CDATA[El Espanyol visita San Mamés este viernes para medirse al Athletic en el primer partido de LaLiga con Eder Sarabia en el banquillo tras cumplir su sanción, en un duelo marcado por la grave lesión de Cala.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Espanyol]]></category>
+    <category><![CDATA[San Mamés]]></category>
+    <category><![CDATA[Eder Sarabia]]></category>
+    <category><![CDATA[Athletic Club]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0b1d63b0b09b.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0b1d63b0b09b.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0b1d63b0b09b.webp"/>
+    <media:description type="plain"><![CDATA[El Espanyol <b>visita este viernes San Mamés</b> para medirse al Athletic (21 horas) en el primer partido de LaLiga en el que<b> Eder Sarabia ya podrá dirigir a su nuevo equipo </b>desde el banquillo tras cumplir la sanción que arrastraba desde el pasado curso.&nbsp; — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Santiago González pide a Universitario que &apos;juegue a favor&apos; para que Cristal gane el Clausura</title>
+    <link>https://ahora.com.pe/deportes/santiago-gonzalez-pide-universitario-titulo-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/santiago-gonzalez-pide-universitario-titulo-clausura</guid>
+    <pubDate>Thu, 19 Nov 2026 14:20:07 GMT</pubDate>
+    <description><![CDATA[Santiago González, figura de Sporting Cristal, pidió a Universitario que consiga un buen resultado ante Sport Huancayo para que los celestes puedan ganar el Torneo Clausura de la Liga 1 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Santiago González]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/93b2837584fc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/93b2837584fc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/93b2837584fc.jpg"/>
+    <media:description type="plain"><![CDATA[Sporting Cristal necesita que Universitario lo ayude para salir campeón del Torneo Clausura de la Liga 1. Por ello, Santiago González pidió ayuda a los cremas. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Andrealli: &quot;Tenemos que interpretar el juego&quot; tras el Perú vs Bolivia</title>
+    <link>https://ahora.com.pe/deportes/andrealli-seleccion-peruana-bolivia-sudamericano-sub-20</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/andrealli-seleccion-peruana-bolivia-sudamericano-sub-20</guid>
+    <pubDate>Thu, 19 Nov 2026 12:50:06 GMT</pubDate>
+    <description><![CDATA[Francesco Andrealli, convocado sorpresa para el amistoso Perú vs Bolivia, habló de su integración a la selección mayor, su estilo de juego y su deseo de disputar el Sudamericano Sub 20 de 2027.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Francesco Andrealli]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Perú vs Bolivia]]></category>
+    <category><![CDATA[Sudamericano Sub 20 2027]]></category>
+    <category><![CDATA[Como 1907]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/592df279b246.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/592df279b246.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/592df279b246.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Tres aspirantes disputarán a Infantino la presidencia de la FIFA en Rabat</title>
+    <link>https://ahora.com.pe/deportes/tres-candidatos-presidencia-fifa-rabat-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/tres-candidatos-presidencia-fifa-rabat-2027</guid>
+    <pubDate>Thu, 19 Nov 2026 11:50:09 GMT</pubDate>
+    <description><![CDATA[Gianni Infantino, Philippe Diallo y Kozo Tashima aspiran a la presidencia de la FIFA en el Congreso de Rabat del 18 de marzo de 2027. El actual mandatario parte como favorito con el respaldo de África, Oceanía, Asia y buena parte de CONCACAF, según fuentes consultadas por Mundo Deportivo. La UEFA respalda a Diallo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[FIFA]]></category>
+    <category><![CDATA[Gianni Infantino]]></category>
+    <category><![CDATA[Philippe Diallo]]></category>
+    <category><![CDATA[Kozo Tashima]]></category>
+    <category><![CDATA[elecciones FIFA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/02fe8173b825.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/02fe8173b825.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/02fe8173b825.webp"/>
+    <media:description type="plain"><![CDATA[Tres son los candidatos que inicialmente se presentarán a las elecciones a la presidencia de la <b>FIFA</b> el próximo 18 de marzo en el Congreso previsto en <b>Rabat</b>. Empezando por el actual presidente <b>Gianni Infantino</b> junto al presidente de la <b>Federación Francesa de Fútbol, Philippe — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>El Peruano: transferencia de S/ 4,9 millones al IPEN y otras normas del jueves</title>
+    <link>https://ahora.com.pe/nacional/normas-legales-19-noviembre-2026-el-peruano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/normas-legales-19-noviembre-2026-el-peruano</guid>
+    <pubDate>Thu, 19 Nov 2026 11:50:08 GMT</pubDate>
+    <description><![CDATA[El Diario Oficial El Peruano difundió las normas más relevantes del jueves 19 de noviembre de 2026. Destacan una transferencia de casi S/ 5 millones a favor del Instituto Peruano de Energía Nuclear y la aprobación de la norma técnica de vigilancia del Síndrome de Guillain-Barré. También se oficializó una moneda de plata del BCRP y la conformidad de actas de las elecciones regionales y municipales.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Normas Legales]]></category>
+    <category><![CDATA[El Peruano]]></category>
+    <category><![CDATA[IPEN]]></category>
+    <category><![CDATA[Síndrome de Guillain-Barré]]></category>
+    <category><![CDATA[BCRP]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5b939668d7f4.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5b939668d7f4.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5b939668d7f4.webp"/>
+    <media:description type="plain"><![CDATA[El boletín Normas Legales del Diario Oficial El Peruano difunde una serie de dispositivos de interés público y de impacto para la marcha del país. Conoce a continuación cuáles son las normas legales más relevantes de hoy. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima, entre las tres defensas menos goleadas de Sudamérica</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-top-10-defensas-sudamerica-cies</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-top-10-defensas-sudamerica-cies</guid>
+    <pubDate>Thu, 19 Nov 2026 11:50:06 GMT</pubDate>
+    <description><![CDATA[Alianza Lima, dirigido por Pablo Guede, aparece entre los tres clubes con menos goles recibidos y séptimo en diferencia de goles por 90 minutos en Sudamérica, según el CIES Football Observatory.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Pablo Guede]]></category>
+    <category><![CDATA[CIES Football Observatory]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[defensa menos goleada]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e5cc69122079.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e5cc69122079.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e5cc69122079.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Elysium: método computacional reconstruye dinámicas celulares sin simular trayectorias</title>
+    <link>https://ahora.com.pe/tecnologia/elysium-solver-sin-simulacion-dinamicas-celulares</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/elysium-solver-sin-simulacion-dinamicas-celulares</guid>
+    <pubDate>Thu, 19 Nov 2026 11:30:14 GMT</pubDate>
+    <description><![CDATA[Elysium es un solver libre de simulación que reconstruye dinámicas celulares desde instantáneas, aprendiendo conjuntamente transición de estados y cambio de masa, según un artículo de arXiv.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Elysium]]></category>
+    <category><![CDATA[puentes de Schrödinger]]></category>
+    <category><![CDATA[dinámica celular]]></category>
+    <category><![CDATA[single-cell]]></category>
+    <category><![CDATA[aprendizaje automático]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3d9c86f35f7b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3d9c86f35f7b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3d9c86f35f7b.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>HORIZON: modelo con transformer equivariante reconstruye dinámicas celulares</title>
+    <link>https://ahora.com.pe/tecnologia/horizon-dinamicas-celulares-transcriptomica-espacial</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/horizon-dinamicas-celulares-transcriptomica-espacial</guid>
+    <pubDate>Thu, 19 Nov 2026 11:30:13 GMT</pubDate>
+    <description><![CDATA[Un artículo de arXiv presenta horizontal flow matching y el modelo HORIZON, que reconstruye la geometría tisular, la expresión génica y la abundancia celular desde transcriptómica espacial, corrigiendo el movimiento rígido compartido entre muestras.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[transcriptómica espacial]]></category>
+    <category><![CDATA[horizontal flow matching]]></category>
+    <category><![CDATA[HORIZON]]></category>
+    <category><![CDATA[transformer equivariante]]></category>
+    <category><![CDATA[biología cuantitativa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3e63f55028d4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3e63f55028d4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3e63f55028d4.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Mía, hija de Rodrigo Cuba y Melissa Paredes, celebró el cumpleaños 35 de Ale Venturo</title>
+    <link>https://ahora.com.pe/entretenimiento/mia-hija-rodrigo-cuba-cumpleanos-ale-venturo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/mia-hija-rodrigo-cuba-cumpleanos-ale-venturo</guid>
+    <pubDate>Thu, 19 Nov 2026 11:30:12 GMT</pubDate>
+    <description><![CDATA[Ale Venturo celebró sus 35 años con un saludo familiar organizado por Rodrigo Cuba, en el que participó Mía, hija del futbolista con Melissa Paredes.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Ale Venturo]]></category>
+    <category><![CDATA[Rodrigo Cuba]]></category>
+    <category><![CDATA[Melissa Paredes]]></category>
+    <category><![CDATA[Mía Cuba]]></category>
+    <category><![CDATA[cumpleaños 35]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c4581f516494.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c4581f516494.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c4581f516494.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Philipp Lahm, embajador de educación financiera en Alemania</title>
+    <link>https://ahora.com.pe/nacional/lahm-embajador-educacion-financiera-alemania</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/lahm-embajador-educacion-financiera-alemania</guid>
+    <pubDate>Thu, 19 Nov 2026 11:20:07 GMT</pubDate>
+    <description><![CDATA[El gobierno alemán reclutó a Philipp Lahm como embajador de educación financiera para jóvenes. El exfutbolista del Bayern Múnich, a quien Guardiola calificó como el jugador más inteligente que entrenó, trabajará sin remuneración junto a la actriz Tomomi Themann.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Philipp Lahm]]></category>
+    <category><![CDATA[educación financiera]]></category>
+    <category><![CDATA[Alemania]]></category>
+    <category><![CDATA[Bayern Múnich]]></category>
+    <category><![CDATA[Guardiola]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a02c26a469d3.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a02c26a469d3.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a02c26a469d3.webp"/>
+    <media:description type="plain"><![CDATA[<b>Pep Guardiola</b> estuvo entre 2013 y 2016 en el <b>Bayern de Múnich</b>, done coincidió con <b>Phillip Lahm</b>. En esa exitosa etapa en Baviera, el entrenador catalán llegó a asegurar que el lateral <a href="https://www.mundodeportivo.com/futbol/premier-league/20170210/414223857514/guardiola-la — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Venta de entradas para la fecha 6 de la Liga Peruana de vóley: precios y programación</title>
+    <link>https://ahora.com.pe/deportes/entradas-fecha-6-liga-peruana-voley-2026-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/entradas-fecha-6-liga-peruana-voley-2026-2027</guid>
+    <pubDate>Thu, 19 Nov 2026 09:30:07 GMT</pubDate>
+    <description><![CDATA[La Federación Peruana de Vóley inició la venta de entradas para la fecha 6 de la Liga Peruana 2026/2027, con precios desde S/ 25 y seis partidos programados en el Polideportivo Lucha Fuentes.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga Peruana de vóley]]></category>
+    <category><![CDATA[fecha 6]]></category>
+    <category><![CDATA[entradas]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/caaea7454aab.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/caaea7454aab.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/caaea7454aab.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>León y Chacos afrontan duelos decisivos</title>
+    <link>https://ahora.com.pe/deportes/leon-y-chacos-afrontan-duelos-decisivos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-y-chacos-afrontan-duelos-decisivos</guid>
+    <pubDate>Thu, 19 Nov 2026 09:02:17 GMT</pubDate>
+    <description><![CDATA[León de Huánuco y Municipal de Chacos jugarán como locales este domingo 22 de noviembre, por la cuarta fecha del torneo Tradición Copera.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León]]></category>
+    <category><![CDATA[Chacos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f81e0c5661c9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f81e0c5661c9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f81e0c5661c9.jpg"/>
+    <media:description type="plain"><![CDATA[León y Chacos afrontan duelos decisivos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>José Soto evaluará continuidad en Moquegua</title>
+    <link>https://ahora.com.pe/deportes/jose-soto-evaluara-continuidad-en-moquegua</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/jose-soto-evaluara-continuidad-en-moquegua</guid>
+    <pubDate>Thu, 19 Nov 2026 09:02:13 GMT</pubDate>
+    <description><![CDATA[José Soto definirá si continúa al frente de CD Moquegua, equipo al que ayudó a conservar su lugar en la Liga 1.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Soto]]></category>
+    <category><![CDATA[Moquegua]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6a7bcdad7efc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6a7bcdad7efc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6a7bcdad7efc.jpg"/>
+    <media:description type="plain"><![CDATA[José Soto evaluará continuidad en Moquegua — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Andrealli sueña con debutar ante Panamá</title>
+    <link>https://ahora.com.pe/deportes/andrealli-suena-con-debutar-ante-panama</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/andrealli-suena-con-debutar-ante-panama</guid>
+    <pubDate>Thu, 19 Nov 2026 09:02:10 GMT</pubDate>
+    <description><![CDATA[Francesco Andrealli, mediocampista de 19 años que pertenece a las divisiones inferiores del Como de Italia, espera debutar con la selección peruana en el amistoso frente a Panamá, programado para el]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Andrealli]]></category>
+    <category><![CDATA[Panamá]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/42bbc3a16db0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/42bbc3a16db0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/42bbc3a16db0.jpg"/>
+    <media:description type="plain"><![CDATA[Andrealli sueña con debutar ante Panamá — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Santiago Ormeño vuelve a quedar libre</title>
+    <link>https://ahora.com.pe/deportes/santiago-ormeno-vuelve-a-quedar-libre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/santiago-ormeno-vuelve-a-quedar-libre</guid>
+    <pubDate>Thu, 19 Nov 2026 09:02:07 GMT</pubDate>
+    <description><![CDATA[Santiago Ormeño quedó como jugador libre después de finalizar anticipadamente su vínculo con Montevideo Wanderers de Uruguay.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Ormeño]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7bc3cb983dcb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7bc3cb983dcb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7bc3cb983dcb.jpg"/>
+    <media:description type="plain"><![CDATA[Santiago Ormeño vuelve a quedar libre — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Fichajes y salidas para 2027</title>
+    <link>https://ahora.com.pe/deportes/fichajes-y-salidas-para-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fichajes-y-salidas-para-2027</guid>
+    <pubDate>Thu, 19 Nov 2026 09:02:04 GMT</pubDate>
+    <description><![CDATA[Los clubes de la Liga 1 comenzaron a preparar sus planteles para 2027, aunque resta completar la temporada actual.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9d1948834be2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9d1948834be2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9d1948834be2.jpg"/>
+    <media:description type="plain"><![CDATA[Fichajes y salidas para 2027 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Conmebol evalúa revolucionar las eliminatorias sudamericanas</title>
+    <link>https://ahora.com.pe/deportes/conmebol-evalua-revolucionar-las-eliminatorias-sudamericanas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/conmebol-evalua-revolucionar-las-eliminatorias-sudamericanas</guid>
+    <pubDate>Thu, 19 Nov 2026 09:02:00 GMT</pubDate>
+    <description><![CDATA[La Confederación Sudamericana de Fútbol (Conmebol) analizará este viernes 20 de noviembre, durante una reunión de su Consejo Ejecutivo en Barranquilla, Colombia, una propuesta para modificar el]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/01e05d7156ee.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/01e05d7156ee.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/01e05d7156ee.jpg"/>
+    <media:description type="plain"><![CDATA[Conmebol evalúa revolucionar las eliminatorias sudamericanas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Paro deja fuera a deportistas huanuqueños</title>
+    <link>https://ahora.com.pe/deportes/paro-deja-fuera-a-deportistas-huanuquenos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/paro-deja-fuera-a-deportistas-huanuquenos</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:57 GMT</pubDate>
+    <description><![CDATA[La participación de varias delegaciones de Huánuco en los Juegos Nacionales Laborales 2026 quedó en incertidumbre debido al paro de transportistas que afectó distintas zonas del departamento]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bbd9344293dd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bbd9344293dd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bbd9344293dd.jpg"/>
+    <media:description type="plain"><![CDATA[Paro deja fuera a deportistas huanuqueños — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Ocho equipos luchan por ascender</title>
+    <link>https://ahora.com.pe/deportes/ocho-equipos-luchan-por-ascender</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/ocho-equipos-luchan-por-ascender</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:53 GMT</pubDate>
+    <description><![CDATA[Los ocho equipos clasificados a los cuartos de final de la Etapa Nacional de la Copa Perú 2026 disputarán sus encuentros a partido único en Lima, donde también se desarrollarán las semifinales y la]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1bd972ee9d82.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1bd972ee9d82.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1bd972ee9d82.jpg"/>
+    <media:description type="plain"><![CDATA[Ocho equipos luchan por ascender — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Hallan presuntas sustancias ilícitas ocultas en prenda dentro del penal de Huánuco</title>
+    <link>https://ahora.com.pe/policiales/hallan-presuntas-sustancias-ilicitas-ocultas-en-prenda-dentro-del-penal-de</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/hallan-presuntas-sustancias-ilicitas-ocultas-en-prenda-dentro-del-penal-de</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:49 GMT</pubDate>
+    <description><![CDATA[Agentes penitenciarios detectaron el material durante una requisa en dos ambientes del pabellón siete y comunicaron el hallazgo a la Fiscalía y Policía.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3d8762a5cd76.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3d8762a5cd76.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3d8762a5cd76.jpg"/>
+    <media:description type="plain"><![CDATA[Hallan presuntas sustancias ilícitas ocultas en prenda dentro del penal de Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Intervienen a adolescente señalado por robo de celular en Amarilis</title>
+    <link>https://ahora.com.pe/policiales/intervienen-a-adolescente-senalado-por-robo-de-celular-en-amarilis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/intervienen-a-adolescente-senalado-por-robo-de-celular-en-amarilis</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:46 GMT</pubDate>
+    <description><![CDATA[Un joven de 22 años reconoció al menor como presunto autor del robo; otro individuo escapó durante la intervención de Serenazgo]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Amarilis]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c3edcf02bf42.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c3edcf02bf42.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c3edcf02bf42.jpg"/>
+    <media:description type="plain"><![CDATA[Intervienen a adolescente señalado por robo de celular en Amarilis — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Matan a balazos a venezolano cerca del parque SENATI en Amarilis</title>
+    <link>https://ahora.com.pe/policiales/matan-a-balazos-a-venezolano-cerca-del-parque-senati-en-amarilis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/matan-a-balazos-a-venezolano-cerca-del-parque-senati-en-amarilis</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:42 GMT</pubDate>
+    <description><![CDATA[Cámaras habrían captado los disparos y la fuga del atacante; Fiscalía ordenó recoger las grabaciones y el testimonio de la acompañante]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[SENATI]]></category>
+    <category><![CDATA[Amarilis]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4cad59b379c4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4cad59b379c4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4cad59b379c4.jpg"/>
+    <media:description type="plain"><![CDATA[Matan a balazos a venezolano cerca del parque SENATI en Amarilis — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Buscan a niña de cuatro años desaparecida en Ambo</title>
+    <link>https://ahora.com.pe/policiales/buscan-a-nina-de-cuatro-anos-desaparecida-en-ambo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/buscan-a-nina-de-cuatro-anos-desaparecida-en-ambo</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:39 GMT</pubDate>
+    <description><![CDATA[Yacira Keily Huaman Mandujano fue reportada como desaparecida el 16 de noviembre. Su familia solicita ayuda para encontrarla y conocer su paradero.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Ambo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fcff6b1ba620.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fcff6b1ba620.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fcff6b1ba620.jpg"/>
+    <media:description type="plain"><![CDATA[Buscan a niña de cuatro años desaparecida en Ambo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Detenido por presunta usurpación tiene donación inscrita</title>
+    <link>https://ahora.com.pe/policiales/detenido-por-presunta-usurpacion-tiene-donacion-inscrita</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/detenido-por-presunta-usurpacion-tiene-donacion-inscrita</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:35 GMT</pubDate>
+    <description><![CDATA[Sunarp anotó el 10 de febrero una donación a su favor; su abogado evalúa tutela de derechos y no descarta una queja ante la Fiscalía]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/974c48b2c81b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/974c48b2c81b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/974c48b2c81b.jpg"/>
+    <media:description type="plain"><![CDATA[Detenido por presunta usurpación tiene donación inscrita — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dispararon contra un Bajaj tras altercado: pasarán hasta 30 años presos</title>
+    <link>https://ahora.com.pe/policiales/dispararon-contra-un-bajaj-tras-altercado-pasaran-hasta-30-anos-presos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/dispararon-contra-un-bajaj-tras-altercado-pasaran-hasta-30-anos-presos</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:32 GMT</pubDate>
+    <description><![CDATA[Una discusión de tránsito terminó en una persecución a balazos y dejó a un hombre gravemente herido. Los dos acusados aceptaron su responsabilidad]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Bajaj]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/43532bc9166c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/43532bc9166c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/43532bc9166c.jpg"/>
+    <media:description type="plain"><![CDATA[Dispararon contra un Bajaj tras altercado: pasarán hasta 30 años presos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Irán y Estados Unidos intercambian ataques mientras crece incertidumbre nuclear</title>
+    <link>https://ahora.com.pe/mundo/iran-y-estados-unidos-intercambian-ataques-mientras-crece-incertidumbre-nuclear</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/iran-y-estados-unidos-intercambian-ataques-mientras-crece-incertidumbre-nuclear</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:28 GMT</pubDate>
+    <description><![CDATA[Irán y Estados Unidos protagonizaron nuevos ataques este 18 de noviembre de 2026 en el golfo Pérsico, mientras el Organismo Internacional de Energía Atómica (OIEA) advirtió que continúa sin verificar]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Irán]]></category>
+    <category><![CDATA[Estados Unidos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d16ca03617b8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d16ca03617b8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d16ca03617b8.jpg"/>
+    <media:description type="plain"><![CDATA[Irán y Estados Unidos intercambian ataques mientras crece incertidumbre nuclear — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Trump, Xi y Putin preparan cumbre en China entre tensiones internacionales</title>
+    <link>https://ahora.com.pe/mundo/trump-xi-y-putin-preparan-cumbre-en-china-entre-tensiones-internacionales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/trump-xi-y-putin-preparan-cumbre-en-china-entre-tensiones-internacionales</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:25 GMT</pubDate>
+    <description><![CDATA[Los presidentes de Estados Unidos, Donald Trump; China, Xi Jinping; y Rusia, Vladimir Putin, se reunirán el 19 de noviembre en Shenzhen, en una cumbre tripartita que coincidirá con el Foro de]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Trump]]></category>
+    <category><![CDATA[Putin]]></category>
+    <category><![CDATA[China]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bc3aa382d072.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bc3aa382d072.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bc3aa382d072.jpg"/>
+    <media:description type="plain"><![CDATA[Trump, Xi y Putin preparan cumbre en China entre tensiones internacionales — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Interior sustenta presupuesto de S/ 14 270 millones para 2027</title>
+    <link>https://ahora.com.pe/politica/interior-sustenta-presupuesto-de-s-14-270-millones-para-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/interior-sustenta-presupuesto-de-s-14-270-millones-para-2027</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:21 GMT</pubDate>
+    <description><![CDATA[El ministro del Interior, César Astudillo, sustentó este 18 de noviembre ante el pleno del Congreso un proyecto de presupuesto de S/ 14 270 millones para el año fiscal 2027, orientado a fortalecer la]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Interior]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0fae74195fea.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0fae74195fea.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0fae74195fea.jpg"/>
+    <media:description type="plain"><![CDATA[Interior sustenta presupuesto de S/ 14 270 millones para 2027 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>CONFEMIN anuncia movilización nacional indefinida para exigir ampliación del REINFO</title>
+    <link>https://ahora.com.pe/economia/confemin-anuncia-movilizacion-nacional-indefinida-para-exigir-ampliacion-del</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/confemin-anuncia-movilizacion-nacional-indefinida-para-exigir-ampliacion-del</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:18 GMT</pubDate>
+    <description><![CDATA[La Confederación Nacional de Pequeña Minería y Minería Artesanal del Perú (CONFEMIN) anunció una movilización nacional indefinida desde el próximo 23 de noviembre, para exigir la ampliación del]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[CONFEMIN]]></category>
+    <category><![CDATA[REINFO]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c32bb725073b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c32bb725073b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c32bb725073b.jpg"/>
+    <media:description type="plain"><![CDATA[CONFEMIN anuncia movilización nacional indefinida para exigir ampliación del REINFO — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Postergan instalación de la transferencia municipal en Huánuco</title>
+    <link>https://ahora.com.pe/regional/postergan-instalacion-de-la-transferencia-municipal-en-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/postergan-instalacion-de-la-transferencia-municipal-en-huanuco</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:11 GMT</pubDate>
+    <description><![CDATA[Jara y Ponce la fijaron para el jueves 19, a las 7:30; el virtual alcalde defendió a las 170 personas de su equipo]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/54fa28d6c459.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/54fa28d6c459.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/54fa28d6c459.png"/>
+    <media:description type="plain"><![CDATA[Postergan instalación de la transferencia municipal en Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Cámara de Ucayali pide estrategia logística integral</title>
+    <link>https://ahora.com.pe/regional/camara-de-ucayali-pide-estrategia-logistica-integral</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/camara-de-ucayali-pide-estrategia-logistica-integral</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:07 GMT</pubDate>
+    <description><![CDATA[Rubén Cerna, presidente del gremio empresarial, dijo que la selva carga con fletes fluviales caros y una informalidad cercana al 90 %]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Cámara de Ucayali]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fc3a306e8f35.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fc3a306e8f35.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fc3a306e8f35.png"/>
+    <media:description type="plain"><![CDATA[Cámara de Ucayali pide estrategia logística integral — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Analista atribuye alzas a la especulación</title>
+    <link>https://ahora.com.pe/regional/analista-atribuye-alzas-a-la-especulacion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/analista-atribuye-alzas-a-la-especulacion</guid>
+    <pubDate>Thu, 19 Nov 2026 09:01:03 GMT</pubDate>
+    <description><![CDATA[El paro no encareció los productos por sí mismo, dijo; antes de la protesta, el INEI registró en Huánuco un alza de 0,26 % en octubre]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/099b9c79f88b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/099b9c79f88b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/099b9c79f88b.jpg"/>
+    <media:description type="plain"><![CDATA[Analista atribuye alzas a la especulación — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Encuentro anticorrupción empieza el jueves 19 en Huánuco</title>
+    <link>https://ahora.com.pe/regional/encuentro-anticorrupcion-empieza-el-jueves-19-en-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/encuentro-anticorrupcion-empieza-el-jueves-19-en-huanuco</guid>
+    <pubDate>Thu, 19 Nov 2026 09:00:59 GMT</pubDate>
+    <description><![CDATA[Unas diez comisiones regionales confirmaron que irán el jueves 19 y el viernes 20, según la anfitriona, que aclara que no recibe denuncias]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Encuentro]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/edd1e802a39a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/edd1e802a39a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/edd1e802a39a.jpg"/>
+    <media:description type="plain"><![CDATA[Encuentro anticorrupción empieza el jueves 19 en Huánuco — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Robles anuncia movilizaciones en Marabamba</title>
+    <link>https://ahora.com.pe/regional/robles-anuncia-movilizaciones-en-marabamba</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/robles-anuncia-movilizaciones-en-marabamba</guid>
+    <pubDate>Thu, 19 Nov 2026 09:00:55 GMT</pubDate>
+    <description><![CDATA[César Robles, que se presenta como alcalde electo con 43 votos de ventaja, rechaza el pedido de nulidad que atribuye a su rival]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Robles]]></category>
+    <category><![CDATA[Marabamba]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/282da224401e.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/282da224401e.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/282da224401e.png"/>
+    <media:description type="plain"><![CDATA[Robles anuncia movilizaciones en Marabamba — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Padre investigado pide conservar a su bebé</title>
+    <link>https://ahora.com.pe/regional/padre-investigado-pide-conservar-a-su-bebe</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/padre-investigado-pide-conservar-a-su-bebe</guid>
+    <pubDate>Thu, 19 Nov 2026 09:00:51 GMT</pubDate>
+    <description><![CDATA[El juez de Huamalíes negó el 26 de octubre internar al recién nacido; la Fiscalía investiga al padre y, según el juez, hay apelación]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/900959194450.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/900959194450.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/900959194450.jpg"/>
+    <media:description type="plain"><![CDATA[Padre investigado pide conservar a su bebé — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Abogados no aprobaron cuota de S/ 100</title>
+    <link>https://ahora.com.pe/regional/abogados-no-aprobaron-cuota-de-s-100</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/abogados-no-aprobaron-cuota-de-s-100</guid>
+    <pubDate>Thu, 19 Nov 2026 09:00:48 GMT</pubDate>
+    <description><![CDATA[La asamblea del martes 17 pidió informes técnicos antes de financiar la remodelación del local; el decano calculaba recaudar S/ 370 000]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Abogados]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a2465998aa73.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a2465998aa73.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a2465998aa73.jpg"/>
+    <media:description type="plain"><![CDATA[Abogados no aprobaron cuota de S/ 100 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Piden reducir área protegida del humedal de Huachog</title>
+    <link>https://ahora.com.pe/regional/piden-reducir-area-protegida-del-humedal-de-huachog</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/piden-reducir-area-protegida-del-humedal-de-huachog</guid>
+    <pubDate>Thu, 19 Nov 2026 09:00:44 GMT</pubDate>
+    <description><![CDATA[El Gobierno Regional plantea bajarla de más de nueve hectáreas a 1,53 para destrabar la planta de aguas residuales de Huánuco]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huachog]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0563e34664c3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0563e34664c3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0563e34664c3.jpg"/>
+    <media:description type="plain"><![CDATA[Piden reducir área protegida del humedal de Huachog — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Límite de Paraíso: Técnica regional advierte presión política de San Martín</title>
+    <link>https://ahora.com.pe/regional/limite-de-paraiso-tecnica-regional-advierte-presion-politica-de-san-martin</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/limite-de-paraiso-tecnica-regional-advierte-presion-politica-de-san-martin</guid>
+    <pubDate>Thu, 19 Nov 2026 09:00:40 GMT</pubDate>
+    <description><![CDATA[Guadalupe Laos dice que un senador empuja a inscribir el trazo de 2016, que según ella dejaría unos 200 km² de Paraíso fuera de Huánuco]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Paraíso]]></category>
+    <category><![CDATA[San Martín]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/321f5b56d29f.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/321f5b56d29f.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/321f5b56d29f.png"/>
+    <media:description type="plain"><![CDATA[Límite de Paraíso: Técnica regional advierte presión política de San Martín — Licencia: propia]]></media:description>
+  </item>
+  </channel>
+</rss>
