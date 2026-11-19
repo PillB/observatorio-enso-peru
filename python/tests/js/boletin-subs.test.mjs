@@ -15,12 +15,19 @@ globalThis.fetch = async (url, init) => {
   if (env.HANG) throw new DOMException('The operation was aborted due to timeout', 'TimeoutError');
   const body = JSON.parse(init.body);
   // Un nginx delante de n8n que corta los pedidos sin User-Agent (como el de producción) o, con PROXY_BLOCK, todos.
-  if (!init.headers['User-Agent'] || env.PROXY_BLOCK) return new Response('<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center></body></html>', { status: 403 });
+  // Como el de producción, también corta los cuerpos con HTML (por eso el sitio manda el correo en base64).
+  if (!init.headers['User-Agent'] || env.PROXY_BLOCK || /<(!doctype|meta|style|html)/i.test(init.body)) return new Response('<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center></body></html>', { status: 403 });
   // Un n8n de mentira para el diagnóstico: 404 si el flujo no está publicado, 403 con otro secreto y 500 con el bueno
   // (el pedido vacío hace fallar «Armar correo»).
   if (body.diagnostico) {
     if (env.HOOK_404) return new Response('{"message":"not registered"}', { status: 404 });
     return new Response('{"message":"x"}', { status: init.headers['X-Enso-Secret'] === env.N8N_SECRET ? 500 : 403 });
+  }
+  // Lo que decodifica n8n (n8n/nodes/boletin-confirmar.js).
+  if (body.enc === 'base64') {
+    // …y corta los cuerpos de más de 8 KB (medido en producción: 8085 bytes pasa, 8353 no).
+    if (init.body.length > 8000) return new Response('<html><head><title>403 Forbidden</title></head></html>', { status: 403 });
+    for (const k of ['subject', 'html']) body[k] = Buffer.from(body[`${k}_b64`], 'base64').toString('utf8');
   }
   sent.push({ url: String(url), headers: init.headers, body });
   return new Response('{}', { status: env.MAIL_FAILS ? (typeof env.MAIL_FAILS === 'number' ? env.MAIL_FAILS : 500) : 200 });
@@ -61,7 +68,8 @@ describe('suscripción al boletín', () => {
     assert.equal(sent[0].headers['X-Enso-Secret'], 's3cr3t');
     assert.equal(sent[0].body.to, 'ana@example.pe');
     assert.match(sent[0].body.subject, /Confirme/);
-    assert.match(sent[0].body.text, /confirmar=/);
+    assert.match(sent[0].body.html, /confirmar=/);
+    assert.equal(sent[0].body.text, undefined);
     assert.deepEqual(rows(), [{ email: 'ana@example.pe', status: 'pendiente', freq: 'importantes', deps: '20,24' }]);
     // La lista no la trae todavía.
     let l = await (await req('lista', { method: 'GET', origin: null, headers: { Authorization: `Bearer ${LIST}` } })).json();
@@ -125,6 +133,17 @@ describe('suscripción al boletín', () => {
     const b = new URL(l.subs[0].baja.replace('#/boletin?', '?')).searchParams.get('baja');
     assert.equal((await req('baja', { body: { t: b } })).status, 200);
     assert.deepEqual(rows(), []);
+  });
+
+  it('el pedido a n8n no lleva HTML en claro y cabe en 8 KB aun con la dirección más larga', async () => {
+    const long = `${'a'.repeat(64)}@${'b'.repeat(63)}.${'c'.repeat(63)}.${'d'.repeat(58)}.pe`;
+    assert.equal(long.length, 254);
+    assert.equal((await subscribe(long)).status, 202);
+    await req('confirmar', { body: { t: lastLink('confirmar') } });
+    assert.equal((await subscribe(long, {}, { ip: '5.5.5.5' })).status, 202);
+    assert.equal(sent.length, 2);
+    assert.match(sent[1].body.subject, /Ya está/);
+    for (const m of sent) assert.match(m.body.html, /^<!doctype html>/);
   });
 
   it('no deja averiguar quién está suscrito ni inundar un buzón', async () => {
