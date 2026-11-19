@@ -24,6 +24,7 @@ no es de un lugar (alcance nacional o sin lugar); ``foreign`` dice que no ocurre
 from __future__ import annotations
 
 import os
+import time
 from collections import Counter
 from datetime import datetime, timedelta
 from typing import Any, Optional
@@ -137,20 +138,47 @@ def valid_overrides(data: Any) -> list[dict]:
     return list(out.values())
 
 
-def fetch_overrides(client, previous, log, url: Optional[str] = None) -> tuple[list[dict], str]:
-    """(correcciones, origen). ``client`` es un ``httpx.Client`` o ``None`` (sin red)."""
+#: Pedidos a la consola por corrida: un corte de red o un 5xx pasajero de Cloudflare no deja la publicación del día
+#: sin las correcciones de las últimas horas (se usarían las de la publicación anterior). La lectura es idempotente.
+OVERRIDES_TRIES = 3
+OVERRIDES_BACKOFF_S = 3.0
+
+
+def fetch_overrides(client, previous, log, url: Optional[str] = None, sleep=None) -> tuple[list[dict], str]:
+    """(correcciones, origen). ``client`` es un ``httpx.Client`` o ``None`` (sin red). Reintenta los fallos de red, los
+    429 y los 5xx con espera exponencial (``fetch.backoff_s``, o lo que pida ``Retry-After``); cualquier otra respuesta
+    es definitiva. Si no hay respuesta buena, las correcciones de la publicación anterior (dato conservado)."""
+    from .fetch import backoff_s, retry_after_s
+
+    sleep = sleep or time.sleep
     url = url if url is not None else os.environ.get(OVERRIDES_URL_ENV, "")
     if url and client is not None:
-        try:
-            # La consola es del observatorio, no una fuente: sus redirecciones se siguen sin robots.txt.
-            r = client.get(url, headers={"Accept": "application/json"}, timeout=20, follow_redirects=True)
+        for i in range(OVERRIDES_TRIES):
+            last = i + 1 >= OVERRIDES_TRIES
+            try:
+                # La consola es del observatorio, no una fuente: sus redirecciones se siguen sin robots.txt.
+                r = client.get(url, headers={"Accept": "application/json"}, timeout=20, follow_redirects=True)
+            except Exception as exc:  # noqa: BLE001
+                if not last:
+                    sleep(backoff_s(i, OVERRIDES_BACKOFF_S))
+                    continue
+                log.add("warning", "geo", "fetch", "overrides-down",
+                        f"No se pudo leer la consola de lugares ({type(exc).__name__}); se usan las correcciones anteriores.")
+                break
             if r.status_code == 200:
-                return valid_overrides(r.json()), "consola"
+                try:
+                    return valid_overrides(r.json()), "consola"
+                except ValueError:
+                    log.add("warning", "geo", "fetch", "overrides-http",
+                            "La consola de lugares respondió algo que no es JSON; se usan las correcciones anteriores.")
+                    break
+            if (r.status_code == 429 or r.status_code >= 500) and not last:
+                wait = retry_after_s(r.headers.get("retry-after"))
+                sleep(min(30.0, wait) if wait is not None else backoff_s(i, OVERRIDES_BACKOFF_S))
+                continue
             log.add("warning", "geo", "fetch", "overrides-http",
                     f"La consola de lugares respondió HTTP {r.status_code}; se usan las correcciones anteriores.")
-        except Exception as exc:  # noqa: BLE001
-            log.add("warning", "geo", "fetch", "overrides-down",
-                    f"No se pudo leer la consola de lugares ({type(exc).__name__}); se usan las correcciones anteriores.")
+            break
     prev = previous.get("geo/overrides.json") if previous is not None else None
     return valid_overrides(prev), "publicacion-anterior" if prev else "ninguna"
 

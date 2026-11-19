@@ -1506,10 +1506,15 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
             # serie nueva por esa fecha (n8n/lib/boletin.js) en vez de darla por ya enviada.
             log.add("warning", "boletin", "build", "boletin-sin-anterior",
                     "No se pudo leer el boletín publicado: la numeración de ediciones vuelve a empezar.")
-        bol = BOL.build(feed, official, escenario, now, prev_bol, freshness,
-                        site=os.environ.get("SITE_URL") or BOL.SITE)
+        bol_site = os.environ.get("SITE_URL") or BOL.SITE
+        bol = BOL.build(feed, official, escenario, now, prev_bol, freshness, site=bol_site)
         dump("boletin.json", bol)
         (tmp / "boletin-correo.html").write_text(bol["email"]["html"], encoding="utf-8")
+        (tmp / "boletin.xml").write_text(BOL.atom_feed(bol, bol_site), encoding="utf-8")
+        # La imagen para compartir y su página con Open Graph (vista previa en WhatsApp, Slack, Teams, Telegram).
+        from . import boletin_img as BIMG
+        (tmp / "boletin.png").write_bytes(BIMG.share_png(bol))
+        (tmp / "boletin-compartir.html").write_text(BIMG.share_page(bol, bol_site), encoding="utf-8")
         (tmp / "csv" / "boletin-departamentos.csv").write_text(BOL.csv_segments(bol), encoding="utf-8")
         (tmp / "csv" / "boletin-avisos.csv").write_text(BOL.csv_events(bol), encoding="utf-8")
         if bol["edition"] != int((prev_bol or {}).get("edition") or 0):

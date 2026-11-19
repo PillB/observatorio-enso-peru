@@ -168,7 +168,7 @@
     <text class="ar-t" x="687.7" y="249.8" font-size="10.5" text-anchor="middle">4</text>
   </g>
   <g class="ar-edge" id="a7-e-5" data-edge="5" data-from="geo-page" data-to="corrections" tabindex="0">
-    <title>5. Consola de lugares → Correcciones de lugares: corrección. Lleva la revisión que la persona vio: si otra la cambió antes, responde 409 y pide recargar.</title>
+    <title>5. Consola de lugares → Correcciones de lugares: corrección. Lleva la revisión que la persona vio (obligatoria): si otra la cambió antes, responde 409 con la vigente. Repetir el mismo envío no crea otra revisión.</title>
     <path class="ar-e ar-e-data" d="M655.3 300 L714 300 Q720 300 720 306 L720 480 Q720 486 726 486 L744.7 486" marker-end="url(#a7-m-data)"/>
     <circle class="ar-badge ar-e-data" cx="720" cy="393" r="9"/>
     <text class="ar-t" x="720" y="396.8" font-size="10.5" text-anchor="middle">5</text>
@@ -205,27 +205,27 @@
   </g>
   <g class="ar-edge" id="a7-e-11" data-edge="11" data-from="upload" data-to="refresh" tabindex="0">
     <title>11. Subida de documentos → Pedir actualización: tras subir.</title>
-    <path class="ar-e ar-e-trigger" d="M1024.7 1056 L1080 1056 Q1086 1056 1086 1050 L1086 468 Q1086 462 1092 462 L1114 462" stroke-dasharray="2 3" marker-end="url(#a7-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="1086" cy="759" r="9"/>
-    <text class="ar-t" x="1086" y="762.8" font-size="10.5" text-anchor="middle">11</text>
+    <path class="ar-e ar-e-trigger" d="M1024.7 1056 L1080 1056 Q1086 1056 1086 1050 L1086 486 Q1086 480 1092 480 L1114 480" stroke-dasharray="2 3" marker-end="url(#a7-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="1086" cy="768" r="9"/>
+    <text class="ar-t" x="1086" y="771.8" font-size="10.5" text-anchor="middle">11</text>
   </g>
   <g class="ar-edge" id="a7-e-12" data-edge="12" data-from="refresh" data-to="pipeline" tabindex="0">
     <title>12. Pedir actualización → Actualización diaria: enso-refresh. Si una corrida ya está en curso, la nueva queda en cola (concurrency de producción).</title>
-    <path class="ar-e ar-e-trigger" d="M1254 528.4 L1254 558.4" stroke-dasharray="2 3" marker-end="url(#a7-m-trigger)"/>
-    <circle class="ar-badge ar-e-trigger" cx="1254" cy="543.4" r="9"/>
-    <text class="ar-t" x="1254" y="547.2" font-size="10.5" text-anchor="middle">12</text>
+    <path class="ar-e ar-e-trigger" d="M1254 558.8 L1254 588.8" stroke-dasharray="2 3" marker-end="url(#a7-m-trigger)"/>
+    <circle class="ar-badge ar-e-trigger" cx="1254" cy="573.8" r="9"/>
+    <text class="ar-t" x="1254" y="577.6" font-size="10.5" text-anchor="middle">12</text>
   </g>
   <g class="ar-edge" id="a7-e-13" data-edge="13" data-from="branch" data-to="pipeline" tabindex="0">
     <title>13. Rama data-manual → Actualización diaria: se lee en cada corrida.</title>
-    <path class="ar-e ar-e-data" d="M1394 288 L1410 288 Q1416 288 1416 294 L1416 624 Q1416 630 1410 630 L1394 630" marker-end="url(#a7-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1416" cy="459" r="9"/>
-    <text class="ar-t" x="1416" y="462.8" font-size="10.5" text-anchor="middle">13</text>
+    <path class="ar-e ar-e-data" d="M1394 288 L1410 288 Q1416 288 1416 294 L1416 654 Q1416 660 1410 660 L1394 660" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1416" cy="474" r="9"/>
+    <text class="ar-t" x="1416" y="477.8" font-size="10.5" text-anchor="middle">13</text>
   </g>
   <g class="ar-edge" id="a7-e-14" data-edge="14" data-from="overrides" data-to="pipeline" tabindex="0">
     <title>14. Correcciones vigentes (pública) → Actualización diaria: correcciones. Si la consola no responde, se usan las de la publicación anterior (geo/overrides.json).</title>
-    <path class="ar-e ar-e-data" d="M1024.7 834 L1086 834 Q1092 834 1092 828 L1092 636 Q1092 630 1098 630 L1114 630" marker-end="url(#a7-m-data)"/>
-    <circle class="ar-badge ar-e-data" cx="1092" cy="732" r="9"/>
-    <text class="ar-t" x="1092" y="735.8" font-size="10.5" text-anchor="middle">14</text>
+    <path class="ar-e ar-e-data" d="M1024.7 834 L1086 834 Q1092 834 1092 828 L1092 666 Q1092 660 1098 660 L1114 660" marker-end="url(#a7-m-data)"/>
+    <circle class="ar-badge ar-e-data" cx="1058.3" cy="834" r="9"/>
+    <text class="ar-t" x="1058.3" y="837.8" font-size="10.5" text-anchor="middle">14</text>
   </g>
   
   <!-- cajas -->
@@ -400,33 +400,35 @@
     <a class="ar-annex" href="a4.svg" data-annex="a4"><title>Anexo A4: Descarga en GitHub Actions y respaldo por fuente</title><rect class="ar-tag" x="1358.6" y="216" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="228.5" font-size="10.5" text-anchor="middle">A4</text></a>
   </g>
   <g class="ar-node-g" id="a7-n-refresh" data-node="refresh">
-    <title>Pedir actualización. Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37. Tecnología: repository_dispatch.</title>
-    <rect class="ar-node ar-g-pipeline" x="1114" y="398.9" width="280" height="129.5" rx="8"/>
-    <rect class="ar-f-pipeline" x="1114" y="406.9" width="4" height="113.5" rx="2"/>
+    <title>Pedir actualización. Tras subir, manda repository_dispatch enso-refresh para que el sitio no espere a la corrida de las 23:37. La subida queda anotada antes de pedirlo: si falla, se pide de nuevo al abrir la consola. Tecnología: repository_dispatch.</title>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="398.9" width="280" height="159.9" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="406.9" width="4" height="143.9" rx="2"/>
     <rect class="ar-tile ar-f-pipeline" x="1126" y="408.9" width="30" height="30" rx="7"/>
     <g class="ar-icon ar-g-pipeline" transform="translate(1129 411.9)"><path d="M20 11a8 8 0 0 0-14.3-4.5L4 8.5M4 4v4.5h4.5M4 13a8 8 0 0 0 14.3 4.5l1.7-2M20 20v-4.5h-4.5"/></g>
     <text class="ar-t" x="1164" y="428.4" font-size="12.5">Pedir actualización</text>
     <text class="ar-s" x="1126" y="460.3" font-size="11">Tras subir, manda repository_dispatch</text>
     <text class="ar-s" x="1126" y="475.5" font-size="11">enso-refresh para que el sitio no espere a la</text>
-    <text class="ar-s" x="1126" y="490.7" font-size="11">corrida de las 23:37.</text>
-    <rect class="ar-chip" x="1126" y="500.4" width="110.4" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1132" y="512.4" font-size="10">repository_dispatch</text>
+    <text class="ar-s" x="1126" y="490.7" font-size="11">corrida de las 23:37. La subida queda</text>
+    <text class="ar-s" x="1126" y="505.9" font-size="11">anotada antes de pedirlo: si falla, se pide de</text>
+    <text class="ar-s" x="1126" y="521" font-size="11">nuevo al abrir la consola.</text>
+    <rect class="ar-chip" x="1126" y="530.8" width="110.4" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="542.8" font-size="10">repository_dispatch</text>
   </g>
   <g class="ar-node-g" id="a7-n-pipeline" data-node="pipeline">
     <title>Actualización diaria. Lee data-manual como un recolector más y valida el PDF como cualquier copia; aplica las correcciones de lugares después de las automáticas: tienen la última palabra. Tecnología: Python 3.12.</title>
-    <rect class="ar-node ar-g-pipeline" x="1114" y="558.4" width="280" height="144.7" rx="8"/>
-    <rect class="ar-f-pipeline" x="1114" y="566.4" width="4" height="128.7" rx="2"/>
-    <rect class="ar-tile ar-f-pipeline" x="1126" y="568.4" width="30" height="30" rx="7"/>
-    <g class="ar-icon ar-g-pipeline" transform="translate(1129 571.4)"><path d="M5 15c-1.5 1.5-2 4.5-2 6 1.5 0 4.5-.5 6-2M14.5 4.5c3-1.5 5-1.5 5.5-1 .5.5.5 2.5-1 5.5L13 15l-4-4z"/><path d="M9 11l-3.5-.5L8 7.5l4 .5M13 15l.5 3.5L16.5 16l-.5-4"/></g>
-    <text class="ar-t" x="1164" y="587.9" font-size="12.5">Actualización diaria</text>
-    <text class="ar-s" x="1126" y="619.9" font-size="11">Lee data-manual como un recolector más y</text>
-    <text class="ar-s" x="1126" y="635" font-size="11">valida el PDF como cualquier copia; aplica las</text>
-    <text class="ar-s" x="1126" y="650.2" font-size="11">correcciones de lugares después de las</text>
-    <text class="ar-s" x="1126" y="665.4" font-size="11">automáticas: tienen la última palabra.</text>
-    <rect class="ar-chip" x="1126" y="675.2" width="72.1" height="17" rx="8.5"/>
-    <text class="ar-chip-t" x="1132" y="687.2" font-size="10">Python 3.12</text>
-    <a class="ar-annex" href="a6.svg" data-annex="a6"><title>Anexo A6: Noticias y alertas: lectura, filtro, histórico y lugar</title><rect class="ar-tag" x="1358.6" y="565.4" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="577.9" font-size="10.5" text-anchor="middle">A6</text></a>
-    <a class="ar-annex" href="a5.svg" data-annex="a5"><title>Anexo A5: Actualización diaria: fuentes oficiales, series y señales</title><rect class="ar-tag" x="1327.1" y="565.4" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1340.8" y="577.9" font-size="10.5" text-anchor="middle">A5</text></a>
+    <rect class="ar-node ar-g-pipeline" x="1114" y="588.8" width="280" height="144.7" rx="8"/>
+    <rect class="ar-f-pipeline" x="1114" y="596.8" width="4" height="128.7" rx="2"/>
+    <rect class="ar-tile ar-f-pipeline" x="1126" y="598.8" width="30" height="30" rx="7"/>
+    <g class="ar-icon ar-g-pipeline" transform="translate(1129 601.8)"><path d="M5 15c-1.5 1.5-2 4.5-2 6 1.5 0 4.5-.5 6-2M14.5 4.5c3-1.5 5-1.5 5.5-1 .5.5.5 2.5-1 5.5L13 15l-4-4z"/><path d="M9 11l-3.5-.5L8 7.5l4 .5M13 15l.5 3.5L16.5 16l-.5-4"/></g>
+    <text class="ar-t" x="1164" y="618.3" font-size="12.5">Actualización diaria</text>
+    <text class="ar-s" x="1126" y="650.2" font-size="11">Lee data-manual como un recolector más y</text>
+    <text class="ar-s" x="1126" y="665.4" font-size="11">valida el PDF como cualquier copia; aplica las</text>
+    <text class="ar-s" x="1126" y="680.6" font-size="11">correcciones de lugares después de las</text>
+    <text class="ar-s" x="1126" y="695.8" font-size="11">automáticas: tienen la última palabra.</text>
+    <rect class="ar-chip" x="1126" y="705.5" width="72.1" height="17" rx="8.5"/>
+    <text class="ar-chip-t" x="1132" y="717.5" font-size="10">Python 3.12</text>
+    <a class="ar-annex" href="a6.svg" data-annex="a6"><title>Anexo A6: Noticias y alertas: lectura, filtro, histórico y lugar</title><rect class="ar-tag" x="1358.6" y="595.8" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1372.3" y="608.3" font-size="10.5" text-anchor="middle">A6</text></a>
+    <a class="ar-annex" href="a5.svg" data-annex="a5"><title>Anexo A5: Actualización diaria: fuentes oficiales, series y señales</title><rect class="ar-tag" x="1327.1" y="595.8" width="27.4" height="17" rx="8.5"/><text class="ar-tag-t" x="1340.8" y="608.3" font-size="10.5" text-anchor="middle">A5</text></a>
   </g>
   <line class="ar-rule" x1="20" y1="1162.1" x2="1420" y2="1162.1"/>
   <text class="ar-h" x="20" y="1192.1" font-size="15">Pasos y conexiones: qué viaja por cada línea, cuándo y por qué</text>
@@ -454,8 +456,8 @@
   <text class="ar-t" x="506" y="1223.9" font-size="10.5" text-anchor="middle">5</text>
   <text class="ar-t" x="526" y="1224.1" font-size="11.5">corrección</text>
   <text class="ar-m" x="526" y="1238.1" font-size="10.5">Consola de lugares → Correcciones de lugares</text>
-  <text class="ar-s" x="526" y="1253.1" font-size="11">Lleva la revisión que la persona vio: si otra la cambió antes, responde 409</text>
-  <text class="ar-s" x="526" y="1268.1" font-size="11">y pide recargar.</text>
+  <text class="ar-s" x="526" y="1253.1" font-size="11">Lleva la revisión que la persona vio (obligatoria): si otra la cambió antes,</text>
+  <text class="ar-s" x="526" y="1268.1" font-size="11">responde 409 con la vigente. Repetir el mismo envío no crea otra revisión.</text>
   <circle class="ar-badge ar-e-data" cx="506" cy="1291.1" r="9"/>
   <text class="ar-t" x="506" y="1294.9" font-size="10.5" text-anchor="middle">6</text>
   <text class="ar-t" x="526" y="1295.1" font-size="11.5">PDF en base64 + sha256</text>
@@ -506,7 +508,8 @@
   <text class="ar-s" x="50" y="1619.1" font-size="11">inexistente tarda lo mismo que uno real.</text>
   <g class="ar-warn" transform="translate(20 1631.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="50" y="1646.1" font-size="11.5">Dos revisores corrigen la misma nota</text>
-  <text class="ar-s" x="50" y="1661.1" font-size="11">El segundo recibe 409 y recarga: ninguna corrección pisa a otra sin verla.</text>
+  <text class="ar-s" x="50" y="1661.1" font-size="11">El segundo recibe 409 con la corrección del primero y su tarjeta se rehace:</text>
+  <text class="ar-s" x="50" y="1676.1" font-size="11">ninguna corrección pisa a otra sin verla.</text>
   <g class="ar-warn" transform="translate(496 1574.1) scale(0.85)"><path d="M12 3l9.5 17H2.5z"/><path d="M12 10v4M12 17v.01"/></g>
   <text class="ar-t" x="526" y="1589.1" font-size="11.5">La consola o Cloudflare no responden</text>
   <text class="ar-s" x="526" y="1604.1" font-size="11">El pipeline aplica las correcciones de la publicación anterior; no se pierde</text>

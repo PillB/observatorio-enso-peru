@@ -13,7 +13,7 @@ registro de fuentes ──► n8n (AWS) ──► rama data-n8n ──┐
                         servidor del Perú ─► data-peru ─┘   (directo › relay más reciente › Internet Archive)
 ```
 
-Hay cinco flujos, en `n8n/dist/`:
+Hay seis flujos, en `n8n/dist/`:
 
 | Archivo | Para qué | Credenciales |
 |---|---|---|
@@ -21,7 +21,8 @@ Hay cinco flujos, en `n8n/dist/`:
 | `enso-n8n-recolector.json` | Recolectar todos los días a las 22:50 (Lima) y publicar en `data-n8n` | Token de GitHub |
 | `enso-n8n-vigilante.json` | Cada 6 horas, revisar que el sitio publicado esté al día (`data/manifest.json`, `generatedAt` de menos de 30 h); si no, la ejecución falla y avisa | Ninguna |
 | `enso-n8n-extractor.json` | Respaldo con OpenAI para leer los informes del ENFEN cuando su formato cambia: el pipeline lo llama por un webhook con token y recibe una propuesta en JSON para revisión | OpenAI del colega y un token propio |
-| `enso-n8n-boletin.json` | Cada hora, leer el boletín de eventos El Niño del sitio y mandarlo por Gmail: al momento si hay un cambio importante, si no en un resumen diario ([boletin](boletin.md)) | Gmail (OAuth2) de quien manda |
+| `enso-n8n-boletin.json` | Cada hora, leer el boletín de eventos El Niño del sitio y mandarlo por la API de Gmail a una lista fija y a cada suscripción confirmada del sitio (con su enlace de baja en un clic): al momento si hay un cambio importante, si no en un resumen diario ([boletin](boletin.md)) | Gmail (OAuth2) de quien manda; «Header Auth» con el token de la lista |
+| `enso-n8n-boletin-confirmar.json` | Webhook que el sitio llama para mandar el correo de confirmación de una suscripción nueva (doble confirmación) | Gmail (OAuth2); «Header Auth» con el secreto compartido |
 
 Probados de punta a punta con n8n **2.44** y **1.123** (CI: `.github/workflows/n8n.yml`).
 
@@ -247,8 +248,10 @@ OpenAI falso es `n8n/test/e2e-extractor.sh n8nio/n8n:2.44.4 /tmp/ext`.
 
 ## Boletín por correo (Gmail)
 
-Lee `data/boletin.json` del sitio y decide si manda, a quién y con qué asunto. Viene en simulacro (`send = false`):
-arma el correo y no lo manda hasta que se configure la credencial de Gmail, las direcciones y `send = true`. El paso a
+Lee `data/boletin.json` del sitio (y, con `use_list = true`, las suscripciones confirmadas de `/api/boletin/lista`) y
+decide si manda, a quién y con qué asunto. Viene en simulacro (`send = false`): arma los correos y no los manda hasta
+que se configure la credencial de Gmail, las direcciones y `send = true`. Manda por la API de Gmail (no por el nodo de
+Gmail, que no deja poner cabeceras) para que cada correo lleve `List-Unsubscribe` y `List-Unsubscribe-Post`. El paso a
 paso, las reglas de aviso y la prueba con n8n real están en [boletin.md](boletin.md#correo-con-n8n-y-gmail).
 
 ## Qué publica

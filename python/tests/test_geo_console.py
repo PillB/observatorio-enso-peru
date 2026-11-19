@@ -164,13 +164,65 @@ def test_reviewer_logs_in_corrects_a_place_and_sees_the_history(console, browser
         page.get_by_role("tab", name="Registro de cambios").click()
         expect(page.locator(".gc-audit-row").first).to_contain_text("corrigió")
         expect(page.locator("#list")).to_be_hidden()
+        n_deps = page.locator("#dep-filter option").count()
         page.get_by_role("button", name="Salir").click()
         expect(page.get_by_role("heading", name="Ingresar")).to_be_visible()
         expect(page.get_by_role("button", name="Salir")).to_be_hidden()
         expect(page.locator("#app-view")).to_be_hidden()
+        # Volver a ingresar en la misma pestaña: la consola empieza limpia (la pestaña «Por revisar», sin el registro
+        # de la sesión anterior) y no repite los departamentos del filtro (antes se agregaban en cada ingreso).
+        page.get_by_label("Usuario").fill("revisor01")
+        page.get_by_label("Contraseña").fill("clave-revisor-1")
+        page.get_by_role("button", name="Ingresar").click()
+        expect(page.get_by_role("tab", name=re.compile("Por revisar"))).to_have_attribute("aria-selected", "true")
+        expect(page.locator("#list")).to_be_visible()
+        expect(page.locator("#audit")).to_be_hidden()
+        assert page.locator("#dep-filter option").count() == n_deps
+        page.get_by_role("button", name="Salir").click()
         assert not errors, errors
         # La lista pública que lee el pipeline ya trae la corrección, sin nombres.
         pub = page.request.get(console + "api/geo/overrides").json()
         assert pub["overrides"][0]["places"] == ["150122"] and "revisor01" not in json.dumps(pub)
+    finally:
+        ctx.close()
+
+
+@pytest.mark.browser
+def test_a_correction_whose_reply_is_lost_is_retried_once_and_saved_once(console, browser):
+    """La red se corta después de que la API guardó la corrección y antes de que llegue la respuesta. La consola no
+    sabe si llegó: repite el envío una vez y la API lo reconoce como el mismo (200, sin otra revisión), en vez de
+    mostrar el error o un 409 falso «otra persona corrigió esta nota»."""
+    pw = pytest.importorskip("playwright.sync_api")
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE")
+    try:
+        page = ctx.new_page()
+        sent = []
+
+        def lose_first_reply(route):
+            sent.append(route.request.post_data_json)
+            if len(sent) == 1:
+                route.fetch()  # llega al servidor y se guarda…
+                route.abort("connectionreset")  # …pero la respuesta no vuelve
+            else:
+                route.continue_()
+
+        page.route("**/api/geo/corrections", lambda route: lose_first_reply(route) if route.request.method == "POST"
+                   else route.continue_())
+        page.goto(console + "admin/")
+        page.get_by_label("Usuario").fill("revisor01")
+        page.get_by_label("Contraseña").fill("clave-revisor-1")
+        page.get_by_role("button", name="Ingresar").click()
+        page.get_by_role("tab", name=re.compile("^Todas")).click()
+        # Una nota que la otra prueba no corrigió.
+        card = page.locator(".gc-item", has_not=page.locator(".gc-fix")).first
+        title = card.locator("h2").inner_text()
+        card.get_by_role("button", name="No es del Perú").click()
+        card = page.locator(".gc-item", has_text=title).first
+        pw.expect(card.locator(".gc-fix")).to_be_visible()
+        pw.expect(page.locator("#status")).to_contain_text("Guardado")
+        assert len(sent) == 2 and sent[0] == sent[1], "un solo reintento, con el mismo cuerpo"
+        item = sent[0]["item"]
+        hist = page.request.get(console + f"api/geo/corrections?item={item}").json()
+        assert len(hist["corrections"]) == 1, hist
     finally:
         ctx.close()

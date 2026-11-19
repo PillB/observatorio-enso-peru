@@ -1325,9 +1325,12 @@ def bol(site):
     return _boletin_doc(site[1])
 
 
-def _bol_page(browser, site, doc, *, variant="mapa", **ctx_kw):
+def _bol_page(browser, site, doc, *, variant="mapa", wide=False, **ctx_kw):
     base, _ = site
     ctx = browser.new_context(**{"viewport": {"width": 1280, "height": 900}, "locale": "es-PE", **ctx_kw})
+    if wide:  # las letras del runner de la corrida diaria (DejaVu Sans) son más anchas que las de aquí
+        ctx.add_init_script(f"addEventListener('DOMContentLoaded', () => document.head.append(Object.assign("
+                            f"document.createElement('style'), {{textContent: {json.dumps(WIDE_TEXT)}}})));")
     ctx.add_init_script("if (!localStorage.getItem('enso-vista-boletin')) localStorage.setItem('enso-vista-boletin', JSON.stringify({v: '%s', chosen: true, at: '2000-01-01'}));" % variant)
     pg = ctx.new_page()
     pg.errors = []
@@ -1421,6 +1424,170 @@ def test_boletin_fits_phones_in_both_themes(site, browser, bol, w, scheme):
     pg.locator(".bol-tiles [data-dep], .bol-svg [data-dep]").first.click()
     expect(pg.locator("#bol-dep .bol-depcard")).to_be_visible()
     assert not pg.errors, pg.errors
+    ctx.close()
+
+
+@pytest.mark.parametrize("variant", ["mapa", "mosaico", "ficha"])
+def test_boletin_each_form_prints_on_one_a4_page(site, browser, bol, variant):
+    ctx, pg = _bol_page(browser, site, bol, variant=variant, wide=True)
+    expect(pg.locator("#bol-sheet")).to_have_attribute("data-form", variant)
+    pdf = pg.pdf(format="A4", print_background=True)
+    assert len(re.findall(rb"/Type\s*/Page[^s]", pdf)) == 1, f"{variant}: más de una hoja"
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_impact_sheet_reads_in_thirty_seconds(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol, variant="ficha")
+    expect(pg.locator(".fc-ladder li")).to_have_count(3)
+    expect(pg.locator(".fc-ladder [aria-current]")).to_have_count(1)
+    expect(pg.locator("#fc-key-h")).to_have_text("El boletín en 30 segundos")
+    if bol.get("summary"):
+        expect(pg.locator(".fc-lead")).to_have_text(bol["summary"])
+    expect(pg.locator(".fc-card")).to_have_count(10)
+    # La tarjeta abre la ficha del departamento.
+    pg.locator(".fc-card [data-pick='20']").click()
+    expect(pg.locator("#bol-dep .bol-depcard")).to_contain_text("Piura")
+    pg.keyboard.press("Escape")
+    expect(pg.locator("#bol-dep .bol-depcard")).to_have_count(0)
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_counters_filter_the_table_and_deep_links_open_a_department(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol)
+    n = bol["counts"]["naranja"]
+    btn = pg.locator(".bol-count.bc-r2")
+    btn.click()
+    expect(pg.locator(".bol-count.bc-r2")).to_have_attribute("aria-pressed", "true")
+    expect(pg.locator(".bol-row")).to_have_count(min(n, 10) if n else 0)
+    for r in pg.locator(".bol-row").all():
+        assert r.locator(".lvl").first.inner_text().strip().lower().startswith("naranja")
+    pg.locator(".bol-count.bc-r2").click()
+    expect(pg.locator(".bol-row")).to_have_count(10)
+    # Un enlace con ?dep= abre la ficha de ese departamento.
+    pg.goto(f"{site[0]}#/boletin?dep=20")
+    expect(pg.locator("#bol-dep .bol-depcard")).to_contain_text("Piura", timeout=15000)
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_mosaic_moves_with_the_arrow_keys(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol, variant="mosaico")
+    tiles = pg.locator(".bol-tiles [data-dep]")
+    assert pg.locator(".bol-tiles [data-dep][tabindex='0']").count() == 1
+    pg.locator(".bol-tiles [data-dep][tabindex='0']").focus()
+    first = pg.evaluate("document.activeElement.dataset.dep")
+    pg.keyboard.press("ArrowDown")
+    second = pg.evaluate("document.activeElement.dataset.dep")
+    assert second and second != first
+    pg.keyboard.press("Enter")
+    expect(pg.locator("#bol-dep .bol-depcard")).to_be_visible()
+    assert tiles.count() >= 25
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_subscription_form_waits_for_a_backend(site, browser, bol):
+    ctx, pg = _bol_page(browser, site, bol)
+    form = pg.locator("#bol-sub")
+    expect(form).to_be_visible()
+    expect(form.locator("input[name='email']")).to_be_disabled()
+    expect(form).to_contain_text("canal Atom")
+    assert pg.request.get(site[0] + "data/boletin.xml").status in (200, 404)
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+def test_boletin_subscription_form_talks_to_the_api(site, browser, bol):
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900}, locale="es-PE")
+    ctx.add_init_script("window.ENSO_BACKEND = true;")
+    pg = ctx.new_page()
+    pg.errors = []
+    pg.on("pageerror", lambda e: pg.errors.append(str(e)))
+    sent = []
+    pg.route("**/data/boletin.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(bol, ensure_ascii=False)))
+    pg.route("**/api/ab/**", lambda r: r.fulfill(status=204, body=""))
+    pg.route("**/api/uso/**", lambda r: r.fulfill(status=204, body=""))
+    pg.route("**/api/boletin/estado", lambda r: r.fulfill(status=200, content_type="application/json", body='{"ok":true,"enabled":true}'))
+
+    def sub(r):
+        sent.append(json.loads(r.request.post_data))
+        r.fulfill(status=202, content_type="application/json", body='{"ok":true}')
+
+    pg.route("**/api/boletin/suscribir", sub)
+    go(pg, base, "boletin")
+    form = pg.locator("#bol-sub")
+    expect(form.locator("input[name='email']")).to_be_enabled(timeout=15000)
+    # Sin aceptar, no sale nada; un correo mal escrito tampoco.
+    form.locator("input[name='email']").fill("ana@example")
+    form.locator("button[type='submit']").click()
+    expect(pg.locator("#bol-sub-st")).to_contain_text("Revise el correo")
+    form.locator("input[name='email']").fill("ana@example.pe")
+    form.locator("button[type='submit']").click()
+    expect(pg.locator("#bol-sub-st")).to_contain_text("aceptación")
+    assert not sent
+    form.locator("input[value='importantes']").check()
+    form.locator("summary").click()
+    form.locator("input[name='deps'][value='20']").check()
+    form.locator("input[name='acepto']").check()
+    pg.wait_for_timeout(1600)
+    form.locator("button[type='submit']").click()
+    expect(pg.locator("#bol-sub-st")).to_contain_text("le llegó un correo para confirmar")
+    assert sent[0]["email"] == "ana@example.pe" and sent[0]["frecuencia"] == "importantes" and sent[0]["deps"] == ["20"]
+    assert sent[0]["acepto"] is True and sent[0]["sitio_web"] == "" and sent[0]["ms"] >= 1500
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
+@pytest.mark.parametrize("kind,done", [("confirmar", "Suscripción confirmada"), ("baja", "No recibirá más boletines")])
+def test_boletin_email_links_need_a_click(site, browser, bol, kind, done):
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": 390, "height": 800}, locale="es-PE")
+    pg = ctx.new_page()
+    calls = []
+    pg.route("**/data/boletin.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(bol, ensure_ascii=False)))
+
+    def api(r):
+        calls.append((r.request.method, json.loads(r.request.post_data or "{}")))
+        r.fulfill(status=200, content_type="application/json", body='{"ok":true}')
+
+    pg.route(f"**/api/boletin/{kind}", api)
+    tok = "a" * 32 + "B" * 43
+    pg.goto(f"{base}#/boletin?{kind}={tok}")
+    expect(pg.locator("#bol-token")).to_be_visible(timeout=15000)
+    pg.wait_for_timeout(300)
+    assert not calls, "abrir el enlace no debe confirmar ni dar de baja: lo abren los filtros de correo"
+    pg.locator("#bol-token-go").click()
+    expect(pg.locator("#bol-token-st")).to_contain_text(done)
+    assert calls == [("POST", {"t": tok})]
+    ctx.close()
+
+
+def _bol_email(bol):
+    from enso import boletin as B
+
+    return B.email_html(bol, B.SITE)
+
+
+@pytest.mark.parametrize("w", [320, 375, 414, 600, 1024])
+@pytest.mark.parametrize("scheme", ["light", "dark"])
+@pytest.mark.parametrize("styles", [True, False])
+def test_boletin_email_fits_every_width_theme_and_client(browser, bol, w, scheme, styles):
+    mail = _bol_email(bol)
+    if not styles:  # algunos clientes (Gmail en apps de terceros, Outlook.com antiguo) quitan el <style>
+        mail = re.sub(r"<style[^>]*>.*?</style>", "", mail, flags=re.S)
+    ctx = browser.new_context(viewport={"width": w, "height": 900}, color_scheme=scheme)
+    pg = ctx.new_page()
+    pg.set_content(mail)
+    over = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+    assert over <= 0, f"{over}px de scroll horizontal a {w}px ({scheme}, estilos={styles})"
+    # Texto legible: nada visible por debajo de 11 px (las siglas del mosaico), y el contenido no pasa de 600 px.
+    small = pg.evaluate("""() => [...document.querySelectorAll('body *')].filter(e => e.getClientRects().length && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(e).fontSize) < 11).map(e => e.textContent.trim().slice(0, 30)).slice(0, 5)""")
+    assert not small, small
+    width = pg.evaluate("Math.max(...[...document.querySelectorAll('table.card, table.card *')].map(e => e.getBoundingClientRect().width), 0)")
+    assert width <= 601
     ctx.close()
 
 

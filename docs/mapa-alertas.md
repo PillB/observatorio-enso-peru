@@ -173,13 +173,14 @@ otra en «Versión del mapa» o en el selector de vistas la deja como predetermi
 
 ### Analítica anónima y decisión
 
-Hay tres experimentos, cada uno con su clave en el navegador (`public/assets/js/ab.js`):
+Hay cuatro experimentos, cada uno con su clave en el navegador (`public/assets/js/ab.js`):
 
 | Experimento | Qué se sortea | Versiones |
 |---|---|---|
 | `mapa` | La versión del mapa de alertas en el resumen | A, B, C, D |
 | `noticias` | La vista con que abre el mapa de Noticias | resumen, cuencas, distritos |
 | `memoria` | La vista con que abre el mapa de la memoria de desastres | resumen, cuencas, puntos, riesgo |
+| `boletin` | La forma del boletín ([boletin.md](boletin.md#tres-formas-experimento-abc)) | mapa, mosaico, ficha |
 
 `functions/_lib/ab.js` (ruta `/api/ab/*`) suma contadores por **día, experimento, versión y evento** en la tabla
 `ab_exp` de la base D1 `GEO_DB` (la de la consola; la tabla `ab_daily` de antes, solo del mapa A–D, se sigue leyendo).
@@ -196,7 +197,7 @@ cambia lo que ve la gente. `GET /api/ab/defaults` devuelve la ganadora de cada e
 hora en el borde; el navegador la pide una vez al día y nunca espera más de 1,2 s antes de dibujar el mapa. Las
 visitas del mapa A–D anteriores a este cambio no traen `use`: cuentan en los totales, no en la decisión.
 
-Resultados: `https://<sitio>/#/variantes` (no está en el menú: los tres experimentos con su tasa de uso, su intervalo
+Resultados: `https://<sitio>/#/variantes` (no está en el menú: los experimentos con su tasa de uso, su intervalo
 y la decisión) o `GET /api/ab/stats?days=30`.
 
 ## Mantenimiento

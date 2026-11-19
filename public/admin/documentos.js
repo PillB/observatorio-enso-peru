@@ -25,9 +25,12 @@ function h(tag, attrs = {}, ...kids) {
 const say = (msg) => { $('status').textContent = msg || ''; };
 
 async function call(base, path, { method = 'GET', body, headers = {} } = {}) {
-  const r = await fetch(new URL(path, base), {
-    method, credentials: 'same-origin', cache: 'no-store', headers, body,
-  });
+  let r;
+  try {
+    r = await fetch(new URL(path, base), { method, credentials: 'same-origin', cache: 'no-store', headers, body });
+  } catch (e) {
+    throw Object.assign(e instanceof Error ? e : new Error(String(e)), { network: true });
+  }
   let data = {};
   try {
     data = await r.json();
@@ -101,7 +104,7 @@ async function upload(doc, form) {
       method: 'POST', body, headers: { 'Content-Type': 'application/json', 'X-Doc-Sha256': sha },
     });
     form.replaceWith(h('p', { class: 'dc-ok', role: 'status' },
-      `Subido (${mb(res.bytes)}). ${res.dispatched ? 'La actualización del sitio ya empezó; en unos 15 minutos se verá el resultado aquí.' : 'No se pudo pedir la actualización: se leerá en la próxima corrida diaria (23:37, hora de Lima).'}`));
+      `${res.replayed ? 'Este archivo ya estaba subido' : 'Subido'} (${mb(res.bytes)}). ${res.dispatched ? 'La actualización del sitio ya empezó; en unos 15 minutos se verá el resultado aquí.' : 'No se pudo pedir la actualización todavía: se volverá a pedir cuando se abra esta consola y, si no, se leerá en la corrida diaria (23:37, hora de Lima).'}`));
     say('');
     try { // la lista de subidas, sin redibujar los pendientes (se perdería el aviso de arriba)
       state.data = await call(DOCS, 'status');
@@ -109,7 +112,10 @@ async function upload(doc, form) {
     } catch { /* se verá al recargar */ }
   } catch (e) {
     if (e.status === 401) return showLogin('La sesión venció. Ingrese de nuevo.');
-    err.textContent = e.message;
+    // Sin respuesta (se cortó la red) no se sabe si llegó; volver a subir es seguro: la API reconoce el mismo archivo.
+    err.textContent = e.network
+      ? 'Se cortó la conexión antes de la respuesta. Puede volver a subirlo: si ya había llegado, no se sube dos veces.'
+      : e.message;
     say('');
   } finally {
     btn.disabled = false;

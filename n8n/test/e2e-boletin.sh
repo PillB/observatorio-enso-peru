@@ -2,7 +2,7 @@
 # Prueba de punta a punta del flujo del boletín con n8n de verdad: un sitio falso sirve data/boletin.json (armado
 # con python/enso/boletin.py, con el corte de ahora), y el flujo se corre dos veces:
 #   1. «send» = false (como se importa): arma el correo del primer boletín y no lo manda.
-#   2. «send» = true con una credencial de Gmail falsa: llega al nodo de Gmail, que falla al autenticarse, y
+#   2. «send» = true con una credencial de Gmail falsa: llega al envío por la API de Gmail, que falla al autenticarse, y
 #      «Guardar estado» no corre (un envío fallido no se da por hecho).
 # Nunca se manda un correo de verdad.
 #
@@ -48,7 +48,8 @@ flow() {  # $1: send (true/false), $2: archivo de salida
   ' "$ROOT/n8n/dist/enso-n8n-boletin.json" > "$2"
 }
 cat > "$WORK/credenciales.json" <<'JSON'
-[{"id":"EnsoGmailCred001","name":"Gmail boletín ENSO","type":"gmailOAuth2","data":{"clientId":"x","clientSecret":"y","oauthTokenData":{"access_token":"falso","refresh_token":"falso","token_type":"Bearer","expiry_date":1}}}]
+[{"id":"EnsoGmailCred001","name":"Gmail boletín ENSO","type":"gmailOAuth2","data":{"clientId":"x","clientSecret":"y","oauthTokenData":{"access_token":"falso","refresh_token":"falso","token_type":"Bearer","expiry_date":1}}},
+ {"id":"EnsoListaCred001","name":"Lista del boletín ENSO","type":"httpHeaderAuth","data":{"name":"Authorization","value":"Bearer falso"}}]
 JSON
 
 if [ "$IMG" = local ]; then

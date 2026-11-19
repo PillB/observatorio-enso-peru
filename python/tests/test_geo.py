@@ -189,9 +189,39 @@ class _Down:
 
 def test_overrides_fall_back_to_previous_publication_when_console_is_down():
     log = _Log()
-    ovs, src = GO.fetch_overrides(_Down(), _Prev(), log, url="https://enso-peru.pages.dev/api/geo/overrides")
+    slept = []
+    ovs, src = GO.fetch_overrides(_Down(), _Prev(), log, url="https://enso-peru.pages.dev/api/geo/overrides",
+                                  sleep=slept.append)
     assert src == "publicacion-anterior" and ovs[0]["rev"] == 3
     assert log.events and log.events[0][3] == "overrides-down"
+    assert len(slept) == GO.OVERRIDES_TRIES - 1, "se reintenta antes de rendirse, sin esperar tras el último"
+
+
+def test_overrides_retry_a_passing_failure_and_respect_retry_after():
+    """Un 503 de Cloudflare o un corte de red en la única lectura dejaba la publicación del día con las correcciones
+    de ayer. Ahora se reintenta (la lectura es idempotente); un 4xx es definitivo."""
+    import httpx
+
+    url = "https://enso-peru.pages.dev/api/geo/overrides"
+    body = {"overrides": [{"id": "b" * 16, "action": "set", "places": ["15"], "rev": 2}]}
+    replies = iter([httpx.ConnectError("corte"), httpx.Response(503, headers={"retry-after": "7"}), httpx.Response(200, json=body)])
+
+    def net(req):
+        r = next(replies)
+        if isinstance(r, Exception):
+            raise r
+        return r
+
+    log, slept = _Log(), []
+    with httpx.Client(transport=httpx.MockTransport(net)) as c:
+        ovs, src = GO.fetch_overrides(c, _Prev(), log, url=url, sleep=slept.append)
+    assert src == "consola" and ovs[0]["id"] == "b" * 16
+    assert not log.events
+    assert 1.5 <= slept[0] <= 3.0 and slept[1] == 7.0  # espera exponencial con azar, luego la que pidió el servidor
+    asked = []
+    with httpx.Client(transport=httpx.MockTransport(lambda req: asked.append(1) or httpx.Response(404))) as c:
+        ovs, src = GO.fetch_overrides(c, _Prev(), log, url=url, sleep=slept.append)
+    assert src == "publicacion-anterior" and len(asked) == 1, "un 404 no se reintenta"
 
 
 def test_console_items_window():

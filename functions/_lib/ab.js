@@ -27,7 +27,7 @@ export const EXPERIMENTS = {
   mapa: ['A', 'B', 'C', 'D'],
   memoria: ['resumen', 'cuencas', 'puntos', 'riesgo'],
   noticias: ['resumen', 'cuencas', 'distritos'],
-  boletin: ['mapa', 'mosaico'],
+  boletin: ['mapa', 'mosaico', 'ficha'],
   // La versión de todo el sitio (public/assets/js/sitio.js); «use»: abrió una segunda pestaña.
   sitio: ['A', 'B'],
 };
