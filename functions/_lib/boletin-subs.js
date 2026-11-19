@@ -197,9 +197,10 @@ async function sendMail(env, msg) {
       r = await fetch(env.BOLETIN_MAIL_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET, 'User-Agent': UA },
-        // Asunto y cuerpo en base64: el cortafuegos delante de n8n rechaza (403 de nginx) los pedidos cuyo cuerpo
-        // lleva HTML (<!doctype>, <meta>, <style>…), aunque venga como texto JSON. n8n/nodes/boletin-confirmar.js lo decodifica.
-        body: JSON.stringify({ to: msg.to, enc: 'base64', subject_b64: b64(msg.subject), html_b64: b64(msg.html), text_b64: b64(msg.text || '') }),
+        // Asunto y HTML en base64: el cortafuegos delante de n8n rechaza (403 de nginx) los pedidos cuyo cuerpo
+        // lleva HTML (<!doctype>, <meta>, <style>…), aunque venga como texto JSON, y también los de más de 8 KB
+        // (por eso no va el texto plano, que n8n no usa). n8n/nodes/boletin-confirmar.js lo decodifica.
+        body: JSON.stringify({ to: msg.to, enc: 'base64', subject_b64: b64(msg.subject), html_b64: b64(msg.html) }),
         signal: AbortSignal.timeout(MAIL_TIMEOUT_MS),
       });
     }

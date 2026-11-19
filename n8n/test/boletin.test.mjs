@@ -352,4 +352,9 @@ test('el nodo de confirmación arma un correo para una sola dirección válida',
   const enc = await runNode('boletin-confirmar', { cfg, input: { body: { to: 'ana@x.pe', enc: 'base64', subject_b64: b64('Confirme · Perú'), html_b64: b64('<!doctype html><p>añadir</p>'), text_b64: b64('hola') } } });
   assert.deepEqual(enc.out[0].json, { to: 'ana@x.pe', bcc: '', subject: 'Confirme · Perú', html: '<!doctype html><p>añadir</p>', senderName: 'Observatorio' });
   await assert.rejects(runNode('boletin-confirmar', { cfg, input: { body: { to: 'ana@x.pe', subject_b64: '<b>', html_b64: b64('h') } } }), /inválido/);
+  // Sin Buffer (por si una versión de n8n no lo trae), con atob y tildes.
+  const noBuffer = new AsyncFunction('$', '$input', `const Buffer = undefined;\n${nodeCode('boletin-confirmar', { VERSION: 'test' })}`);
+  const nb = await noBuffer(() => ({ first: () => ({ json: cfg }) }), { first: () => ({ json: { body: { to: 'ana@x.pe', subject_b64: b64('Perú ñ'), html_b64: b64('<p>á</p>') } } }) });
+  assert.equal(nb[0].json.subject, 'Perú ñ');
+  assert.equal(nb[0].json.html, '<p>á</p>');
 });
