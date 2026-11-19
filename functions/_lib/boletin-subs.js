@@ -130,7 +130,22 @@ async function readJson(request) {
 
 const site = (env, url) => String(env.SITE_URL || `${url.origin}/`).replace(/\/?$/, '/');
 const mailer = (env) => (env.RESEND_API_KEY && env.BOLETIN_FROM ? 'resend' : env.BOLETIN_MAIL_WEBHOOK && env.BOLETIN_MAIL_WEBHOOK_SECRET ? 'webhook' : null);
-export const enabled = (env) => Boolean(env.GEO_DB && env.BOLETIN_SECRET && String(env.BOLETIN_SECRET).length >= 32 && mailer(env));
+export const enabled = (env) => missing(env).length === 0;
+/** Lo que falta para que la suscripción funcione: solo nombres, nunca valores. Lo ven quien tiene BOLETIN_LIST_TOKEN
+ * (diagnóstico, lista), no el público. */
+export function missing(env) {
+  const out = [];
+  if (!env.GEO_DB) out.push('GEO_DB (vínculo con la base D1)');
+  if (!env.BOLETIN_SECRET) out.push('BOLETIN_SECRET');
+  else if (String(env.BOLETIN_SECRET).length < 32) out.push('BOLETIN_SECRET (mínimo 32 caracteres)');
+  if (!mailer(env)) {
+    if (env.BOLETIN_MAIL_WEBHOOK && !env.BOLETIN_MAIL_WEBHOOK_SECRET) out.push('BOLETIN_MAIL_WEBHOOK_SECRET');
+    else if (!env.BOLETIN_MAIL_WEBHOOK && env.BOLETIN_MAIL_WEBHOOK_SECRET) out.push('BOLETIN_MAIL_WEBHOOK');
+    else out.push('una vía de correo: BOLETIN_MAIL_WEBHOOK + BOLETIN_MAIL_WEBHOOK_SECRET (n8n) o RESEND_API_KEY + BOLETIN_FROM');
+  }
+  return out;
+}
+const offMsg = (env) => `La suscripción está apagada en este despliegue: falta ${missing(env).join(', ')}. Se configura en Cloudflare (Workers y Pages → enso-peru → Configuración → Variables y secretos, entorno «Producción») y vale desde el despliegue siguiente.`;
 
 // ------------------------------------------------------------------------------------------------- correo
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -316,6 +331,7 @@ async function list(request, env, url, db) {
   const auth = request.headers.get('Authorization') || '';
   const want = env.BOLETIN_LIST_TOKEN ? `Bearer ${env.BOLETIN_LIST_TOKEN}` : '';
   if (!want || String(env.BOLETIN_LIST_TOKEN).length < 24 || !same(auth, want)) return fail(401, 'No autorizado.');
+  if (!enabled(env)) return fail(503, offMsg(env));
   const { results } = await db.prepare("SELECT id, email, freq, deps FROM boletin_subs WHERE status = 'activa' ORDER BY confirmed_at").all();
   const base = site(env, url);
   const api = `${url.origin}/api/boletin/baja`;
@@ -371,9 +387,11 @@ async function diagnose(request, env, url, db) {
     ok: true,
     mailer: mailer(env) || 'ninguna',
     base: Boolean(env.GEO_DB),
+    faltan: missing(env),
     secrets: {
       BOLETIN_SECRET: { ...(await shape(env.BOLETIN_SECRET)), min: 32 },
       BOLETIN_LIST_TOKEN: { ...(await shape(env.BOLETIN_LIST_TOKEN)), min: 24, n8n_header_value_sha256_12: await hex12(`Bearer ${want}`) },
+      BOLETIN_MAIL_WEBHOOK: { set: Boolean(env.BOLETIN_MAIL_WEBHOOK), length: String(env.BOLETIN_MAIL_WEBHOOK || '').length, sha256_12: '', issues: [] },
       BOLETIN_MAIL_WEBHOOK_SECRET: await shape(env.BOLETIN_MAIL_WEBHOOK_SECRET),
       RESEND_API_KEY: await shape(env.RESEND_API_KEY),
     },
@@ -402,6 +420,7 @@ async function diagnose(request, env, url, db) {
   const [to] = typeof b.enviar_a === 'string' ? [b.enviar_a.trim().toLowerCase()] : [];
   if (to) {
     if (!EMAIL_RE.test(to)) return fail(422, 'La dirección de prueba no es válida.');
+    if (!enabled(env)) return fail(503, offMsg(env));
     const msg = shortMail({ title: 'Prueba del boletín', lead: 'Este es un correo de prueba del diagnóstico de la suscripción. Si le llegó, la vía de correo funciona.', button: 'Ir al boletín', href: `${site(env, url)}#/boletin`, note: 'Lo pidió quien administra el sitio desde el diagnóstico.' });
     // Un correo de verdad: cuenta en el mismo tope diario que los de confirmación.
     if (!(await bump(db, today(), 'enviados', Number(env.BOLETIN_DAILY_CAP) || DAILY_CAP))) return fail(503, 'Hoy ya se mandaron muchos correos. Inténtelo mañana.');
@@ -419,12 +438,13 @@ export async function handle(request, env) {
   if (!routes[path]) return fail(404, 'No existe.');
   if (!routes[path].includes(method)) return fail(405, 'Método no permitido.', { Allow: routes[path].join(', ') });
   if (path === 'estado') return json({ ok: true, enabled: enabled(env) }, 200, { 'Cache-Control': 'public, max-age=300' });
-  if (!enabled(env)) return fail(503, 'La suscripción por correo todavía no está habilitada.');
+  // La lista y el diagnóstico piden BOLETIN_LIST_TOKEN y responden aunque falte algo, para decir qué falta.
+  if (!enabled(env) && path !== 'lista' && path !== 'diagnostico') return fail(503, 'La suscripción por correo todavía no está habilitada.');
   const len = Number(request.headers.get('Content-Length') || 0);
   if (len > MAX_BODY) return fail(413, 'Solicitud demasiado grande.');
   const db = env.GEO_DB;
   try {
-    await ensureSchema(db);
+    if (db) await ensureSchema(db);
     if (path === 'suscribir') return await subscribe(request, env, url, db);
     if (path === 'confirmar') return await confirm(request, env, url, db);
     if (path === 'baja') return await unsubscribe(request, env, url, db);

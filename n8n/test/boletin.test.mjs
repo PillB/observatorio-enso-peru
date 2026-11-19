@@ -163,6 +163,17 @@ function runNode(name, { cfg, input, prior = {}, decided, list }) {
   return fn($, { first: () => ({ json: input }) }, () => st).then((out) => ({ out, st }));
 }
 
+test('«Decidir envío» explica por qué no pudo leer la lista de suscripciones', async () => {
+  const body = JSON.stringify(doc(2, [{ edition: 2, changes: [imm('Piura sube a rojo.')] }], { cutoff: new Date(Date.now() - H).toISOString() }));
+  const cfg = { ...CFG, site: 'https://ejemplo/', use_list: true };
+  const input = { statusCode: 200, data: body };
+  await assert.rejects(runNode('boletin', { cfg, input, list: { statusCode: 401, data: '{"ok":false,"error":"No autorizado."}' } }), /HTTP 401: No autorizado\..*Lista del boletín ENSO.*Bearer/);
+  await assert.rejects(runNode('boletin', { cfg, input, list: { statusCode: 503, data: '{"ok":false,"error":"La suscripción está apagada en este despliegue: falta BOLETIN_MAIL_WEBHOOK_SECRET."}' } }), /falta BOLETIN_MAIL_WEBHOOK_SECRET.*volver a desplegar/);
+  await assert.rejects(runNode('boletin', { cfg, input, list: { statusCode: 403, data: '<html>403 Forbidden</html>' } }), /HTTP 403: <html>.*corta el pedido/);
+  const ok = await runNode('boletin', { cfg, input, list: { statusCode: 200, data: '{"subs":[]}' } });
+  assert.ok(ok.out[0].json);
+});
+
 test('los nodos «Decidir envío» y «Guardar estado» usan los datos estáticos del flujo', async () => {
   const body = JSON.stringify(doc(2, [{ edition: 2, changes: [imm('Piura sube a rojo.')] }], { cutoff: new Date(Date.now() - H).toISOString() }));
   const cfg = { ...CFG, site: 'https://ejemplo/' };

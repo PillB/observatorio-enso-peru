@@ -135,6 +135,32 @@ describe('suscripción al boletín', () => {
     assert.deepEqual(rows(), []);
   });
 
+  it('si falta un secreto, la lista y el diagnóstico dicen cuál (solo a quien tiene la clave)', async () => {
+    delete env.BOLETIN_MAIL_WEBHOOK_SECRET;
+    assert.deepEqual(await (await req('estado', { method: 'GET' })).json(), { ok: true, enabled: false });
+    assert.equal((await subscribe('ana@example.pe')).status, 503);
+    // Sin la clave: 401 y nada sobre la configuración.
+    const anon = await req('lista', { method: 'GET', origin: null });
+    assert.equal(anon.status, 401);
+    assert.doesNotMatch(JSON.stringify(await anon.json()), /BOLETIN/);
+    const l = await req('lista', { method: 'GET', origin: null, headers: { Authorization: `Bearer ${LIST}` } });
+    assert.equal(l.status, 503);
+    assert.match((await l.json()).error, /falta BOLETIN_MAIL_WEBHOOK_SECRET\..*Producción/);
+    const d = await (await req('diagnostico', { body: { clave: LIST } })).json();
+    assert.deepEqual(d.faltan, ['BOLETIN_MAIL_WEBHOOK_SECRET']);
+    assert.equal(d.secrets.BOLETIN_MAIL_WEBHOOK_SECRET.set, false);
+    assert.equal(d.secrets.BOLETIN_MAIL_WEBHOOK.set, true);
+    assert.equal((await req('diagnostico', { body: { clave: LIST, enviar_a: 'yo@example.pe' } })).status, 503);
+    assert.equal((await req('diagnostico', { body: { clave: 'otra-clave-cualquiera-bastante-larga' } })).status, 401);
+    // Sin la base vinculada, el diagnóstico también responde.
+    delete env.GEO_DB;
+    resetSchemaCache();
+    const d2 = await req('diagnostico', { body: { clave: LIST } });
+    assert.equal(d2.status, 200);
+    assert.deepEqual((await d2.json()).faltan, ['GEO_DB (vínculo con la base D1)', 'BOLETIN_MAIL_WEBHOOK_SECRET']);
+    assert.equal(sent.length, 0);
+  });
+
   it('el pedido a n8n no lleva HTML en claro y cabe en 8 KB aun con la dirección más larga', async () => {
     const long = `${'a'.repeat(64)}@${'b'.repeat(63)}.${'c'.repeat(63)}.${'d'.repeat(58)}.pe`;
     assert.equal(long.length, 254);
