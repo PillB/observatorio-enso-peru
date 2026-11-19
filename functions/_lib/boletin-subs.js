@@ -152,13 +152,18 @@ export function shortMail({ title, lead, button, href, note }) {
 
 /** Manda un correo. Si falla, deja el motivo en el registro de la función (Cloudflare → Workers y Pages → enso-peru →
  * Registros en tiempo real), sin direcciones: la página solo dice que no se pudo. */
+/** Nombre del programa en cada pedido a n8n o Resend. Un fetch de Cloudflare no manda User-Agent, y muchos
+ * servidores (nginx con reglas contra robots delante de n8n) contestan 403 a un pedido sin él, antes de llegar a n8n. */
+const UA = 'EnsoPeru-Boletin/1 (+https://enso-peru.pages.dev/)';
+
 async function sendMail(env, msg) {
   const how = mailer(env);
   const why = async (r) => {
     const body = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
     let hint = '';
     if (how === 'webhook' && r.status === 404) hint = ' El flujo «correo de confirmación» de n8n no está publicado (activo), o la ruta no es /webhook/enso-boletin-confirmar.';
-    if (how === 'webhook' && (r.status === 401 || r.status === 403)) hint = ' BOLETIN_MAIL_WEBHOOK_SECRET no coincide con la credencial «Header Auth» del disparador (cabecera X-Enso-Secret).';
+    if (how === 'webhook' && r.status === 403 && /<html/i.test(body) && !/authorization/i.test(body)) hint = ' La página 403 es de un servidor delante de n8n (nginx, cortafuegos), no de n8n: revise sus reglas.';
+    else if (how === 'webhook' && (r.status === 401 || r.status === 403)) hint = ' BOLETIN_MAIL_WEBHOOK_SECRET no coincide con la credencial «Header Auth» del disparador (cabecera X-Enso-Secret).';
     if (how === 'webhook' && r.status >= 500) hint = ' El flujo de n8n corrió y falló: ver su ejecución en n8n (credencial de Gmail).';
     console.error(`boletin: no se pudo mandar el correo de confirmación por ${how}: HTTP ${r.status} ${body}.${hint}`);
   };
@@ -166,7 +171,7 @@ async function sendMail(env, msg) {
     if (how === 'resend') {
       const r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'User-Agent': UA },
         body: JSON.stringify({ from: env.BOLETIN_FROM, to: [msg.to], subject: msg.subject, html: msg.html, text: msg.text }),
       });
       if (!r.ok) await why(r);
@@ -176,7 +181,7 @@ async function sendMail(env, msg) {
       if (/\/webhook-test\//.test(env.BOLETIN_MAIL_WEBHOOK)) console.error('boletin: BOLETIN_MAIL_WEBHOOK usa /webhook-test/, que solo responde mientras n8n escucha una prueba: usar la URL de producción (/webhook/).');
       const r = await fetch(env.BOLETIN_MAIL_WEBHOOK, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET },
+        headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET, 'User-Agent': UA },
         body: JSON.stringify({ to: msg.to, subject: msg.subject, html: msg.html, text: msg.text }),
       });
       if (!r.ok) await why(r);
@@ -328,7 +333,7 @@ async function shape(v) {
  * flujo corrió (el pedido vacío lo hace fallar a propósito, sin mandar nada). */
 async function probe(urlStr, secret) {
   try {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = { 'Content-Type': 'application/json', 'User-Agent': UA };
     if (secret !== null) headers['X-Enso-Secret'] = secret;
     const r = await fetch(urlStr, { method: 'POST', headers, body: JSON.stringify({ diagnostico: true }) });
     return { status: r.status, body: (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300) };
@@ -364,7 +369,9 @@ async function diagnose(request, env, url) {
     w.secreto_falso = await probe(hook, 'no-es-el-secreto');
     w.con_secreto = await probe(hook, env.BOLETIN_MAIL_WEBHOOK_SECRET || '');
     const s = w.con_secreto.status;
-    w.verdict = s === 404 ? 'n8n no tiene ese webhook: el flujo «correo de confirmación» no está publicado, o la ruta no es la de su disparador.'
+    const proxy = (p) => p.status === 403 && /<html/i.test(p.body) && !/authorization/i.test(p.body);
+    w.verdict = [w.sin_secreto, w.secreto_falso, w.con_secreto].every(proxy) ? 'Un servidor delante de n8n (nginx, cortafuegos) corta el pedido con su propia página 403 antes de que llegue a n8n: revise sus reglas contra robots o por país o IP (los pedidos salen de Cloudflare).'
+      : s === 404 ? 'n8n no tiene ese webhook: el flujo «correo de confirmación» no está publicado, o la ruta no es la de su disparador.'
       : s === 401 || s === 403 ? 'n8n rechaza el secreto: el valor de la credencial «Header Auth» del disparador (nombre X-Enso-Secret) no es igual a BOLETIN_MAIL_WEBHOOK_SECRET. Compare las huellas.'
         : s === 0 ? 'No se pudo llegar a n8n: la dirección está mal o n8n no es accesible desde internet.'
           : s >= 500 && [401, 403].includes(w.secreto_falso.status) ? 'Bien: n8n acepta el secreto y corre el flujo (este pedido vacío falla a propósito, sin mandar nada). Si el correo no sale, el problema está en el nodo Gmail: pruebe con «Mandar un correo de prueba».'

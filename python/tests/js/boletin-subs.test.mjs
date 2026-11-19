@@ -13,6 +13,8 @@ let sent;
 
 globalThis.fetch = async (url, init) => {
   const body = JSON.parse(init.body);
+  // Un nginx delante de n8n que corta los pedidos sin User-Agent (como el de producción) o, con PROXY_BLOCK, todos.
+  if (!init.headers['User-Agent'] || env.PROXY_BLOCK) return new Response('<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center></body></html>', { status: 403 });
   // Un n8n de mentira para el diagnóstico: 404 si el flujo no está publicado, 403 con otro secreto y 500 con el bueno
   // (el pedido vacío hace fallar «Armar correo»).
   if (body.diagnostico) {
@@ -179,6 +181,10 @@ describe('suscripción al boletín', () => {
     r = await (await diag({ clave: LIST })).json();
     assert.match(r.webhook.verdict, /no está publicado/);
     env.HOOK_404 = false;
+    env.PROXY_BLOCK = true;
+    r = await (await diag({ clave: LIST })).json();
+    assert.match(r.webhook.verdict, /servidor delante de n8n/);
+    env.PROXY_BLOCK = false;
     // Con «enviar_a», un correo de verdad por la misma vía.
     r = await (await diag({ clave: LIST, enviar_a: 'Yo@Example.pe' })).json();
     assert.equal(r.prueba.sent, true);
