@@ -1536,6 +1536,44 @@ def test_boletin_email_links_need_a_click(site, browser, bol, kind, done):
     ctx.close()
 
 
+def test_boletin_diagnostic_panel_shows_fingerprints_and_verdict(site, browser, bol):
+    base, _ = site
+    ctx = browser.new_context(viewport={"width": 390, "height": 800}, locale="es-PE")
+    pg = ctx.new_page()
+    pg.errors = []
+    pg.on("pageerror", lambda e: pg.errors.append(str(e)))
+    calls = []
+    pg.route("**/data/boletin.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(bol, ensure_ascii=False)))
+    report = {
+        "ok": True, "mailer": "webhook", "base": True,
+        "secrets": {
+            "BOLETIN_SECRET": {"set": True, "length": 48, "sha256_12": "aaaaaaaaaaaa", "issues": [], "min": 32},
+            "BOLETIN_LIST_TOKEN": {"set": True, "length": 32, "sha256_12": "bbbbbbbbbbbb", "issues": [], "min": 24, "n8n_header_value_sha256_12": "cccccccccccc"},
+            "BOLETIN_MAIL_WEBHOOK_SECRET": {"set": True, "length": 33, "sha256_12": "dddddddddddd", "issues": ["tiene espacios o saltos de línea al principio o al final"]},
+            "RESEND_API_KEY": {"set": False},
+        },
+        "webhook": {"url": "https://n8n.example/webhook/enso-boletin-confirmar", "issues": [], "verdict": "n8n rechaza el secreto",
+                    "sin_secreto": {"status": 401, "body": ""}, "secreto_falso": {"status": 403, "body": ""}, "con_secreto": {"status": 403, "body": ""}},
+    }
+
+    def api(r):
+        calls.append(json.loads(r.request.post_data))
+        r.fulfill(status=200, content_type="application/json", body=json.dumps(report, ensure_ascii=False))
+
+    pg.route("**/api/boletin/diagnostico", api)
+    pg.goto(f"{base}#/boletin?diagnostico")
+    expect(pg.locator("#bol-diag")).to_be_visible(timeout=15000)
+    pg.locator("#bol-diag-f input[name='clave']").fill("una-clave")
+    pg.locator("#bol-diag-f button").click()
+    out = pg.locator("#bol-diag-out")
+    expect(out).to_contain_text("n8n rechaza el secreto")
+    expect(out).to_contain_text("cccccccccccc")
+    expect(out).to_contain_text("saltos de línea")
+    assert calls == [{"clave": "una-clave"}]
+    assert not pg.errors, pg.errors
+    ctx.close()
+
+
 def _bol_email(bol):
     from enso import boletin as B
 

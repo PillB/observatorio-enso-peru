@@ -243,6 +243,27 @@ una línea que empieza con `boletin:`:
 
 Cambiar un secreto en Cloudflare pide volver a desplegar (correr el flujo `observatory` a mano).
 
+### Diagnóstico (`#/boletin?diagnostico`)
+
+Abrir `https://enso-peru.pages.dev/#/boletin?diagnostico`, poner como clave el valor de `BOLETIN_LIST_TOKEN` y pulsar
+**Probar** (`POST /api/boletin/diagnostico`). Muestra, sin mostrar ningún valor:
+
+- el largo y la huella (SHA-256, 12 caracteres) de cada secreto de Cloudflare, y avisa si tiene espacios, saltos de
+  línea o comillas de más o si es más corto de lo debido;
+- la huella de `Bearer <BOLETIN_LIST_TOKEN>`, que debe ser igual a la del valor de la credencial «Lista del boletín
+  ENSO» en n8n;
+- qué contesta el webhook de n8n sin secreto, con uno falso y con el de Cloudflare, y qué quiere decir (sin publicar,
+  secreto distinto, disparador sin credencial o todo bien);
+- con una dirección en «Mandar un correo de prueba», un correo de verdad por la misma vía que la confirmación.
+
+Para sacar la huella de un valor de n8n: `printf %s 'VALOR' | shasum -a 256 | cut -c1-12`.
+
+**«Node … does not have access to the credential» en n8n.** El flujo importado trae el *id* de la credencial con que se
+armó, que en otro n8n no existe, aunque el nodo muestre el mismo nombre. En cada nodo con credencial (**Enviar por
+Gmail**, **Leer suscripciones**, **Pedido del sitio**) hay que abrir el desplegable y elegirla de nuevo (si ya parece
+elegida, elegir otra y volver a la buena), guardar y publicar. Con `N8N_GMAIL_CRED_ID`, `N8N_LIST_CRED_ID` y
+`N8N_BOL_HOOK_CRED_ID` al correr `node n8n/build.mjs`, el flujo sale con los *id* de ese n8n.
+
 ## Correo: formato y pruebas
 
 El correo es una sola columna fluida de hasta 600 px (tabla para Outlook de escritorio), sin CSS que Gmail quite
