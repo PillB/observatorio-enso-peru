@@ -235,6 +235,7 @@ una línea que empieza con `boletin:`:
 
 | Lo que dice | Qué hacer |
 | --- | --- |
+| Diagnóstico: «falta BOLETIN_MAIL_WEBHOOK_SECRET» o «no empieza con https://» | Son dos secretos distintos, los dos en el entorno **Producción**: `BOLETIN_MAIL_WEBHOOK` es la **dirección** del flujo (`https://…/webhook/enso-boletin-confirmar`) y `BOLETIN_MAIL_WEBHOOK_SECRET` es la **clave**, igual al valor de la credencial «Boletín: secreto del sitio» de n8n (sin «Bearer»). Volver a desplegar después de cambiarlos |
 | `HTTP 404` | El flujo «correo de confirmación» de n8n no está publicado (activo). Publicarlo. Revisar que `BOLETIN_MAIL_WEBHOOK` termine en `/webhook/enso-boletin-confirmar` |
 | `webhook-test` | `BOLETIN_MAIL_WEBHOOK` tiene la *Test URL*: cambiarla por la *Production URL* y volver a desplegar |
 | `HTTP 403` con una página HTML («403 Forbidden», de nginx) | Un servidor delante de n8n corta el pedido antes de que llegue a n8n (reglas contra robots, por país o por IP). Por eso cada pedido lleva `User-Agent: EnsoPeru-Boletin/1`: un fetch de Cloudflare no lo manda y ese nginx corta los pedidos sin él. Ese mismo cortafuegos corta los cuerpos con HTML (`<!doctype>`, `<meta>`, `<style>`), y los de más de 8 KB, así que el sitio manda solo asunto y HTML, en base64 (`subject_b64`, `html_b64`, con `enc: "base64"`; unos 3,6 KB) y «Armar correo» los decodifica. Si el diagnóstico pasa pero el correo de prueba da este 403, el flujo de n8n importado es anterior a ese cambio: volver a importar `enso-n8n-boletin-confirmar.json` |
