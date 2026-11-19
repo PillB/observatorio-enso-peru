@@ -152,40 +152,54 @@ export function shortMail({ title, lead, button, href, note }) {
 
 /** Manda un correo. Si falla, deja el motivo en el registro de la función (Cloudflare → Workers y Pages → enso-peru →
  * Registros en tiempo real), sin direcciones: la página solo dice que no se pudo. */
+/** Nombre del programa en cada pedido a n8n o Resend. Un fetch de Cloudflare no manda User-Agent, y muchos
+ * servidores (nginx con reglas contra robots delante de n8n) contestan 403 a un pedido sin él, antes de llegar a n8n. */
+const UA = 'EnsoPeru-Boletin/1 (+https://enso-peru.pages.dev/)';
+
+/** Tiempo máximo de cada pedido a n8n o Resend: uno colgado no deja la función esperando. */
+const MAIL_TIMEOUT_MS = 10000;
+
+/** Por qué no salió un correo, en una línea sin la dirección del destinatario. */
+async function mailFailure(how, r) {
+  const body = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
+  let hint = '';
+  if (how === 'webhook' && r.status === 404) hint = ' El flujo «correo de confirmación» de n8n no está publicado (activo), o la ruta no es /webhook/enso-boletin-confirmar.';
+  else if (how === 'webhook' && r.status === 403 && /<html/i.test(body) && !/authorization/i.test(body)) hint = ' La página 403 es de un servidor delante de n8n (nginx, cortafuegos), no de n8n: revise sus reglas.';
+  else if (how === 'webhook' && (r.status === 401 || r.status === 403)) hint = ' BOLETIN_MAIL_WEBHOOK_SECRET no coincide con la credencial «Header Auth» del disparador (cabecera X-Enso-Secret).';
+  else if (how === 'webhook' && r.status >= 500) hint = ' El flujo de n8n corrió y falló: ver su ejecución en n8n (credencial de Gmail).';
+  return `boletin: no se pudo mandar el correo de confirmación por ${how}: HTTP ${r.status} ${body}.${hint}`;
+}
+
+/** Manda un correo. Devuelve {ok, detail}; si falla, deja ``detail`` en el registro de la función (Cloudflare →
+ * Workers y Pages → enso-peru → Registros en tiempo real), sin direcciones: la página solo dice que no se pudo. */
 async function sendMail(env, msg) {
   const how = mailer(env);
-  const why = async (r) => {
-    const body = (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 200);
-    let hint = '';
-    if (how === 'webhook' && r.status === 404) hint = ' El flujo «correo de confirmación» de n8n no está publicado (activo), o la ruta no es /webhook/enso-boletin-confirmar.';
-    if (how === 'webhook' && (r.status === 401 || r.status === 403)) hint = ' BOLETIN_MAIL_WEBHOOK_SECRET no coincide con la credencial «Header Auth» del disparador (cabecera X-Enso-Secret).';
-    if (how === 'webhook' && r.status >= 500) hint = ' El flujo de n8n corrió y falló: ver su ejecución en n8n (credencial de Gmail).';
-    console.error(`boletin: no se pudo mandar el correo de confirmación por ${how}: HTTP ${r.status} ${body}.${hint}`);
-  };
+  let detail = '';
   try {
+    let r = null;
     if (how === 'resend') {
-      const r = await fetch('https://api.resend.com/emails', {
+      r = await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'User-Agent': UA },
         body: JSON.stringify({ from: env.BOLETIN_FROM, to: [msg.to], subject: msg.subject, html: msg.html, text: msg.text }),
+        signal: AbortSignal.timeout(MAIL_TIMEOUT_MS),
       });
-      if (!r.ok) await why(r);
-      return r.ok;
-    }
-    if (how === 'webhook') {
+    } else if (how === 'webhook') {
       if (/\/webhook-test\//.test(env.BOLETIN_MAIL_WEBHOOK)) console.error('boletin: BOLETIN_MAIL_WEBHOOK usa /webhook-test/, que solo responde mientras n8n escucha una prueba: usar la URL de producción (/webhook/).');
-      const r = await fetch(env.BOLETIN_MAIL_WEBHOOK, {
+      r = await fetch(env.BOLETIN_MAIL_WEBHOOK, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET },
+        headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET, 'User-Agent': UA },
         body: JSON.stringify({ to: msg.to, subject: msg.subject, html: msg.html, text: msg.text }),
+        signal: AbortSignal.timeout(MAIL_TIMEOUT_MS),
       });
-      if (!r.ok) await why(r);
-      return r.ok;
     }
+    if (r && r.ok) return { ok: true, detail: '' };
+    detail = r ? await mailFailure(how, r) : 'boletin: no hay vía de correo configurada.';
   } catch (e) {
-    console.error(`boletin: no se pudo mandar el correo de confirmación por ${how}: ${String(e && e.message || e).slice(0, 200)} (¿la dirección de BOLETIN_MAIL_WEBHOOK es correcta y pública?)`);
+    detail = `boletin: no se pudo mandar el correo de confirmación por ${how}: ${String((e && e.message) || e).slice(0, 200)} (¿la dirección de BOLETIN_MAIL_WEBHOOK es correcta y pública, y responde en ${MAIL_TIMEOUT_MS / 1000} s?)`;
   }
-  return false;
+  console.error(detail);
+  return { ok: false, detail };
 }
 
 // ------------------------------------------------------------------------------------------------- topes
@@ -236,7 +250,7 @@ async function subscribe(request, env, url, db) {
   const msg = row.status === 'activa'
     ? shortMail({ title: 'Ya está suscrito', lead: 'Alguien (quizá usted) pidió suscribir esta dirección al boletín, y ya lo estaba. No cambió nada. Si quiere cambiar la frecuencia o los departamentos, use este enlace.', button: 'Ver mis preferencias', href: `${base}#/boletin?preferencias=${await token(env, 'preferencias', row.id, email)}`, note: 'Si no fue usted, ignore este correo.' })
     : shortMail({ title: 'Confirme su suscripción', lead: 'Recibimos un pedido para mandar el Boletín de eventos El Niño a esta dirección. Para empezar a recibirlo, confírmelo.', button: 'Confirmar mi suscripción', href: `${base}#/boletin?confirmar=${await token(env, 'confirmar', row.id, email)}`, note: `Si no lo pidió, ignore este correo: no recibirá nada y la dirección se borra en ${PENDING_DAYS} días.` });
-  const ok = await sendMail(env, { to: email, subject: row.status === 'activa' ? 'Ya está suscrito al Boletín El Niño · Perú' : 'Confirme su suscripción al Boletín El Niño · Perú', ...msg });
+  const { ok } = await sendMail(env, { to: email, subject: row.status === 'activa' ? 'Ya está suscrito al Boletín El Niño · Perú' : 'Confirme su suscripción al Boletín El Niño · Perú', ...msg });
   if (!ok) return fail(502, 'No se pudo mandar el correo de confirmación. Inténtelo de nuevo en unos minutos.');
   await db.prepare('UPDATE boletin_subs SET mail_day = ?, mail_n = ? WHERE id = ?').bind(day, n + 1, row.id).run();
   return done;
@@ -328,16 +342,16 @@ async function shape(v) {
  * flujo corrió (el pedido vacío lo hace fallar a propósito, sin mandar nada). */
 async function probe(urlStr, secret) {
   try {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = { 'Content-Type': 'application/json', 'User-Agent': UA };
     if (secret !== null) headers['X-Enso-Secret'] = secret;
-    const r = await fetch(urlStr, { method: 'POST', headers, body: JSON.stringify({ diagnostico: true }) });
+    const r = await fetch(urlStr, { method: 'POST', headers, body: JSON.stringify({ diagnostico: true }), signal: AbortSignal.timeout(MAIL_TIMEOUT_MS) });
     return { status: r.status, body: (await r.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300) };
   } catch (e) {
     return { status: 0, body: String((e && e.message) || e).slice(0, 300) };
   }
 }
 
-async function diagnose(request, env, url) {
+async function diagnose(request, env, url, db) {
   if (!sameOrigin(request, url)) return fail(403, 'Solo desde la página del boletín.');
   const b = await readJson(request);
   const want = String(env.BOLETIN_LIST_TOKEN || '');
@@ -364,7 +378,9 @@ async function diagnose(request, env, url) {
     w.secreto_falso = await probe(hook, 'no-es-el-secreto');
     w.con_secreto = await probe(hook, env.BOLETIN_MAIL_WEBHOOK_SECRET || '');
     const s = w.con_secreto.status;
-    w.verdict = s === 404 ? 'n8n no tiene ese webhook: el flujo «correo de confirmación» no está publicado, o la ruta no es la de su disparador.'
+    const proxy = (p) => p.status === 403 && /<html/i.test(p.body) && !/authorization/i.test(p.body);
+    w.verdict = [w.sin_secreto, w.secreto_falso, w.con_secreto].every(proxy) ? 'Un servidor delante de n8n (nginx, cortafuegos) corta el pedido con su propia página 403 antes de que llegue a n8n: revise sus reglas contra robots o por país o IP (los pedidos salen de Cloudflare).'
+      : s === 404 ? 'n8n no tiene ese webhook: el flujo «correo de confirmación» no está publicado, o la ruta no es la de su disparador.'
       : s === 401 || s === 403 ? 'n8n rechaza el secreto: el valor de la credencial «Header Auth» del disparador (nombre X-Enso-Secret) no es igual a BOLETIN_MAIL_WEBHOOK_SECRET. Compare las huellas.'
         : s === 0 ? 'No se pudo llegar a n8n: la dirección está mal o n8n no es accesible desde internet.'
           : s >= 500 && [401, 403].includes(w.secreto_falso.status) ? 'Bien: n8n acepta el secreto y corre el flujo (este pedido vacío falla a propósito, sin mandar nada). Si el correo no sale, el problema está en el nodo Gmail: pruebe con «Mandar un correo de prueba».'
@@ -376,12 +392,10 @@ async function diagnose(request, env, url) {
   if (to) {
     if (!EMAIL_RE.test(to)) return fail(422, 'La dirección de prueba no es válida.');
     const msg = shortMail({ title: 'Prueba del boletín', lead: 'Este es un correo de prueba del diagnóstico de la suscripción. Si le llegó, la vía de correo funciona.', button: 'Ir al boletín', href: `${site(env, url)}#/boletin`, note: 'Lo pidió quien administra el sitio desde el diagnóstico.' });
-    const logs = [];
-    const orig = console.error;
-    console.error = (m) => { logs.push(String(m)); orig(m); };
-    let sent = false;
-    try { sent = await sendMail(env, { to, subject: 'Prueba del Boletín El Niño · Perú', ...msg }); } finally { console.error = orig; }
-    out.prueba = { sent, detail: logs.join(' ').slice(0, 500) };
+    // Un correo de verdad: cuenta en el mismo tope diario que los de confirmación.
+    if (!(await bump(db, today(), 'enviados', Number(env.BOLETIN_DAILY_CAP) || DAILY_CAP))) return fail(503, 'Hoy ya se mandaron muchos correos. Inténtelo mañana.');
+    const r = await sendMail(env, { to, subject: 'Prueba del Boletín El Niño · Perú', ...msg });
+    out.prueba = { sent: r.ok, detail: r.detail.slice(0, 500) };
   }
   return json(out, 200, { 'Cache-Control': 'no-store' });
 }
@@ -404,7 +418,7 @@ export async function handle(request, env) {
     if (path === 'confirmar') return await confirm(request, env, url, db);
     if (path === 'baja') return await unsubscribe(request, env, url, db);
     if (path === 'preferencias') return await prefs(request, env, url, db, method);
-    if (path === 'diagnostico') return await diagnose(request, env, url);
+    if (path === 'diagnostico') return await diagnose(request, env, url, db);
     return await list(request, env, url, db);
   } catch (e) {
     console.error('boletin-subs', e && e.message);

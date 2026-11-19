@@ -237,6 +237,7 @@ una línea que empieza con `boletin:`:
 | --- | --- |
 | `HTTP 404` | El flujo «correo de confirmación» de n8n no está publicado (activo). Publicarlo. Revisar que `BOLETIN_MAIL_WEBHOOK` termine en `/webhook/enso-boletin-confirmar` |
 | `webhook-test` | `BOLETIN_MAIL_WEBHOOK` tiene la *Test URL*: cambiarla por la *Production URL* y volver a desplegar |
+| `HTTP 403` con una página HTML («403 Forbidden», de nginx) | Un servidor delante de n8n corta el pedido antes de que llegue a n8n (reglas contra robots, por país o por IP). Por eso cada pedido lleva `User-Agent: EnsoPeru-Boletin/1`: un fetch de Cloudflare no lo manda y ese nginx corta los pedidos sin él |
 | `HTTP 401` o `403` | El valor de `BOLETIN_MAIL_WEBHOOK_SECRET` no es el de la credencial `X-Enso-Secret` del disparador |
 | `HTTP 500` | El flujo corrió y falló: ver la ejecución en n8n (casi siempre la credencial de Gmail en **Enviar por Gmail**) |
 | Sin `HTTP` | La dirección no responde: n8n no es accesible desde internet o la URL está mal escrita |
