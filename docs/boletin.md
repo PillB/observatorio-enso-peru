@@ -237,8 +237,8 @@ una línea que empieza con `boletin:`:
 | --- | --- |
 | `HTTP 404` | El flujo «correo de confirmación» de n8n no está publicado (activo). Publicarlo. Revisar que `BOLETIN_MAIL_WEBHOOK` termine en `/webhook/enso-boletin-confirmar` |
 | `webhook-test` | `BOLETIN_MAIL_WEBHOOK` tiene la *Test URL*: cambiarla por la *Production URL* y volver a desplegar |
-| `HTTP 403` con una página HTML («403 Forbidden», de nginx) | Un servidor delante de n8n corta el pedido antes de que llegue a n8n (reglas contra robots, por país o por IP). Por eso cada pedido lleva `User-Agent: EnsoPeru-Boletin/1`: un fetch de Cloudflare no lo manda y ese nginx corta los pedidos sin él |
-| `HTTP 401` o `403` | El valor de `BOLETIN_MAIL_WEBHOOK_SECRET` no es el de la credencial `X-Enso-Secret` del disparador |
+| `HTTP 403` con una página HTML («403 Forbidden», de nginx) | Un servidor delante de n8n corta el pedido antes de que llegue a n8n (reglas contra robots, por país o por IP). Por eso cada pedido lleva `User-Agent: EnsoPeru-Boletin/1`: un fetch de Cloudflare no lo manda y ese nginx corta los pedidos sin él. Ese mismo cortafuegos corta los cuerpos con HTML (`<!doctype>`, `<meta>`, `<style>`), así que el sitio manda asunto, HTML y texto en base64 (`subject_b64`, `html_b64`, `text_b64`, con `enc: "base64"`) y «Armar correo» los decodifica. Si el diagnóstico pasa pero el correo de prueba da este 403, el flujo de n8n importado es anterior a ese cambio: volver a importar `enso-n8n-boletin-confirmar.json` |
+| `HTTP 401` o `403` («Authorization data is wrong!», de n8n) | El valor de `BOLETIN_MAIL_WEBHOOK_SECRET` no es el de la credencial `X-Enso-Secret` del disparador |
 | `HTTP 500` | El flujo corrió y falló: ver la ejecución en n8n (casi siempre la credencial de Gmail en **Enviar por Gmail**) |
 | Sin `HTTP` | La dirección no responde: n8n no es accesible desde internet o la URL está mal escrita |
 

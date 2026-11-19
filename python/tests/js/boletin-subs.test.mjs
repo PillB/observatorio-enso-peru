@@ -15,13 +15,16 @@ globalThis.fetch = async (url, init) => {
   if (env.HANG) throw new DOMException('The operation was aborted due to timeout', 'TimeoutError');
   const body = JSON.parse(init.body);
   // Un nginx delante de n8n que corta los pedidos sin User-Agent (como el de producción) o, con PROXY_BLOCK, todos.
-  if (!init.headers['User-Agent'] || env.PROXY_BLOCK) return new Response('<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center></body></html>', { status: 403 });
+  // Como el de producción, también corta los cuerpos con HTML (por eso el sitio manda el correo en base64).
+  if (!init.headers['User-Agent'] || env.PROXY_BLOCK || /<(!doctype|meta|style|html)/i.test(init.body)) return new Response('<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center></body></html>', { status: 403 });
   // Un n8n de mentira para el diagnóstico: 404 si el flujo no está publicado, 403 con otro secreto y 500 con el bueno
   // (el pedido vacío hace fallar «Armar correo»).
   if (body.diagnostico) {
     if (env.HOOK_404) return new Response('{"message":"not registered"}', { status: 404 });
     return new Response('{"message":"x"}', { status: init.headers['X-Enso-Secret'] === env.N8N_SECRET ? 500 : 403 });
   }
+  // Lo que decodifica n8n (n8n/nodes/boletin-confirmar.js).
+  if (body.enc === 'base64') for (const k of ['subject', 'html', 'text']) body[k] = Buffer.from(body[`${k}_b64`], 'base64').toString('utf8');
   sent.push({ url: String(url), headers: init.headers, body });
   return new Response('{}', { status: env.MAIL_FAILS ? (typeof env.MAIL_FAILS === 'number' ? env.MAIL_FAILS : 500) : 200 });
 };

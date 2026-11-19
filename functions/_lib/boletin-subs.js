@@ -170,6 +170,14 @@ async function mailFailure(how, r) {
   return `boletin: no se pudo mandar el correo de confirmación por ${how}: HTTP ${r.status} ${body}.${hint}`;
 }
 
+/** Texto UTF-8 → base64 (btoa solo acepta bytes). */
+function b64(str) {
+  const bytes = new TextEncoder().encode(String(str));
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
 /** Manda un correo. Devuelve {ok, detail}; si falla, deja ``detail`` en el registro de la función (Cloudflare →
  * Workers y Pages → enso-peru → Registros en tiempo real), sin direcciones: la página solo dice que no se pudo. */
 async function sendMail(env, msg) {
@@ -189,7 +197,9 @@ async function sendMail(env, msg) {
       r = await fetch(env.BOLETIN_MAIL_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Enso-Secret': env.BOLETIN_MAIL_WEBHOOK_SECRET, 'User-Agent': UA },
-        body: JSON.stringify({ to: msg.to, subject: msg.subject, html: msg.html, text: msg.text }),
+        // Asunto y cuerpo en base64: el cortafuegos delante de n8n rechaza (403 de nginx) los pedidos cuyo cuerpo
+        // lleva HTML (<!doctype>, <meta>, <style>…), aunque venga como texto JSON. n8n/nodes/boletin-confirmar.js lo decodifica.
+        body: JSON.stringify({ to: msg.to, enc: 'base64', subject_b64: b64(msg.subject), html_b64: b64(msg.html), text_b64: b64(msg.text || '') }),
         signal: AbortSignal.timeout(MAIL_TIMEOUT_MS),
       });
     }
