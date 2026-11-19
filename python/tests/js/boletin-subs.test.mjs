@@ -12,6 +12,7 @@ let env;
 let sent;
 
 globalThis.fetch = async (url, init) => {
+  if (env.HANG) throw new DOMException('The operation was aborted due to timeout', 'TimeoutError');
   const body = JSON.parse(init.body);
   // Un nginx delante de n8n que corta los pedidos sin User-Agent (como el de producción) o, con PROXY_BLOCK, todos.
   if (!init.headers['User-Agent'] || env.PROXY_BLOCK) return new Response('<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center></body></html>', { status: 403 });
@@ -190,6 +191,24 @@ describe('suscripción al boletín', () => {
     assert.equal(r.prueba.sent, true);
     assert.equal(sent.at(-1).body.to, 'yo@example.pe');
     assert.equal((await diag({ clave: LIST, enviar_a: 'no' })).status, 422);
+    // El correo de prueba cuenta en el tope diario de correos.
+    env.BOLETIN_DAILY_CAP = '1';
+    assert.equal((await diag({ clave: LIST, enviar_a: 'yo@example.pe' })).status, 503);
+    delete env.BOLETIN_DAILY_CAP;
+    // Un n8n que no contesta: se corta y se dice, sin la dirección.
+    env.HANG = true;
+    const errs = [];
+    const orig = console.error;
+    console.error = (m) => errs.push(String(m));
+    try {
+      r = await (await diag({ clave: LIST, enviar_a: 'yo@example.pe' })).json();
+    } finally { console.error = orig; }
+    env.HANG = false;
+    assert.equal(r.webhook.con_secreto.status, 0);
+    assert.match(r.webhook.verdict, /No se pudo llegar a n8n/);
+    assert.equal(r.prueba.sent, false);
+    assert.match(r.prueba.detail, /timeout/);
+    assert.ok(!r.prueba.detail.includes('yo@') && !errs.join(' ').includes('yo@'));
   });
 
   it('el motivo de la falla queda en el registro de la función, sin la dirección', async () => {
