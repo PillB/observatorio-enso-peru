@@ -97,6 +97,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Fiabilidad de las escrituras y de la red](docs/fiabilidad-datos.md): qué pasa si una escritura se repite, choca con otra o se corta a la mitad (bloqueo optimista, idempotencia, bandeja de salida, reintentos) y qué patrones no aplican
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
+- [Política de Privacidad y Términos de Uso](docs/legal.md): de qué plantillas salen, qué se cambió y qué falta
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
 
 ## Licencia
