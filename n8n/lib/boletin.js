@@ -122,15 +122,78 @@ function relevantChanges(changes, deps) {
 }
 
 // ------------------------------------------------------------------ correo en MIME para la API de Gmail
-const toB64 = (s) => (typeof Buffer !== 'undefined' ? Buffer.from(String(s), 'utf8').toString('base64') : btoa(unescape(encodeURIComponent(String(s)))));
+// Base64 de texto UTF-8 hecho a mano: en algunos n8n (ejecución de Code en «task runners») no hay Buffer, ni
+// TextEncoder/TextDecoder, ni escape/unescape. Solo se usa lo que trae cualquier motor de JavaScript.
+const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+function utf8Bytes(s) {
+  const out = [];
+  for (const ch of String(s)) {
+    let cp = ch.codePointAt(0);
+    if (cp >= 0xd800 && cp < 0xe000) cp = 0xfffd; // medio par sustituto suelto: no es UTF-8 válido
+    if (cp < 0x80) out.push(cp);
+    else if (cp < 0x800) out.push(0xc0 | (cp >> 6), 0x80 | (cp & 63));
+    else if (cp < 0x10000) out.push(0xe0 | (cp >> 12), 0x80 | ((cp >> 6) & 63), 0x80 | (cp & 63));
+    else out.push(0xf0 | (cp >> 18), 0x80 | ((cp >> 12) & 63), 0x80 | ((cp >> 6) & 63), 0x80 | (cp & 63));
+  }
+  return out;
+}
+function toB64(s) {
+  const b = utf8Bytes(s);
+  let out = '';
+  for (let i = 0; i < b.length; i += 3) {
+    const n = (b[i] << 16) | ((b[i + 1] || 0) << 8) | (b[i + 2] || 0);
+    out += B64[n >> 18] + B64[(n >> 12) & 63] + (i + 1 < b.length ? B64[(n >> 6) & 63] : '=') + (i + 2 < b.length ? B64[n & 63] : '=');
+  }
+  return out;
+}
+/** Base64 (estándar o «url-safe», con o sin relleno ni espacios) → texto UTF-8; null si no es base64 válido. */
+function fromB64(v) {
+  if (typeof v !== 'string') return null;
+  const t = v.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/').replace(/=+$/, '');
+  if (!/^[A-Za-z0-9+/]*$/.test(t) || t.length % 4 === 1) return null;
+  const bytes = [];
+  for (let i = 0; i < t.length; i += 4) {
+    const c = [0, 1, 2, 3].map((k) => (i + k < t.length ? B64.indexOf(t[i + k]) : 0));
+    const n = (c[0] << 18) | (c[1] << 12) | (c[2] << 6) | c[3];
+    bytes.push(n >> 16);
+    if (i + 2 < t.length) bytes.push((n >> 8) & 255);
+    if (i + 3 < t.length) bytes.push(n & 255);
+  }
+  // UTF-8 estricto: secuencias demasiado largas, sustitutos o puntos > U+10FFFF se cambian por U+FFFD.
+  let out = '';
+  for (let i = 0; i < bytes.length;) {
+    const b = bytes[i];
+    const cont = (k) => i + k < bytes.length && (bytes[i + k] & 0xc0) === 0x80;
+    let cp = 0xfffd, n = 1;
+    if (b < 0x80) cp = b;
+    else if (b >= 0xc2 && b < 0xe0 && cont(1)) { cp = ((b & 0x1f) << 6) | (bytes[i + 1] & 63); n = 2; }
+    else if (b >= 0xe0 && b < 0xf0 && cont(1) && cont(2)) {
+      const c = ((b & 0x0f) << 12) | ((bytes[i + 1] & 63) << 6) | (bytes[i + 2] & 63);
+      if (c >= 0x800 && (c < 0xd800 || c > 0xdfff)) { cp = c; n = 3; }
+    } else if (b >= 0xf0 && b < 0xf5 && cont(1) && cont(2) && cont(3)) {
+      const c = ((b & 7) << 18) | ((bytes[i + 1] & 63) << 12) | ((bytes[i + 2] & 63) << 6) | (bytes[i + 3] & 63);
+      if (c >= 0x10000 && c <= 0x10ffff) { cp = c; n = 4; }
+    }
+    out += String.fromCodePoint(cp);
+    i += n;
+  }
+  return out;
+}
 const oneLine = (s) => String(s == null ? '' : s).replace(/[\r\n]+/g, ' ').trim();
 /** Cabecera con acentos (RFC 2047), en trozos para no pasar de 75 caracteres por palabra codificada. */
 function encHeader(s) {
   const v = oneLine(s);
   if (/^[\x20-\x7e]*$/.test(v)) return v;
+  // Trozos de hasta 45 bytes (60 caracteres en base64), sin partir un carácter ni un par sustituto.
   const parts = [];
-  for (let i = 0; i < v.length; i += 30) parts.push(`=?UTF-8?B?${toB64(v.slice(i, i + 30))}?=`);
-  return parts.join('\r\n ');
+  let cur = '', size = 0;
+  for (const ch of v) {
+    const n = utf8Bytes(ch).length;
+    if (size + n > 45) { parts.push(cur); cur = ''; size = 0; }
+    cur += ch; size += n;
+  }
+  if (cur) parts.push(cur);
+  return parts.map((p) => `=?UTF-8?B?${toB64(p)}?=`).join('\r\n ');
 }
 const wrap76 = (s) => s.replace(/.{1,76}/g, '$&\r\n');
 /**
