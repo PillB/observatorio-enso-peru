@@ -219,6 +219,17 @@ async function sendMail(env, msg) {
         signal: AbortSignal.timeout(MAIL_TIMEOUT_MS),
       });
     }
+    if (r && r.ok && how === 'webhook') {
+      // «Responder» contesta 202 {"ok":true} solo si Gmail aceptó el correo. Algunas versiones de n8n contestan 200
+      // vacío cuando el flujo falla antes de «Responder»: eso no es un envío.
+      const text = await r.text().catch(() => '');
+      let j = null;
+      try { j = JSON.parse(text); } catch { /* no es JSON */ }
+      if (r.status === 202 || (j && j.ok === true)) return { ok: true, detail: '' }; // 202 solo lo pone «Responder»
+      detail = `boletin: no se pudo mandar el correo de confirmación por webhook: n8n contestó HTTP ${r.status} sin confirmar el envío (${text.replace(/\s+/g, ' ').slice(0, 120) || 'vacío'}). El flujo «correo de confirmación» falló antes de «Responder»: ver su ejecución en n8n.`;
+      console.error(detail);
+      return { ok: false, detail };
+    }
     if (r && r.ok) return { ok: true, detail: '' };
     detail = r ? await mailFailure(how, r) : 'boletin: no hay vía de correo configurada.';
   } catch (e) {
@@ -328,9 +339,10 @@ async function prefs(request, env, url, db, method) {
 }
 
 async function list(request, env, url, db) {
-  const auth = request.headers.get('Authorization') || '';
-  const want = env.BOLETIN_LIST_TOKEN ? `Bearer ${env.BOLETIN_LIST_TOKEN}` : '';
-  if (!want || String(env.BOLETIN_LIST_TOKEN).length < 24 || !same(auth, want)) return fail(401, 'No autorizado.');
+  // «Bearer <token>» o el token solo (en la credencial de n8n es fácil olvidar «Bearer »), sin espacios de más.
+  const auth = (request.headers.get('Authorization') || '').trim().replace(/^bearer\s+/i, '');
+  const want = String(env.BOLETIN_LIST_TOKEN || '').trim();
+  if (want.length < 24 || !same(auth, want)) return fail(401, 'No autorizado.');
   if (!enabled(env)) return fail(503, offMsg(env));
   const { results } = await db.prepare("SELECT id, email, freq, deps FROM boletin_subs WHERE status = 'activa' ORDER BY confirmed_at").all();
   const base = site(env, url);
@@ -381,7 +393,7 @@ async function probe(urlStr, secret) {
 async function diagnose(request, env, url, db) {
   if (!sameOrigin(request, url)) return fail(403, 'Solo desde la página del boletín.');
   const b = await readJson(request);
-  const want = String(env.BOLETIN_LIST_TOKEN || '');
+  const want = String(env.BOLETIN_LIST_TOKEN || '').trim();
   if (!b || want.length < 24 || typeof b.clave !== 'string' || !same(b.clave.trim(), want.trim())) return fail(401, 'Clave incorrecta: es el valor de BOLETIN_LIST_TOKEN.');
   const out = {
     ok: true,
