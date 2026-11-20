@@ -53,13 +53,51 @@ sleep 3
 docker rm -f "$NAME" >/dev/null 2>&1 || true
 # Las ejecuciones guardadas (n8n guarda las fallidas): la buena pasó «Armar correo»; la mala no.
 sudo python3 - "$WORK/n8n-home/.n8n/database.sqlite" <<'PY'
-import sqlite3, sys
+import json, sqlite3, sys
 db = sqlite3.connect(sys.argv[1])
-rows = [r[0] for r in db.execute("SELECT d.data FROM execution_data d JOIN execution_entity e ON e.id = d.executionId ORDER BY e.id")]
-print(f"{len(rows)} ejecuciones guardadas")
-invalid = [r for r in rows if "Pedido de confirmación inválido" in r]
-gmail = [r for r in rows if "Enviar por Gmail" in r and "Pedido de confirmación inválido" not in r and "Confirme su suscripción al Boletín El Niño · Perú" in r]
-assert len(invalid) == 1, f"solo el pedido mal formado debe fallar en «Armar correo» (fallaron {len(invalid)})"
-assert gmail, "el pedido del sitio debe llegar a «Enviar por Gmail» con el asunto decodificado"
+
+def unflat(text):
+    """n8n guarda la ejecución con «flatted»: cada cadena va aparte y se la nombra por su índice."""
+    arr = json.loads(text)
+    seen = {}
+    def rev(v):
+        if isinstance(v, str) and v.isdigit() and int(v) < len(arr):
+            i = int(v)
+            if i in seen:
+                return seen[i]
+            x = arr[i]
+            if isinstance(x, (dict, list)):
+                out = {} if isinstance(x, dict) else []
+                seen[i] = out
+                for k, w in (x.items() if isinstance(x, dict) else enumerate(x)):
+                    r = rev(w)
+                    if isinstance(out, dict): out[k] = r
+                    else: out.append(r)
+                return out
+            return x
+        if isinstance(v, dict):
+            return {k: rev(w) for k, w in v.items()}
+        if isinstance(v, list):
+            return [rev(w) for w in v]
+        return v
+    return rev("0")
+
+runs = []
+for (data,) in db.execute("SELECT d.data FROM execution_data d JOIN execution_entity e ON e.id = d.executionId ORDER BY e.id"):
+    rd = unflat(data)["resultData"]
+    err = (rd.get("error") or {}).get("message")
+    nodes = list(rd.get("runData", {}).keys())
+    subj = None
+    for r in rd.get("runData", {}).get("Armar correo", []):
+        for br in (r.get("data") or {}).get("main") or []:
+            for it in br or []:
+                subj = it.get("json", {}).get("subject")
+    runs.append({"nodos": nodes, "ultimo": rd.get("lastNodeExecuted"), "error": err, "asunto": subj})
+    print(runs[-1])
+assert len(runs) == 2, f"se esperaban 2 ejecuciones guardadas (hay {len(runs)})"
+bueno, malo = runs
+assert bueno["asunto"] == "Confirme su suscripción al Boletín El Niño · Perú", "«Armar correo» no decodificó el pedido del sitio"
+assert "Enviar por Gmail" in bueno["nodos"], "el pedido del sitio debe llegar a «Enviar por Gmail»"
+assert malo["error"] and "inválido" in malo["error"] and malo["ultimo"] == "Armar correo", "el pedido mal formado debe quedar en «Armar correo»"
 print("✓ «Armar correo» decodifica el pedido del sitio y llega a Gmail; el mal formado se rechaza")
 PY
