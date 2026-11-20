@@ -50,6 +50,9 @@ BLOCK_SIGNATURES = (
     ("f5-asm", ("the requested url was rejected. please consult with your administrator", "your support id is")),
     ("fortinet", ("fortiguard", "web page blocked", "fortigate")),
     ("datadome", ("datadome",)),
+    # Imunify360 (hostings compartidos con cPanel): «One moment, please...» y una recarga a los 5 s. Llega con HTTP 200
+    # en lugar del feed, de vez en cuando (noviembre de 2026: Sol TV, Radio Huancayo, CIIFEN y otros WordPress).
+    ("imunify360", ("please wait while your request is being verified", "<title>one moment, please...</title>")),
     ("google-consent", ("consent.google.com", "before you continue to google", "antes de ir a google")),
     ("geo", ("not available in your country", "no está disponible en tu país", "no disponible en su país",
              "access from your country", "geo-restricted")),

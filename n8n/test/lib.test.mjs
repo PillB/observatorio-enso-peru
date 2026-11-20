@@ -69,6 +69,14 @@ test('los feeds reales capturados se reconocen como feeds con entradas', () => {
   assert.ok(n > 100);
 });
 
+test('la página de Imunify360 con HTTP 200 es una verificación, no el feed (noviembre de 2026)', () => {
+  const body = readFileSync(join(FIX, 'sources', 'blocked', 'imunify360-soltv-piura-20261119.html'));
+  const c = classify({ url: 'https://soltvperu.com/category/regiones/piura-noticias/feed/', expect: 'feed', status: 200,
+    headers: { 'content-type': 'text/html; charset=utf8' }, body });
+  assert.notEqual(c.verdict, 'ok');
+  assert.equal(c.block, 'imunify360');
+});
+
 test('los textos de la NOAA y el PDF del ENFEN pasan como texto y PDF', () => {
   const txt = readFileSync(join(FIX, 'sources', 'cpc-oni.txt'));
   assert.equal(classify({ url: 'x', expect: 'text', status: 200, body: txt }).verdict, 'ok');

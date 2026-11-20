@@ -40,6 +40,7 @@ from typing import Any, Callable, Optional
 from .feeds import FormatChanged, Parsed
 from .feeds import cpc, godas, imarpe_repo, peru
 from . import archive
+from . import drift
 from . import manual
 from . import reports
 from . import signals as sig
@@ -477,6 +478,12 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         # Avisos del lector (meses no leídos, servidor sin respuesta con el histórico publicado, histórico viejo).
         for stage, code, msg in (parsed.meta or {}).get("events") or []:
             log.add("warning", src.id, stage, code, msg)
+        if prev and prev.get("data") is not None and not prev.get("carried"):
+            # Misma forma pero peor que ayer: historia recortada, último dato hacia atrás o valores antiguos
+            # reescritos (``enso.drift``). PSL reescribió así toda la serie Niño 3.4 ERSSTv6 entre el 6 y el 18 de
+            # noviembre de 2026 (hasta +0,58 °C) sin cambiar la cabecera: la huella no lo vio.
+            for code, msg in drift.compare(prev["data"], parsed.data, src.id):
+                log.add("warning", src.id, "validate", code, msg)
         if acq.format_drift:
             log.add("warning", src.id, "parse", "format-drift",
                     f"Se detectó un cambio en el formato de la fuente (huella {acq.previous_fingerprint} → {parsed.fingerprint}). "
@@ -1125,6 +1132,29 @@ class Builder:
                              f"Último dato semanal {region} del {last['date']} ({lastage} días).")
         return out
 
+    def ensodisc_basis(self, values: dict) -> Optional[str]:
+        """Con qué índice coinciden los valores de Niño que cita la discusión de NOAA. Hasta 2025 eran las anomalías
+        tradicionales de la última semana; desde la adopción del RONI (2026) cita las anomalías **relativas** del último
+        mes (``rel_mthsst9120.txt``: en noviembre de 2026, +2,5 en Niño 3.4 frente a +3,3 tradicional). Sin este
+        campo, quien compare ``valuesInText`` con las series semanales del sitio vería un desacuerdo de casi 1 °C.
+        ``traditional-weekly``, ``traditional-monthly`` o ``other`` (relativa u otra base; no se publica como dato)."""
+        if not values:
+            return None
+
+        def near(ref: dict) -> bool:
+            common = [r for r in values if ref.get(r) is not None]
+            return bool(common) and all(abs(values[r] - ref[r]) <= 0.15 for r in common)
+
+        wk = self.data("cpc-wksst") or {}
+        if any(near({r: (pts[i] if len(pts) > -i - 1 else {}).get("anom") for r, pts in wk.items() if pts})
+               for i in (-1, -2)):
+            return "traditional-weekly"
+        mo = (self.data("cpc-sstoi") or {}).get("anom") or {}
+        if any(near({r: (pts[i]["value"] if len(pts) > -i - 1 else None) for r, pts in mo.items() if pts})
+               for i in (-1, -2)):
+            return "traditional-monthly"
+        return "other"
+
     def official(self) -> dict:
         noaa = self.data("cpc-ensodisc")
         res: dict[str, Any] = {}
@@ -1139,6 +1169,7 @@ class Builder:
                 "nextIssue": noaa.get("next_issue") or second_thursday_after(noaa.get("issued"), self.today),
                 "nextIssueEstimated": not noaa.get("next_issue"),
                 "synopsis": noaa.get("synopsis"), "valuesInText": noaa.get("weekly_values_in_text"),
+                "valuesInTextBasis": self.ensodisc_basis(noaa.get("weekly_values_in_text") or {}),
                 "url": SOURCE_BY_ID["cpc-ensodisc"].urls[0], "channel": a.channel, "carried": a.carried,
                 "retrievedAt": a.retrieved_at, "stale": stale,
             }
@@ -1209,9 +1240,33 @@ class Builder:
         if icen:
             igp = {p["period"]: p["value"] for p in icen["points"] if p["value"] is not None}
             if last and last["period"] in igp and abs(last["icen"] - igp[last["period"]]) > 0.05:
-                self.log.add("warning", "enfen-informe", "validate", "informe-icen-mismatch",
-                             f"El ICEN de {last['period']} del informe técnico ({last['icen']:+.2f}) difiere del archivo "
-                             f"del IGP ({igp[last['period']]:+.2f}).")
+                msg = (f"El ICEN de {last['period']} del informe técnico ({last['icen']:+.2f}) difiere del archivo "
+                       f"del IGP ({igp[last['period']]:+.2f}).")
+                if tmp:
+                    # ¿Cuál de los dos no cuadra? El ICEN es una media móvil de 3 meses: el temporal del mes siguiente
+                    # queda cerca del oficial correcto. Informe N° 20 de 2026: Set-26 +4,98 en la tabla, +4,50 en el
+                    # IGP y temporal de Oct-26 +4,69 (la serie de Niño 1+2 subía): la tabla del informe es la que falla.
+                    near = "IGP" if abs(tmp["icen"] - igp[last["period"]]) < abs(tmp["icen"] - last["icen"]) else "informe"
+                    inf["icenMismatch"] = {"period": last["period"], "informe": last["icen"], "igp": igp[last["period"]],
+                                           "provisional": tmp["icen"], "consistentWith": near}
+                    msg += (f" El temporal de {tmp['period']} del mismo informe ({tmp['icen']:+.2f}) "
+                            + ("está más cerca del IGP: probable errata en la tabla del informe; el sitio publica el "
+                               "valor del IGP." if near == "IGP" else
+                               "está más cerca del informe: el archivo del IGP podría estar atrasado o revisado; el "
+                               "sitio publica el valor del IGP hasta que se aclare."))
+                self.log.add("warning", "enfen-informe", "validate", "informe-icen-mismatch", msg)
+        for key, field_ in (("oni", "oni"), ("roni", "roni")):
+            # El informe técnico copia el ONI y el RONI de NOAA en su tabla de índices: si no coinciden, el lector
+            # tomó otra columna o la tabla cambió de forma (las columnas ICEN, RONI y ONI tienen rangos parecidos).
+            ser = self.series.get(key)
+            if not (ser and last and isinstance(last.get(field_), (int, float))):
+                continue
+            noaa = {p["period"]: p["value"] for p in ser["points"] if p["value"] is not None}
+            if last["period"] in noaa and abs(last[field_] - noaa[last["period"]]) > 0.1:
+                self.log.add("warning", "enfen-informe", "validate", f"informe-{key}-mismatch",
+                             f"El {key.upper()} de {last['period']} del informe técnico ({last[field_]:+.2f}) difiere del "
+                             f"de NOAA/CPC ({noaa[last['period']]:+.2f}): revisar la lectura de la tabla de índices.")
+        if icen:
             if tmp and icen["latest"]["period"] and tmp["period"] <= icen["latest"]["period"]:
                 inf["icenSuperseded"] = tmp["period"]
                 tmp = inf["icenProvisional"] = None  # el IGP ya publicó el oficial de ese mes
@@ -1876,6 +1931,12 @@ def read_history_backup(history_dir: Optional[Path]) -> str:
     return "".join(lines)
 
 
+def official_alerts(feed) -> bool:
+    """Fuente oficial de avisos o datos de peligros (no un medio): su caída se vigila (``hazard-feed-down``)."""
+    return bool(feed and feed.scope == "hazard" and feed.kind in ("gobierno", "organismo")
+                and (getattr(feed, "covers", None) or feed.id in ("ciifen", "imarpe", "gdacs")))
+
+
 def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
                  now: datetime, raw_dir: Optional[Path], history_dir: Optional[Path] = None,
                  reader: Optional[set[str]] = None, history_absent: bool = False,
@@ -2203,11 +2264,21 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     for st in status:
         if st.get("skipped") or st.get("carried"):
             continue
+        feed = N.FEED_BY_ID.get(st.get("id"))
+        before = prev_status.get(st.get("id")) or {}
         if not st["ok"]:
             log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
+            if official_alerts(feed) and before and before.get("ok") is False and not before.get("skipped"):
+                # Una fuente oficial de avisos (SENAMHI, INDECI/COEN, DHN, IGP, PTWC, NASA, CIIFEN…) caída dos corridas
+                # seguidas deja al sitio sin esos avisos: no puede quedar como «info» que nadie lee (incidencia propia
+                # por fuente; se cierra sola cuando vuelve a responder).
+                log.add("warning", f"news-{st['id']}", "fetch", "hazard-feed-down",
+                        f"{st['name']} no respondió con un feed en dos corridas seguidas: {st['error']}")
         elif not st["active"]:
             log.add("info", "news", "fetch", "feed-inactive",
-                    f"{st['name']}: la entrada más reciente es del {st['latest'] or '¿?'}.")
+                    f"{st['name']}: " + (f"la entrada más reciente es del {st['latest']}." if st["latest"] else
+                                         f"respondió sin entradas con fecha ({st.get('items', 0)} entradas; una capa de "
+                                         "avisos vacía es normal si no hay avisos vigentes)."))
     active = sum(1 for st in status if st["active"])
     asked = sum(1 for st in status if not st.get("skipped"))
     if active < asked / 2:

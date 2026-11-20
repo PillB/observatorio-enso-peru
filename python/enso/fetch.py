@@ -40,7 +40,7 @@ from urllib.parse import quote, urlsplit
 
 import httpx
 
-from .reach import BAD_LOCATION, MAX_HOPS, ROBOTS_TIMEOUT_S, Robots, RobotsHop, next_hop
+from .reach import BAD_LOCATION, MAX_HOPS, ROBOTS_TIMEOUT_S, Robots, RobotsHop, block_mark, classify, next_hop
 
 #: El contacto que ven las fuentes: el sitio publicado cuando el flujo lo
 #: define (ENSO_CONTACT_URL), o el repositorio.
@@ -149,6 +149,14 @@ def ssl_context():
     return ctx
 
 
+def block_page(body: bytes, headers=None) -> str:
+    """Familia de la página de verificación antirobots que llegó con HTTP 200 en lugar del contenido (``reach.classify``:
+    una marca de ``BLOCK_SIGNATURES`` en una página HTML pequeña), o ``""``."""
+    if not body or classify(200, body, headers=headers) != "challenge":
+        return ""
+    return block_mark(body, headers) or "challenge"
+
+
 class Relay:
     """Copias recolectadas fuera de GitHub Actions: desde el Perú (rama
     ``data-peru``) o por el flujo de n8n (rama ``data-n8n``), con el mismo
@@ -206,6 +214,8 @@ class Relay:
             if not body or hashlib.sha256(body).hexdigest() != e.get("sha256"):
                 continue
             if accept and not any(a in kind for a in accept) and not ("pdf" in accept and body.startswith(b"%PDF")):
+                continue
+            if block_page(body):  # una copia de una página de verificación no es la fuente (``block_page``)
                 continue
             return Response(url, body, self.channel, 200, ct, archived_at=e.get("fetched_at") or self.collected_at)
         return None
@@ -434,11 +444,19 @@ class Fetcher:
                 attempts.append({"url": url, "error": skip})
             else:
                 r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
-                if r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):
+                blocked = block_page(r.content, r.headers) if r is not None and r.status_code == 200 else ""
+                if blocked:
+                    # Un 200 con una página de verificación (Imunify360, Cloudflare…) en lugar del contenido: no es la
+                    # fuente. Se anota como verificación (no se evade) y se sigue con las copias de los recolectores,
+                    # que sí la bajaron. Antes pasaba como respuesta válida: el lector fallaba con «página HTML» y la
+                    # página quedaba archivada como si fuera el feed.
+                    attempts[-1]["error"] = f"página de verificación antirobots ({blocked}): no se usa (no se evade)"
+                    attempts[-1]["class"] = "challenge"
+                elif r is not None and r.status_code == 200 and r.content and self._acceptable(r, accept):
                     return Response(str(r.url), r.content, "direct" if i == 0 else "mirror", 200,
                                     r.headers.get("content-type", ""), r.headers.get("last-modified", ""),
                                     attempts=attempts)
-                if r is not None and r.status_code == 200:
+                elif r is not None and r.status_code == 200:
                     attempts[-1]["note"] = "contenido vacío o tipo inesperado"
             refused = self.hop_refused.get(url) is False
             if refused and attempts and attempts[-1].get("url") == url:

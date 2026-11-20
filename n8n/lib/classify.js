@@ -23,6 +23,7 @@ const BLOCK_SIGNATURES = [
   { block: 'f5-asm', body: ['the requested url was rejected. please consult with your administrator', 'your support id is'] },
   { block: 'fortinet', body: ['fortiguard', 'web page blocked', 'fortigate'] },
   { block: 'datadome', body: ['datadome'] },
+  { block: 'imunify360', body: ['please wait while your request is being verified', '<title>one moment, please...</title>'] },
   { block: 'google-consent', body: ['consent.google.com', 'before you continue to google', 'antes de ir a google'] },
   { block: 'geo', body: ['not available in your country', 'no está disponible en tu país', 'no disponible en su país', 'access from your country', 'geo-restricted'] },
 ];

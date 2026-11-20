@@ -36,9 +36,11 @@ formato ha cambiado varias veces (2018, 2021, 2024). Para no depender de
 una sola página:
 
 1. Se lee el listado (WordPress JSON o HTML) y se toma el número más alto.
-   La API de WordPress se quedó en el N° 13-2026: su entrada es solo un
-   candidato y se contrasta con el listado del portal o de la réplica de la
-   DHN y con el del repositorio del IMARPE.
+   La API de WordPress se quedó en el N° 13-2026 durante meses y el 19 de
+   noviembre de 2026 llegaba al N° 19 (el portal y la DHN ya mostraban el
+   N° 20): va atrasada a ratos, así que su entrada es solo un candidato y se
+   contrasta con el listado del portal o de la réplica de la DHN y con el
+   del repositorio del IMARPE.
 2. Se sondean hasta 6 números siguientes (`PROBE_AHEAD`); dos ausencias
    seguidas cortan (`PROBE_MAX_MISSES`). En enero se sondea también el
    n.º 01 del año nuevo. Cada número se busca primero como PDF en la
