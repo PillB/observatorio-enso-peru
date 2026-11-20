@@ -328,6 +328,12 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Opcionales: si están como secretos de GitHub, se copian al entorno de producción de Cloudflare
+          # antes de desplegar (ver tools/cloudflare_pages.py). Si no, valen los del panel de Cloudflare.
+          BOLETIN_SECRET: ${{ secrets.BOLETIN_SECRET }}
+          BOLETIN_LIST_TOKEN: ${{ secrets.BOLETIN_LIST_TOKEN }}
+          BOLETIN_MAIL_WEBHOOK: ${{ secrets.BOLETIN_MAIL_WEBHOOK }}
+          BOLETIN_MAIL_WEBHOOK_SECRET: ${{ secrets.BOLETIN_MAIL_WEBHOOK_SECRET }}
         run: python -m tools.cloudflare_pages --project "$CF_PROJECT"
       - uses: actions/download-artifact@v8
         if: env.DEPLOY_TARGET == 'cloudflare'
@@ -347,6 +353,13 @@ jobs:
       - name: Verify the live site serves this publication
         working-directory: python
         run: python -m tools.verify_live --base "$SITE_URL" --expect "${{ needs.build.outputs.publication_id }}"
+      - name: Check the newsletter subscription is on
+        if: env.DEPLOY_TARGET == 'cloudflare'
+        continue-on-error: true
+        run: |
+          r=$(curl -sS --max-time 20 "${SITE_URL%/}/api/boletin/estado?d=$GITHUB_RUN_ID" || true)
+          echo "estado: $r"
+          case "$r" in *'"enabled":true'*) ;; *) echo "::warning title=Boletín::la suscripción al boletín está apagada en este despliegue (falta un secreto; ver el aviso del paso anterior o #/boletin?diagnostico)";; esac
 
   incidents:
     # Corre siempre que el build haya llegado a producir un informe; también al fusionar en main, que publica.

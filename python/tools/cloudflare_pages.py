@@ -10,6 +10,13 @@ y ``CLOUDFLARE_ACCOUNT_ID`` del entorno. El despliegue en sí lo hace
 proyecto exista y averigua su subdominio, que Cloudflare puede alterar si el
 nombre ya está tomado por otra cuenta.
 
+También revisa (solo nombres, nunca valores) que el entorno de producción
+tenga lo que pide la suscripción al boletín (``functions/_lib/boletin-subs.js``)
+y avisa en el registro si falta algo o si solo está en «Preview». Si en el
+entorno de este paso hay secretos ``BOLETIN_*`` (secretos de GitHub Actions),
+los copia al entorno de producción del proyecto antes de desplegar: así se
+pueden cargar desde GitHub en vez de desde el panel de Cloudflare.
+
 Uso:
     python -m tools.cloudflare_pages --project observatorio-enso
 """
@@ -49,6 +56,50 @@ def ensure_project(client: httpx.Client, account: str, project: str, branch: str
     return f"https://{subdomain}/", production
 
 
+# Lo que la suscripción al boletín necesita en producción (ver functions/_lib/boletin-subs.js).
+BOLETIN_SYNC = ("BOLETIN_SECRET", "BOLETIN_LIST_TOKEN", "BOLETIN_MAIL_WEBHOOK", "BOLETIN_MAIL_WEBHOOK_SECRET")
+
+
+def boletin_report(project: dict) -> list[str]:
+    """Avisos (solo nombres) sobre la configuración de producción que pide la suscripción al boletín."""
+    cfgs = project.get("deployment_configs") or {}
+    prod, prev = cfgs.get("production") or {}, cfgs.get("preview") or {}
+    have = {k for k, v in (prod.get("env_vars") or {}).items() if v is not None}
+    in_preview = {k for k, v in (prev.get("env_vars") or {}).items() if v is not None}
+    need = ["BOLETIN_SECRET", "BOLETIN_LIST_TOKEN"]
+    if not {"RESEND_API_KEY", "BOLETIN_FROM"} <= have:
+        need += ["BOLETIN_MAIL_WEBHOOK", "BOLETIN_MAIL_WEBHOOK_SECRET"]
+    out = []
+    for name in need:
+        if name not in have:
+            where = " (está en «Preview», no en «Production»)" if name in in_preview else ""
+            out.append(f"falta {name} en el entorno de producción de Cloudflare Pages{where}: la suscripción al boletín queda apagada")
+    if "GEO_DB" not in (prod.get("d1_databases") or {}):
+        out.append("falta el vínculo D1 GEO_DB en el entorno de producción")
+    return out
+
+
+def sync_secrets(client: httpx.Client, account: str, project: str, values: dict[str, str]) -> dict:
+    """Copia secretos al entorno de producción (los demás quedan como están) y devuelve el proyecto actualizado."""
+    body = {"deployment_configs": {"production": {"env_vars": {k: {"type": "secret_text", "value": v} for k, v in values.items()}}}}
+    r = client.patch(f"{API.format(account=account)}/{project}", json=body)
+    if r.status_code >= 400:
+        raise RuntimeError(f"no se pudieron guardar {', '.join(values)} en Cloudflare: HTTP {r.status_code} {_errors(r)}")
+    return r.json().get("result") or {}
+
+
+def check_boletin(client: httpx.Client, account: str, project: str, env: dict) -> list[str]:
+    """Copia los secretos BOLETIN_* que vengan en ``env`` (sin espacios de más) y devuelve los avisos."""
+    values = {k: env[k].strip() for k in BOLETIN_SYNC if (env.get(k) or "").strip()}
+    if values:
+        result = sync_secrets(client, account, project, values)
+        print(f"copiados a producción desde GitHub: {', '.join(values)}", file=sys.stderr)
+    else:
+        r = client.get(f"{API.format(account=account)}/{project}")
+        result = (r.json().get("result") or {}) if r.status_code == 200 else {}
+    return boletin_report(result)
+
+
 def _errors(r: httpx.Response) -> str:
     try:
         return "; ".join(e.get("message", "") for e in r.json().get("errors", []))[:300]
@@ -68,9 +119,16 @@ def main(argv=None) -> int:
     try:
         with httpx.Client(timeout=30, headers={"Authorization": f"Bearer {token}"}) as c:
             url, branch = ensure_project(c, account, args.project, args.production_branch)
+            try:
+                warnings = check_boletin(c, account, args.project, os.environ)
+            except (RuntimeError, httpx.HTTPError, ValueError) as e:
+                warnings = [f"no se pudo revisar la configuración del boletín: {e}"]
     except (RuntimeError, httpx.HTTPError) as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
+    for w in warnings:
+        # Anotación visible en el resumen de la ejecución de GitHub Actions; no detiene el despliegue.
+        print(f"::warning title=Boletín::{w}" if os.environ.get("GITHUB_ACTIONS") else f"aviso: {w}", file=sys.stderr)
     print(url)
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
