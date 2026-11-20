@@ -30,7 +30,10 @@ globalThis.fetch = async (url, init) => {
     for (const k of ['subject', 'html']) body[k] = Buffer.from(body[`${k}_b64`], 'base64').toString('utf8');
   }
   sent.push({ url: String(url), headers: init.headers, body });
-  return new Response('{}', { status: env.MAIL_FAILS ? (typeof env.MAIL_FAILS === 'number' ? env.MAIL_FAILS : 500) : 200 });
+  if (env.MAIL_FAILS) return new Response('{}', { status: typeof env.MAIL_FAILS === 'number' ? env.MAIL_FAILS : 500 });
+  // Como «Responder» de n8n: 202 {"ok":true}. Con EMPTY_200, como n8n 1.x cuando el flujo falla: 200 vacío.
+  if (/webhook/.test(String(url))) return env.EMPTY_200 ? new Response('', { status: 200 }) : new Response('{"ok":true}', { status: 202 });
+  return new Response('{}', { status: 200 });
 };
 
 const req = (path, { method = 'POST', body, origin = ORIGIN, headers = {}, ip = '1.2.3.4' } = {}) => {
@@ -208,6 +211,19 @@ describe('suscripción al boletín', () => {
     assert.equal((await subscribe('ana@example.pe')).status, 502);
     env.MAIL_FAILS = false;
     assert.equal((await subscribe('ana@example.pe')).status, 202);
+  });
+
+  it('un 200 vacío de n8n (el flujo falló antes de «Responder») no cuenta como enviado', async () => {
+    const logs = [];
+    const orig = console.error;
+    console.error = (m) => logs.push(String(m));
+    try {
+      env.EMPTY_200 = true;
+      assert.equal((await subscribe('eva@example.pe')).status, 502);
+    } finally { console.error = orig; delete env.EMPTY_200; }
+    assert.match(logs.join(' '), /HTTP 200 sin confirmar el envío \(vacío\).*Responder/);
+    assert.ok(!logs.join(' ').includes('eva@'));
+    assert.equal((await subscribe('eva@example.pe')).status, 202);
   });
 
   it('el diagnóstico pide la clave, da huellas sin los valores y prueba el webhook', async () => {

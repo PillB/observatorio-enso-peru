@@ -128,7 +128,8 @@ const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 function utf8Bytes(s) {
   const out = [];
   for (const ch of String(s)) {
-    const cp = ch.codePointAt(0);
+    let cp = ch.codePointAt(0);
+    if (cp >= 0xd800 && cp < 0xe000) cp = 0xfffd; // medio par sustituto suelto: no es UTF-8 válido
     if (cp < 0x80) out.push(cp);
     else if (cp < 0x800) out.push(0xc0 | (cp >> 6), 0x80 | (cp & 63));
     else if (cp < 0x10000) out.push(0xe0 | (cp >> 12), 0x80 | ((cp >> 6) & 63), 0x80 | (cp & 63));
@@ -158,6 +159,7 @@ function fromB64(v) {
     if (i + 2 < t.length) bytes.push((n >> 8) & 255);
     if (i + 3 < t.length) bytes.push(n & 255);
   }
+  // UTF-8 estricto: secuencias demasiado largas, sustitutos o puntos > U+10FFFF se cambian por U+FFFD.
   let out = '';
   for (let i = 0; i < bytes.length;) {
     const b = bytes[i];
@@ -165,8 +167,13 @@ function fromB64(v) {
     let cp = 0xfffd, n = 1;
     if (b < 0x80) cp = b;
     else if (b >= 0xc2 && b < 0xe0 && cont(1)) { cp = ((b & 0x1f) << 6) | (bytes[i + 1] & 63); n = 2; }
-    else if (b >= 0xe0 && b < 0xf0 && cont(1) && cont(2)) { cp = ((b & 0x0f) << 12) | ((bytes[i + 1] & 63) << 6) | (bytes[i + 2] & 63); n = 3; }
-    else if (b >= 0xf0 && b < 0xf5 && cont(1) && cont(2) && cont(3)) { cp = ((b & 7) << 18) | ((bytes[i + 1] & 63) << 12) | ((bytes[i + 2] & 63) << 6) | (bytes[i + 3] & 63); n = 4; }
+    else if (b >= 0xe0 && b < 0xf0 && cont(1) && cont(2)) {
+      const c = ((b & 0x0f) << 12) | ((bytes[i + 1] & 63) << 6) | (bytes[i + 2] & 63);
+      if (c >= 0x800 && (c < 0xd800 || c > 0xdfff)) { cp = c; n = 3; }
+    } else if (b >= 0xf0 && b < 0xf5 && cont(1) && cont(2) && cont(3)) {
+      const c = ((b & 7) << 18) | ((bytes[i + 1] & 63) << 12) | ((bytes[i + 2] & 63) << 6) | (bytes[i + 3] & 63);
+      if (c >= 0x10000 && c <= 0x10ffff) { cp = c; n = 4; }
+    }
     out += String.fromCodePoint(cp);
     i += n;
   }
@@ -177,9 +184,16 @@ const oneLine = (s) => String(s == null ? '' : s).replace(/[\r\n]+/g, ' ').trim(
 function encHeader(s) {
   const v = oneLine(s);
   if (/^[\x20-\x7e]*$/.test(v)) return v;
+  // Trozos de hasta 45 bytes (60 caracteres en base64), sin partir un carácter ni un par sustituto.
   const parts = [];
-  for (let i = 0; i < v.length; i += 30) parts.push(`=?UTF-8?B?${toB64(v.slice(i, i + 30))}?=`);
-  return parts.join('\r\n ');
+  let cur = '', size = 0;
+  for (const ch of v) {
+    const n = utf8Bytes(ch).length;
+    if (size + n > 45) { parts.push(cur); cur = ''; size = 0; }
+    cur += ch; size += n;
+  }
+  if (cur) parts.push(cur);
+  return parts.map((p) => `=?UTF-8?B?${toB64(p)}?=`).join('\r\n ');
 }
 const wrap76 = (s) => s.replace(/.{1,76}/g, '$&\r\n');
 /**

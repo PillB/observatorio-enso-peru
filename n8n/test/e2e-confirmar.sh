@@ -11,10 +11,11 @@ set -euo pipefail
 IMG=$1
 WORK=$(mkdir -p "$2" && cd "$2" && pwd)
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
-NPORT=${N8N_TEST_PORT:-5679}
+# 5679 es el puerto del «task broker» de n8n 2.x: se usa otro.
+NPORT=${N8N_TEST_PORT:-5688}
 chmod 777 "$WORK"
 NAME="enso-confirmar-$$"
-trap 'docker logs "$NAME" > "$WORK/n8n.log" 2>&1 || true; docker rm -f "$NAME" >/dev/null 2>&1 || true' EXIT
+trap 'docker logs "$NAME" > "$WORK/n8n.log" 2>&1 || true; docker rm -f "$NAME" >/dev/null 2>&1 || true; [ -f "$WORK/ok" ] || tail -60 "$WORK/n8n.log" 2>/dev/null || true' EXIT
 
 cp "$ROOT/n8n/dist/enso-n8n-boletin-confirmar.json" "$WORK/confirmar.json"
 cat > "$WORK/credenciales.json" <<'JSON'
@@ -29,11 +30,13 @@ run "n8n import:credentials --input=/w/credenciales.json && n8n import:workflow 
 docker run -d --name "$NAME" --network host -u root -v "$WORK:/w" -e N8N_USER_FOLDER=/w/n8n-home \
   -e N8N_PORT="$NPORT" -e N8N_LISTEN_ADDRESS=0.0.0.0 -e NO_PROXY=127.0.0.1,localhost --entrypoint sh "$IMG" -c "n8n start" >/dev/null
 URL="http://127.0.0.1:$NPORT/webhook/enso-boletin-confirmar"
+ready=
 for _ in $(seq 1 90); do
   code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$URL" || true)
-  case "$code" in 000|404|5??) ;; *) break ;; esac
+  case "$code" in 000|404|5??) ;; *) ready=1; break ;; esac
   sleep 2
 done
+[ -n "$ready" ] || { echo "n8n no registró el webhook (último código: $code)"; exit 1; }
 
 # El mismo cuerpo que arma el sitio, con el código del sitio.
 node --input-type=module -e "
@@ -50,7 +53,8 @@ c=$(post falso "otro" pedido.json); echo "secreto falso: $c"; [ "$c" = 403 ] || 
 c=$(post bueno "secreto-de-prueba" pedido.json); echo "pedido del sitio: $c $(head -c 200 "$WORK/bueno.out")"
 c=$(post malo "secreto-de-prueba" malo.json); echo "pedido mal formado: $c"
 sleep 3
-docker rm -f "$NAME" >/dev/null 2>&1 || true
+# Parar n8n (sin borrarlo) para leer la base de datos ya escrita; los registros quedan para la trampa de salida.
+docker stop -t 20 "$NAME" >/dev/null 2>&1 || true
 # Las ejecuciones guardadas (n8n guarda las fallidas): la buena pasó «Armar correo»; la mala no.
 sudo python3 - "$WORK/n8n-home/.n8n/database.sqlite" <<'PY'
 import json, sqlite3, sys
@@ -101,3 +105,4 @@ assert "Enviar por Gmail" in bueno["nodos"], "el pedido del sitio debe llegar a 
 assert malo["error"] and "inválido" in malo["error"] and malo["ultimo"] == "Armar correo", "el pedido mal formado debe quedar en «Armar correo»"
 print("✓ «Armar correo» decodifica el pedido del sitio y llega a Gmail; el mal formado se rechaza")
 PY
+touch "$WORK/ok"

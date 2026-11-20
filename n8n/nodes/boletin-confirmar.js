@@ -2,12 +2,11 @@
 // con el secreto compartido en X-Enso-Secret (lo comprueba el disparador). El sitio arma el correo; aquí solo se
 // revisa que venga bien y se pasa al nodo Gmail.
 const cfg = $('Configuración').first().json;
-const raw = $input.first().json.body || {};
+// El pedido viene del disparador, no de la entrada: la entrada de este nodo es la salida de «Configuración».
+const raw = $('Pedido del sitio').first().json.body || {};
 // El sitio manda asunto y HTML en base64 (subject_b64, html_b64), porque el cortafuegos delante de n8n rechaza
 // pedidos con HTML en el cuerpo. Se aceptan también los campos en claro (subject, html).
-// fromB64 (lib/boletin.js) decodifica a mano: en algunos n8n el nodo Code no tiene Buffer, atob ni escape.
-const unb64 = fromB64;
-const b = { to: raw.to, subject: raw.subject_b64 != null ? unb64(raw.subject_b64) : raw.subject, html: raw.html_b64 != null ? unb64(raw.html_b64) : raw.html };
+const b = { to: raw.to, subject: raw.subject_b64 != null ? fromB64(raw.subject_b64) : raw.subject, html: raw.html_b64 != null ? fromB64(raw.html_b64) : raw.html };
 const [to] = parseRecipients(b.to);
 // El motivo (sin datos del pedido) queda en la ejecución de n8n, para saber qué arreglar.
 const why = !to || String(b.to).trim().toLowerCase() !== to ? 'destinatario («to») ausente, inválido o con más de una dirección'
