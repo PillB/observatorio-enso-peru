@@ -225,7 +225,7 @@ async function sendMail(env, msg) {
       const text = await r.text().catch(() => '');
       let j = null;
       try { j = JSON.parse(text); } catch { /* no es JSON */ }
-      if (j && j.ok === true) return { ok: true, detail: '' };
+      if (r.status === 202 || (j && j.ok === true)) return { ok: true, detail: '' }; // 202 solo lo pone «Responder»
       detail = `boletin: no se pudo mandar el correo de confirmación por webhook: n8n contestó HTTP ${r.status} sin confirmar el envío (${text.replace(/\s+/g, ' ').slice(0, 120) || 'vacío'}). El flujo «correo de confirmación» falló antes de «Responder»: ver su ejecución en n8n.`;
       console.error(detail);
       return { ok: false, detail };
