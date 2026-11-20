@@ -10,7 +10,7 @@ código). Por cada huella:
   corridas) sin añadir comentarios, para no generar ruido;
 * los issues abiertos cuya huella ya no aparece se cierran con un
   comentario que indica la corrida en que dejó de ocurrir;
-* salvo los de ``STICKY`` (un cambio de formato): que ya no aparezca no
+* salvo los de ``STICKY`` (un cambio de formato o una historia reescrita): que ya no aparezca no
   dice que los valores estén bien, así que se comentan una sola vez (marca
   oculta ``enso-gone`` en el cuerpo) y los cierra una persona. Si vuelve a
   aparecer con el issue aún abierto, se comenta (editar el cuerpo no le
@@ -39,7 +39,7 @@ LABEL = "incidente-datos"
 #: Incidencias esperadas que no requieren seguimiento.
 IGNORE = {"archive-channel", "carried-forward", "probe-found"}
 #: Incidencias que no se cierran solas: alguien tiene que revisar los valores publicados.
-STICKY = {"format-drift"}
+STICKY = {"format-drift", "history-rewritten"}
 FP_RE = re.compile(r"<!-- enso-fp:([0-9a-f]+) -->")
 COUNT_RE = re.compile(r"<!-- enso-count:(\d+) -->")
 CODE_RE = re.compile(r"\*\*Código:\*\* `([^`]+)`")

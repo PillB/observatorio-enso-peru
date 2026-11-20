@@ -1,0 +1,38 @@
+# Auditoría semanal de deriva (docs/auditoria-deriva-fuentes.md): relee con los lectores y las firmas de bloqueo
+# actuales las copias crudas que la corrida diaria guardó en data-archive la última semana y las compara de a pares
+# (python/enso/drift.py). La corrida diaria ya avisa cada día al leer; esta repasa la semana entera con el código de
+# hoy: un lector cambiado que ya no lee una copia reciente, una página de verificación que se archivó como fuente o
+# una serie reescrita entre dos versiones. Si encuentra algo, la corrida falla (GitHub avisa) y deja la lista como
+# artefacto. No pide nada a la red de las fuentes.
+name: drift-audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 10 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Fetch the raw-source archive
+        run: git fetch --no-tags --depth=1 origin data-archive
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -q -r python/requirements.txt
+      - name: Replay last week's archived responses
+        working-directory: python
+        run: python -m tools.drift_audit --ref FETCH_HEAD --days 8 --json "$RUNNER_TEMP/deriva.json"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: deriva
+          path: ${{ runner.temp }}/deriva.json
+          if-no-files-found: ignore
