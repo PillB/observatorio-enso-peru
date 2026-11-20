@@ -328,9 +328,10 @@ async function prefs(request, env, url, db, method) {
 }
 
 async function list(request, env, url, db) {
-  const auth = request.headers.get('Authorization') || '';
-  const want = env.BOLETIN_LIST_TOKEN ? `Bearer ${env.BOLETIN_LIST_TOKEN}` : '';
-  if (!want || String(env.BOLETIN_LIST_TOKEN).length < 24 || !same(auth, want)) return fail(401, 'No autorizado.');
+  // «Bearer <token>» o el token solo (en la credencial de n8n es fácil olvidar «Bearer »), sin espacios de más.
+  const auth = (request.headers.get('Authorization') || '').trim().replace(/^bearer\s+/i, '');
+  const want = String(env.BOLETIN_LIST_TOKEN || '').trim();
+  if (want.length < 24 || !same(auth, want)) return fail(401, 'No autorizado.');
   if (!enabled(env)) return fail(503, offMsg(env));
   const { results } = await db.prepare("SELECT id, email, freq, deps FROM boletin_subs WHERE status = 'activa' ORDER BY confirmed_at").all();
   const base = site(env, url);

@@ -135,6 +135,12 @@ describe('suscripción al boletín', () => {
     assert.deepEqual(rows(), []);
   });
 
+  it('la lista acepta «Bearer <token>» o el token solo, y nada más', async () => {
+    const get = (a) => req('lista', { method: 'GET', origin: null, headers: a == null ? {} : { Authorization: a } });
+    for (const a of [`Bearer ${LIST}`, `bearer  ${LIST} `, LIST]) assert.equal((await get(a)).status, 200, a);
+    for (const a of [null, '', 'Bearer', `Bearer ${LIST}x`, `Basic ${LIST}`, LIST.slice(1)]) assert.equal((await get(a)).status, 401, String(a));
+  });
+
   it('si falta un secreto, la lista y el diagnóstico dicen cuál (solo a quien tiene la clave)', async () => {
     delete env.BOLETIN_MAIL_WEBHOOK_SECRET;
     assert.deepEqual(await (await req('estado', { method: 'GET' })).json(), { ok: true, enabled: false });

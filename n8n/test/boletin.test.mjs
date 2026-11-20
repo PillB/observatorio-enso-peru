@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { libSource, nodeCode, WORKFLOWS } from '../build.mjs';
 
-const L = new Function(`${libSource('boletin')}\nreturn { parseRecipients, limaClock, pendingChanges, consolidate, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };`)();
+const L = new Function(`${libSource('boletin')}\nreturn { toB64, fromB64, parseRecipients, limaClock, pendingChanges, consolidate, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };`)();
 const H = 3600000;
 const NOW = Date.parse('2026-11-11T15:00:00Z'); // 10:00 en Lima
 
@@ -162,6 +162,18 @@ function runNode(name, { cfg, input, prior = {}, decided, list }) {
   const fn = new AsyncFunction('$', '$input', '$getWorkflowStaticData', nodeCode(name, { VERSION: 'test' }));
   return fn($, { first: () => ({ json: input }) }, () => st).then((out) => ({ out, st }));
 }
+
+test('base64 hecho a mano: igual que Buffer, con tildes, emoji, «url-safe» y sin relleno', () => {
+  for (const t of ['', 'a', 'ab', 'abc', 'Perú · ñandú', '🌊 El Niño 🌡️', '<!doctype html><p>añadir</p>'.repeat(50)]) {
+    assert.equal(L.toB64(t), Buffer.from(t, 'utf8').toString('base64'));
+    assert.equal(L.fromB64(L.toB64(t)), t);
+    assert.equal(L.fromB64(Buffer.from(t, 'utf8').toString('base64url')), t);
+  }
+  assert.equal(L.fromB64('UGVyw7o=\n'), 'Perú');
+  assert.equal(L.fromB64('<b>'), null);
+  assert.equal(L.fromB64('abcde'), null);
+  assert.equal(L.fromB64(42), null);
+});
 
 test('«Decidir envío» explica por qué no pudo leer la lista de suscripciones', async () => {
   const body = JSON.stringify(doc(2, [{ edition: 2, changes: [imm('Piura sube a rojo.')] }], { cutoff: new Date(Date.now() - H).toISOString() }));
@@ -364,7 +376,8 @@ test('el nodo de confirmación arma un correo para una sola dirección válida',
   assert.deepEqual(enc.out[0].json, { to: 'ana@x.pe', bcc: '', subject: 'Confirme · Perú', html: '<!doctype html><p>añadir</p>', senderName: 'Observatorio' });
   await assert.rejects(runNode('boletin-confirmar', { cfg, input: { body: { to: 'ana@x.pe', subject_b64: '<b>', html_b64: b64('h') } } }), /inválido/);
   // Sin Buffer (por si una versión de n8n no lo trae), con atob y tildes.
-  const noBuffer = new AsyncFunction('$', '$input', `const Buffer = undefined;\n${nodeCode('boletin-confirmar', { VERSION: 'test' })}`);
+  // Como en el n8n de producción (Code en «task runner»): sin Buffer, atob, escape ni TextDecoder.
+  const noBuffer = new AsyncFunction('$', '$input', `const Buffer = undefined, atob = undefined, btoa = undefined, escape = undefined, unescape = undefined, TextDecoder = undefined, TextEncoder = undefined;\n${nodeCode('boletin-confirmar', { VERSION: 'test' })}`);
   const nb = await noBuffer(() => ({ first: () => ({ json: cfg }) }), { first: () => ({ json: { body: { to: 'ana@x.pe', subject_b64: b64('Perú ñ'), html_b64: b64('<p>á</p>') } } }) });
   assert.equal(nb[0].json.subject, 'Perú ñ');
   assert.equal(nb[0].json.html, '<p>á</p>');
