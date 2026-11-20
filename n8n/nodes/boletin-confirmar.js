@@ -9,8 +9,11 @@ const raw = $input.first().json.body || {};
 const unb64 = fromB64;
 const b = { to: raw.to, subject: raw.subject_b64 != null ? unb64(raw.subject_b64) : raw.subject, html: raw.html_b64 != null ? unb64(raw.html_b64) : raw.html };
 const [to] = parseRecipients(b.to);
-if (!to || String(b.to).trim().toLowerCase() !== to || typeof b.subject !== 'string' || typeof b.html !== 'string' || b.html.length > 60000) {
-  throw new Error('Pedido de confirmación inválido');
-}
+// El motivo (sin datos del pedido) queda en la ejecución de n8n, para saber qué arreglar.
+const why = !to || String(b.to).trim().toLowerCase() !== to ? 'destinatario («to») ausente, inválido o con más de una dirección'
+  : typeof b.subject !== 'string' ? `asunto ausente o no es base64 válido (claves: ${Object.keys(raw).join(', ')}; subject_b64: ${typeof raw.subject_b64})`
+    : typeof b.html !== 'string' ? `HTML ausente o no es base64 válido (html_b64: ${typeof raw.html_b64}, ${String(raw.html_b64 || '').length} caracteres)`
+      : b.html.length > 60000 ? 'HTML de más de 60 000 caracteres' : '';
+if (why) throw new Error(`Pedido de confirmación inválido: ${why}`);
 // Para el nodo Gmail: destinatario, asunto y HTML (el nombre del remitente sale de «Configuración»).
 return [{ json: { to, bcc: '', subject: b.subject.replace(/[\r\n]+/g, ' ').slice(0, 200), html: b.html, senderName: cfg.sender_name || 'Observatorio ENSO Perú' } }];
