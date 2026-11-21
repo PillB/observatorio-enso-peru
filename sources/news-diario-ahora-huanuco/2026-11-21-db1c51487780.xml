@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Sat, 21 Nov 2026 13:03:50 GMT</lastBuildDate>
+    <pubDate>Sat, 21 Nov 2026 06:00:11 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Sismo de magnitud 6.7 en Junín bloquea vía en Ambo y deja sin luz a zonas de Huánuco</title>
+    <link>https://ahora.com.pe/regional/sismo-junin-ambo-huanuco-danos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-junin-ambo-huanuco-danos</guid>
+    <pubDate>Sat, 21 Nov 2026 06:00:11 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 6.7 con epicentro en Junín se sintió fuerte en Huánuco, Pasco y Lima la noche del viernes 20 de noviembre. Indeci reportó rocas sobre la vía en Ambo, daños en una iglesia de Tomayquichua y cortes de energía en varias localidades.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo Junín]]></category>
+    <category><![CDATA[Indeci]]></category>
+    <category><![CDATA[Tomay Kichwa]]></category>
+    <category><![CDATA[Tomayquichua]]></category>
+    <category><![CDATA[Ambo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/046141568fd3.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/046141568fd3.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/046141568fd3.webp"/>
+    <media:description type="plain"><![CDATA[El primer reporte preliminar del fuerte temblor de magnitud 6.7 registrado en Junín da cuenta de algunos daños en viviendas, caída de rocas sobre diversas vías, como la Carretera Central y corte del servicio eléctrico en diversas localidades de Junín, Pasco y Huánuco. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Bologna recibe a Udinese por la fecha 12: previa, hora y dónde ver</title>
+    <link>https://ahora.com.pe/deportes/bologna-udinese-fecha-12-serie-a-previa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/bologna-udinese-fecha-12-serie-a-previa</guid>
+    <pubDate>Sat, 21 Nov 2026 12:40:07 GMT</pubDate>
+    <description><![CDATA[Bologna y Udinese se enfrentan este domingo 22 de noviembre por la fecha 12 de la Serie A en el Renato Dall&apos;Ara, con arbitraje de Livio Marinelli. El local marcha octavo con 17 puntos y el visitante es último con 5.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Bologna]]></category>
+    <category><![CDATA[Udinese]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[fecha 12]]></category>
+    <category><![CDATA[Renato Dall'Ara]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e47585536df9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e47585536df9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e47585536df9.jpg"/>
+    <media:description type="plain"><![CDATA[Palpitamos la previa del choque entre Bologna y Udinese. Cuándo, dónde y a qué hora juegan, con el arbitraje de Livio Marinelli. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Florentino Pérez: &quot;No voy a parar hasta que se depuren responsabilidades&quot; por el caso Negreira</title>
+    <link>https://ahora.com.pe/deportes/florentino-perez-caso-negreira-responsabilidades</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/florentino-perez-caso-negreira-responsabilidades</guid>
+    <pubDate>Sat, 21 Nov 2026 11:50:08 GMT</pubDate>
+    <description><![CDATA[Florentino Pérez exigió en la Asamblea del Real Madrid investigar el caso Negreira hasta el final, criticó la inacción de LaLiga y la RFEF y pidió la dimisión de Javier Tebas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[caso Negreira]]></category>
+    <category><![CDATA[Florentino Pérez]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f858cae27474.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f858cae27474.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f858cae27474.jpg"/>
+    <media:description type="plain"><![CDATA[<b>Tardó, pero apareció el 'caso Negreira' en el discurso de Florentino Pérez</b>. "Les he hablado de todo, pero nada de esto tiene sentido si no podemos competir en igualdad de condiciones y proteger a nuestro club. Y aquí quiero hablarles del fútbol español y del 'caso Negreira', algo de lo que no — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Sismo de magnitud 6,7 sacude Junín y se siente en Lima</title>
+    <link>https://ahora.com.pe/regional/sismo-de-magnitud-6-7-sacude-junin-y-se-siente-en-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-de-magnitud-6-7-sacude-junin-y-se-siente-en-lima</guid>
+    <pubDate>Sat, 21 Nov 2026 11:36:14 GMT</pubDate>
+    <description><![CDATA[El IGP ubicó el epicentro a 30 km al noroeste de la ciudad de Junín y a 129 km de profundidad. Hasta el cierre no se reportaban daños.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo]]></category>
+    <category><![CDATA[Junín]]></category>
+    <category><![CDATA[IGP]]></category>
+    <category><![CDATA[Censis]]></category>
+    <category><![CDATA[Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6d0e394902b5.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6d0e394902b5.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6d0e394902b5.png"/>
+  </item>
+  <item>
+    <title>ACS actualiza guía del test de PSA: control cada dos años entre los 50 y 69 años</title>
+    <link>https://ahora.com.pe/sociedad/acs-actualiza-guia-test-psa-cancer-prostata</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/acs-actualiza-guia-test-psa-cancer-prostata</guid>
+    <pubDate>Sat, 21 Nov 2026 11:30:13 GMT</pubDate>
+    <description><![CDATA[La Sociedad Americana del Cáncer actualizó sus recomendaciones sobre el test de PSA y sugiere control cada dos años para hombres de riesgo promedio entre 50 y 69 años. Especialistas advierten que el análisis no diagnostica por sí solo y que un valor alto no equivale a cáncer.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[test de PSA]]></category>
+    <category><![CDATA[cáncer de próstata]]></category>
+    <category><![CDATA[Sociedad Americana del Cáncer]]></category>
+    <category><![CDATA[detección temprana]]></category>
+    <category><![CDATA[antígeno prostático específico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/49989d038243.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/49989d038243.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/49989d038243.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Racing Santander y Real Sociedad se miden este domingo por la fecha 13 de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/racing-santander-real-sociedad-fecha-13-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/racing-santander-real-sociedad-fecha-13-laliga</guid>
+    <pubDate>Sat, 21 Nov 2026 11:00:14 GMT</pubDate>
+    <description><![CDATA[Racing Santander y Real Sociedad se enfrentan este domingo 22 de noviembre en El Sardinero por la fecha 13 de LaLiga EA Sports, con el local décimo (14 puntos) y el visitante quinto (22).]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Racing Santander]]></category>
+    <category><![CDATA[Real Sociedad]]></category>
+    <category><![CDATA[LaLiga EA Sports]]></category>
+    <category><![CDATA[El Sardinero]]></category>
+    <category><![CDATA[fecha 13]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/005b7d409c71.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/005b7d409c71.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/005b7d409c71.jpg"/>
+    <media:description type="plain"><![CDATA[En la previa de Racing Santander vs Real Sociedad, todo lo que tienes que saber de la cita que está prevista para este domingo 22 de noviembre desde las 10:15 horas en el estadio el Sardinero. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Barcelona recibe al Villarreal con la punta de LaLiga en juego</title>
+    <link>https://ahora.com.pe/deportes/barcelona-villarreal-laliga-fecha-13</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/barcelona-villarreal-laliga-fecha-13</guid>
+    <pubDate>Sat, 21 Nov 2026 09:30:09 GMT</pubDate>
+    <description><![CDATA[Barcelona, puntero con 33 puntos, enfrenta al Villarreal este domingo en el Camp Nou por la fecha 13 de LaLiga, con la misión de sostener el liderato del torneo español.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Villarreal]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[Camp Nou]]></category>
+    <category><![CDATA[fecha 13]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e36734bfe117.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e36734bfe117.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e36734bfe117.jpg"/>
+    <media:description type="plain"><![CDATA[Barcelona y Villarreal se enfrentan en el estadio Camp Nou. El duelo se jugará el domingo 22 de noviembre desde las 08:00 horas. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Harden anota 51 puntos a los 37 años y supera a Kobe en partidos de 50+</title>
+    <link>https://ahora.com.pe/deportes/harden-51-puntos-supera-kobe</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/harden-51-puntos-supera-kobe</guid>
+    <pubDate>Sat, 21 Nov 2026 08:30:10 GMT</pubDate>
+    <description><![CDATA[James Harden anotó 51 puntos en la victoria de los Cavaliers 128-119 sobre los Pacers y superó a Kobe Bryant con su vigesimosexto partido de 50 o más puntos en la NBA.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[James Harden]]></category>
+    <category><![CDATA[Cleveland Cavaliers]]></category>
+    <category><![CDATA[Indiana Pacers]]></category>
+    <category><![CDATA[Copa NBA]]></category>
+    <category><![CDATA[Kobe Bryant]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c33a8c60e17e.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c33a8c60e17e.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c33a8c60e17e.webp"/>
+    <media:description type="plain"><![CDATA[Más sabe el diablo por viejo que por diablo, decía el dicho. En su decimoctava temporada como jugador profesional y tras casi 1.500 partidos jugados entre regular season y Playoffs, James Harden sigue teniendo cosas por demostrar. Una de ellas es la de seguir batiendo récords, como la de la última n — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Sport Huancayo fija venta de entradas solo en Tiendas Manchete para el duelo ante Universitario</title>
+    <link>https://ahora.com.pe/deportes/sport-huancayo-venta-entradas-universitario-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-huancayo-venta-entradas-universitario-clausura-2026</guid>
+    <pubDate>Sat, 21 Nov 2026 07:50:06 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo anunció que la venta de entradas para el partido ante Universitario por la fecha 17 del Clausura 2026 se realiza exclusivamente en Tiendas Manchete, en Huancayo, a 200 soles, para evitar estafas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[entradas]]></category>
+    <category><![CDATA[Estadio IPD Huancayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/98b147571a3b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/98b147571a3b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/98b147571a3b.jpg"/>
+    <media:description type="plain"><![CDATA[Sport Huancayo recibirá el domingo a Universitario de Deportes en la última fecha del Torneo Clausura 2026. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Soccer Tingo María campeón sub-12 de Huánuco y clasificado al nacional de Trujillo</title>
+    <link>https://ahora.com.pe/deportes/soccer-tingo-maria-campeon-sub-12-nacional-trujillo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/soccer-tingo-maria-campeon-sub-12-nacional-trujillo</guid>
+    <pubDate>Sat, 21 Nov 2026 07:40:07 GMT</pubDate>
+    <description><![CDATA[La Academia Soccer Tingo María se coronó campeona de Huánuco en la sub-12 del Torneo Creciendo con el Fútbol Femenino y representará a la región en la etapa nacional de Trujillo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Soccer Tingo María]]></category>
+    <category><![CDATA[Creciendo con el Fútbol Femenino]]></category>
+    <category><![CDATA[sub-12]]></category>
+    <category><![CDATA[Trujillo]]></category>
+    <category><![CDATA[fútbol femenino Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cd58813c503b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cd58813c503b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cd58813c503b.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Juzgado Civil de Leoncio Prado atiende este sábado en jornada extraordinaria</title>
+    <link>https://ahora.com.pe/regional/jornada-extraordinaria-juzgado-civil-leoncio-prado</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/jornada-extraordinaria-juzgado-civil-leoncio-prado</guid>
+    <pubDate>Sat, 21 Nov 2026 07:20:06 GMT</pubDate>
+    <description><![CDATA[El Juzgado Civil Permanente de Leoncio Prado realiza este sábado 21 de noviembre una Jornada Judicial Extraordinaria Voluntaria, autorizada por la Corte Superior de Justicia de Huánuco, para reducir la carga procesal y atender escritos y demandas pendientes.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Juzgado Civil Leoncio Prado]]></category>
+    <category><![CDATA[jornada judicial extraordinaria]]></category>
+    <category><![CDATA[Corte Superior de Justicia de Huánuco]]></category>
+    <category><![CDATA[carga procesal]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2278b5873657.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2278b5873657.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2278b5873657.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Alan Ruschel, superviviente del Chapecoense, se retira con el ascenso del Juventude</title>
+    <link>https://ahora.com.pe/deportes/alan-ruschel-retira-ascenso-juventude</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alan-ruschel-retira-ascenso-juventude</guid>
+    <pubDate>Sat, 21 Nov 2026 06:50:07 GMT</pubDate>
+    <description><![CDATA[Alan Ruschel, uno de los seis supervivientes del accidente aéreo del Chapecoense en 2016, se retiró del fútbol profesional a los 37 años después de conseguir el ascenso del Juventude a la Serie A brasileña.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alan Ruschel]]></category>
+    <category><![CDATA[Chapecoense]]></category>
+    <category><![CDATA[Juventude]]></category>
+    <category><![CDATA[accidente aéreo]]></category>
+    <category><![CDATA[Serie B brasileña]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/83155ed17438.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/83155ed17438.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/83155ed17438.webp"/>
+    <media:description type="plain"><![CDATA[<b>Alan Ruschel</b>&nbsp;fue uno de los seis supervivientes de la tragedia que el 28 de noviembre de 2016 sufrió el <b>Chapecoense</b> al estrellarse cerca de Medellín el avión en que viajaba para disputar la final de la Copa Sudamericana ante el <b>Atlético Nacional</b> colombiano. Tardó muchos mes — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>CNTPE aprueba por unanimidad 13 medidas para proteger el empleo frente a El Niño</title>
+    <link>https://ahora.com.pe/regional/cntpe-aprueba-13-medidas-empleo-el-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/cntpe-aprueba-13-medidas-empleo-el-nino</guid>
+    <pubDate>Sat, 21 Nov 2026 06:40:06 GMT</pubDate>
+    <description><![CDATA[El Consejo Nacional de Trabajo y Promoción del Empleo aprobó por unanimidad 13 medidas para proteger el empleo y afrontar los efectos del fenómeno El Niño. La sesión, liderada por el ministro Juan Sheput, también fijó un plazo de tres meses para una propuesta técnica sobre el ajuste del sueldo mínimo.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[CNTPE]]></category>
+    <category><![CDATA[El Niño]]></category>
+    <category><![CDATA[empleo]]></category>
+    <category><![CDATA[Juan Sheput]]></category>
+    <category><![CDATA[sueldo mínimo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7b78210eb39e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7b78210eb39e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7b78210eb39e.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Presidenta Fujimori destaca acuerdos y reuniones en APEC y anuncia apoyo por 45 millones de dólares</title>
+    <link>https://ahora.com.pe/politica/fujimori-acuerdos-reuniones-apec</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/fujimori-acuerdos-reuniones-apec</guid>
+    <pubDate>Sat, 21 Nov 2026 06:40:06 GMT</pubDate>
+    <description><![CDATA[La presidenta Fujimori hizo un balance de su participación en APEC en Shenzhen, donde se firmó un ALC con Tailandia y se anunciaron donaciones de China y Corea. Luego inició una visita oficial a Japón.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[APEC]]></category>
+    <category><![CDATA[Fujimori]]></category>
+    <category><![CDATA[acuerdo comercial Tailandia]]></category>
+    <category><![CDATA[donaciones China]]></category>
+    <category><![CDATA[visita Japón]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c3ef365338e2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c3ef365338e2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c3ef365338e2.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Reino Unido y la UE alcanzan tres acuerdos para estrechar lazos tras el Brexit</title>
+    <link>https://ahora.com.pe/mundo/reino-unido-ue-tres-acuerdos-brexit</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/reino-unido-ue-tres-acuerdos-brexit</guid>
+    <pubDate>Sat, 21 Nov 2026 06:30:10 GMT</pubDate>
+    <description><![CDATA[Reino Unido y la Unión Europea suscribieron tres acuerdos para mejorar su relación tras el Brexit, entre ellos uno sobre normativas fitosanitarias que permitirá al país recuperar parte del mercado perdido.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Reino Unido]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[Brexit]]></category>
+    <category><![CDATA[Andy Burnham]]></category>
+    <category><![CDATA[acuerdo fitosanitario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4c0365297763.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4c0365297763.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4c0365297763.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Perú: anemia infantil afecta al 43,4% y violencia escolar reporta 20.492 casos</title>
+    <link>https://ahora.com.pe/regional/peru-anemia-infantil-violencia-escolar-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/peru-anemia-infantil-violencia-escolar-2026</guid>
+    <pubDate>Sat, 21 Nov 2026 06:20:06 GMT</pubDate>
+    <description><![CDATA[El 43,4% de niños de 6 a 35 meses tiene anemia en Perú, según la Endes 2025. La violencia escolar reportó 20.492 casos entre enero y octubre de 2026, superando todo 2025, y el Ceplan alerta sobre nuevas formas de acoso digital.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[anemia infantil]]></category>
+    <category><![CDATA[violencia escolar]]></category>
+    <category><![CDATA[trabajo infantil]]></category>
+    <category><![CDATA[Ceplan]]></category>
+    <category><![CDATA[Endes 2025]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9baaf795b975.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9baaf795b975.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9baaf795b975.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>TC dejó al voto demanda contra ampliación del Reinfo presentada por Colegio de Abogados de Loreto</title>
+    <link>https://ahora.com.pe/politica/tc-dejo-al-voto-demanda-reinfo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/tc-dejo-al-voto-demanda-reinfo</guid>
+    <pubDate>Sat, 21 Nov 2026 06:10:10 GMT</pubDate>
+    <description><![CDATA[El Tribunal Constitucional dejó al voto la demanda del Colegio de Abogados de Loreto contra la ampliación del Reinfo y disposiciones del Código Penal sobre minería ilegal. El abogado César Ipenza cuestionó el régimen y la Ley MAPE.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Reinfo]]></category>
+    <category><![CDATA[Tribunal Constitucional]]></category>
+    <category><![CDATA[minería ilegal]]></category>
+    <category><![CDATA[Ley MAPE]]></category>
+    <category><![CDATA[César Ipenza]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d33b48398233.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d33b48398233.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d33b48398233.jpg"/>
+    <media:description type="plain"><![CDATA[El abogado señaló que la demanda busca poner fin al proceso de formalización minera, que lleva 24 años, y la eliminación de los mecanismos que impiden procesar por el delito de minería ilegal a los inscritos en el registro. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>GP de México: la trastienda de tres días de F1, velocidad y adrenalina en CDMX</title>
+    <link>https://ahora.com.pe/deportes/gran-premio-mexico-2026-record-asistencia-derrama</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gran-premio-mexico-2026-record-asistencia-derrama</guid>
+    <pubDate>Sat, 21 Nov 2026 06:10:09 GMT</pubDate>
+    <description><![CDATA[El Gran Premio de México 2026 batió récord de asistencia con 405,363 personas y generó 21 mil millones de pesos, en una edición marcada por el regreso de Checo Pérez y el título de Kimi Antonelli.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gran Premio de México]]></category>
+    <category><![CDATA[Fórmula 1]]></category>
+    <category><![CDATA[Checo Pérez]]></category>
+    <category><![CDATA[Autódromo Hermanos Rodríguez]]></category>
+    <category><![CDATA[Kimi Antonelli]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4e9c3142e753.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4e9c3142e753.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4e9c3142e753.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>De la Espriella niega rechazo a cooperación militar con EE.UU. tras polémica por publicación</title>
+    <link>https://ahora.com.pe/mundo/de-la-espriella-niega-rechazo-cooperacion-militar-eeuu</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/de-la-espriella-niega-rechazo-cooperacion-militar-eeuu</guid>
+    <pubDate>Sat, 21 Nov 2026 05:50:07 GMT</pubDate>
+    <description><![CDATA[El presidente de Colombia, Abelardo de la Espriella, negó la versión del &apos;New York Times&apos; sobre un supuesto rechazo a la cooperación militar con Estados Unidos contra el narcotráfico, luego de la visita del secretario de Defensa estadounidense a Colombia.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Abelardo de la Espriella]]></category>
+    <category><![CDATA[cooperación militar]]></category>
+    <category><![CDATA[Estados Unidos]]></category>
+    <category><![CDATA[Colombia]]></category>
+    <category><![CDATA[narcotráfico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e172fe7689b1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e172fe7689b1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e172fe7689b1.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Gobierno otorga bono de S/ 200 a pensionistas de la ONP y se pagará con la pensión de diciembre</title>
+    <link>https://ahora.com.pe/economia/bono-200-pensionistas-onp-diciembre-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/bono-200-pensionistas-onp-diciembre-2026</guid>
+    <pubDate>Sat, 21 Nov 2026 05:50:07 GMT</pubDate>
+    <description><![CDATA[El Gobierno autorizó un bono extraordinario de S/ 200 para pensionistas del SNP de la ONP, que se pagará con la pensión de diciembre de 2026. La medida busca mitigar la pérdida de capacidad adquisitiva por el Fenómeno El Niño.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[bono ONP]]></category>
+    <category><![CDATA[pensionistas]]></category>
+    <category><![CDATA[Sistema Nacional de Pensiones]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <category><![CDATA[pensión diciembre 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4bbbcf0efe8d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4bbbcf0efe8d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4bbbcf0efe8d.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco: sismo de magnitud 6.7 en Junín bloquea la Carretera Central en Tomayquichua</title>
+    <link>https://ahora.com.pe/regional/sismo-junin-bloquea-carretera-central-tomayquichua</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-junin-bloquea-carretera-central-tomayquichua</guid>
+    <pubDate>Sat, 21 Nov 2026 05:40:07 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 6.7 con epicentro en Junín provocó un derrumbe de piedras que bloqueó la Carretera Central en el tramo Huánuco-Ambo, a la altura de Tomayquichua, según el COER Huánuco.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo Junín]]></category>
+    <category><![CDATA[Carretera Central]]></category>
+    <category><![CDATA[Tomayquichua]]></category>
+    <category><![CDATA[COER Huánuco]]></category>
+    <category><![CDATA[derrumbe Huánuco Ambo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9615ce1b0180.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9615ce1b0180.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9615ce1b0180.jpg"/>
+    <media:description type="plain"><![CDATA[El movimiento telúrico se localizó a 30 kilómetros al noroeste de la provincia de Junín, con una profundidad de 129 kilómetros. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Sismo de magnitud 6,7 en Junín: reportan rocas en la Carretera Central y corte de luz en Satipo</title>
+    <link>https://ahora.com.pe/politica/sismo-magnitud-67-junin-carretera-central-satipo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/sismo-magnitud-67-junin-carretera-central-satipo</guid>
+    <pubDate>Sat, 21 Nov 2026 05:40:06 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 6,7 con epicentro en Junín se sintió la noche del viernes 20 de noviembre y también en Lima. Se reportaron rocas en la Carretera Central a la altura de Jauja y un corte de luz en Satipo, sin confirmación oficial de Electrocentro.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[sismo en Junín]]></category>
+    <category><![CDATA[magnitud 6,7]]></category>
+    <category><![CDATA[IGP CENSIS]]></category>
+    <category><![CDATA[Carretera Central Jauja]]></category>
+    <category><![CDATA[corte de luz Satipo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5e7733f7bf99.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5e7733f7bf99.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5e7733f7bf99.jpg"/>
+    <media:description type="plain"><![CDATA[Terremoto / Earthquake 15/08/07 — Foto: Miguel Vera (openverse-by)]]></media:description>
+  </item>
+  <item>
+    <title>Huánuco inicia festejos por el Día de la Canción Huanuqueña con exposición y festivales</title>
+    <link>https://ahora.com.pe/regional/dia-cancion-huanuquena-programa-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/dia-cancion-huanuquena-programa-2026</guid>
+    <pubDate>Sat, 21 Nov 2026 05:20:06 GMT</pubDate>
+    <description><![CDATA[Huánuco celebra el Día de la Canción Huanuqueña con un programa oficial que incluye exposición fotográfica, festivales de coros y música tradicional, conferencia magistral y concierto central el 30 de noviembre.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Día de la Canción Huanuqueña]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[programa cultural]]></category>
+    <category><![CDATA[música tradicional]]></category>
+    <category><![CDATA[Dirección Desconcentrada de Cultura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/19f556c0be48.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/19f556c0be48.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/19f556c0be48.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>MTC: 51 empresas de 12 países interesadas en contratar el túnel Pariachi</title>
+    <link>https://ahora.com.pe/economia/mtc-51-empresas-interes-tunel-pariachi</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/mtc-51-empresas-interes-tunel-pariachi</guid>
+    <pubDate>Sat, 21 Nov 2026 05:10:08 GMT</pubDate>
+    <description><![CDATA[El ministro de Transportes y Comunicaciones, Angello Tangherlini, anunció que 51 empresas de 12 países expresaron interés en la contratación del túnel Pariachi, obra clave de la nueva Carretera Central. El proyecto, con una inversión de S/ 25,500 millones, unirá Ate con La Oroya a lo largo de más de 180 kilómetros.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Carretera Central]]></category>
+    <category><![CDATA[túnel Pariachi]]></category>
+    <category><![CDATA[MTC]]></category>
+    <category><![CDATA[Angello Tangherlini]]></category>
+    <category><![CDATA[infraestructura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b990ac1a6ba7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b990ac1a6ba7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b990ac1a6ba7.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Putin invita a la UE a Moscú para que explique su postura sobre Ucrania</title>
+    <link>https://ahora.com.pe/mundo/putin-invita-ue-moscu-negociaciones-ucrania</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/putin-invita-ue-moscu-negociaciones-ucrania</guid>
+    <pubDate>Sat, 21 Nov 2026 05:10:07 GMT</pubDate>
+    <description><![CDATA[Vladimir Putin anunció que Rusia invitó por canales diplomáticos a representantes de la Unión Europea a Moscú para conocer su agenda en las negociaciones de paz con Ucrania, aunque no confirmó si les dará asiento en la mesa.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Putin]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[negociaciones de paz]]></category>
+    <category><![CDATA[Ucrania]]></category>
+    <category><![CDATA[Moscú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/496140f1593a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/496140f1593a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/496140f1593a.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Sismo de 6.7 con epicentro en Junín deja daños en Huánuco y otras regiones</title>
+    <link>https://ahora.com.pe/regional/sismo-67-junin-danos-huanuco-indeci</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-67-junin-danos-huanuco-indeci</guid>
+    <pubDate>Sat, 21 Nov 2026 05:00:12 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 6.7 con epicentro en Junín se sintió la noche del viernes 20 de noviembre en el centro del país. Indeci reportó daños en Huánuco, Pasco, Chanchamayo y Tarma, con derrumbes de rocas y cortes de energía. No se reportaron personas lesionadas en el balance preliminar.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo Junín]]></category>
+    <category><![CDATA[Indeci]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Tomayquichua]]></category>
+    <category><![CDATA[Ambo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/109b2473ab2f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/109b2473ab2f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/109b2473ab2f.jpg"/>
+    <media:description type="plain"><![CDATA[Terremoto / Earthquake 15/08/07 — Foto: Miguel Vera (openverse-by)]]></media:description>
+  </item>
+  <item>
+    <title>Sismo de magnitud 6,7 en Junín se sintió en Huánuco y Lima</title>
+    <link>https://ahora.com.pe/regional/sismo-magnitud-67-junin-huanuco-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-magnitud-67-junin-huanuco-lima</guid>
+    <pubDate>Sat, 21 Nov 2026 04:40:07 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 6,7 con epicentro en Junín se sintió la noche del viernes 20 de noviembre en Lima, Huánuco, Ica, Áncash, La Libertad y el Callao. El IGP reportó una profundidad de 129 kilómetros e intensidad V en la zona del epicentro. Las autoridades no confirmaron víctimas ni daños de consideración.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo]]></category>
+    <category><![CDATA[Junín]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[IGP]]></category>
+    <category><![CDATA[magnitud 6,7]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8b73351ee8cb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8b73351ee8cb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8b73351ee8cb.jpg"/>
+    <media:description type="plain"><![CDATA[El sismo de magnitud 6,7 sacudió se sintió, además de Lima, en varias regiones del país, entre ellas Ica, Áncash, La Libertad, Huánuco y Callao. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Edgar Lastre elogia a Alianza Lima tras rumores de fichaje: &quot;Es un equipo grande&quot;</title>
+    <link>https://ahora.com.pe/deportes/edgar-lastre-alianza-lima-rumores-fichaje-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/edgar-lastre-alianza-lima-rumores-fichaje-2027</guid>
+    <pubDate>Sat, 21 Nov 2026 04:30:13 GMT</pubDate>
+    <description><![CDATA[Edgar Lastre, atacante de CD Moquegua vinculado a Alianza Lima para 2027, destacó la exigencia de los equipos grandes, confirmó ofertas de Asia y reveló su amistad con jugadores blanquiazules.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Edgar Lastre]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[CD Moquegua]]></category>
+    <category><![CDATA[fichajes 2027]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2af5e9a6947d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2af5e9a6947d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2af5e9a6947d.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El Semíramis: 286 españoles que dejaron el Gulag soviético en 1954</title>
+    <link>https://ahora.com.pe/mundo/semiramis-286-espanoles-gulag-1954</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/semiramis-286-espanoles-gulag-1954</guid>
+    <pubDate>Sat, 21 Nov 2026 04:20:08 GMT</pubDate>
+    <description><![CDATA[La Segunda Guerra Mundial terminó en Europa el 8 de mayo de 1945, pero cientos de españoles seguían retenidos en la URSS. El 2 de abril de 1954, el buque Semíramis desembarcó en Barcelona a 286 repatriados tras años de gestiones de la Cruz Roja.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Semíramis]]></category>
+    <category><![CDATA[prisioneros españoles URSS]]></category>
+    <category><![CDATA[División Azul]]></category>
+    <category><![CDATA[Gulag]]></category>
+    <category><![CDATA[repatriación 1954]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7184216e15de.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7184216e15de.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7184216e15de.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Gobierno anuncia paquete de apoyo para pescadores por El Niño 2026-2027</title>
+    <link>https://ahora.com.pe/economia/gobierno-paquete-apoyo-pescadores-nino-2026-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/gobierno-paquete-apoyo-pescadores-nino-2026-2027</guid>
+    <pubDate>Sat, 21 Nov 2026 04:20:07 GMT</pubDate>
+    <description><![CDATA[El Consejo de Ministros aprobó un decreto de urgencia con más de S/ 155 millones para proteger los ingresos de pescadores artesanales e industriales frente al fenómeno El Niño 2026-2027, con un bono de S/ 1,500 y apoyo financiero a mypes.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[pescadores artesanales]]></category>
+    <category><![CDATA[fenómeno El Niño]]></category>
+    <category><![CDATA[bono extraordinario]]></category>
+    <category><![CDATA[Produce]]></category>
+    <category><![CDATA[créditos mypes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2ef8faa83c02.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2ef8faa83c02.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2ef8faa83c02.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Xavi Espart renueva con el Barça hasta 2030 y Koundé apunta al Villarreal</title>
+    <link>https://ahora.com.pe/deportes/xavi-espart-renueva-barca-2030-kounde-villarreal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/xavi-espart-renueva-barca-2030-kounde-villarreal</guid>
+    <pubDate>Sat, 21 Nov 2026 03:40:07 GMT</pubDate>
+    <description><![CDATA[Xavi Espart firmó su renovación con el FC Barcelona hasta 2030 y Jules Koundé avanza en su recuperación para estar disponible ante el Villarreal.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Xavi Espart]]></category>
+    <category><![CDATA[Jules Koundé]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <category><![CDATA[Villarreal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b8a8007e0d71.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b8a8007e0d71.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b8a8007e0d71.webp"/>
+    <media:description type="plain"><![CDATA[El <b>Barça</b> vive días de movimientos importantes dentro y fuera del terreno de juego. <b>Xavi Espart</b>, una de las grandes apuestas de futuro del club, firmó su renovación hasta 2030 tras consolidarse en los planes de <b>Hansi Flick</b>. Por su parte,<b> Jules Koundé</b> acelera su recuperació — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>RPP sortea entradas dobles para Alianza Lima vs. UTC y Alianza vs. Universitario</title>
+    <link>https://ahora.com.pe/deportes/rpp-sorteo-entradas-alianza-lima-utc-universitario</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/rpp-sorteo-entradas-alianza-lima-utc-universitario</guid>
+    <pubDate>Sat, 21 Nov 2026 02:50:06 GMT</pubDate>
+    <description><![CDATA[RPP sortea entradas dobles para Alianza Lima vs. UTC y Alianza vs. Universitario en la Liga Femenina a través de su programa Fútbol como Cancha este 20 de noviembre.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[UTC]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Liga Femenina]]></category>
+    <category><![CDATA[sorteo de entradas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4b53ec55f6ae.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4b53ec55f6ae.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4b53ec55f6ae.jpg"/>
+    <media:description type="plain"><![CDATA[Para participar sólo deberás estar en sintonía de la programación de RPP: Fútbol como Cancha — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Temblor de 6.7 sorprendió a Alianza Lima concentrado antes de jugar con FC Cajamarca</title>
+    <link>https://ahora.com.pe/deportes/temblor-67-sorpreso-alianza-lima-concentracion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/temblor-67-sorpreso-alianza-lima-concentracion</guid>
+    <pubDate>Sat, 21 Nov 2026 02:20:07 GMT</pubDate>
+    <description><![CDATA[Un temblor de magnitud 6.7 con epicentro en Junín se sintió en Lima mientras Alianza Lima se concentraba en el Hotel Hilton de Miraflores, previo a su duelo ante FC Cajamarca por la fecha 17 del Torneo Clausura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[temblor 6.7]]></category>
+    <category><![CDATA[FC Cajamarca]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[Hotel Hilton Miraflores]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a787d350ca1e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a787d350ca1e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a787d350ca1e.jpg"/>
+    <media:description type="plain"><![CDATA[Un fuerte temblor sacudió nuestro país cuando Alianza Lima se encontraba concentrado en el Hotel Hilton para afrontar su encuentro ante FC Cajamarca. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Conmebol ratifica apoyo unánime a la reelección de Infantino en la FIFA</title>
+    <link>https://ahora.com.pe/deportes/conmebol-ratifica-apoyo-reeleccion-infantino-fifa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/conmebol-ratifica-apoyo-reeleccion-infantino-fifa</guid>
+    <pubDate>Sat, 21 Nov 2026 02:00:12 GMT</pubDate>
+    <description><![CDATA[La Conmebol expresó su firme apoyo a la reelección de Gianni Infantino como presidente de la FIFA, de cara a las elecciones de marzo en Marruecos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Conmebol]]></category>
+    <category><![CDATA[Gianni Infantino]]></category>
+    <category><![CDATA[FIFA]]></category>
+    <category><![CDATA[reelección]]></category>
+    <category><![CDATA[elecciones FIFA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d8738bfebff4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d8738bfebff4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d8738bfebff4.jpg"/>
+    <media:description type="plain"><![CDATA[La Conmebol respalda a Gianni Infantino en su búsqueda de un cuarto mandato como presidente de la FIFA. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Empresas que Transforman 2026 reconoce 30 iniciativas de negocio con impacto social</title>
+    <link>https://ahora.com.pe/deportes/empresas-que-transforman-2026-30-iniciativas-reconocidas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/empresas-que-transforman-2026-30-iniciativas-reconocidas</guid>
+    <pubDate>Sat, 21 Nov 2026 01:10:07 GMT</pubDate>
+    <description><![CDATA[Empresas que Transforman 2026 reconoció 30 iniciativas empresariales de inclusión financiera, salud y economía circular, elegidas entre 78 postulaciones de 70 compañías de 12 sectores.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Empresas que Transforman 2026]]></category>
+    <category><![CDATA[iniciativas empresariales]]></category>
+    <category><![CDATA[economía circular]]></category>
+    <category><![CDATA[inclusión financiera]]></category>
+    <category><![CDATA[CADE Ejecutivos 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/84c4186d7eb7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/84c4186d7eb7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/84c4186d7eb7.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>LII Magisterial de Fútbol cierra su liguilla final este sábado en Chupaca</title>
+    <link>https://ahora.com.pe/deportes/lii-magisterial-futbol-liguilla-final-chupaca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/lii-magisterial-futbol-liguilla-final-chupaca</guid>
+    <pubDate>Fri, 20 Nov 2026 23:20:07 GMT</pubDate>
+    <description><![CDATA[La liguilla final del LII Campeonato Magisterial de Fútbol cierra este sábado en Chupaca, con trece partidos en grass natural y sintético desde las 8 de la mañana.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[fútbol magisterial]]></category>
+    <category><![CDATA[liguilla final]]></category>
+    <category><![CDATA[Chupaca]]></category>
+    <category><![CDATA[Santa Isabel]]></category>
+    <category><![CDATA[campeonato docente]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c675f7f3ddb8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c675f7f3ddb8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c675f7f3ddb8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Morelos: cuatro estudiantes de la UAEM asesinadas en lo que va de 2026</title>
+    <link>https://ahora.com.pe/policiales/morelos-cuatro-estudiantes-uaem-asesinadas-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/morelos-cuatro-estudiantes-uaem-asesinadas-2026</guid>
+    <pubDate>Fri, 20 Nov 2026 22:40:06 GMT</pubDate>
+    <description><![CDATA[Morelos acumula cuatro estudiantes de la UAEM asesinadas en 2026, entre ellas la española Claudia Tacoronte Aguilera, atacada en Cuautla. La Fiscalía investiga el caso como feminicidio y busca a un sospechoso.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Morelos]]></category>
+    <category><![CDATA[feminicidios]]></category>
+    <category><![CDATA[UAEM]]></category>
+    <category><![CDATA[Claudia Tacoronte]]></category>
+    <category><![CDATA[México]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c2db9d6ffd30.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c2db9d6ffd30.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c2db9d6ffd30.jpg"/>
+    <media:description type="plain"><![CDATA[Bandera mexicana — Foto: Jorge Aguilar (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Columna de opinión reclama permisos universales para la primera infancia en España</title>
+    <link>https://ahora.com.pe/opinion/petra-permisos-universales-primera-infancia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/petra-permisos-universales-primera-infancia</guid>
+    <pubDate>Fri, 20 Nov 2026 22:30:09 GMT</pubDate>
+    <description><![CDATA[Una columna de opinión de tres portavoces de la asociación PETRA Maternidades Feministas aborda los derechos de la primera infancia en España. El texto cuestiona que los permisos por nacimiento dependan de la cotización laboral y pide permisos universales, preparto y puerperal.]]></description>
+    <dc:creator><![CDATA[Diario Ahora]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <category><![CDATA[permisos por nacimiento]]></category>
+    <category><![CDATA[Convención sobre los Derechos del Niño]]></category>
+    <category><![CDATA[PETRA Maternidades Feministas]]></category>
+    <category><![CDATA[familias monomarentales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7612a24625e1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7612a24625e1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7612a24625e1.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>FPF ratifica sanción a Franco Navarro y se perderá las finales de la Liga 1</title>
+    <link>https://ahora.com.pe/deportes/fpf-ratifica-sancion-franco-navarro-finales-liga-1</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fpf-ratifica-sancion-franco-navarro-finales-liga-1</guid>
+    <pubDate>Fri, 20 Nov 2026 21:50:06 GMT</pubDate>
+    <description><![CDATA[La FPF ratificó la sanción de tres fechas contra Franco Navarro, director deportivo de Alianza Lima, por un altercado con Horacio Melgarejo tras el partido ante Cienciano. Se perderá el cierre del Clausura y las finales de la Liga 1 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Franco Navarro]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[FPF]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[sanción]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/605edf7a3dfc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/605edf7a3dfc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/605edf7a3dfc.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Familia denuncia que paciente oncológico contrajo viruela del mono en el Almenara</title>
+    <link>https://ahora.com.pe/sociedad/paciente-oncologico-viruela-mono-almenara</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/paciente-oncologico-viruela-mono-almenara</guid>
+    <pubDate>Fri, 20 Nov 2026 21:40:06 GMT</pubDate>
+    <description><![CDATA[Jorge Chirinos Cavero, paciente oncológico de 53 años, habría contraído viruela del mono tras un trasplante de médula ósea en el Hospital Almenara de EsSalud. Su familia denuncia demora en la atención y pide intervención de la presidenta de EsSalud.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[viruela del mono]]></category>
+    <category><![CDATA[hospital Almenara]]></category>
+    <category><![CDATA[EsSalud]]></category>
+    <category><![CDATA[paciente oncológico]]></category>
+    <category><![CDATA[Jorge Chirinos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/dc0cffb1cc89.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/dc0cffb1cc89.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/dc0cffb1cc89.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>CAN y Futuro Libre de la Bichera firman convenio contra el gusano barrenador</title>
+    <link>https://ahora.com.pe/policiales/can-futuro-libre-bichera-convenio-gusano-barrenador</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/can-futuro-libre-bichera-convenio-gusano-barrenador</guid>
+    <pubDate>Fri, 20 Nov 2026 21:20:07 GMT</pubDate>
+    <description><![CDATA[La Comunidad Andina y Futuro Libre de la Bichera suscribieron un convenio de cinco años para combatir el gusano barrenador del ganado en Bolivia, Colombia, Ecuador y Perú, plaga que amenaza al 95.3% del ganado de la subregión.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Comunidad Andina]]></category>
+    <category><![CDATA[gusano barrenador]]></category>
+    <category><![CDATA[ganado]]></category>
+    <category><![CDATA[Futuro Libre de la Bichera]]></category>
+    <category><![CDATA[sanidad animal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b8260a0b98fb.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b8260a0b98fb.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b8260a0b98fb.webp"/>
+    <media:description type="plain"><![CDATA[La Secretaría General de la Comunidad Andina (CAN) y la organización Futuro Libre de la Bichera suscribieron un convenio de cooperación interinstitucional para fortalecer las acciones de control y avanzar hacia la erradicación del gusano barrenador del ganado en Bolivia, Colombia, Ecuador y el Perú, — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Trump afirma que EE UU y México están cerca de un acuerdo comercial tras reunión con Sheinbaum</title>
+    <link>https://ahora.com.pe/mundo/trump-sheinbaum-acuerdo-comercial-apec</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/trump-sheinbaum-acuerdo-comercial-apec</guid>
+    <pubDate>Fri, 20 Nov 2026 21:10:08 GMT</pubDate>
+    <description><![CDATA[Trump reveló detalles de su reunión con Sheinbaum en la APEC y aseguró que ambos países están cerca de un acuerdo comercial. También afirmó que trabajan juntos contra los carteles, en un contexto de tensiones por el T-MEC.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Trump]]></category>
+    <category><![CDATA[Sheinbaum]]></category>
+    <category><![CDATA[acuerdo comercial]]></category>
+    <category><![CDATA[APEC]]></category>
+    <category><![CDATA[T-MEC]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ae5adbedfa85.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ae5adbedfa85.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ae5adbedfa85.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Fiscalía ejecuta operativo contra presunta banda &quot;Los Trinitarios de Santa Rosa&quot;</title>
+    <link>https://ahora.com.pe/policiales/operativo-los-trinitarios-santa-rosa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/operativo-los-trinitarios-santa-rosa</guid>
+    <pubDate>Fri, 20 Nov 2026 19:50:06 GMT</pubDate>
+    <description><![CDATA[El Ministerio Público ejecuta un operativo contra la presunta organización criminal &quot;Los Trinitarios de Santa Rosa&quot;, implicada en extorsión, sicariato, tráfico ilícito de drogas y tráfico de armas en Puente Piedra, Santa Rosa y Ancón. La diligencia sigue en curso y no se han precisado resultados oficiales.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Los Trinitarios de Santa Rosa]]></category>
+    <category><![CDATA[operativo fiscal]]></category>
+    <category><![CDATA[extorsión]]></category>
+    <category><![CDATA[sicariato]]></category>
+    <category><![CDATA[Puente Piedra]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/91209b0b5748.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/91209b0b5748.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/91209b0b5748.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>PETRA reclama políticas públicas para la primera infancia en el 37o aniversario de la Convención</title>
+    <link>https://ahora.com.pe/sociedad/petra-politicas-primera-infancia-aniversario-convencion-derechos-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/petra-politicas-primera-infancia-aniversario-convencion-derechos-nino</guid>
+    <pubDate>Fri, 20 Nov 2026 19:50:05 GMT</pubDate>
+    <description><![CDATA[En el 37º aniversario de la Convención sobre los Derechos del Niño, aprobada el 20 de noviembre de 1989, las portavoces de PETRA Maternidades Feministas publican un artículo de opinión en el que sostienen que la franja de 0 a 3 años es la gran olvidada de la agenda política en España. Denuncian violencia obstétrica, falta de apoyo a la lactancia y separación precoz de las madres por la vuelta al empleo, y reclaman permisos universales, ampliación y transferibilidad de los permisos por nacimiento]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <category><![CDATA[Convención sobre los Derechos del Niño]]></category>
+    <category><![CDATA[PETRA Maternidades Feministas]]></category>
+    <category><![CDATA[permisos por nacimiento]]></category>
+    <category><![CDATA[permiso preparto]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6405972191dc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6405972191dc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6405972191dc.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>37 años de la Convención sobre los Derechos del Niño: el foco en la primera infancia</title>
+    <link>https://ahora.com.pe/sociedad/37-anos-convencion-derechos-nino-primera-infancia-petra</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/37-anos-convencion-derechos-nino-primera-infancia-petra</guid>
+    <pubDate>Fri, 20 Nov 2026 19:10:07 GMT</pubDate>
+    <description><![CDATA[La Convención sobre los Derechos del Niño se aprobó el 20 de noviembre de 1989 y ha sido ratificada por todos los países del mundo menos Estados Unidos. En su 37.º aniversario, portavoces de PETRA Maternidades Feministas firman una columna de opinión en la que sostienen que la franja de 0 a 3 años es la gran olvidada de la agenda política y reclaman permisos universales, ampliables y transferibles, además de un permiso preparto y puerperal universal en España.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Convención sobre los Derechos del Niño]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <category><![CDATA[PETRA Maternidades Feministas]]></category>
+    <category><![CDATA[permisos por nacimiento]]></category>
+    <category><![CDATA[lactancia materna]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1f1b4d0957f1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1f1b4d0957f1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1f1b4d0957f1.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Derechos de la primera infancia: los mil primeros días, la etapa que la agenda política deja de lado</title>
+    <link>https://ahora.com.pe/sociedad/derechos-primera-infancia-mil-primeros-dias</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/derechos-primera-infancia-mil-primeros-dias</guid>
+    <pubDate>Fri, 20 Nov 2026 19:10:06 GMT</pubDate>
+    <description><![CDATA[Un artículo de opinión firmado por portavoces de la asociación PETRA Maternidades Feministas sostiene que la etapa de 0 a 3 años sigue siendo la gran olvidada de la agenda política. El texto repasa la Convención sobre los Derechos del Niño, la evidencia sobre los mil primeros días y las brechas de los permisos laborales en España.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <category><![CDATA[derechos del niño]]></category>
+    <category><![CDATA[permisos por nacimiento]]></category>
+    <category><![CDATA[lactancia materna]]></category>
+    <category><![CDATA[mil primeros días]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2cf5c972a633.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2cf5c972a633.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2cf5c972a633.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>España: asociación feminista pide permisos universales para la primera infancia</title>
+    <link>https://ahora.com.pe/mundo/petra-permisos-universales-primera-infancia-espana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/petra-permisos-universales-primera-infancia-espana</guid>
+    <pubDate>Fri, 20 Nov 2026 19:10:05 GMT</pubDate>
+    <description><![CDATA[La asociación española PETRA Maternidades Feministas publicó una columna en la que exige permisos universales por nacimiento y cuidado del menor. Sostiene que la mitad de las familias monomarentales está en riesgo de pobreza y que el permiso de lactancia depende del contrato laboral. El texto se difunde al cumplirse 37 años de la Convención sobre los Derechos del Niño.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <category><![CDATA[PETRA Maternidades Feministas]]></category>
+    <category><![CDATA[permisos por nacimiento]]></category>
+    <category><![CDATA[Convención sobre los Derechos del Niño]]></category>
+    <category><![CDATA[España]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c4c914e346d0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c4c914e346d0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c4c914e346d0.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Reimond Manco critica a Piero Quispe antes de Universitario vs Sport Huancayo</title>
+    <link>https://ahora.com.pe/deportes/reimond-manco-critica-piero-quispe-universitario-sport-huancayo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/reimond-manco-critica-piero-quispe-universitario-sport-huancayo</guid>
+    <pubDate>Fri, 20 Nov 2026 18:40:06 GMT</pubDate>
+    <description><![CDATA[Reimond Manco calificó de &apos;frágil&apos; a Piero Quispe antes del partido entre Universitario y Sport Huancayo por la fecha 17 del Torneo Clausura en el Estadio IDP de Huancayo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Reimond Manco]]></category>
+    <category><![CDATA[Piero Quispe]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cc77df837bcc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cc77df837bcc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cc77df837bcc.jpg"/>
+    <media:description type="plain"><![CDATA[El exjugador cuestionó con dureza a un futbolista del cuadro crema previo al partido contra el 'Rojo Matador' por la última fecha del Clausura. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Más lejos que China</title>
+    <link>https://ahora.com.pe/opinion/mas-lejos-que-china</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/mas-lejos-que-china</guid>
+    <pubDate>Fri, 20 Nov 2026 17:57:15 GMT</pubDate>
+    <description><![CDATA[Si llevar carga a la selva cuesta más que traerla desde China, el problema no es la distancia. Huánuco no puede mirar desde la tribuna el debate del tren.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[Editorial]]></category>
+    <category><![CDATA[Amazonía]]></category>
+    <category><![CDATA[Chancay]]></category>
+    <category><![CDATA[Pucallpa]]></category>
+    <category><![CDATA[Ucayali]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0a666e7e1a95.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0a666e7e1a95.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0a666e7e1a95.jpg"/>
+    <media:title type="plain"><![CDATA[Editorial: Más lejos que China]]></media:title>
+    <media:description type="plain"><![CDATA[Editorial del Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Incidencia del big data en la Toma de decisiones empresariales</title>
+    <link>https://ahora.com.pe/opinion/incidencia-del-big-data-en-la-toma-de-decisiones-empresariales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/incidencia-del-big-data-en-la-toma-de-decisiones-empresariales</guid>
+    <pubDate>Fri, 20 Nov 2026 17:56:47 GMT</pubDate>
+    <description><![CDATA[El autor explica cómo el Big Data y la analítica predictiva cambian las decisiones empresariales, y qué barreras frenan su adopción en las organizaciones.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[César Augusto Kanashiro Castañeda]]></category>
+    <category><![CDATA[Big Data]]></category>
+    <category><![CDATA[analítica predictiva]]></category>
+    <category><![CDATA[inteligencia artificial]]></category>
+    <category><![CDATA[Machine Learning]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1be6b04db865.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1be6b04db865.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1be6b04db865.jpg"/>
+    <media:title type="plain"><![CDATA[Columna de César Augusto Kanashiro Castañeda]]></media:title>
+    <media:description type="plain"><![CDATA[César Augusto Kanashiro Castañeda]]></media:description>
+  </item>
+  </channel>
+</rss>
