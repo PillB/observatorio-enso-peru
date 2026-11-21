@@ -300,20 +300,40 @@ def _cards(text: str) -> list[str]:
     return re.split(r"<!--\[--> # \d+<!--\]-->", seg)[1:]
 
 
-def _en_date(s: str, hm: str = "") -> Optional[str]:
-    try:
-        d = datetime.strptime(s.strip(), _EN_DATE)
-    except ValueError:
+#: El CENVUL (Nuxt) escribe las fechas con el idioma de la instancia que atiende la petición, no con el que se le pide
+#: (``Accept-Language`` no cambia nada): la misma página llega, al azar, como «Monday, November 16, 2026 · 11:54:00 AM»
+#: o como «lunes, 16 de noviembre de 2026 · 11:54:00 a. m.» (copias de data-archive del 21-10 al 21-11-2026, dos
+#: variantes cada día). Hay que leer las dos: con solo la inglesa, la mitad de las lecturas salía sin fechas.
+_ES_MONTHS = {m: i for i, m in enumerate(("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
+                                          "septiembre", "octubre", "noviembre", "diciembre"), 1)} | {"setiembre": 9}
+_ES_DATE_RE = re.compile(r"^(?:[a-záéíóúñ]+,\s*)?(\d{1,2})\s+de\s+([a-z]+)\s+(?:de|del)\s+(\d{4})$", re.I)
+_HM_RE = re.compile(r"^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(?:(a|p)\.?\s*m\.?)?$", re.I)
+
+
+def _card_date(s: str, hm: str = "") -> Optional[str]:
+    """Fecha (y hora) de una tarjeta del CENVUL, en inglés o en castellano; ``None`` si no se reconoce."""
+    s = re.sub(r"\s+", " ", (s or "").replace("\u00a0", " ").replace("\u202f", " ")).strip()
+    if not s:
         return None
-    if hm:
+    try:
+        d = datetime.strptime(s, _EN_DATE)
+    except ValueError:
+        m = _ES_DATE_RE.match(s)
+        month = _ES_MONTHS.get(m.group(2).lower()) if m else None
+        if not month:
+            return None
         try:
-            t = datetime.strptime(hm.strip(), "%I:%M:%S %p")
-            d = d.replace(hour=t.hour, minute=t.minute, second=t.second)
+            d = datetime(int(m.group(3)), month, int(m.group(1)))
         except ValueError:
-            pass
-    else:
-        d = d.replace(hour=12)  # sin hora: mediodía de Lima, para que la fecha no cambie al pasar a UTC
-    return _iso(d.replace(tzinfo=LIMA))
+            return None
+    t = _HM_RE.match(re.sub(r"\s+", " ", (hm or "").replace("\u00a0", " ").replace("\u202f", " ")).strip())
+    if t:
+        h, mi, sec = int(t.group(1)), int(t.group(2)), int(t.group(3) or 0)
+        if t.group(4):  # 12 h: «AM»/«PM» o «a. m.»/«p. m.»
+            h = h % 12 + (12 if t.group(4).lower() == "p" else 0)
+        if h < 24 and mi < 60 and sec < 60:
+            return _iso(d.replace(hour=h, minute=mi, second=sec, tzinfo=LIMA))
+    return _iso(d.replace(hour=12, tzinfo=LIMA))  # sin hora: mediodía de Lima, para que la fecha no cambie al pasar a UTC
 
 
 #: Dónde está cada volcán que vigila el IGP, para ubicar sus boletines y alertas.
@@ -370,14 +390,18 @@ def parse_cenvul(body: bytes, base_url: str) -> Parsed:
         raise FeedError("no es una página del CENVUL")
     alerts = "alertas-vulcanologicas" in base_url
     items, green, cards = [], 0, _cards(text)
+    dated = undated = 0  # tarjetas con «Fecha de publicación», leída o no
     for card in cards:
         f = {k.strip().lower(): html.unescape(v).strip() for k, v in _CARD_FIELD_RE.findall(card)}
         volcano = f.get("volcán") or f.get("volcan")
         if not volcano:
             continue
+        raw_date = f.get("fecha de publicación", "")
+        when = _card_date(raw_date, f.get("hora de publicación", "") if alerts else "")
+        if raw_date:
+            dated, undated = dated + bool(when), undated + (not when)
         if alerts:
             kind = f.get("tipo de alerta", "")
-            when = _en_date(f.get("fecha de publicación", ""), f.get("hora de publicación", ""))
             what = {"cenizas": "dispersión de cenizas", "lahares": "descenso de lahares"}.get(kind.lower(), kind.lower())
             items.append({"title": clean_text(f"Volcán {volcano}: alerta por {what} (IGP)", 300),
                           "link": f"{base_url}#{re.sub(r'[^a-z0-9]+', '-', f'{volcano} {kind} {when or ''}'.lower()).strip('-')}",
@@ -393,13 +417,20 @@ def parse_cenvul(body: bytes, base_url: str) -> Parsed:
                 continue
             items.append({"title": clean_text(f"Volcán {volcano}: boletín {code}" + (f", alerta {level.lower()}" if level else ""), 300),
                           "link": f"{base_url}#{re.sub(r'[^A-Za-z0-9]+', '-', code).strip('-')}",
-                          "published": _en_date(f.get("fecha de publicación", "")),
+                          "published": when,
                           "summary": f"Boletín vulcanológico del CENVUL (IGP) sobre el volcán {volcano}"
                                      + (f". Nivel de alerta: {level.lower()}." if level else ".") + _volcano_place(volcano),
                           "categories": ["volcan", level], **_volcano_points(volcano)})
     if not cards:
         raise FeedError("la página del CENVUL no tiene tarjetas con el formato esperado")
+    if undated and not dated:
+        # Otra forma de escribir la fecha: sin fechas, las alertas se fundían en una por volcán y el feed parecía
+        # «sin entradas con fecha» (un aviso informativo que nadie lee). Es un cambio de formato: se dice como tal.
+        sample = next(iter(re.findall(r"Fecha de publicaci[oó]n\s*:\s*</span>\s*([^<]{1,60})", text)), "")
+        raise FeedError(f"el CENVUL escribe las fechas de otra forma ({html.unescape(sample).strip()!r})")
     out = _finish(Parsed("cenvul-html", items))
+    if undated:
+        out.repairs.append(f"{undated} tarjetas con una fecha que no se pudo leer")
     if green:
         out.repairs.append(f"{green} boletines de volcanes en alerta verde omitidos")
     return out

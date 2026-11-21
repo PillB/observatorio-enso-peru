@@ -116,6 +116,19 @@ def header(headers, name: str) -> str:
     return ""
 
 
+def block_families(body: bytes, headers=None) -> list[str]:
+    """Todas las familias de marcas de bloqueo o de verificación de la respuesta, en el orden de ``block_mark``
+    (primero las cabeceras), que se queda con la primera: ``fetch.block_page`` necesita saber si además de una
+    genérica («security check» va antes que Imunify360) hay una propia."""
+    names = {str(k).lower() for k in (headers or {})}
+    out = [name for name, h, value in BLOCK_HEADERS if h in names and value in header(headers, h).lower()]
+    head = body[:SCAN_BYTES]
+    if head:
+        text = (head.decode("latin-1") + "\n" + head.decode("utf-8", errors="replace")).lower()
+        out += [name for name, rx in _BLOCK_RES if rx.search(text)]
+    return list(dict.fromkeys(out))
+
+
 def block_mark(body: bytes, headers=None) -> str:
     """Familia de la marca de bloqueo o de verificación de la respuesta (``BLOCK_HEADERS``, ``BLOCK_SIGNATURES``),
     o ``""``: ``findBlock`` de n8n/lib/classify.js."""

@@ -26,6 +26,7 @@ espera y con lo publicado. La pregunta no era «¿falla?» (eso ya lo vigilan `f
 | 6 | NOAA, discusión ENSO | Los valores de Niño que cita el texto (+2,5 en 3.4) ya no son las anomalías semanales tradicionales (+3,2) sino las **relativas del último mes** (`rel_mthsst9120.txt`), desde la adopción del RONI | El campo se llamaba `weekly_values_in_text`; no se muestra en el sitio, pero cualquiera que lo comparara con las series vería casi 1 °C de diferencia | `valuesInTextBasis` (`traditional-weekly`, `traditional-monthly` u `other`) en `official.noaa` |
 | 7 | Feeds oficiales de peligros | Una fuente de avisos caída (SENAMHI, COEN, DHN, IGP, PTWC, FIRMS, CIIFEN…) solo dejaba un `info` | Las `info` no abren issue | `hazard-feed-down` (aviso, un issue por fuente) si no da un feed dos corridas seguidas, ni directo ni por copias |
 | 8 | ENFEN, API de WordPress | Ya no está congelada en el N° 13: llega al 19 (el portal va por el 20) | Documentación | `catalogo-fuentes.md` actualizado; el código ya la trataba como candidata |
+| 9 | Feeds de noticias inactivos por semanas (Nacional Callao TV, RPP · Huancavelica, Altavoz · tema Huancavelica, Noticias SER, Peru Reports) | El feed, la página del medio y la API de WordPress (`/wp-json/wp/v2/posts`) dan la misma última fecha: el lector no pierde entradas y ninguna URL cambió. Cuatro medios publican a rachas (huecos de 70 a 173 días) con un `stale_days` de 7 o 21; `www.noticiasser.pe` publica desde el 17-04-2026 guías de finanzas en tandas (143 entradas), no noticias de la Asociación SER | `feed-inactive` es `info` y no abre issue; no había umbral para «callado demasiado tiempo» | Noticias SER quitado; `stale_days` de Peru Reports (21), Nacional Callao TV (60) y Altavoz · Huancavelica (60) según sus fechas; `longestGapDays` en `news/feeds.json` y `feed-stale` (aviso, un issue por feed) pasado el doble de `stale_days` y su hueco más largo (hasta 180 días). Repasado con las 8868 copias de `data-archive`: no habría saltado ninguna vez |
 
 ## Fuentes revisadas sin deriva
 
@@ -52,7 +53,7 @@ espera y con lo publicado. La pregunta no era «¿falla?» (eso ya lo vigilan `f
   portal del ENFEN vía el recolector del Perú.
 - **Radio Santa Rosa** respondió una vez «Account Suspended» y **GDACS** una vez su página de administración: no son
   verificaciones; si se repiten, `hazard-feed-down` (GDACS) o `feed-down` lo registran.
-- **IGP, alertas del CENVUL**: la más reciente es del 1 de junio de 2026; puede ser real (sin alertas nuevas).
+- **IGP, alertas del CENVUL**: la más reciente es del 1 de junio de 2026; es real: la página la pone primera en sus dos variantes (21-11-2026).
 
 ## Revisión del 21 de noviembre (después de fusionar)
 
@@ -68,11 +69,18 @@ se usó en producción (los 13 feeds respondieron directo). Se corrigió:
   del día anterior. Esa copia ahora cuenta como caída para `hazard-feed-down`, que además exige 6 h entre las dos
   corridas e ignora los feeds que no se pidieron.
 - **Internet Archive**: sus copias de una página de verificación ya no se usan como fuente.
+- **CENVUL «sin entradas con fecha»**: el servidor (Nuxt) escribe las fechas en inglés o en castellano según la
+  instancia que atiende, al azar y sin hacer caso de `Accept-Language` (24 lecturas el 21-11: 12 en inglés y 12 en
+  castellano; data-archive guarda las dos variantes casi todos los días desde el 21-10). El lector solo entendía la
+  inglesa: con la castellana los boletines salían sin fecha y las 10 alertas se fundían en 2. Ahora lee las dos, y una
+  fecha que no reconoce en ninguna tarjeta es un error de formato (`formatError`), no un feed «inactivo».
 - **Firmas**: Imunify360 por el formulario `wsidchk`, la cabecera `server: imunify360-webshield` y su página de
   captcha; Sucuri CloudProxy (`sucuri_cloudproxy_js`), Wordfence, SiteGround (`sgcaptcha`), GoDaddy y Vercel. Paridad
   con n8n en `fixtures/reach-parity.json`.
 - **DHN**: desde noviembre todos los PDF de `/Archivos` redirigen a `/human-check.php` (Turnstile); se reconoce como
-  verificación y los PDF del ENFEN dependen de la copia del recolector del Perú.
+  verificación y los PDF del ENFEN dependían de la copia del recolector del Perú. Ahora hay una ruta directa y
+  oficial: gob.pe, donde el SENAMHI publica el mismo PDF el mismo día (`feeds/gobpe_enfen.py`); y si ningún listado
+  de comunicados responde en vivo con la copia del Perú de más de 36 h, queda `listing-stale`.
 - **PTWC**: el simulacro PACWAVE26 (5-11-2026) salía como aviso de tsunami; los mensajes de prueba ya no son entradas.
 - `valuesInTextBasis` se calcula con las semanas y meses anteriores a la fecha de la discusión (antes pasaba a
   `other` dos semanas después); el contraste del ICEN dice `undetermined` cuando el temporal queda a igual distancia;
@@ -85,15 +93,41 @@ se usó en producción (los 13 feeds respondieron directo). Se corrigió:
 Sin cambio: la ventana del ICEN si el IGP pasa a ERSSTv6 (el aviso ya dice que el archivo del IGP podría estar
 revisado) y un cambio de base de PSL (el sitio recalcula la base: no se usa la del archivo).
 
+## Huecos de las pruebas (21 de noviembre)
+
+La revisión adversarial encontró tres huecos; se corrigieron con pruebas que fallan con el error y pasan sin él
+(`tests/test_guard_thresholds.py`, `tests/test_block_pages.py`, `tests/test_drift_audit.py`):
+
+- **Formularios con reCAPTCHA**: `fetch.block_page` descartaba como verificación cualquier página HTML de menos de
+  40 KB con «g-recaptcha», «h-captcha» o «security check», también un aviso o un listado con un formulario de
+  suscripción: `Fetcher.get` la tomaba por bloqueo y perdía la fuente. Esas dos familias (`GENERIC_BLOCKS`) ahora
+  necesitan una prueba de que la página es la verificación (`challenge_evidence`): menos de 600 caracteres de texto
+  visible, una recarga (`<meta http-equiv=refresh>`, `location.replace(…)`, `location.reload()`) o HTML cuando se pedía
+  otra cosa (un PDF). Las familias propias (Cloudflare, Imunify360, AWS WAF, DHN por su texto y su tamaño) bastan,
+  aunque la página nombre también reCAPTCHA. `reach.classify` no cambia (paridad con n8n). Las 38 páginas de
+  Imunify360 de `data-archive` y las verificaciones de `fixtures` se siguen reconociendo; ninguna copia archivada
+  tenía solo una marca genérica.
+- **Copias del mismo día**: la auditoría las ordenaba por nombre (`AAAA-MM-DD-<sha>`), y el hash no dice cuál llegó
+  primero: en 1.352 de los 1.998 días con varias copias de una fuente el orden quedaba al revés (casi todos feeds
+  de noticias, que no tienen series; en las fuentes con series hubo un solo caso y en el orden correcto, así que no
+  produjo hallazgos falsos todavía). Ahora se ordenan por la hora del commit que agregó cada copia (`added_times`);
+  con una ref sin historia, por nombre y con un aviso. El job semanal trae 12 días de historia
+  (`--shallow-since`). Una respuesta igual a una ya archivada no se vuelve a guardar: si una fuente vuelve por la
+  tarde a la versión de la mañana, el archivo no lo registra.
+- **Umbrales sin pruebas en su borde**: `REWRITE_MIN_POINTS`, `REWRITE_FRACTION`, el punto de corte de los recientes,
+  `SHRINK_TOLERANCE`, el tipo de fuente de `official_alerts`, la penúltima semana y el penúltimo mes de
+  `ensodisc_basis` y el tamaño de `block_page` se podían cambiar sin que fallara ninguna prueba. Ahora cada uno tiene
+  una prueba en su borde.
+
 ## Cómo repetirla
 
 ```bash
 cd python
-git fetch --depth=1 origin data-archive
+git fetch --shallow-since="$(date -u -d '12 days ago' +%F)" origin data-archive  # con historia: orden del mismo día
 python -m tools.drift_audit --ref FETCH_HEAD          # 0: nada nuevo; 1: hallazgos; 2: no pudo auditar
 python -m tools.drift_audit --ref FETCH_HEAD --all    # también los ya revisados (39 al 21-11-2026)
 python -m pytest tests/test_drift.py tests/test_drift_followup.py tests/test_drift_audit.py tests/test_block_pages.py \
-  tests/test_cross_checks.py tests/test_reports.py tests/test_reach_parity.py
+  tests/test_cross_checks.py tests/test_reports.py tests/test_reach_parity.py tests/test_guard_thresholds.py
 node --test ../n8n/test/lib.test.mjs   # las mismas firmas en n8n
 ```
 

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "_doc": "Umbrales de degraded-persistent (enso/persistent.py, docs/operaciones.md). Días = factor × cadencia (cadenceDays de la fuente; stale_days del feed), acotado entre minDays y maxDays; además, al menos minRuns corridas degradadas; una fuente sale del estado (y su issue se cierra) cuando lleva recoverHours y recoverRuns corridas bien. escalate dice qué estados abren issue en cada tipo: los que ya escalan con otro código no se repiten (fuente que falla: unreachable/format-changed; feed oficial caído: hazard-feed-down). overrides cambia o apaga (null) un estado para una fuente («source:<id>») o un feed («feed:<id>»).",
+  "states": {
+    "relay": {"what": "solo llega por la copia de un recolector (n8n o el Perú) aunque el registro la asigna a Actions", "factor": 1.0, "minDays": 3, "maxDays": 14, "minRuns": 3},
+    "archive": {"what": "solo llega por la copia del Internet Archive", "factor": 0.5, "minDays": 2, "maxDays": 7, "minRuns": 2},
+    "carried": {"what": "se publica la lectura anterior", "factor": 0.5, "minDays": 3, "maxDays": 10, "minRuns": 3},
+    "failed": {"what": "falló sin un dato anterior que conservar", "factor": 0.5, "minDays": 2, "maxDays": 7, "minRuns": 2},
+    "down": {"what": "no responde con un feed", "factor": 0.5, "minDays": 3, "maxDays": 10, "minRuns": 3},
+    "unreadable": {"what": "responde, pero sus entradas no se pueden leer (otra forma o sin fechas)", "factor": 0.5, "minDays": 2, "maxDays": 7, "minRuns": 2},
+    "inactive": {"what": "no publica entradas nuevas", "factor": 1.0, "minDays": 14, "maxDays": 60, "minRuns": 3}
+  },
+  "escalate": {
+    "source": ["relay", "archive"],
+    "official-feed": ["relay", "carried", "unreadable"],
+    "feed": ["relay", "down", "carried", "unreadable"]
+  },
+  "readerCarryHours": 44,
+  "recoverHours": 24,
+  "recoverRuns": 2,
+  "forgetDays": 30,
+  "overrides": {}
+}

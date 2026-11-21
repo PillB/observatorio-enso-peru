@@ -27,6 +27,7 @@ sha256), que se publica en el registro de fuentes.
 from __future__ import annotations
 
 import hashlib
+import html
 import json
 import os
 import random
@@ -40,7 +41,8 @@ from urllib.parse import quote, urlsplit
 
 import httpx
 
-from .reach import BAD_LOCATION, MAX_HOPS, ROBOTS_TIMEOUT_S, Robots, RobotsHop, block_mark, classify, next_hop
+from .reach import (BAD_LOCATION, MAX_HOPS, ROBOTS_TIMEOUT_S, SCAN_BYTES, Robots, RobotsHop, block_families, classify,
+                    next_hop)
 
 #: El contacto que ven las fuentes: el sitio publicado cuando el flujo lo
 #: define (ENSO_CONTACT_URL), o el repositorio.
@@ -104,6 +106,9 @@ class Response:
     #: Copia de un recolector que la arrastró: el servidor ya no la daba (``{"status", "verdict", "at"}`` del último
     #: intento). n8n conserva así la última copia buena de una URL que dejó de responder.
     upstream_down: Optional[dict] = None
+    #: La copia del recolector es de una corrida anterior (``carried`` en su index.json): esta noche no la bajó, porque
+    #: el servidor falló (``upstream_down``) o porque no la pidió (recolector del Perú: «no se pidió esta noche»).
+    carried: bool = False
 
     @property
     def text(self) -> str:
@@ -152,12 +157,60 @@ def ssl_context():
     return ctx
 
 
-def block_page(body: bytes, headers=None) -> str:
+#: Familias de ``BLOCK_SIGNATURES`` cuyas marcas también aparecen en páginas normales: un formulario de contacto con
+#: reCAPTCHA o hCaptcha, un aviso que dice «security check». En una página pequeña no bastan para descartarla
+#: (``block_page``).
+GENERIC_BLOCKS = frozenset({"captcha", "human-verification"})
+#: Texto visible (sin scripts, estilos ni etiquetas) por debajo del cual una página con una marca genérica es una
+#: verificación: las reales tienen una frase y el botón (DHN: 112 caracteres, Imunify360: 73, Cloudflare: 16).
+CHALLENGE_TEXT_MAX = 600
+#: Una recarga o redirección automática (no un enlace ni un ``onclick``, que tiene cualquier página).
+_REDIRECT_RE = re.compile(r"<meta[^>]+http-equiv\s*=\s*[\"']?refresh|location\.(?:replace|reload)\s*\(", re.I)
+#: Lo que no se ve: scripts, estilos y comentarios, también sin cerrar (hasta el final de lo leído: un script sin
+#: ``</script>`` no es texto de la página).
+_HIDDEN_RE = re.compile(r"<(script|style|noscript|template|svg)\b.*?(?:</\1\s*>|\Z)|<!--.*?(?:-->|\Z)", re.I | re.S)
+
+
+def visible_text(body: bytes) -> str:
+    """El texto que una persona ve en una página HTML (de los primeros ``SCAN_BYTES``), con los espacios juntados."""
+    text = _HIDDEN_RE.sub(" ", body[:SCAN_BYTES].decode("utf-8", errors="replace"))
+    return " ".join(html.unescape(re.sub(r"<[^>]*>", " ", text)).split())
+
+
+def challenge_evidence(body: bytes, accept: tuple[str, ...] = ()) -> str:
+    """Por qué una página con una marca genérica (``GENERIC_BLOCKS``) es una verificación y no una página con un
+    formulario, o ``""``: casi sin texto visible, una recarga o redirección (``<meta http-equiv=refresh>``,
+    ``location.replace(…)``, ``location.reload()``), o HTML cuando se pedía otra cosa (``accept`` sin html: un PDF,
+    un ZIP)."""
+    # Como ``Fetcher._acceptable`` (cada token de ``accept`` es parte de un content-type): ¿aceptaría «text/html»?
+    # («xml» no: un feed XML que llega como HTML no es lo pedido).
+    if accept and not any(a in "text/html" for a in accept):
+        return "html en lugar de lo pedido"
+    if len(visible_text(body)) < CHALLENGE_TEXT_MAX:
+        return "casi sin texto"
+    if _REDIRECT_RE.search(body[:SCAN_BYTES].decode("latin-1")):
+        return "redirección"
+    return ""
+
+
+def block_page(body: bytes, headers=None, accept: tuple[str, ...] = ()) -> str:
     """Familia de la página de verificación antirobots que llegó con HTTP 200 en lugar del contenido (``reach.classify``:
-    una marca de ``BLOCK_SIGNATURES`` en una página HTML pequeña), o ``""``."""
+    una marca de ``BLOCK_SIGNATURES`` en una página HTML pequeña), o ``""``.
+
+    Las marcas de una familia propia (Cloudflare, Imunify360, AWS WAF, una cabecera ``cf-mitigated``) bastan. Las
+    genéricas (``GENERIC_BLOCKS``: reCAPTCHA, «security check») van también en páginas normales, así que además se
+    pide una prueba de que la página es la verificación (``challenge_evidence``): sin ella, un formulario de contacto
+    con reCAPTCHA de 20 KB se descartaba como verificación en ``Fetcher.get`` y se perdía la fuente. ``reach.classify``
+    no cambia (paridad con n8n): solo lo que se usa o se descarta."""
     if not body or classify(200, body, headers=headers) != "challenge":
         return ""
-    return block_mark(body, headers) or "challenge"
+    families = block_families(body, headers)
+    own = [f for f in families if f not in GENERIC_BLOCKS]
+    if own:
+        return own[0]
+    if families and not challenge_evidence(body, accept):
+        return ""
+    return families[0] if families else "challenge"
 
 
 class Relay:
@@ -203,6 +256,24 @@ class Relay:
     def age_hours(self) -> float:
         return _age_hours(self.collected_at)
 
+    @staticmethod
+    def upstream_down(e: dict) -> Optional[dict]:
+        """Lo que respondió el servidor la última vez que el recolector pidió la URL de una copia arrastrada
+        (``carried``): ``{"status", "verdict", "at"}``, o ``None`` si la copia es de esta corrida o si esta vez no
+        se pidió (sin intento, el servidor no falló). n8n anota ``verdict``; el recolector del Perú, ``class`` y
+        ``error`` (``peru_collector.carry_forward``)."""
+        if not e.get("carried"):
+            return None
+        last = e.get("last_attempt") if isinstance(e.get("last_attempt"), dict) else {}
+        if not any(last.get(k) is not None for k in ("at", "status", "verdict", "class", "error")):
+            return None  # «no se pidió esta noche»
+        if str(last.get("error") or "").startswith("no se pidió") and last.get("status") is None:
+            # El recolector del Perú no la pidió (``peru_collector.fetch``: «no se pidió: la corrida pasó su plazo» o
+            # «… el servidor no respondió a las URL anteriores»): sin intento propio, como ``omitted`` en las noticias.
+            return None
+        return {"status": last.get("status"), "verdict": last.get("verdict") or last.get("class") or last.get("error"),
+                "at": last.get("at")}
+
     def get(self, url: str, accept: tuple[str, ...] = ()) -> Optional[Response]:
         if self.age_hours > self.max_age_hours:
             return None
@@ -218,13 +289,10 @@ class Relay:
                 continue
             if accept and not any(a in kind for a in accept) and not ("pdf" in accept and body.startswith(b"%PDF")):
                 continue
-            if block_page(body):  # una copia de una página de verificación no es la fuente (``block_page``)
+            if block_page(body, accept=accept):  # una copia de una página de verificación no es la fuente (``block_page``)
                 continue
-            last = e.get("last_attempt") if isinstance(e.get("last_attempt"), dict) else {}
-            down = ({"status": last.get("status"), "verdict": last.get("verdict"), "at": last.get("at")}
-                    if e.get("carried") else None)
             return Response(url, body, self.channel, 200, ct, archived_at=e.get("fetched_at") or self.collected_at,
-                            upstream_down=down)
+                            upstream_down=self.upstream_down(e), carried=bool(e.get("carried")))
         return None
 
 
@@ -451,7 +519,8 @@ class Fetcher:
                 attempts.append({"url": url, "error": skip})
             else:
                 r = self._get(url, attempts, tries=1 if planned is not None and "actions" not in planned else None)
-                blocked = block_page(r.content, r.headers) if r is not None and r.status_code == 200 else ""
+                blocked = (block_page(r.content, r.headers, accept)
+                           if r is not None and r.status_code == 200 else "")
                 if blocked:
                     # Un 200 con una página de verificación (Imunify360, Cloudflare…) en lugar del contenido: no es la
                     # fuente. Se anota como verificación (no se evade) y se sigue con las copias de los recolectores,

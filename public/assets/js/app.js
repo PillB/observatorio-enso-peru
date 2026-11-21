@@ -830,6 +830,9 @@ VIEWS.metodologia = {
     // la publicación anterior con su comunicado ya leído (enfen_latest): nada de eso es «Directa».
     const stChip = (s) => {
       if (s.status === 'ok' && s.channel === 'previous-publication') return chip(...ST.carried);
+      // Copia que n8n o el recolector del Perú conservan de una corrida anterior (relay-carried-copy): no es la
+      // fuente respondiendo, aunque llegue «vía n8n».
+      if (s.status === 'ok' && s.relayCarried) return chip('watch', s.upstreamDown ? 'Copia conservada (servidor sin respuesta)' : 'Copia conservada');
       if (s.status === 'ok' && CHANNEL_TAG[s.channel]) return chip('ok', CHANNEL_TAG[s.channel].replace(/^v/, 'V'));
       return chip(ST[s.status]?.[0] || 'na', ST[s.status]?.[1] || s.status);
     };

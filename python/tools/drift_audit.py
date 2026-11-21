@@ -5,7 +5,8 @@ verificación antirobots archivadas como si fueran la fuente (``fetch.block_page
 Sirve para repetir la auditoría de noviembre de 2026 (docs/auditoria-deriva-fuentes.md) después de cambiar un lector
 o una firma de bloqueo: lo que hoy pasaría inadvertido aparece en la salida. No pide nada a la red.
 
-Uso (desde python/, con la rama traída: ``git fetch --depth=1 origin data-archive``):
+Uso (desde python/, con la rama traída y su historia reciente:
+``git fetch --shallow-since=AAAA-MM-DD origin data-archive``):
     python -m tools.drift_audit --ref FETCH_HEAD [--source cpc-oni] [--days 7] [--all] [--json salida.json]
 
 ``--days N``: solo las copias archivadas en los últimos N días (por la fecha del nombre, ``AAAA-MM-DD-…``), cada una
@@ -14,7 +15,13 @@ avisa lo nuevo y lee poco. Los hallazgos ya revisados (``drift_audit_known.json`
 octubre y noviembre de 2026 y la corrección de PSL del 18-11) no cuentan salvo con ``--all``.
 
 Sale con 0 si no hay nada nuevo, 1 si encontró algo y 2 si no pudo auditar (la ref no existe, una fuente desconocida).
-Las versiones del mismo día se ordenan por nombre (fecha y hash), no por hora: el archivo no guarda la hora.
+Las versiones del mismo día se ordenan por la hora del commit que las agregó a data-archive (``added_times``: cada corrida
+archiva en su propio commit), no por el nombre: el hash del nombre no dice cuál llegó primero, y ordenadas así dos
+copias del mismo día se comparaban al revés (``series-regressed`` o ``series-shrunk`` falsos; en noviembre de 2026,
+1.352 de los 1.998 días con más de una copia de una fuente quedaban en otro orden). Con una ref sin historia
+(``--depth=1``) todas tienen la misma hora y se usa el nombre, con un aviso: el job semanal trae la historia de la
+ventana (``--shallow-since``). Una respuesta igual a otra ya archivada no se vuelve a guardar, así que una fuente
+que vuelve a la versión de la mañana a la tarde no deja rastro.
 """
 
 from __future__ import annotations
@@ -78,6 +85,26 @@ def _day(path: str) -> str:
     return path.rsplit("/", 1)[-1][:10]
 
 
+def added_times(ref: str) -> dict[str, int]:
+    """Hora (epoch) del commit de ``ref`` que agregó cada copia de ``sources/``. En una ref recortada, el commit del
+    borde «agrega» todo lo anterior: esas copias quedan empatadas (y ordenadas por nombre) entre sí, pero antes de
+    las que llegaron después."""
+    out: dict[str, int] = {}
+    when = 0
+    for line in _git("log", "--format=%x00%ct", "--name-only", "--diff-filter=A", "--no-renames", ref,
+                     "--", "sources").splitlines():
+        if line.startswith("\0"):
+            when = int(line[1:])
+        elif line:
+            out[line] = when  # de la más nueva a la más vieja: queda la del commit que la agregó
+    return out
+
+
+def ordered(paths, times: dict[str, int]) -> list[str]:
+    """Las copias de una fuente en el orden en que llegaron: por día (el nombre), por hora del commit y por nombre."""
+    return sorted(paths, key=lambda f: (_day(f), times.get(f, 0), f))
+
+
 def known() -> set[tuple[str, str]]:
     """(tipo, archivo) de los hallazgos ya revisados."""
     if not KNOWN.is_file():
@@ -92,6 +119,10 @@ def audit(ref: str, only: set[str] | None = None, since: str | None = None) -> l
     unknown = sorted((only or set()) - dirs - {s.id for s in SOURCES})
     if unknown:
         raise AuditError(f"fuentes desconocidas: {', '.join(unknown)}")
+    times = added_times(ref)
+    if len(set(times.values())) < 2:
+        print("aviso: la ref no tiene historia (¿--depth=1?): las copias del mismo día se ordenan por nombre",
+              file=sys.stderr)
     blobs = _Blobs(ref)
     found: list[dict] = []
     try:
@@ -105,7 +136,7 @@ def audit(ref: str, only: set[str] | None = None, since: str | None = None) -> l
             if only and src.id not in only:
                 continue
             # Los PDF guardados junto al listado del ENFEN (comunicados, informes) son documentos, no la fuente.
-            versions = sorted(f for f in files if f.startswith(f"sources/{src.id}/") and f.endswith(SCANNED))
+            versions = ordered((f for f in files if f.startswith(f"sources/{src.id}/") and f.endswith(SCANNED)), times)
             if since:  # las de la ventana y, como base, la última anterior
                 first = next((i for i, f in enumerate(versions) if _day(f) >= since), len(versions))
                 versions = versions[max(0, first - 1):]

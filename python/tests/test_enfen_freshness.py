@@ -174,9 +174,10 @@ def test_probing_stops_at_probe_ahead_and_after_probe_max_misses(monkeypatch):
             return None
 
         monkeypatch.setattr(obs, "_probe_communique", probe)
-        monkeypatch.setattr(obs, "portal_enfen_listing", lambda f, log: [])
+        monkeypatch.setattr(obs, "portal_enfen_listing", lambda f, log, seen=None: [])
         monkeypatch.setattr(obs.imarpe_repo, "communiques", lambda f, problems=None: [])
-        monkeypatch.setattr(obs, "_get_communique", lambda f, item, problems=None: None)
+        monkeypatch.setattr(obs.gobpe_enfen, "communiques", lambda f, problems=None, seen=None: [])
+        monkeypatch.setattr(obs, "_get_communique", lambda f, item, problems=None, gob_problems=None: None)
         acq, _ = _acquire_from_wp()  # el último conocido es el 13-2026
         obs.enfen_latest(acq, None, None, _Prev(None), obs.EventLog(), date(2026, 10, 21))
         return asked

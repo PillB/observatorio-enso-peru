@@ -257,3 +257,15 @@ def test_reviewed_findings_file_is_well_formed():
     doc = json.loads(A.KNOWN.read_text(encoding="utf-8"))
     assert doc["findings"] and all({"kind", "file", "note"} <= set(f) and f["note"] for f in doc["findings"])
     assert {f["kind"] for f in doc["findings"]} == {"archived-block-page", "history-rewritten"}
+
+
+def test_relay_served_feed_says_why_the_direct_request_failed():
+    r = Response("u", b"x", "relay-n8n", 200, attempts=[
+        {"url": "u", "error": "ReadTimeout: timed out"}, {"url": "u", "channel": "relay-n8n", "collected_at": "t"}])
+    assert obs.direct_error(r) == "ReadTimeout: timed out"
+    r = Response("u", b"x", "relay-n8n", 200, attempts=[{"url": "u", "status": 200, "note": "contenido vacío o tipo inesperado"}])
+    assert obs.direct_error(r) == "contenido vacío o tipo inesperado"
+    r = Response("u", b"x", "relay-n8n", 200, attempts=[
+        {"url": "u", "channel": "relay-n8n", "collected_at": "t", "note": "el registro la asigna a n8n"}])
+    assert obs.direct_error(r) == "el registro la asigna a n8n"
+    assert obs.direct_error(Response("u", b"x", "direct", 200)) is None

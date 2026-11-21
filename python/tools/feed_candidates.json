@@ -244,7 +244,7 @@
    "https://news.google.com/rss/search?q=site%3Anoticiasser.pe&hl=es-419&gl=PE&ceid=PE:es-419"
   ],
   "evidence": "guessed",
-  "note": "WebFetch blocked by robots.txt (site exists) so the feed was not read. Drupal-style /rss.xml guessed."
+  "note": "REMOVED 2026-11-21: since 2026-04-17 www.noticiasser.pe publishes batches of finance/how-to guides (143 posts, all in category general), not Asociacion SER news; do not re-add without new evidence. Earlier: WebFetch blocked by robots.txt (site exists) so the feed was not read. Drupal-style /rss.xml guessed."
  },
  {
   "id": "convoca",

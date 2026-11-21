@@ -38,7 +38,7 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 from .feeds import FormatChanged, Parsed
-from .feeds import cpc, godas, imarpe_repo, peru
+from .feeds import cpc, godas, gobpe_enfen, imarpe_repo, peru
 from . import archive
 from . import drift
 from . import manual
@@ -341,6 +341,10 @@ class Acquired:
     attempts: list = field(default_factory=list)
     raw: bytes = b""
     documents: list = field(default_factory=list)  # otros archivos leídos (p. ej. el PDF del comunicado)
+    #: La copia de n8n o del Perú es una que el recolector arrastró de una corrida anterior (``Response.carried``) y,
+    #: si esta vez la pidió, qué respondió el servidor (``Response.upstream_down``).
+    relay_carried: bool = False
+    upstream_down: Optional[dict] = None
 
     @property
     def format_drift(self) -> bool:
@@ -447,6 +451,46 @@ class PreviousPublication:
         return val
 
 
+def _relay_fields(a: Acquired) -> dict:
+    """Campos de la copia arrastrada por un recolector para sources.json, ``sources/<id>.json`` y el estado de
+    actualización: nada si la copia es de su última corrida (así no cambia lo publicado de siempre)."""
+    if not a.relay_carried:
+        return {}
+    return {"relayCarried": True, "copyAt": a.archived_at,
+            **({"upstreamDown": a.upstream_down} if a.upstream_down else {})}
+
+
+def relay_event(src: Source, resp, log: EventLog, now: Optional[datetime] = None) -> None:
+    """Anota la copia de un recolector (n8n, Perú) con que se leyó la fuente: ``relay-channel`` (info) si es de su
+    última corrida; ``relay-carried-copy`` (aviso) si el recolector la arrastró de una corrida anterior porque el
+    servidor le falló, o si la copia arrastrada ya tiene más días que la cadencia de la fuente. Una copia arrastrada
+    no es la fuente respondiendo: hasta 72 h (``carry_hours`` de n8n, ``CARRY_HOURS`` del Perú) el sitio la mostraría
+    como «Vía n8n» sin más. Antes solo se veía en los feeds de avisos (``upstreamDown``, ``hazard-feed-down``).
+    Es una incidencia por fuente, del canal; la antigüedad del dato la juzgan ``stale-*`` y ``late-*``."""
+    who = {"relay-peru": "la copia recolectada desde el Perú", "relay-n8n": "la copia que bajó n8n"}.get(resp.channel)
+    if not who:
+        return
+    now = now or datetime.now(timezone.utc)
+    try:
+        age_h = (now - datetime.fromisoformat(str(resp.archived_at).replace("Z", "+00:00"))).total_seconds() / 3600
+    except (TypeError, ValueError):
+        age_h = float("inf")
+    down = resp.upstream_down if getattr(resp, "carried", False) else None
+    old = getattr(resp, "carried", False) and age_h > src.cadence_days * 24
+    if down or old:
+        why = (f"en su último intento ({down.get('at') or 'sin fecha'}) el servidor respondió "
+               f"{down.get('status') or down.get('verdict') or 'con error'}" if down else "esta vez no la pidió")
+        age = "sin fecha" if age_h == float("inf") else f"{age_h / 24:.1f} días" if age_h >= 48 else f"{age_h:.0f} h"
+        log.add("warning", src.id, "fetch", "relay-carried-copy",
+                f"Ni el servidor ni el recolector dieron una copia nueva: se usó {who} del {resp.archived_at} ({age}), "
+                f"que el recolector conserva de una corrida anterior; {why}. La fuente publica cada ~{src.cadence_days} "
+                "días: un dato nuevo puede no estar aquí.")
+        return
+    kept = " (conservada de una corrida anterior: esta vez no se pidió)" if getattr(resp, "carried", False) else ""
+    log.add("info", src.id, "fetch", "relay-channel",
+            f"Fuente oficial no accesible desde el servidor; se usó {who} del {resp.archived_at}{kept}.")
+
+
 def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog) -> Acquired:
     from .fetch import FetchError, Response
 
@@ -496,12 +540,8 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
             log.add("warning", src.id, "parse", "format-drift",
                     f"Se detectó un cambio en el formato de la fuente (huella {acq.previous_fingerprint} → {parsed.fingerprint}). "
                     "El parseo siguió siendo válido; revisar que los valores sean coherentes.")
-        if resp.channel == "relay-peru":
-            log.add("info", src.id, "fetch", "relay-channel",
-                    f"Fuente oficial no accesible desde el servidor; se usó la copia recolectada desde el Perú el {resp.archived_at}.")
-        elif resp.channel == "relay-n8n":
-            log.add("info", src.id, "fetch", "relay-channel",
-                    f"Fuente oficial no accesible desde el servidor; se usó la copia que bajó n8n el {resp.archived_at}.")
+        acq.relay_carried, acq.upstream_down = bool(getattr(resp, "carried", False)), getattr(resp, "upstream_down", None)
+        relay_event(src, resp, log)
         if resp.channel.startswith("archive"):
             log.add("warning", src.id, "fetch", "archive-channel",
                     f"Fuente oficial no accesible; se usó la copia del Internet Archive del {resp.archived_at}.")
@@ -604,18 +644,28 @@ def archived_copy(fetcher, urls: list[str], accept: tuple[str, ...], save: bool 
     return None
 
 
-def _get_communique(fetcher, item: dict, problems: Optional[list] = None):
+def _get_communique(fetcher, item: dict, problems: Optional[list] = None, gob_problems: Optional[list] = None):
     """PDF de un comunicado, en el orden documentado: sus URL (portal, réplica de la DHN) y las copias de los
-    recolectores; el repositorio del IMARPE (oficial; desde Actions, por la copia del Perú); y solo al final el Internet
-    Archive (la copia de sus URL y cualquier PDF de su página de descarga del portal). ``problems`` recibe la
-    causa si el repositorio falla."""
+    recolectores; gob.pe (oficial, publicado por el SENAMHI, sin verificación humana y al alcance de Actions:
+    ``feeds.gobpe_enfen``); el repositorio del IMARPE (oficial; desde Actions, por la copia del Perú); y solo al final
+    el Internet Archive (la copia de sus URL y cualquier PDF de su página de descarga del portal). ``problems`` recibe
+    la causa si el repositorio falla y ``gob_problems``, si falla gob.pe."""
     from .fetch import FetchError, archive_prefix
 
     urls = _communique_urls(item)
     accept = ("pdf", "octet-stream")
     try:
-        return fetcher.get(urls, archive=False, accept=accept)
+        got = fetcher.get(urls, archive=False, accept=accept)
+        if got.channel == "direct" and gobpe_enfen.is_gobpe(got.url):
+            got.channel = "mirror"  # el ítem del listado vino de gob.pe: otra dirección oficial, no el portal
+        return got
     except FetchError as exc:
+        # gob.pe: el SENAMHI publica el mismo PDF el mismo día, en un CDN público que Actions alcanza. Es la ruta que
+        # queda cuando la DHN pide verificación humana y el recolector del Perú no subió la copia.
+        got = gobpe_enfen.communique_pdf(fetcher, item["year"], item["number"], gob_problems)
+        if got is not None:
+            got.attempts = exc.attempts + [{"url": got.url, "channel": "gob.pe"}]
+            return got
         # El repositorio institucional del IMARPE: oficial y sin verificación humana. Actions no lo alcanza: lo lee de
         # la copia del Perú, que guarda la búsqueda por número, el paquete y el PDF con estas mismas URL.
         got = imarpe_repo.communique_pdf(fetcher, item["year"], item["number"], problems)
@@ -669,10 +719,11 @@ def _probe_communique(fetcher, py: int, pn: int, log: EventLog) -> Optional[dict
     return None
 
 
-def portal_enfen_listing(fetcher, log: EventLog) -> list[dict]:
+def portal_enfen_listing(fetcher, log: EventLog, seen: Optional[list] = None) -> list[dict]:
     """Listado de comunicados de las páginas del portal del ENFEN y de la réplica de la DHN (las otras URL de
     la fuente), unidos: una copia del Perú de hace días del listado del portal no tapa la réplica de la DHN,
-    que GitHub Actions sí lee y puede traer un comunicado más nuevo."""
+    que GitHub Actions sí lee y puede traer un comunicado más nuevo. ``seen`` recibe ``(canal, archived_at)`` de
+    cada listado leído (``_listing_freshness``)."""
     from .fetch import FetchError
 
     found = []
@@ -680,6 +731,8 @@ def portal_enfen_listing(fetcher, log: EventLog) -> list[dict]:
         try:
             r = fetcher.get([url], archive=False, accept=("html",))
             found.append(peru.parse_enfen_listing(r.text).data)
+            if seen is not None:
+                seen.append((r.channel, r.archived_at))
         except (FetchError, FormatChanged) as exc:
             log.add("info", "enfen-comunicados", "fetch", "listing-unread",
                     f"No se pudo contrastar con el listado {url}: {exc}"[:400])
@@ -702,6 +755,24 @@ def merge_enfen_listings(*listings: list[dict]) -> list[dict]:
     return out
 
 
+def _listing_freshness(seen: list, log: EventLog) -> None:
+    """``listing-stale`` si ningún listado de comunicados se leyó en vivo en esta corrida (portal, réplica de la DHN,
+    gob.pe) y la copia más reciente de un recolector tiene más de ``RELAY_STALE_HOURS``: un comunicado nuevo podría
+    estar publicado sin que el sitio lo vea, y ``official-overdue`` recién lo diría días después de su fecha."""
+    from .fetch import _age_hours
+
+    if any(ch in ("direct", "mirror") for ch, _ in seen):
+        return
+    ages = [_age_hours(at) for ch, at in seen if ch.startswith("relay") and at]
+    freshest = min(ages, default=float("inf"))
+    if freshest <= RELAY_STALE_HOURS:
+        return
+    log.add("warning", "enfen-comunicados", "fetch", "listing-stale",
+            "Ningún listado de comunicados del ENFEN respondió en vivo (portal, réplica de la DHN, gob.pe) y "
+            + (f"la copia más reciente de un recolector tiene {freshest:.0f} h" if ages else "no hay copias de los recolectores")
+            + ": un comunicado nuevo podría estar publicado sin que el sitio lo detecte.")
+
+
 #: Sondeo de comunicados que el listado todavía no muestra (``enfen_latest``): hasta PROBE_AHEAD números después del
 #: último conocido; PROBE_MAX_MISSES números seguidos sin comunicado cortan la búsqueda.
 PROBE_AHEAD = 6
@@ -713,19 +784,23 @@ def enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pre
     """Comunicado más reciente (``_enfen_latest``) y, si el repositorio del IMARPE falló en esta corrida, su
     incidencia (una advertencia por causa: ``repository-unreachable`` o ``repository-format``)."""
     repo_problems: list = []
+    gob_problems: list = []
     try:
-        _enfen_latest(acq, fetcher, fixtures, previous, log, today, needs, repo_problems)
+        _enfen_latest(acq, fetcher, fixtures, previous, log, today, needs, repo_problems, gob_problems)
     finally:
         imarpe_repo.log_problems(log, repo_problems, "los comunicados del ENFEN")
+        gobpe_enfen.log_problems(log, gob_problems, "los comunicados del ENFEN")
 
 
 def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: PreviousPublication,
-                  log: EventLog, today: date, needs: Optional["manual.ManualNeeds"], repo_problems: list) -> None:
+                  log: EventLog, today: date, needs: Optional["manual.ManualNeeds"], repo_problems: list,
+                  gob_problems: Optional[list] = None) -> None:
     """Completa el listado ENFEN con el comunicado más reciente (PDF).
 
     1. Toma el número más alto entre los listados (API de WordPress, portal o
-       réplica de la DHN y repositorio del IMARPE), la entrada de WordPress y
-       la publicación anterior.
+       réplica de la DHN, gob.pe y repositorio del IMARPE), la entrada de
+       WordPress y la publicación anterior. Si ninguno respondió en vivo y la
+       copia de los recolectores es vieja, ``listing-stale``.
     2. Sondea hasta ``PROBE_AHEAD`` (6) números siguientes, y en enero el
        n.º 01 del año nuevo; ``PROBE_MAX_MISSES`` (dos) ausencias seguidas
        cortan. Cada número se busca como PDF en la réplica de la DHN y por su
@@ -733,8 +808,8 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
        así un comunicado nuevo se detecta aunque el listado o su copia de
        archivo estén desactualizados.
     3. Descarga el PDF (``_get_communique``: directo, copias de los
-       recolectores y de la consola, Internet Archive y repositorio del
-       IMARPE) y lo parsea. Si el PDF ya fue leído en la corrida anterior, se
+       recolectores y de la consola, gob.pe, repositorio del IMARPE e
+       Internet Archive) y lo parsea. Si el PDF ya fue leído en la corrida anterior, se
        reutiliza.
     """
     from .fetch import FetchError, Response
@@ -750,7 +825,12 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
     if fixtures is None:
         # Siempre se contrastan los otros listados (portal y réplica de la DHN): el que respondió primero puede
         # ser la API de WordPress, que se quedó atrás, o una copia del Perú o del archivo de hace días.
-        listing = merge_enfen_listings(listing, portal_enfen_listing(fetcher, log))
+        seen = [(acq.channel, acq.archived_at)] if acq.ok else []
+        listing = merge_enfen_listings(listing, portal_enfen_listing(fetcher, log, seen))
+        # gob.pe (publicaciones del SENAMHI): el comunicado nuevo aparece el mismo día y Actions lo lee en vivo. Va
+        # después del portal y de la DHN: para un mismo número gana el enlace del portal o de la DHN.
+        listing = merge_enfen_listings(listing, gobpe_enfen.communiques(fetcher, problems=gob_problems, seen=seen))
+        _listing_freshness(seen, log)
         # El repositorio del IMARPE (directo o por la copia del Perú) deposita cada comunicado unos días después: va
         # último, así una entrada del portal o de la DHN (con enlace al PDF) gana para el mismo número.
         try:
@@ -821,7 +901,7 @@ def _enfen_latest(acq: Acquired, fetcher, fixtures: Optional[Path], previous: Pr
             data["latest"] = prev_latest
             break
         try:
-            resp = canned[0] if canned else _get_communique(fetcher, item, repo_problems)
+            resp = canned[0] if canned else _get_communique(fetcher, item, repo_problems, gob_problems)
             if resp.body[:5] != b"%PDF-":
                 raise FormatChanged("enfen: la descarga no es un PDF")
             text = peru.pdf_text(resp.body)
@@ -1375,8 +1455,10 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
                       log: EventLog, started: datetime, news: Optional[dict] = None,
                       feed: Optional[dict] = None, previous: Optional["PreviousPublication"] = None,
                       freshness: Optional[dict] = None, manual_needed: Optional[dict] = None,
-                      imarpe_bsobp: Optional[dict] = None, levels=None, escenario: Optional[dict] = None) -> dict:
-    """``levels``: la tabla de avisos del SENAMHI con que se dio nivel a los avisos (``sourcefeed.levels_table``).
+                      imarpe_bsobp: Optional[dict] = None, levels=None, escenario: Optional[dict] = None,
+                      degraded: Optional[dict] = None) -> dict:
+    """``degraded``: la cuenta de degradación persistente (``track_degradation``), base de la corrida siguiente.
+    ``levels``: la tabla de avisos del SENAMHI con que se dio nivel a los avisos (``sourcefeed.levels_table``).
     ``escenario``: el escenario de riesgo por distrito del CENEPRED (``cenepred_escenario.acquire``)."""
     now = datetime.now(timezone.utc)
     content_hash = hashlib.sha256(json.dumps(
@@ -1438,7 +1520,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
             "id": sid, "ok": a.ok, "carried": a.carried, "channel": a.channel, "url": a.url,
             "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at, "sha256": a.sha256,
             "fingerprint": a.fingerprint, "fingerprintUrl": a.url or a.previous_url,
-            "archive": arch.get(sid), "data": a.data,
+            "archive": arch.get(sid), "data": a.data, **_relay_fields(a),
         })
         health.append({
             "id": sid, "institution": s.institution, "product": s.product, "layer": s.layer,
@@ -1446,6 +1528,7 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
             "status": "ok" if a.ok and not a.channel.startswith("archive") else "archive" if a.ok else "carried" if a.carried else "failed",
             "channel": a.channel, "retrievedAt": a.retrieved_at, "archivedAt": a.archived_at,
             "fingerprint": a.fingerprint, "formatDrift": a.format_drift,
+            **_relay_fields(a),
             "error": a.error, "warnings": a.warnings[:5], "attempts": a.attempts[-12:],
             "archive": (arch.get(sid) or {}).get("file"), "archiveRetrievedAt": (arch.get(sid) or {}).get("retrievedAt"),
         })
@@ -1555,6 +1638,8 @@ def write_publication(out: Path, acquired: dict[str, Acquired], b: Builder, offi
     if weekly:
         dump("weekly.json", {"source": "cpc-wksst", "regions": weekly})
     dump("sources.json", {"sources": health})
+    if degraded is not None:
+        dump("degraded.json", degraded)  # la corrida siguiente sigue la cuenta desde aquí (enso.persistent)
     # Documentos que hay que bajar a mano (consola de documentos): siempre, vacío si no falta nada.
     dump("manual-needed.json", manual_needed or {"version": 1, "pending": [], "used": []})
     if imarpe_bsobp:
@@ -1793,7 +1878,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     from . import sourcefeed
     meta = {s.id: {"institution": s.institution, "docs": s.docs or s.urls[0],
                    "retrievedAt": acquired[s.id].retrieved_at if s.id in acquired else None,
-                   "channel": acquired[s.id].channel if s.id in acquired else None} for s in SOURCES}
+                   "channel": acquired[s.id].channel if s.id in acquired else None,
+                   **(_relay_fields(acquired[s.id]) if s.id in acquired else {})} for s in SOURCES}
     news_items, feed_status = (news or {}).get("items"), ((news or {}).get("feeds") or {}).get("feeds")
     if news is None and not only:
         # Sin noticias en esta corrida: las alertas son las últimas conocidas (del histórico anterior) y cada
@@ -1828,14 +1914,49 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
         if a and not a.ok and not a.carried:
             log.add("critical" if s.critical else "error", s.id, "publish", "no-data",
                     "La fuente falló y no hay un dato anterior que conservar.")
+    # Lo que nadie pudo leer su robots.txt se pide primero a las copias de los recolectores (``Fetcher.get``): para la
+    # cuenta de degradación, llegar por n8n es lo previsto, no una falla.
+    # Lo mismo con los feeds que robots.txt no permite y se leen como un lector cada 20 h (``registry.reader_urls``):
+    # entre lecturas llegan por la copia de n8n.
+    known = getattr(fetcher, "robots_known", None) or {}
+    readers = set(reader or ())
+    eff_plan = {u: [c for c in ch if c != "actions"] if known.get(u) == "unknown" or u in readers else ch
+                for u, ch in (plan or {}).items()}
+    degraded = track_degradation(prev, acquired, news, eff_plan if fixtures is None else {}, log,
+                                 started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc))
     res = write_publication(out, acquired, b, official, weekly, grd, log, started, news=news, feed=feed, previous=prev,
                             freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today),
-                            imarpe_bsobp=bsobp, levels=levels, escenario=escenario)
+                            imarpe_bsobp=bsobp, levels=levels, escenario=escenario, degraded=degraded)
     if raw_dir is not None:
         res["rawArchived"] = archive_raw(raw_dir, acquired, today)
     fetcher.close()
     res.update({"worst": log.worst(), "events": len(log.events)})
     return res
+
+
+def track_degradation(prev: "PreviousPublication", acquired: dict[str, "Acquired"], news: Optional[dict],
+                      plan: Optional[dict], log: EventLog, now: datetime) -> Optional[dict]:
+    """Cuenta de corridas seguidas con cada fuente o feed degradado (``enso.persistent``, ``degraded-persistent``):
+    lee la que dejó la publicación anterior (``degraded.json``, con los intentos de lo arrastrado) y devuelve la nueva.
+    Nunca detiene la publicación: si falla, se publica la anterior tal cual (y se anota)."""
+    from . import news as N
+    from . import persistent
+
+    before = prev.get(persistent.FILE, carry=True) if prev.base else None
+    try:
+        feeds = None
+        if news is not None:
+            feeds = [(N.FEED_BY_ID.get(st.get("id")), st) for st in (news.get("feeds") or {}).get("feeds") or []
+                     if isinstance(st, dict) and st.get("id")]
+        catalog = {f"source:{s.id}" for s in SOURCES} | {f"feed:{f.id}" for f in N.FEEDS}
+        return persistent.update(before, now, log, sources=[(a.source, a) for a in acquired.values()], feeds=feeds,
+                                 plan=plan or {}, official=official_alerts, catalog=catalog,
+                                 prev_state=prev.state.get(persistent.FILE, "ok") if prev.base else "missing")
+    except Exception as exc:  # noqa: BLE001 — la cuenta nunca detiene la publicación
+        log.add("warning", "degraded", "validate", "degraded-exception",
+                f"No se pudo actualizar la cuenta de degradación persistente: {type(exc).__name__}: {exc}"[:300])
+        return {k: v for k, v in before.items() if k not in ("schema", "publicationId", "generatedAt")} \
+            if isinstance(before, dict) else None
 
 
 def acquire_escenario(fetcher, fixtures: Optional[Path], offline: bool, only, prev: "PreviousPublication",
@@ -1954,6 +2075,43 @@ def official_alerts(feed) -> bool:
                 and (getattr(feed, "covers", None) or feed.id in ("ciifen", "imarpe", "gdacs")))
 
 
+#: ``feed-stale`` espera a lo sumo esto aunque el medio haya callado más alguna vez (un feed muerto tiene que avisar).
+FEED_STALE_MAX_GAP_DAYS = 180
+
+
+def feed_stale(feed, st: dict, now: datetime) -> Optional[dict]:
+    """El feed respondió, pero su entrada más reciente tiene más del doble de ``stale_days`` y más que el hueco más
+    largo entre sus entradas (hasta ``FEED_STALE_MAX_GAP_DAYS``): ``{"days", "after"}``; si no, None.
+
+    Las fuentes oficiales de avisos no cuentan (que no haya avisos es lo normal; su caída la vigila
+    ``hazard-feed-down``), ni un feed sin fechas (``latest`` vacío: una capa sin avisos vigentes)."""
+    if not feed or official_alerts(feed) or not st.get("ok") or not st.get("latest"):
+        return None
+    try:
+        latest = datetime.fromisoformat(str(st["latest"]).replace("Z", "+00:00"))
+        days = (now - latest).days
+    except (TypeError, ValueError):
+        return None
+    gap = st.get("longestGapDays")
+    gap = min(gap, FEED_STALE_MAX_GAP_DAYS) if isinstance(gap, int) and not isinstance(gap, bool) and gap > 0 else 0
+    after = max(2 * feed.stale_days, gap + 1)
+    return {"days": days, "after": after} if days >= after else None
+
+
+def direct_error(r) -> Optional[str]:
+    """Por qué no sirvió el pedido directo cuando la respuesta llegó por una copia (n8n, Perú, archivo), o None. Sin
+    esto, ``news/feeds.json`` decía «relay-n8n» sin explicar si el servidor falló, tardó o dio una verificación (los 33
+    feeds de gob.pe que llegaron por n8n el 21-11-2026 aunque la sonda los leía directo)."""
+    if getattr(r, "channel", "direct") in ("direct", "mirror"):
+        return None
+    for a in getattr(r, "attempts", None) or []:
+        if a.get("channel") in (None, "direct") and (a.get("error") or a.get("status") or a.get("note")):
+            why = a.get("error") or a.get("note") or f"HTTP {a['status']}"
+            return str(why)[:200]
+    first = next((a for a in getattr(r, "attempts", None) or [] if a.get("note")), None)
+    return str(first["note"])[:200] if first else "no se pidió directo"
+
+
 def hazard_down(st: Optional[dict]) -> bool:
     """El feed de avisos no llegó del servidor en esa corrida: falló, o solo llegó la copia que un recolector arrastra.
     Un feed que no se pidió (``skipped``, ``carried``, ``omitted``: tiempo agotado o servidor ya caído) no cuenta."""
@@ -1992,8 +2150,9 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         return None
     if fixtures is not None:
         def fetch(url):
-            p = fixtures / by_url[url].fixture
-            return (200, p.read_bytes(), "", "") if p.exists() else (None, b"", "", "sin captura")
+            f = by_url.get(url)  # p. ej. el listado de un servicio ArcGIS (``check_layer``): sin captura
+            p = fixtures / f.fixture if f is not None else None
+            return (200, p.read_bytes(), "", "") if p is not None and p.exists() else (None, b"", "", "sin captura")
     else:
         # Cliente propio para los feeds: menos espera y menos reintentos que para las
         # fuentes oficiales (son más de 160 y un medio caído no debe retrasar la publicación).
@@ -2021,7 +2180,8 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             try:
                 r = (reader_fetcher if url in (reader or ()) else news_fetcher).get([url], archive=False)
                 return 200, r.body, r.content_type, "", {"channel": r.channel, "copyAt": r.archived_at or None,
-                                                         "upstreamDown": r.upstream_down}
+                                                         "upstreamDown": r.upstream_down,
+                                                         "directError": direct_error(r)}
             except FetchError as exc:
                 last = exc.attempts[-1] if exc.attempts else {}
                 return last.get("status"), b"", "", last.get("error") or f"HTTP {last.get('status')}"
@@ -2299,10 +2459,37 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                 f"{geo_quality['overrides']['rejected']} correcciones de lugar no se pudieron aplicar (códigos inválidos).")
 
     for st in status:
-        if st.get("skipped") or st.get("carried"):
+        if st.get("skipped"):
             continue
         feed = N.FEED_BY_ID.get(st.get("id"))
         before = prev_status.get(st.get("id")) or {}
+        # ``feed-stale`` no puede faltar en una corrida que no leyó el feed (lectura arrastrada de un feed «reader» o
+        # una caída de un día, p. ej. una verificación antirobots): el issue se cerraría y se reabriría.
+        # La marca guarda la fecha y el hueco que midió: un feed caído varios días seguidos no trae ``latest`` (el
+        # estado de una caída lo tiene vacío) y sin ellos el issue se cerraría al segundo día de caída.
+        mark = before.get("stale") if isinstance(before.get("stale"), dict) else None
+        basis = st if st.get("ok") and not st.get("active") else (
+            {"ok": True, "latest": before.get("latest") or mark.get("latest"),
+             "longestGapDays": before.get("longestGapDays", mark.get("longestGapDays"))}
+            if not st.get("ok") and mark else None)
+        stale = feed_stale(feed, basis, now) if basis else None
+        st.pop("stale", None)  # una lectura arrastrada trae el de su día
+        if stale:
+            stale = {**stale, "latest": basis.get("latest"),
+                     **({"longestGapDays": basis["longestGapDays"]} if basis.get("longestGapDays") is not None else {})}
+            st["stale"] = stale
+            seen = "" if st.get("ok") and not st.get("carried") else (
+                " (lectura anterior: hoy no se leyó)" if st.get("carried") else " (hoy no respondió; dato de la última lectura)")
+            # Callado más del doble de lo que se espera de él y más que su hueco más largo: o el medio dejó de
+            # publicar o el feed ya no es el suyo (cambió de dirección, de etiqueta o de dueño). Un issue por feed que
+            # se cierra solo cuando vuelve a publicar o se quita o ajusta en ``news.py``.
+            log.add("warning", f"news-{st['id']}", "fetch", "feed-stale",
+                    f"{st['name']}: sin entradas nuevas desde el {str(stale['latest'])[:10]} "
+                    f"({stale['days']} días{seen}; se espera al menos una cada {feed.stale_days} días y avisa a los "
+                    f"{stale['after']}). Ver si el medio sigue publicando en su sitio, si el feed cambió de dirección "
+                    "o si el dominio cambió de dueño; ajustar o quitar el feed en python/enso/news.py.")
+        if st.get("carried"):
+            continue
         if official_alerts(feed) and hazard_down(st) and hazard_down(before) and _hours_between(before, st) >= 6:
             # Una fuente oficial de avisos (SENAMHI, INDECI/COEN, DHN, IGP, PTWC, NASA, CIIFEN…) caída dos corridas
             # seguidas (con al menos 6 h entre ellas: dos corridas de un día de cambios distan 40 min) deja al sitio
@@ -2313,13 +2500,21 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                 f"{(st.get('upstreamDown') or {}).get('status') or 'con error'})")
             log.add("warning", f"news-{st['id']}", "fetch", "hazard-feed-down",
                     f"{st['name']} no respondió con un feed en dos corridas seguidas: {why}")
+        if st["ok"] and not st.get("items") and feed is not None and feed.layer:
+            # Capa de avisos vacía: desde cuándo (una capa que el servidor dejó de llenar se ve igual que «sin avisos»
+            # y la fecha lo deja a la vista; se borra al volver a traer avisos).
+            st["emptySince"] = (before.get("emptySince") if before.get("ok") and not before.get("items") else None) \
+                or st.get("checkedAt")
         if not st["ok"]:
             log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
-        elif not st["active"]:
+        elif not st["active"] and not stale:
+            since = f" Vacía desde el {str(st['emptySince'])[:10]}." if st.get("emptySince") else ""
+            check = {"ok": " La capa sigue siendo la de estos avisos en el listado del servidor."}.get(
+                st.get("layerCheck"), f" No se pudo comprobar la capa ({st['layerCheck']})." if st.get("layerCheck") else "")
             log.add("info", "news", "fetch", "feed-inactive",
                     f"{st['name']}: " + (f"la entrada más reciente es del {st['latest']}." if st["latest"] else
                                          f"respondió sin entradas con fecha ({st.get('items', 0)} entradas; una capa de "
-                                         "avisos vacía es normal si no hay avisos vigentes)."))
+                                         "avisos vacía es normal si no hay avisos vigentes)." + since + check))
     active = sum(1 for st in status if st["active"])
     asked = sum(1 for st in status if not st.get("skipped"))
     if active < asked / 2:

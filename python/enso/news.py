@@ -58,6 +58,10 @@ class Feed:
     max_age_days: Optional[int] = None
     #: Peligros que cubre una fuente oficial de alertas (para el registro de fuentes).
     covers: tuple[str, ...] = ()
+    #: Capa de ArcGIS (``adapter="arcgis"``): el nombre que la capa del URL tiene en el servidor. Una capa vacía no
+    #: trae campos, así que «sin avisos vigentes» y «la capa se renumeró o se retiró» se ven iguales: cuando llega
+    #: vacía se comprueba el nombre en el listado del servicio (``check_layer``).
+    layer: str = ""
 
     @property
     def fixture(self) -> str:
@@ -90,7 +94,9 @@ FEEDS: list[Feed] = [
     Feed("infobae-peru", "Infobae Perú", "peru", "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/",
          kind="digital"),
     Feed("caretas", "Caretas", "peru", "https://caretas.pe/feed/"),
-    Feed("perureports", "Peru Reports", "peru", "https://perureports.com/feed/", lang="en", kind="digital"),
+    # Publica a rachas: entre el 15-04 y el 20-11-2026 hubo huecos de 6, 15, 40 y 115 días (feed del 21-11-2026).
+    Feed("perureports", "Peru Reports", "peru", "https://perureports.com/feed/", lang="en", kind="digital",
+         stale_days=21),
     Feed("gnews-peru", "Google Noticias Perú (búsqueda El Niño)", "peru",
          _GN + "%22El%20Ni%C3%B1o%22%20OR%20ENFEN%20OR%20%22Ni%C3%B1o%20costero%22&hl=es-419&gl=PE&ceid=PE:es-419",
          scope="hazard", stale_days=3, kind="agregador"),
@@ -145,8 +151,9 @@ FEEDS: list[Feed] = [
          kind="digital", scope="general", stale_days=7),
     Feed("mongabay-latam-peru", "Mongabay Latam · Perú", "peru", "https://es.mongabay.com/feed/?location=peru",
          kind="digital", scope="general", stale_days=7),
-    Feed("noticias-ser", "Noticias SER", "peru", "https://www.noticiasser.pe/feed/",
-         kind="digital", scope="general", stale_days=7),
+    # «Noticias SER» (www.noticiasser.pe) se quitó el 21-11-2026: desde el 17-04-2026 el dominio publica guías de
+    # finanzas y trámites en tandas (143 entradas, todas en la categoría «general»: tarjetas de crédito, seguros,
+    # «cómo invertir en minería»), no las noticias de la Asociación SER. Cero notas relevantes en todas sus lecturas.
     # Amazonas
     Feed("gobpe-regionamazonas", "Gobierno Regional de Amazonas (gob.pe)", "peru", "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sort_by=recent",
          kind="gobierno", scope="local", stale_days=45, department="01"),
@@ -218,8 +225,10 @@ FEEDS: list[Feed] = [
          kind="agregador", scope="local", stale_days=3, department="07"),
     Feed("rpp-callao", "RPP Noticias · Callao", "peru", "https://rpp.pe/feed/peru/callao",
          kind="radio", scope="local", stale_days=30, department="07"),
+    # Casi no publica en la web: entradas del 18-03, 27-03, 29-03, 22-04, 26-06, 15-10 y 22-10-2026 (feed y API de
+    # WordPress del 21-11-2026). Su sitemap a veces responde con la verificación de Imunify360 («One moment…»).
     Feed("nacional-callao-tv", "Nacional Callao TV", "peru", "https://nacionalcallaotv.pe/feed/",
-         kind="tv", scope="local", stale_days=21, department="07"),
+         kind="tv", scope="local", stale_days=60, department="07"),
     Feed("prensa-chalaca", "Prensa Chalaca", "peru", "https://prensachalaca.com/feed/",
          kind="digital", scope="local", stale_days=21, department="07"),
     # Cusco
@@ -240,8 +249,10 @@ FEEDS: list[Feed] = [
          kind="agregador", scope="local", stale_days=3, department="09"),
     Feed("rpp-huancavelica", "RPP Noticias · Huancavelica", "peru", "https://rpp.pe/feed/peru/huancavelica",
          kind="radio", scope="local", stale_days=30, department="09"),
+    # La etiqueta tiene 17 notas desde 2024 (huecos de hasta 173 días; API de WordPress, 21-11-2026). Las notas
+    # sobre Huancavelica sin la etiqueta (alertas del SENAMHI para varias regiones) llegan por el feed «altavoz».
     Feed("altavoz-huancavelica", "Altavoz · tema Huancavelica", "peru", "https://altavoz.pe/temas/huancavelica/feed/",
-         kind="digital", scope="local", stale_days=21, department="09"),
+         kind="digital", scope="local", stale_days=60, department="09"),
     # Huánuco
     Feed("gobpe-regionhuanuco", "Gobierno Regional de Huánuco (gob.pe)", "peru", "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sort_by=recent",
          kind="gobierno", scope="local", stale_days=45, department="10"),
@@ -411,20 +422,20 @@ FEEDS: list[Feed] = [
     Feed("senamhi-quebradas", "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2"
          "/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CNOMBPROV%2CNOMBDIST%2CFECHA&f=json",
-         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis",
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", layer="SDE.SENAMHI_AvisoActQuebrada24H",
          covers=("huaico", "lluvias")),
     Feed("senamhi-hidrologicos", "SENAMHI · avisos hidrológicos (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
-         kind="gobierno", scope="hazard", stale_days=10, adapter="arcgis",
+         kind="gobierno", scope="hazard", stale_days=10, adapter="arcgis", layer="SDE.SENAMHI_AvisoHidrologico24H",
          covers=("inundacion", "sequia")),
     Feed("senamhi-incendios", "SENAMHI · peligro de incendios forestales, índice FWI (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1"
          "&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
-         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", covers=("incendio",)),
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", layer="SDE.SENAMHI_AvisoFWI24H", covers=("incendio",)),
     Feed("senamhi-lluvias", "SENAMHI · avisos de precipitaciones para 24 horas (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1"
          "&outFields=NIVEL,FECHA&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
-         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", covers=("lluvias",)),
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", layer="SDE.SENAMHI_AvisoPP24H", covers=("lluvias",)),
     Feed("firms-focos", "NASA FIRMS · focos de calor (VIIRS, NOAA-20)", "peru",
          "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
          kind="organismo", scope="hazard", stale_days=2, adapter="firms", covers=("incendio",)),
@@ -835,13 +846,80 @@ def _by_host(feeds: list[Feed]) -> list[list[Feed]]:
     return list(groups.values())
 
 
+def longest_gap_days(dates: list[str]) -> Optional[int]:
+    """Días del hueco más largo entre dos entradas consecutivas (fechas ISO, en cualquier orden); None con menos de dos
+    fechas distintas o alguna ilegible. Dice cuánto suele callar un medio que publica a rachas (``feed-stale``)."""
+    try:
+        ts = sorted({datetime.fromisoformat(d) for d in dates if d})
+    except (TypeError, ValueError):
+        return None
+    if len(ts) < 2:
+        return None
+    return int(max((b - a).total_seconds() for a, b in zip(ts, ts[1:])) // 86400)
+
+
 def _status(f: Feed, now: datetime, error: str = "") -> dict:
     return {"id": f.id, "name": f.name, "region": f.region, "url": f.url, "lang": f.lang, "scope": f.scope,
             "kind": f.kind, "department": f.department, "checkedAt": now.isoformat(timespec="seconds"), "ok": False,
             "items": 0, "relevant": 0, "latest": None, "active": False, "error": error, "format": None, "repairs": []}
 
 
-def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optional[bytes]]:
+def _layer_listing_url(url: str) -> Optional[str]:
+    m = re.match(r"(https?://[^?]+/(?:MapServer|FeatureServer))/\d+(?:/query)?(?:\?|$)", url)
+    return f"{m.group(1)}?f=json" if m else None
+
+
+def _layer_name(name: str) -> str:
+    """El nombre de una capa sin el esquema de la base («SDE.») ni mayúsculas: republicar la capa desde otra base no
+    es moverla."""
+    return str(name or "").rsplit(".", 1)[-1].strip().lower()
+
+
+def check_layer(f: Feed, fetch, st: dict, listings: Optional[dict] = None) -> str:
+    """Comprueba en el listado del servicio (``MapServer?f=json``) que la capa del URL de ``f`` sigue llamándose
+    ``f.layer``. Devuelve el error si se renumeró, se renombró o se retiró, y "" si coincide o no se pudo comprobar
+    (``st["layerCheck"]`` dice cuál): un listado que no llega no convierte en falla una capa vacía. ``listings``
+    guarda el listado de cada servicio durante una recolección: varias capas vacías del mismo servicio (o un servidor
+    que no responde) cuestan un solo pedido."""
+    listing = _layer_listing_url(f.url)
+    m = re.search(r"/(?:MapServer|FeatureServer)/(\d+)", f.url)
+    if not listing or not m:
+        st["layerCheck"] = "no verificado: el URL no es de una capa de ArcGIS"
+        return ""
+    lid = int(m.group(1))
+    try:
+        if listings is not None and listing in listings:
+            got = listings[listing]
+        else:
+            try:
+                got = fetch(listing)
+            except Exception as exc:  # noqa: BLE001
+                got = (None, b"", "", f"{type(exc).__name__}")
+            if listings is not None:
+                listings[listing] = got
+        code, body = got[0], got[1]
+        if code is None and len(got) > 3 and got[3] and not body:
+            raise LookupError(str(got[3]))
+        layers = json.loads(body.decode("utf-8-sig"))["layers"] if code == 200 and body else None
+        names = {int(x["id"]): str(x.get("name") or "") for x in layers}
+    except Exception as exc:  # noqa: BLE001 — sin listado la capa vacía sigue siendo «sin avisos vigentes»
+        why = str(exc) if isinstance(exc, LookupError) and not isinstance(exc, KeyError) else type(exc).__name__
+        st["layerCheck"] = f"no verificado: {why}"[:120]
+        return ""
+    if layers is None:
+        st["layerCheck"] = f"no verificado: el listado respondió HTTP {code}"
+        return ""
+    if _layer_name(names.get(lid)) == _layer_name(f.layer):
+        st["layerCheck"] = "ok"
+        return ""
+    st["layerCheck"] = "distinta"
+    now_at = [i for i, n in names.items() if _layer_name(n) == _layer_name(f.layer)]
+    return (f"la capa {lid} del servidor ya no es «{f.layer}»: es «{names.get(lid) or 'inexistente'}»"
+            + (f"; «{f.layer}» está ahora en la capa {now_at[0]} (actualizar el URL del feed)" if now_at else
+               f"; «{f.layer}» no figura en el listado del servicio (¿se retiró?)") + f" — {listing}")
+
+
+def _read_feed(f: Feed, fetch, now: datetime, listings: Optional[dict] = None) -> tuple[dict, list[dict], Optional[bytes]]:
     from .geo import legacy_fields, locate_item
 
     seen_at = now.isoformat(timespec="seconds")
@@ -855,6 +933,8 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
         # Copia de otro recolector (Perú, n8n) o réplica: el sitio dice de cuándo es y por qué canal llegó.
         st["channel"] = via["channel"]
         st["copyAt"] = via.get("copyAt")
+        if via.get("directError"):
+            st["directError"] = via["directError"]  # por qué no sirvió el pedido directo
         if via.get("upstreamDown"):
             # El recolector arrastró su última copia buena: el servidor no la está dando (n8n: HTTP 500 del CENVUL
             # el 20-11-2026 con la copia del 19 publicada como si el feed respondiera).
@@ -877,8 +957,17 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
     st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None,
                "format": parsed.format, "repairs": parsed.repairs})
     st["active"] = bool(st["latest"]) and st["latest"] >= (now - timedelta(days=f.stale_days)).isoformat()
+    gap = longest_gap_days(dates)
+    if gap is not None:
+        st["longestGapDays"] = gap  # el hueco más largo entre dos entradas del feed: lo que el medio suele callar
     if not entries and f.adapter not in ("arcgis", "firms"):  # una capa de avisos vacía es que no hay avisos vigentes
         st["error"] = "feed sin entradas"
+    if not entries and f.layer:
+        # Vacía: o no hay avisos vigentes, o la capa del URL ya no es la de estos avisos (sin campos no se distingue).
+        moved = check_layer(f, fetch, st, listings)
+        if moved:
+            st.update({"ok": False, "active": False, "error": moved, "formatError": True})
+            return st, [], body
     future = (now + timedelta(hours=2)).isoformat()
     oldest = (now - timedelta(days=f.max_age_days)).isoformat() if f.max_age_days else ""
     found = []
@@ -951,6 +1040,7 @@ def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: i
 
     feeds = FEEDS if feeds is None else feeds
     results: dict[str, tuple] = {}
+    listings: dict[str, tuple] = {}  # listados de servicios ArcGIS (``check_layer``): uno por servicio y corrida
     started = time.monotonic()
 
     def run_group(group: list[Feed]) -> None:
@@ -965,7 +1055,7 @@ def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: i
                                  | {"omitted": "deadline"}, [], None)
                 continue
             try:
-                results[f.id] = _read_feed(f, fetch, now)
+                results[f.id] = _read_feed(f, fetch, now, listings)
             except Exception as exc:  # noqa: BLE001 — un feed que falla de forma inesperada no detiene a los demás
                 results[f.id] = (_status(f, now, f"error inesperado: {type(exc).__name__}: {exc}"[:300]), [], None)
             if on_result is not None:

@@ -80,6 +80,18 @@ desde Actions y hoy falla (`repository-unreachable`): el PDF llega entonces
 por las otras rutas de la lista de abajo. Su listado se suma al del portal y
 de la DHN.
 
+gob.pe, la plataforma del Estado, es la ruta directa que GitHub Actions sí
+alcanza (cliente único en `python/enso/feeds/gobpe_enfen.py`): el SENAMHI,
+miembro del ENFEN, publica allí cada comunicado y cada informe técnico el
+mismo día, con el PDF en `cdn.www.gob.pe` sin verificación humana. Los del
+20-2026 son byte a byte los que el recolector del Perú bajó del portal (mismo
+sha256 en `data-archive`). Se lee una sola búsqueda en RSS (publicaciones
+del SENAMHI con «enfen», `LISTING_URL`, en el registro como
+`gobpe-senamhi-enfen`); robots.txt de gob.pe solo prohíbe `/admin/` y las URL
+con `sheet=`, y el del CDN solo `/admin/`. Su listado se suma después del
+portal y de la DHN. Si ningún listado responde en vivo y la copia del Perú
+tiene más de 36 h, queda `listing-stale`: un comunicado nuevo podría no verse.
+
 El PDF del comunicado se busca en este orden (`_get_communique` en
 `python/enso/observatory.py`):
 
@@ -89,11 +101,13 @@ El PDF del comunicado se busca en este orden (`_get_communique` en
    (`data-n8n`, hasta 72 h) o la [consola de documentos](documentos-manuales.md)
    (`data-manual`, hasta 120 días). Una URL que el registro no asigna a
    Actions se lee primero de esas copias.
-2. El repositorio del IMARPE (su búsqueda por número y año): de la copia
+2. gob.pe: el PDF del ítem con ese número exacto en el listado del SENAMHI,
+   si su texto dice ese mismo número.
+3. El repositorio del IMARPE (su búsqueda por número y año): de la copia
    del recolector del Perú si la trae; si no, directo.
-3. La copia del Internet Archive de esas mismas URL (y una nueva con Save
+4. La copia del Internet Archive de esas mismas URL (y una nueva con Save
    Page Now si la existente tiene más de un día y robots.txt lo permite).
-4. Cualquier copia en PDF que el Internet Archive tenga de la página de
+5. Cualquier copia en PDF que el Internet Archive tenga de la página de
    descarga del portal.
 
 Solo vale un cuerpo que empiece con `%PDF-` y que sea el comunicado
@@ -155,8 +169,8 @@ el canal que decide quién la pide, en `registry/sources.json`.
 |---|---|---|
 | NOAA CPC, PSL, NCEI, ERDDAP | Responden | En uso (CPC, PSL); NCEI y ERDDAP disponibles para mapas |
 | IGP (`met.igp.gob.pe`) | Responde | En uso (ICEN) |
-| DHN (comunicados ENFEN) | El listado responde (también a n8n); los PDF piden verificación humana a los servidores, también a n8n y al recolector del Perú | Listado en uso; PDF del repositorio del IMARPE, la consola de documentos o el Internet Archive |
-| ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre (tampoco desde n8n) | Copia del recolector del Perú; réplica DHN, repositorio del IMARPE e Internet Archive |
+| DHN (comunicados ENFEN) | El listado responde (también a n8n); los PDF piden verificación humana a los servidores, también a n8n y al recolector del Perú | Listado en uso; PDF de gob.pe, del repositorio del IMARPE, la consola de documentos o el Internet Archive |
+| ENFEN (`enfen.imarpe.gob.pe`) | No resuelve el nombre (tampoco desde n8n) | Copia del recolector del Perú; réplica DHN, gob.pe, repositorio del IMARPE e Internet Archive |
 | IMARPE, repositorio (`repositorio.imarpe.gob.pe`) | Desde el 22 de octubre no responde a la corrida diaria en Actions (incidencias `repository-unreachable` y `bsobp-unreachable`, causa «conexión»; el mensaje trae el error de red). Su certificado no trae el intermedio: va en `enso/data/ca-intermedios.pem` | Ruta de los comunicados e informes técnicos del ENFEN y del boletín semanal BS-OBP. Sus tres búsquedas están en el registro (`imarpe-repositorio-enfen`, `imarpe-repositorio-bsobp`, sin n8n): la sonda semanal decide quién las pide; desde el 26 de octubre, el recolector del Perú (`suspected-geoblock`), que desde su kit 2 también baja los paquetes y PDF |
 | IMARPE, sitio web (`www.imarpe.gob.pe`) | La portada y la página de sección dan HTTP 403 con verificación anti-robots (se registra, no se evade); el feed y su robots.txt, según el ejecutor de Actions (2 de 3 lecturas el 26 de octubre). Desde n8n responden los tres | Feed en las noticias cuando Actions lo alcanza o n8n trae copia; las dos páginas las bajan n8n y el recolector del Perú como archivo, sin lector todavía |
 | SENAMHI (avisos, estaciones, boletines) | Tiempo de espera agotado | No disponible desde Actions |

@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-11-16T19:43:13+00:00",
+ "generated_at": "2026-11-21T04:39:16+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -2172,70 +2172,6 @@
    "geoblocked": false,
    "by_url": {
     "https://es.mongabay.com/feed/?location=peru": {
-     "status": "open",
-     "channels": [
-      "actions",
-      "n8n"
-     ],
-     "robots": "allowed"
-    }
-   }
-  },
-  {
-   "id": "news-noticias-ser",
-   "group": "noticias-ser",
-   "name": "Noticias SER",
-   "institution": "Noticias SER",
-   "url": "https://www.noticiasser.pe/feed/",
-   "expect": "rss",
-   "method": "feed",
-   "kind": "feed",
-   "home": "https://www.noticiasser.pe/",
-   "alt_urls": [],
-   "hazards": [
-    "enso"
-   ],
-   "interval_minutes": 1440,
-   "parser": "enso.feedparse:parse",
-   "needs_browser": false,
-   "archive": true,
-   "notes": "tipo de medio: digital; alcance: general",
-   "tier": 1,
-   "geoblock": {
-    "status": "open",
-    "from": [
-     "github-actions",
-     "n8n-actions-azure",
-     "n8n-aws",
-     "n8n-aws-us-east-1"
-    ],
-    "open_from": [
-     "actions",
-     "n8n"
-    ],
-    "us": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
-    },
-    "peru": null,
-    "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
-    },
-    "n8n": {
-     "class": "ok",
-     "http": 200
-    }
-   },
-   "channels": [
-    "actions",
-    "n8n"
-   ],
-   "geoblocked": false,
-   "by_url": {
-    "https://www.noticiasser.pe/feed/": {
      "status": "open",
      "channels": [
       "actions",
@@ -11619,6 +11555,51 @@
     },
     "https://www.dhn.mil.pe/portal/informe-tecnico-enfen": {
      "status": "open",
+     "channels": [
+      "actions",
+      "n8n"
+     ],
+     "robots": "allowed"
+    }
+   }
+  },
+  {
+   "id": "gobpe-senamhi-enfen",
+   "group": "senamhi",
+   "name": "gob.pe: comunicados e informes técnicos del ENFEN que publica el SENAMHI",
+   "institution": "SENAMHI",
+   "url": "https://www.gob.pe/busquedas.rss?contenido[]=publicaciones&institucion[]=senamhi&term=enfen&sort_by=recent",
+   "expect": "rss",
+   "method": "feed",
+   "kind": "document-list",
+   "home": "https://www.gob.pe/institucion/senamhi/colecciones/1308-comunicados-enfen",
+   "alt_urls": [],
+   "hazards": [
+    "enso"
+   ],
+   "interval_minutes": 1440,
+   "parser": "enso.feeds.gobpe_enfen:parse_listing",
+   "needs_browser": false,
+   "archive": true,
+   "notes": "el PDF de cada ítem está en cdn.www.gob.pe (robots.txt solo prohíbe /admin/); ruta directa desde Actions cuando la DHN pide verificación humana",
+   "tier": 1,
+   "geoblock": {
+    "status": "unknown",
+    "from": [],
+    "open_from": [],
+    "us": null,
+    "peru": null,
+    "actions": null,
+    "n8n": null
+   },
+   "channels": [
+    "actions",
+    "n8n"
+   ],
+   "geoblocked": null,
+   "by_url": {
+    "https://www.gob.pe/busquedas.rss?contenido[]=publicaciones&institucion[]=senamhi&term=enfen&sort_by=recent": {
+     "status": "unknown",
      "channels": [
       "actions",
       "n8n"

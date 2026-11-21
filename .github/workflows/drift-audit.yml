@@ -24,7 +24,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Fetch the raw-source archive
-        run: git fetch --no-tags --depth=1 origin data-archive
+        # Con la historia de la ventana: las copias del mismo día se ordenan por la hora del commit que las agregó
+        # (python/tools/drift_audit.py). Sin historia (--depth=1) se ordenan por nombre, y el hash no dice cuál llegó
+        # primero.
+        run: |
+          git fetch --no-tags --shallow-since="$(date -u -d '12 days ago' +%F)" origin data-archive \
+            || git fetch --no-tags --depth=1 origin data-archive
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'

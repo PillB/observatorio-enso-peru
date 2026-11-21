@@ -73,6 +73,53 @@ def test_volcano_bulletins_skip_green_alerts_and_name_the_province():
                                         "source": "https://volcano.si.edu/volcano.cfm?vn=354006"}]
 
 
+_CENVUL = {"boletines": "https://cenvul.igp.gob.pe/productos/boletines-vulcanologicos",
+           "alertas": "https://cenvul.igp.gob.pe/productos/alertas-vulcanologicas"}
+
+
+@pytest.mark.parametrize("page", sorted(_CENVUL))
+def test_cenvul_reads_the_same_page_in_either_locale(page):
+    """El CENVUL sirve, al azar, la misma página con fechas en inglés o en castellano (según la instancia de Nuxt que
+    atiende; ``Accept-Language`` no influye). Las capturas ``-es`` son las variantes castellanas del mismo día que las
+    inglesas (data-archive, 21-10-2026: boletines 05ad440e3d22, alertas 1f833c01d948). Antes solo se leía la inglesa:
+    la castellana salía «sin entradas con fecha» y sus 10 alertas se fundían en 2 (el enlace llevaba la fecha)."""
+    url = _CENVUL[page]
+    en = H.parse_cenvul((FIX / f"news-igp-cenvul-{page}.html").read_bytes(), url)
+    es = H.parse_cenvul((FIX / f"news-igp-cenvul-{page}-es.html").read_bytes(), url)
+    assert en.items and all(i["published"] for i in en.items)
+    key = lambda p: [(i["title"], i["link"], i["published"]) for i in p.items]  # noqa: E731
+    assert key(es) == key(en)
+    assert not any("no se pudo leer" in r for r in es.repairs + en.repairs)
+    if page == "alertas":
+        assert len(es.items) == 10 and es.items[0]["published"] == "2026-06-01T16:54:00Z"  # 11:54:00 a. m. de Lima
+
+
+@pytest.mark.parametrize("raw, hm, want", [
+    ("Monday, June 1, 2026", "11:54:00 AM", "2026-06-01T16:54:00Z"),
+    ("lunes, 1 de junio de 2026", "11:54:00 a.\u00a0m.", "2026-06-01T16:54:00Z"),
+    ("lunes, 1 de junio de 2026", "2:40:00 p. m.", "2026-06-01T19:40:00Z"),
+    ("lunes, 1 de junio de 2026", "12:05:00 a. m.", "2026-06-01T05:05:00Z"),
+    ("martes, 1 de setiembre de 2026", "", "2026-09-01T17:00:00Z"),
+    ("1 de septiembre de 2026", "21:15", "2026-09-02T02:15:00Z"),
+    ("lunes, 31 de junio de 2026", "", None),
+    ("2026-06-01", "", None),
+])
+def test_cenvul_card_dates(raw, hm, want):
+    assert H._card_date(raw, hm) == want
+
+
+def test_cenvul_unknown_date_format_is_a_format_error():
+    """Si el CENVUL cambia otra vez la forma de la fecha, el feed falla por formato (``formatError``, y la incidencia de
+    fuente caída si dura) en vez de publicar tarjetas sin fecha como si respondiera bien."""
+    body = (FIX / "news-igp-cenvul-alertas.html").read_bytes()
+    body = re.sub(rb"(Fecha de publicaci\xc3\xb3n : </span>) [^<]+", rb"\1 2026-06-01", body)
+    with pytest.raises(FeedError, match="fechas de otra forma"):
+        H.parse_cenvul(body, _CENVUL["alertas"])
+    one = (FIX / "news-igp-cenvul-alertas.html").read_bytes().replace(b"Monday, June 1, 2026", b"1/6/2026", 1)
+    p = H.parse_cenvul(one, _CENVUL["alertas"])
+    assert "1 tarjetas con una fecha que no se pudo leer" in p.repairs
+
+
 @pytest.mark.parametrize("name", sorted(H.VOLCANO_POINTS))
 def test_volcano_summits_lie_in_the_province_the_igp_names(name):
     """Las cumbres (catálogo del Smithsonian) caen en la provincia (o el departamento) que el sitio dice para cada
@@ -304,3 +351,150 @@ def test_fire_risk_polygons_are_named_by_department():
     assert {"15", "11", "04", "23"} <= set(f["departments"])  # Lima, Ica, Arequipa, Tacna
     assert "INTENSIDAD%3D%27EXTREMO%27" in f["link"] and "f=html" in f["link"]
     assert f["detail"]["shapes"][0]["rings"]
+
+
+# --- Capas de GEOSINPAD: una capa vacía no trae campos ------------------------------
+# El 19-21 de noviembre de 2026 la capa del FWI (3) respondió vacía mientras las 2, 4 y 5 traían avisos: en el
+# servidor (``where=1=1&returnCountOnly=true`` → 0; FECHA máxima nula) y con el mismo nombre en el listado. Vacía
+# no se distingue de una capa renumerada o retirada (el GeoJSON vacío no dice qué capa es): se mira el listado.
+LISTING = FIX / "geosinpad-senamhi-mapserver.json"  # MapServer?f=json del 21-11-2026
+EMPTY_GEOJSON = b'{"type":"FeatureCollection","features":[]}'
+
+
+def _fetch_with_listing(listing: bytes | None):
+    asked = []
+
+    def fetch(url):
+        asked.append(url)
+        if url.endswith("/MapServer?f=json"):
+            return (200, listing, "", "") if listing is not None else (503, b"", "", "HTTP 503")
+        return 200, EMPTY_GEOJSON, "", ""
+    return fetch, asked
+
+
+def test_geosinpad_feeds_name_the_layer_of_their_url():
+    """Cada feed de GEOSINPAD apunta a la capa con el nombre que declara (listado real del servidor)."""
+    names = {x["id"]: x["name"] for x in json.loads(LISTING.read_bytes())["layers"]}
+    geos = [f for f in N.FEEDS if "geosinpad.indeci.gob.pe" in f.url and f.adapter == "arcgis"]
+    assert {f.id for f in geos} == {"senamhi-quebradas", "senamhi-hidrologicos", "senamhi-incendios", "senamhi-lluvias"}
+    for f in geos:
+        lid = int(re.search(r"/MapServer/(\d+)/query", f.url).group(1))
+        assert f.layer and names[lid] == f.layer, f.id
+    assert N.FEED_BY_ID["senamhi-incendios"].layer == "SDE.SENAMHI_AvisoFWI24H"
+
+
+def test_empty_fire_layer_is_no_warning_when_the_layer_still_matches():
+    feed = N.FEED_BY_ID["senamhi-incendios"]
+    fetch, asked = _fetch_with_listing(LISTING.read_bytes())
+    st, items, _ = N._read_feed(feed, fetch, NOW)
+    assert st["ok"] and not items and not st["error"] and st["layerCheck"] == "ok"
+    assert asked == [feed.url, "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer?f=json"]
+
+
+def test_empty_layer_that_was_renumbered_fails_loudly_and_names_the_new_id():
+    listing = json.loads(LISTING.read_bytes())
+    for x in listing["layers"]:  # el servidor intercala una capa nueva: FWI pasa de la 3 a la 6
+        if x["id"] == 3:
+            x["name"] = "SDE.SENAMHI_AvisoHeladas24H"
+    listing["layers"].append({"id": 6, "name": "SDE.SENAMHI_AvisoFWI24H", "type": "Feature Layer"})
+    fetch, _ = _fetch_with_listing(json.dumps(listing).encode())
+    st, items, _ = N._read_feed(N.FEED_BY_ID["senamhi-incendios"], fetch, NOW)
+    assert not st["ok"] and st["formatError"] and not items and st["layerCheck"] == "distinta"
+    assert "ya no es «SDE.SENAMHI_AvisoFWI24H»" in st["error"] and "está ahora en la capa 6" in st["error"]
+    from enso.observatory import hazard_down
+    assert hazard_down(st)  # dos corridas así: «hazard-feed-down» (aviso, no info)
+    # Retirada: ni en su número ni en otro.
+    listing["layers"] = [x for x in listing["layers"] if x["id"] not in (3, 6)]
+    fetch, _ = _fetch_with_listing(json.dumps(listing).encode())
+    st, _, _ = N._read_feed(N.FEED_BY_ID["senamhi-incendios"], fetch, NOW)
+    assert not st["ok"] and "es «inexistente»" in st["error"] and "no figura en el listado" in st["error"]
+
+
+@pytest.mark.parametrize("listing", [None, b"<html>mantenimiento</html>", b'{"error":{"code":500}}'])
+def test_unverifiable_layer_listing_keeps_an_empty_layer_as_no_warnings(listing):
+    fetch, _ = _fetch_with_listing(listing)
+    st, items, _ = N._read_feed(N.FEED_BY_ID["senamhi-incendios"], fetch, NOW)
+    assert st["ok"] and not items and not st["error"] and st["layerCheck"].startswith("no verificado")
+
+
+def test_layer_is_checked_only_when_empty():
+    feed = N.FEED_BY_ID["senamhi-incendios"]
+    asked = []
+
+    def fetch(url):
+        asked.append(url)
+        return 200, (FIX / feed.fixture).read_bytes(), "", ""
+    st, items, _ = N._read_feed(feed, fetch, NOW)
+    assert st["ok"] and items and asked == [feed.url] and "layerCheck" not in st
+    assert N._layer_listing_url("https://x.pe/arcgis/rest/services/A/FeatureServer/0/query?where=1%3D1&f=json") \
+        == "https://x.pe/arcgis/rest/services/A/FeatureServer?f=json"
+    assert N._layer_listing_url("https://x.pe/feed.xml") is None
+
+
+def _fire_run(tmp_path, monkeypatch, listing: bytes, prev: dict):
+    """Una corrida de noticias (``acquire_news``) con solo el feed del FWI, que responde vacío."""
+    import httpx
+
+    from enso import observatory as obs
+    from enso.fetch import Fetcher
+
+    feed = N.FEED_BY_ID["senamhi-incendios"]
+    monkeypatch.setattr(N, "FEEDS", [feed])
+    real = httpx.Client
+
+    def serve(req):
+        body = listing if str(req.url).endswith("/MapServer?f=json") else EMPTY_GEOJSON
+        return httpx.Response(200, content=body, headers={"content-type": "application/json"})
+    monkeypatch.setattr(httpx, "Client", lambda **kw: real(**{**kw, "transport": httpx.MockTransport(serve)}))
+    site = tmp_path / "site"
+    (site / "news").mkdir(parents=True)
+    (site / "news" / "feeds.json").write_text(json.dumps({"feeds": [{"id": feed.id, **prev}]}), encoding="utf-8")
+    fetcher = Fetcher(polite_delay=0)
+    log = obs.EventLog()
+    now = datetime(2026, 11, 21, 2, 0, tzinfo=timezone.utc)
+    got = obs.acquire_news(fetcher, None, obs.PreviousPublication(str(site), fetcher), log, now, None)
+    return {s["id"]: s for s in got["feeds"]["feeds"]}[feed.id], log
+
+
+def test_empty_fire_layer_says_since_when_and_that_the_layer_was_checked(tmp_path, monkeypatch):
+    prev = {"ok": True, "items": 0, "error": "", "checkedAt": "2026-11-20T02:00:00+00:00",
+            "emptySince": "2026-11-19T02:00:00+00:00"}
+    st, log = _fire_run(tmp_path, monkeypatch, LISTING.read_bytes(), prev)
+    assert st["ok"] and st["emptySince"] == "2026-11-19T02:00:00+00:00" and st["layerCheck"] == "ok"
+    (ev,) = [e for e in log.events if e.code == "feed-inactive"]
+    assert ev.severity == "info" and "Vacía desde el 2026-11-19" in ev.message and "sigue siendo la de estos" in ev.message
+    # La corrida anterior trajo avisos: la cuenta empieza de nuevo.
+    st, _ = _fire_run(tmp_path / "b", monkeypatch, LISTING.read_bytes(), {**prev, "items": 1})
+    assert st["emptySince"] == "2026-11-21T02:00:00+00:00"
+
+
+def test_renumbered_fire_layer_twice_is_a_warning(tmp_path, monkeypatch):
+    listing = json.loads(LISTING.read_bytes())
+    listing["layers"] = [x for x in listing["layers"] if x["id"] != 3]
+    prev = {"ok": False, "items": 0, "error": "la capa 3 del servidor ya no es …", "formatError": True,
+            "checkedAt": "2026-11-20T13:00:00+00:00"}
+    st, log = _fire_run(tmp_path, monkeypatch, json.dumps(listing).encode(), prev)
+    assert not st["ok"] and "emptySince" not in st
+    (warn,) = [e for e in log.events if e.code == "hazard-feed-down"]
+    assert warn.severity == "warning" and "no figura en el listado" in warn.message
+
+
+def test_one_listing_request_for_several_empty_layers_of_the_same_service():
+    """Varias capas vacías del mismo servicio (o un listado que no responde) cuestan un solo pedido por corrida."""
+    geos = [N.FEED_BY_ID[i] for i in ("senamhi-hidrologicos", "senamhi-incendios", "senamhi-lluvias")]
+    for listing in (LISTING.read_bytes(), None):
+        fetch, asked = _fetch_with_listing(listing)
+        _, status, _ = N.collect(fetch, NOW, feeds=geos, host_failures=99)
+        assert sum(u.endswith("/MapServer?f=json") for u in asked) == 1
+        assert {st["layerCheck"][:5] for st in status} == ({"ok"} if listing else {"no ve"})
+        assert all(st["ok"] for st in status)
+
+
+def test_layer_republished_under_another_schema_is_not_a_move():
+    listing = json.loads(LISTING.read_bytes())
+    for x in listing["layers"]:
+        if x["id"] == 3:
+            x["name"] = "GEO.senamhi_avisofwi24h"  # otra base, otras mayúsculas: la misma capa
+    fetch, _ = _fetch_with_listing(json.dumps(listing).encode())
+    st, _, _ = N._read_feed(N.FEED_BY_ID["senamhi-incendios"], fetch, NOW)
+    assert st["ok"] and st["layerCheck"] == "ok"
