@@ -347,7 +347,7 @@ def test_architecture_counts_come_from_the_code():
         (full["registry-builder"]["what_en"], r"\((\d+) feeds, ", "feeds"),
         (full["registry-builder"]["what_en"], r"(\d+) ENSO sources", "sources"),
         (full["registry-builder"]["what_en"], r"(\d+) Peru pages", "pages"),
-        (full["registry-builder"]["what_en"], r"(\d+) ENFEN and IMARPE document listings", "documents"),
+        (full["registry-builder"]["what_en"], r"(\d+) ENFEN, IMARPE and gob.pe document listings", "documents"),
         (full["noaa"]["what_es"], r"(\d+) productos de NOAA", "noaa"),
         (full["noaa"]["what_en"], r"(\d+) NOAA products", "noaa"),
         (edge[("noaa", "fetch")]["label_es"], r"(\d+) productos", "noaa"),

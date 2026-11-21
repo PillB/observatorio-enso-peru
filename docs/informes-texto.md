@@ -26,12 +26,16 @@ muestra cada vista.
    atrás; 2025, uno adelante: el comunicado 05-2025 cita el informe N° 06). Se usa el enlace que trae el
    comunicado y, si no lo trae, el listado del portal, eligiendo por la fecha de corte de datos (de 3 días
    después a `INFORME_LAG_DAYS` = 10 días antes de la emisión; en 2024–2026 fue de 0 a 5). Sin listado del
-   portal, el del repositorio del IMARPE (con la fecha de corte del nombre del archivo) y, sin él, el de la
-   réplica de la DHN (el número más alto del año), que la validación descarta si es de otro periodo. Un informe ya leído no se vuelve a bajar mientras siga el mismo comunicado.
+   portal, el del repositorio del IMARPE (con la fecha de corte del nombre del archivo); sin él, el número más
+   alto del año entre la réplica de la DHN y gob.pe (publicaciones del SENAMHI, `feeds/gobpe_enfen.py`), juntos para
+   que el que se atrasó no elija el informe anterior (a igual número, la URL de la DHN), que la validación descarta
+   si es de otro periodo. Un informe ya leído no se vuelve a bajar mientras siga el mismo comunicado.
 3. **De dónde se baja.** El portal del ENFEN no responde desde GitHub Actions ni desde n8n (DNS). Se prueba,
    en orden: cada URL del informe (el portal y la réplica de la DHN, `informe-tecnico/NN-AAAA.pdf`), primero
    directa y luego su copia del recolector del Perú, de n8n o de la consola (una URL que el registro no da a
-   Actions se lee primero de las copias); después el repositorio del IMARPE; y solo al final el Internet
+   Actions se lee primero de las copias); después gob.pe (el SENAMHI publica el mismo PDF el mismo día en
+   `cdn.www.gob.pe`, sin verificación humana y al alcance de Actions; solo el ítem con ese número y año); después
+   el repositorio del IMARPE; y solo al final el Internet
    Archive (`reports._informe_pdf`). El repositorio institucional del IMARPE (`repositorio.imarpe.gob.pe`,
    DSpace; cliente único en `python/enso/feeds/imarpe_repo.py`) recibe cada comunicado e informe unos 3 días
    después de su publicación; su API (`/server/api`, que robots.txt no prohíbe) no responde a GitHub Actions,

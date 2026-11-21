@@ -29,9 +29,10 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Optional
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .archive import news_page
-from .feedparse import LIMA, FeedError, parse as parse_any
+from .feedparse import LIMA, FeedError, parse as parse_any, truncated
 from .geo import FOREIGN_RE, PERU_RE as PERU_WORD_RE
 
 
@@ -58,6 +59,13 @@ class Feed:
     max_age_days: Optional[int] = None
     #: Peligros que cubre una fuente oficial de alertas (para el registro de fuentes).
     covers: tuple[str, ...] = ()
+    #: Capa de ArcGIS (``adapter="arcgis"``): el nombre que la capa del URL tiene en el servidor. Una capa vacía no
+    #: trae campos, así que «sin avisos vigentes» y «la capa se renumeró o se retiró» se ven iguales: cuando llega
+    #: vacía se comprueba el nombre en el listado del servicio (``check_layer``).
+    layer: str = ""
+    #: El enlace de cada entrada identifica la nota (``identity_key``). ``False`` en un feed que pone el mismo enlace
+    #: a entradas distintas (FIRMS: el resumen del día siempre enlaza al mismo mapa).
+    link_is_id: bool = True
 
     @property
     def fixture(self) -> str:
@@ -90,7 +98,9 @@ FEEDS: list[Feed] = [
     Feed("infobae-peru", "Infobae Perú", "peru", "https://www.infobae.com/arc/outboundfeeds/rss/category/peru/",
          kind="digital"),
     Feed("caretas", "Caretas", "peru", "https://caretas.pe/feed/"),
-    Feed("perureports", "Peru Reports", "peru", "https://perureports.com/feed/", lang="en", kind="digital"),
+    # Publica a rachas: entre el 15-04 y el 20-11-2026 hubo huecos de 6, 15, 40 y 115 días (feed del 21-11-2026).
+    Feed("perureports", "Peru Reports", "peru", "https://perureports.com/feed/", lang="en", kind="digital",
+         stale_days=21),
     Feed("gnews-peru", "Google Noticias Perú (búsqueda El Niño)", "peru",
          _GN + "%22El%20Ni%C3%B1o%22%20OR%20ENFEN%20OR%20%22Ni%C3%B1o%20costero%22&hl=es-419&gl=PE&ceid=PE:es-419",
          scope="hazard", stale_days=3, kind="agregador"),
@@ -145,8 +155,9 @@ FEEDS: list[Feed] = [
          kind="digital", scope="general", stale_days=7),
     Feed("mongabay-latam-peru", "Mongabay Latam · Perú", "peru", "https://es.mongabay.com/feed/?location=peru",
          kind="digital", scope="general", stale_days=7),
-    Feed("noticias-ser", "Noticias SER", "peru", "https://www.noticiasser.pe/feed/",
-         kind="digital", scope="general", stale_days=7),
+    # «Noticias SER» (www.noticiasser.pe) se quitó el 21-11-2026: desde el 17-04-2026 el dominio publica guías de
+    # finanzas y trámites en tandas (143 entradas, todas en la categoría «general»: tarjetas de crédito, seguros,
+    # «cómo invertir en minería»), no las noticias de la Asociación SER. Cero notas relevantes en todas sus lecturas.
     # Amazonas
     Feed("gobpe-regionamazonas", "Gobierno Regional de Amazonas (gob.pe)", "peru", "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sort_by=recent",
          kind="gobierno", scope="local", stale_days=45, department="01"),
@@ -218,8 +229,10 @@ FEEDS: list[Feed] = [
          kind="agregador", scope="local", stale_days=3, department="07"),
     Feed("rpp-callao", "RPP Noticias · Callao", "peru", "https://rpp.pe/feed/peru/callao",
          kind="radio", scope="local", stale_days=30, department="07"),
+    # Casi no publica en la web: entradas del 18-03, 27-03, 29-03, 22-04, 26-06, 15-10 y 22-10-2026 (feed y API de
+    # WordPress del 21-11-2026). Su sitemap a veces responde con la verificación de Imunify360 («One moment…»).
     Feed("nacional-callao-tv", "Nacional Callao TV", "peru", "https://nacionalcallaotv.pe/feed/",
-         kind="tv", scope="local", stale_days=21, department="07"),
+         kind="tv", scope="local", stale_days=60, department="07"),
     Feed("prensa-chalaca", "Prensa Chalaca", "peru", "https://prensachalaca.com/feed/",
          kind="digital", scope="local", stale_days=21, department="07"),
     # Cusco
@@ -240,8 +253,10 @@ FEEDS: list[Feed] = [
          kind="agregador", scope="local", stale_days=3, department="09"),
     Feed("rpp-huancavelica", "RPP Noticias · Huancavelica", "peru", "https://rpp.pe/feed/peru/huancavelica",
          kind="radio", scope="local", stale_days=30, department="09"),
+    # La etiqueta tiene 17 notas desde 2024 (huecos de hasta 173 días; API de WordPress, 21-11-2026). Las notas
+    # sobre Huancavelica sin la etiqueta (alertas del SENAMHI para varias regiones) llegan por el feed «altavoz».
     Feed("altavoz-huancavelica", "Altavoz · tema Huancavelica", "peru", "https://altavoz.pe/temas/huancavelica/feed/",
-         kind="digital", scope="local", stale_days=21, department="09"),
+         kind="digital", scope="local", stale_days=60, department="09"),
     # Huánuco
     Feed("gobpe-regionhuanuco", "Gobierno Regional de Huánuco (gob.pe)", "peru", "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sort_by=recent",
          kind="gobierno", scope="local", stale_days=45, department="10"),
@@ -411,23 +426,23 @@ FEEDS: list[Feed] = [
     Feed("senamhi-quebradas", "SENAMHI · avisos de activación de quebradas (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2"
          "/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CNOMBPROV%2CNOMBDIST%2CFECHA&f=json",
-         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis",
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", layer="SDE.SENAMHI_AvisoActQuebrada24H",
          covers=("huaico", "lluvias")),
     Feed("senamhi-hidrologicos", "SENAMHI · avisos hidrológicos (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/4/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
-         kind="gobierno", scope="hazard", stale_days=10, adapter="arcgis",
+         kind="gobierno", scope="hazard", stale_days=10, adapter="arcgis", layer="SDE.SENAMHI_AvisoHidrologico24H",
          covers=("inundacion", "sequia")),
     Feed("senamhi-incendios", "SENAMHI · peligro de incendios forestales, índice FWI (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/3/query?where=1%3D1"
          "&outFields=*&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
-         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", covers=("incendio",)),
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", layer="SDE.SENAMHI_AvisoFWI24H", covers=("incendio",)),
     Feed("senamhi-lluvias", "SENAMHI · avisos de precipitaciones para 24 horas (servidor GEOSINPAD del INDECI)", "peru",
          "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/5/query?where=1%3D1"
          "&outFields=NIVEL,FECHA&returnGeometry=true&outSR=4326&maxAllowableOffset=0.02&geometryPrecision=3&f=geojson",
-         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", covers=("lluvias",)),
+         kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", layer="SDE.SENAMHI_AvisoPP24H", covers=("lluvias",)),
     Feed("firms-focos", "NASA FIRMS · focos de calor (VIIRS, NOAA-20)", "peru",
          "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
-         kind="organismo", scope="hazard", stale_days=2, adapter="firms", covers=("incendio",)),
+         kind="organismo", scope="hazard", stale_days=2, adapter="firms", covers=("incendio",), link_is_id=False),
     Feed("usgs-sismos", "USGS · sismos de magnitud 4 o más (Perú y alrededores)", "peru",
          "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1"
          "&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
@@ -647,6 +662,82 @@ def item_id(link: str, title: str) -> str:
     return hashlib.sha256(f"{link.strip()}|{title.strip().lower()}".encode()).hexdigest()[:16]
 
 
+#: Parámetros de consulta que no cambian la nota: campañas, clics de redes y anuncios, AMP.
+_TRACKING_RE = re.compile(r"(utm_[a-z_]+|fbclid|gclid|dclid|msclkid|mc_[ce]id|igshid|ref|ref_src|outputtype|cmpid|amp)", re.I)
+
+
+def _canonical_host(p) -> str:
+    """El servidor en minúsculas, sin «www.» y con el puerto solo si no es el de omisión."""
+    host = (p.hostname or "").lower().removeprefix("www.")
+    try:
+        port = p.port
+    except ValueError:
+        port = None
+    if port and port not in (80, 443):
+        host = f"{host}:{port}"
+    return host
+
+
+def canonical_link(url: str) -> str:
+    """El enlace con que se identifica una nota: ``https``, el servidor en minúsculas sin «www.» ni puerto por
+    omisión, sin parámetros de seguimiento (``_TRACKING_RE``) y sin barra final. La ruta, el resto de la consulta y
+    el fragmento se conservan tal cual: distinguen mayúsculas (los identificadores de Google Noticias) y el
+    fragmento es lo único que distingue un aviso de otro en los lectores sin RSS (``avisos-especiales#5356`` de la
+    DHN, ``boletines-vulcanologicos#IGP-CENVUL-SAB-BV-2026-0043`` del CENVUL).
+
+    El mismo servidor escribe la misma nota con otro esquema o servidor según quién la pida: el feed de Pro &
+    Contra arma los enlaces con el servidor y el esquema del pedido (en data-archive, 57 copias del feed con cuatro
+    variantes: ``http``/``https`` y con o sin ``www``), y GDACS alterna ``http`` y ``https``."""
+    raw = (url or "").strip()
+    try:
+        p = urlsplit(raw)
+    except ValueError:
+        return raw
+    if p.scheme.lower() not in ("http", "https") or not p.netloc:
+        return raw
+    host = _canonical_host(p)
+    query = urlencode([(k, v) for k, v in parse_qsl(p.query, keep_blank_values=True) if not _TRACKING_RE.fullmatch(k)])
+    return urlunsplit(("https", host, p.path.rstrip("/") or "", query, p.fragment))
+
+
+def _title_key(title: str) -> str:
+    """El titular comparable: sin diferencias de mayúsculas ni de espacios (también los de no separación)."""
+    return " ".join(unicodedata.normalize("NFC", title or "").split()).casefold()
+
+
+def _link_ids(f_id: str) -> bool:
+    f = FEED_BY_ID.get(f_id)
+    return f.link_is_id if f else True
+
+
+def _shared_links(items: list[dict]) -> set[tuple[str, str]]:
+    """Enlaces que un feed puso, en una misma lectura, a entradas con titulares distintos: ahí el enlace no
+    identifica la nota (la portada del medio, un mapa)."""
+    seen: dict[tuple[str, str, str], str] = {}
+    shared = set()
+    for i in items:
+        k = (i.get("feed") or "", i.get("first_seen") or "", canonical_link(i.get("link") or ""))
+        t = _title_key(i.get("title") or "")
+        if seen.setdefault(k, t) != t:
+            shared.add(k[:1] + k[2:])
+    return shared
+
+
+def identity_key(item: dict, shared: frozenset | set = frozenset()) -> tuple:
+    """Qué nota es una entrada: el feed y su enlace canónico (``canonical_link``), o el ``id`` si el enlace no la
+    identifica (``Feed.link_is_id`` falso, o el enlace está en ``shared``).
+
+    El ``id`` (``item_id``) sale del enlace y del titular tal como llegaron, así que cambia con cada variante del
+    mismo servidor (``http``/``https``, «www.»), con el nombre del medio que Google Noticias agrega al titular y
+    con cada corrección del titular: en data-archive, 397 de 13 458 notas eran otra copia de una nota ya
+    guardada (21-11-2026). El ``id`` no cambia (lo usan las anclas del archivo y el histórico ya publicado)."""
+    feed = item.get("feed") or ""
+    link = canonical_link(item.get("link") or "")
+    if not link or not _link_ids(feed) or (feed, link) in shared:
+        return (feed, "id", item.get("id") or "")
+    return (feed, link)
+
+
 # --- Agrupación de entradas similares ----------------------------------------
 
 STOP = set("""a al ante con de del desde e el en entre es la las lo los para por que se sin su sus un una y o
@@ -701,6 +792,7 @@ def _without_title(i: dict) -> str:
 def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
     """Grupos de entradas similares de los últimos ``days`` días, más recientes primero."""
     since = (now - timedelta(days=days)).isoformat()
+    items = latest_versions(items)  # la misma nota con otro enlace o titular, una vez (la última versión)
     recent = sorted((i for i in items if (i.get("published") or i["first_seen"]) >= since),
                     key=lambda i: i.get("published") or i["first_seen"])
     groups: list[dict] = []
@@ -799,14 +891,62 @@ def read_jsonl(text: str) -> list[dict]:
     return out
 
 
-def new_lines(history: list[dict], fresh: list[dict]) -> list[dict]:
-    """Entradas de ``fresh`` que aún no están en el histórico (por id)."""
+def _history_index(history: list[dict], shared: set) -> tuple[dict[tuple, str], dict[tuple, set[str]]]:
+    """Por cada nota del histórico (``identity_key``): el ``id`` de su primera versión y los titulares ya vistos."""
+    first: dict[tuple, str] = {}
+    titles: dict[tuple, set[str]] = {}
+    for h in history:
+        k = identity_key(h, shared)
+        first.setdefault(k, h.get("revises") or h["id"])
+        titles.setdefault(k, set()).add(_title_key(h.get("title") or ""))
+    return first, titles
+
+
+def new_lines(history: list[dict], fresh: list[dict], skipped: Optional[list] = None) -> list[dict]:
+    """Entradas de ``fresh`` que aún no están en el histórico.
+
+    Una entrada ya está si su ``id`` ya está o si es la misma nota (``identity_key``) con un titular ya visto: otra
+    variante del enlace (``http``/``https``, «www.», parámetros de seguimiento) o el mismo titular con otro sufijo
+    del medio o con otros espacios. Esas se anotan en ``skipped``. Si el titular es otro, es una corrección (el
+    USGS recalcula el lugar y la magnitud, el COEN completa el reporte, un medio cambia el titular): se agrega con
+    ``revises``, el ``id`` de la primera versión, y ``cluster`` muestra la última."""
     seen = {h["id"] for h in history}
+    shared = _shared_links(fresh)
+    first, titles = _history_index(history, shared)
     out = []
     for f in fresh:
-        if f["id"] not in seen:
-            seen.add(f["id"])
-            out.append(f)
+        if f["id"] in seen:
+            continue
+        seen.add(f["id"])
+        k = identity_key(f, shared)
+        t = _title_key(f.get("title") or "")
+        if k in titles and t in titles[k]:
+            if skipped is not None:
+                skipped.append(f)
+            continue
+        if k in first:
+            f = dict(f, revises=first[k])
+        else:
+            first[k] = f["id"]
+        titles.setdefault(k, set()).add(t)
+        out.append(f)
+    return out
+
+
+def latest_versions(items: list[dict]) -> list[dict]:
+    """Una entrada por nota (``identity_key``): la última versión vista, en el lugar de la primera. Las copias
+    del histórico anteriores a ``new_lines`` con ``revises`` (otra variante del enlace o del titular) se juntan
+    igual, porque la clave sale del enlace canónico y no de ese campo."""
+    shared = _shared_links(items)
+    pos: dict[tuple, int] = {}
+    out: list[dict] = []
+    for i in items:
+        k = identity_key(i, shared)
+        if k not in pos:
+            pos[k] = len(out)
+            out.append(i)
+        elif (i.get("first_seen") or "") >= (out[pos[k]].get("first_seen") or ""):
+            out[pos[k]] = i
     return out
 
 
@@ -835,96 +975,270 @@ def _by_host(feeds: list[Feed]) -> list[list[Feed]]:
     return list(groups.values())
 
 
+def longest_gap_days(dates: list[str]) -> Optional[int]:
+    """Días del hueco más largo entre dos entradas consecutivas (fechas ISO, en cualquier orden); None con menos de dos
+    fechas distintas o alguna ilegible. Dice cuánto suele callar un medio que publica a rachas (``feed-stale``)."""
+    try:
+        ts = sorted({datetime.fromisoformat(d) for d in dates if d})
+    except (TypeError, ValueError):
+        return None
+    if len(ts) < 2:
+        return None
+    return int(max((b - a).total_seconds() for a, b in zip(ts, ts[1:])) // 86400)
+
+
 def _status(f: Feed, now: datetime, error: str = "") -> dict:
     return {"id": f.id, "name": f.name, "region": f.region, "url": f.url, "lang": f.lang, "scope": f.scope,
             "kind": f.kind, "department": f.department, "checkedAt": now.isoformat(timespec="seconds"), "ok": False,
             "items": 0, "relevant": 0, "latest": None, "active": False, "error": error, "format": None, "repairs": []}
 
 
-def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optional[bytes]]:
-    from .geo import legacy_fields, locate_item
+def _layer_listing_url(url: str) -> Optional[str]:
+    m = re.match(r"(https?://[^?]+/(?:MapServer|FeatureServer))/\d+(?:/query)?(?:\?|$)", url)
+    return f"{m.group(1)}?f=json" if m else None
 
-    seen_at = now.isoformat(timespec="seconds")
-    st = _status(f, now)
-    got = fetch(f.url)
-    code, body, ctype, err = got[:4]
+
+def _layer_name(name: str) -> str:
+    """El nombre de una capa sin el esquema de la base («SDE.») ni mayúsculas: republicar la capa desde otra base no
+    es moverla."""
+    return str(name or "").rsplit(".", 1)[-1].strip().lower()
+
+
+def check_layer(f: Feed, fetch, st: dict, listings: Optional[dict] = None) -> str:
+    """Comprueba en el listado del servicio (``MapServer?f=json``) que la capa del URL de ``f`` sigue llamándose
+    ``f.layer``. Devuelve el error si se renumeró, se renombró o se retiró, y "" si coincide o no se pudo comprobar
+    (``st["layerCheck"]`` dice cuál): un listado que no llega no convierte en falla una capa vacía. ``listings``
+    guarda el listado de cada servicio durante una recolección: varias capas vacías del mismo servicio (o un servidor
+    que no responde) cuestan un solo pedido."""
+    listing = _layer_listing_url(f.url)
+    m = re.search(r"/(?:MapServer|FeatureServer)/(\d+)", f.url)
+    if not listing or not m:
+        st["layerCheck"] = "no verificado: el URL no es de una capa de ArcGIS"
+        return ""
+    lid = int(m.group(1))
+    try:
+        if listings is not None and listing in listings:
+            got = listings[listing]
+        else:
+            try:
+                got = fetch(listing)
+            except Exception as exc:  # noqa: BLE001
+                got = (None, b"", "", f"{type(exc).__name__}")
+            if listings is not None:
+                listings[listing] = got
+        code, body = got[0], got[1]
+        if code is None and len(got) > 3 and got[3] and not body:
+            raise LookupError(str(got[3]))
+        layers = json.loads(body.decode("utf-8-sig"))["layers"] if code == 200 and body else None
+        names = {int(x["id"]): str(x.get("name") or "") for x in layers}
+    except Exception as exc:  # noqa: BLE001 — sin listado la capa vacía sigue siendo «sin avisos vigentes»
+        why = str(exc) if isinstance(exc, LookupError) and not isinstance(exc, KeyError) else type(exc).__name__
+        st["layerCheck"] = f"no verificado: {why}"[:120]
+        return ""
+    if layers is None:
+        st["layerCheck"] = f"no verificado: el listado respondió HTTP {code}"
+        return ""
+    if _layer_name(names.get(lid)) == _layer_name(f.layer):
+        st["layerCheck"] = "ok"
+        return ""
+    st["layerCheck"] = "distinta"
+    now_at = [i for i, n in names.items() if _layer_name(n) == _layer_name(f.layer)]
+    return (f"la capa {lid} del servidor ya no es «{f.layer}»: es «{names.get(lid) or 'inexistente'}»"
+            + (f"; «{f.layer}» está ahora en la capa {now_at[0]} (actualizar el URL del feed)" if now_at else
+               f"; «{f.layer}» no figura en el listado del servicio (¿se retiró?)") + f" — {listing}")
+
+
+def _quiet_empty(f: Feed, parsed) -> bool:
+    """La respuesta sin entradas quiere decir «no hay avisos vigentes», no un feed vaciado: una capa de avisos o FIRMS
+    sin focos, o el último mensaje del PTWC cuando es un simulacro (PACWAVE26: sin esto el feed quedaba «empty» y
+    escalaba a issue a los 14 días aunque nada hubiera cambiado en la fuente)."""
+    from .hazardparse import PTWC_EXERCISE
+
+    return f.adapter in ("arcgis", "firms") or (f.adapter == "ptwc-text" and PTWC_EXERCISE in parsed.repairs)
+
+
+def _note_channel(st: dict, got: tuple) -> None:
+    """Anota en el estado el código HTTP, si se le pidió algo al servidor, y por qué canal llegó la respuesta."""
+    code = got[0]
     via = got[4] if len(got) > 4 and isinstance(got[4], dict) else {}
     if via.get("requested") is not False:  # sin «httpStatus»: no se le pidió nada al servidor
         st["httpStatus"] = code
-    if via.get("channel") not in (None, "direct"):
-        # Copia de otro recolector (Perú, n8n) o réplica: el sitio dice de cuándo es y por qué canal llegó.
-        st["channel"] = via["channel"]
-        st["copyAt"] = via.get("copyAt")
-    if code != 200 or not body:
-        st["error"] = err or f"HTTP {code}"
-        return st, [], None
+    if via.get("channel") in (None, "direct"):
+        return
+    # Copia de otro recolector (Perú, n8n) o réplica: el sitio dice de cuándo es y por qué canal llegó.
+    st["channel"] = via["channel"]
+    st["copyAt"] = via.get("copyAt")
+    if via.get("directError"):
+        st["directError"] = via["directError"]  # por qué no sirvió el pedido directo
+    if via.get("upstreamDown"):
+        # El recolector arrastró su última copia buena: el servidor no la está dando (n8n: HTTP 500 del CENVUL
+        # el 20-11-2026 con la copia del 19 publicada como si el feed respondiera).
+        st["upstreamDown"] = via["upstreamDown"]
+
+
+def _parse_body(f: Feed, body: bytes, now: datetime, st: dict):
+    """El feed leído, o None si no se pudo leer (el motivo queda en ``st``)."""
     try:
         parsed = parse_any(body, base_url=f.url, default_tz=LIMA if f.region == "peru" else timezone.utc, now=now,
                            adapter=f.adapter)
     except FeedError as exc:
         st["error"] = str(exc)
         st["formatError"] = True  # respondió, pero con otra forma (una capa renumerada, otro formato)
-        return st, [], body
+        return None
     except Exception as exc:  # noqa: BLE001 — un feed raro no debe detener la recolección de los demás
         st["error"] = f"error inesperado al leer el feed: {type(exc).__name__}: {exc}"[:300]
-        return st, [], body
+        return None
+    if f.adapter == "arcgis" and f.layer:
+        from .hazardparse import arcgis_kind_error
+
+        wrong = arcgis_kind_error(f.layer, parsed.title)
+        if wrong:
+            st.update({"error": wrong, "formatError": True})
+            return None
+    return parsed
+
+
+def _note_entries(st: dict, f: Feed, parsed, body: bytes, now: datetime) -> None:
+    """Anota en el estado lo que dice la lectura: entradas, la más reciente, si sigue activo y el hueco más largo."""
     entries = parsed.items
+    cut = truncated(body, f.adapter)
+    if cut:
+        st["truncated"] = cut  # las entradas rescatadas se usan; ``persistent`` lo cuenta como ilegible
     dates = [e["published"] for e in entries if e["published"]]
     st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None,
                "format": parsed.format, "repairs": parsed.repairs})
     st["active"] = bool(st["latest"]) and st["latest"] >= (now - timedelta(days=f.stale_days)).isoformat()
-    if not entries and f.adapter not in ("arcgis", "firms"):  # una capa de avisos vacía es que no hay avisos vigentes
+    gap = longest_gap_days(dates)
+    if gap is not None:
+        st["longestGapDays"] = gap  # el hueco más largo entre dos entradas del feed: lo que el medio suele callar
+
+
+def _empty_layer_moved(f: Feed, parsed, fetch, st: dict, listings: Optional[dict]) -> Optional[str]:
+    """Si el feed vino vacío, lo anota y, en una capa, dice si la capa del URL ya no es la de estos avisos."""
+    if parsed.items:
+        return None
+    if not _quiet_empty(f, parsed):  # una capa de avisos vacía es que no hay avisos vigentes
         st["error"] = "feed sin entradas"
+    if not f.layer:
+        return None
+    # Vacía: o no hay avisos vigentes, o la capa del URL ya no es la de estos avisos (sin campos no se distingue).
+    moved = check_layer(f, fetch, st, listings)
+    if moved:
+        st.update({"ok": False, "active": False, "error": moved, "formatError": True})
+    return moved
+
+
+def _entry_text(f: Feed, e: dict, oldest: str) -> Optional[tuple[str, str, str, str]]:
+    """Medio, titular, resumen y motivo de relevancia de una entrada, o None si no es una nota que interese."""
+    if oldest and (not e["published"] or e["published"] < oldest):
+        return None  # sin fecha no se puede saber si es de hace años
+    outlet = e.get("outlet") or f.name
+    if SOCIAL_RE.search(e["link"]) or SOCIAL_RE.search(outlet):
+        return None  # publicaciones en redes sociales, no notas de prensa
+    title = _strip_outlet(e["title"], outlet)
+    summary = _strip_summary(e["summary"], e["title"], title, outlet)
+    why = relevance(f, title, summary)
+    if not why:
+        return None
+    return outlet, title, summary, why
+
+
+def _foreign_outlet(f: Feed, e: dict, named_peru: bool) -> bool:
+    """Si es un medio de otro país en una búsqueda peruana de Google Noticias (Junín de Argentina, Jaén de España…)."""
+    return f.region == "peru" and not named_peru and bool(FOREIGN_TLD_RE.search(e.get("outletUrl") or ""))
+
+
+def _geo_hint(f: Feed, e: dict) -> dict:
+    """Lo que ubica la nota además del texto: códigos, coordenadas, lugares en campos propios y, en medios
+    nacionales, las categorías (las de un medio regional son sus secciones: «Trujillo», «Edición Impresa»)."""
+    hint = {k: e[k] for k in ("ubigeo", "coords", "geo") if e.get(k)}
+    if e.get("categories") and not f.department:
+        hint["categories"] = e["categories"]
+    return hint
+
+
+def _locate(f: Feed, title: str, summary: str, outlet: str, hint: dict) -> Optional[dict]:
+    """El lugar de la nota, o None si no se pudo ubicar."""
+    from .geo import locate_item
+
+    try:
+        return locate_item({"title": title, "summary": summary, "outlet": outlet, **hint}, f, f.region)
+    except Exception:  # noqa: BLE001 — una nota con texto raro queda sin lugar, no sin noticias
+        return None
+
+
+def _published(e: dict, st: dict, seen_at: str, future: str) -> str:
+    """La fecha de la entrada, o la de la lectura si viene del futuro (y lo cuenta en ``st``)."""
+    published = e["published"]
+    if published and published > future:
+        # Algunos medios publican la hora local marcada como UTC.
+        st["futureDates"] = st.get("futureDates", 0) + 1
+        published = seen_at
+    return published
+
+
+def _attach_place(item: dict, e: dict, hint: dict, g: Optional[dict]) -> None:
+    """Agrega a la nota la pista de lugar, el detalle fino de la fuente y el lugar hallado."""
+    from .geo import legacy_fields
+
+    if hint:
+        item["geoHint"] = hint  # para volver a ubicar la nota cuando mejore el nomenclátor
+    # Lo que la fuente ubica más fino que un distrito, para el mapa de alertas: estaciones, epicentros, focos de
+    # calor y volcanes (``points``), polígonos de los avisos (``shapes``) y distritos con quebradas (``areas``).
+    detail = {k: e[k] for k in ("points", "shapes", "areas") if e.get(k)}
+    if detail:
+        item["detail"] = detail
+    if g:
+        item["geo"] = g
+        item.update(legacy_fields(g))
+
+
+def _entry_item(f: Feed, e: dict, st: dict, seen_at: str, future: str, oldest: str) -> Optional[dict]:
+    """La nota que sale de una entrada del feed, o None si no interesa (y cuenta en ``st`` las relevantes)."""
+    text = _entry_text(f, e, oldest)
+    if text is None:
+        return None
+    outlet, title, summary, why = text
+    joined = f"{title} {summary}"
+    named_peru = bool(PERU_WORD_RE.search(joined))
+    if _foreign_outlet(f, e, named_peru):
+        return None
+    hint = _geo_hint(f, e)
+    g = _locate(f, title, summary, outlet, hint)
+    located = bool(g and g["places"] and g["method"] != "medio")
+    if why == "impacto" and not named_peru and FOREIGN_RE.search(joined) and not located:
+        return None  # inundaciones en España publicadas por un medio regional: no es una alerta para el Perú
+    st["relevant"] += 1
+    item = {"id": item_id(e["link"], e["title"]), "first_seen": seen_at,
+            "published": _published(e, st, seen_at, future),
+            "region": f.region, "feed": f.id, "kind": f.kind, "outlet": outlet, "relevance": why,
+            "hazards": hazards(title, summary), "title": title, "summary": summary, "link": e["link"]}
+    _attach_place(item, e, hint, g)
+    return item
+
+
+def _read_feed(f: Feed, fetch, now: datetime, listings: Optional[dict] = None) -> tuple[dict, list[dict], Optional[bytes]]:
+    seen_at = now.isoformat(timespec="seconds")
+    st = _status(f, now)
+    got = fetch(f.url)
+    code, body, ctype, err = got[:4]
+    _note_channel(st, got)
+    if code != 200 or not body:
+        st["error"] = err or f"HTTP {code}"
+        return st, [], None
+    parsed = _parse_body(f, body, now, st)
+    if parsed is None:
+        return st, [], body
+    _note_entries(st, f, parsed, body, now)
+    if _empty_layer_moved(f, parsed, fetch, st, listings):
+        return st, [], body
     future = (now + timedelta(hours=2)).isoformat()
     oldest = (now - timedelta(days=f.max_age_days)).isoformat() if f.max_age_days else ""
     found = []
-    for e in entries:
-        if oldest and (not e["published"] or e["published"] < oldest):
-            continue  # sin fecha no se puede saber si es de hace años
-        outlet = e.get("outlet") or f.name
-        if SOCIAL_RE.search(e["link"]) or SOCIAL_RE.search(outlet):
-            continue  # publicaciones en redes sociales, no notas de prensa
-        title = _strip_outlet(e["title"], outlet)
-        summary = _strip_summary(e["summary"], e["title"], title, outlet)
-        why = relevance(f, title, summary)
-        if not why:
-            continue
-        text = f"{title} {summary}"
-        named_peru = bool(PERU_WORD_RE.search(text))
-        if f.region == "peru" and not named_peru and FOREIGN_TLD_RE.search(e.get("outletUrl") or ""):
-            continue  # medio de otro país en una búsqueda de Google Noticias (Junín de Argentina, Jaén de España…)
-        # Lo que ubica la nota además del texto: códigos, coordenadas, lugares en campos propios y, en medios
-        # nacionales, las categorías (las de un medio regional son sus secciones: «Trujillo», «Edición Impresa»).
-        hint = {k: e[k] for k in ("ubigeo", "coords", "geo") if e.get(k)}
-        if e.get("categories") and not f.department:
-            hint["categories"] = e["categories"]
-        try:
-            g = locate_item({"title": title, "summary": summary, "outlet": outlet, **hint}, f, f.region)
-        except Exception:  # noqa: BLE001 — una nota con texto raro queda sin lugar, no sin noticias
-            g = None
-        located = bool(g and g["places"] and g["method"] != "medio")
-        if why == "impacto" and not named_peru and FOREIGN_RE.search(text) and not located:
-            continue  # inundaciones en España publicadas por un medio regional: no es una alerta para el Perú
-        st["relevant"] += 1
-        published = e["published"]
-        if published and published > future:
-            # Algunos medios publican la hora local marcada como UTC.
-            st["futureDates"] = st.get("futureDates", 0) + 1
-            published = seen_at
-        item = {"id": item_id(e["link"], e["title"]), "first_seen": seen_at, "published": published,
-                "region": f.region, "feed": f.id, "kind": f.kind, "outlet": outlet, "relevance": why,
-                "hazards": hazards(title, summary), "title": title, "summary": summary, "link": e["link"]}
-        if hint:
-            item["geoHint"] = hint  # para volver a ubicar la nota cuando mejore el nomenclátor
-        # Lo que la fuente ubica más fino que un distrito, para el mapa de alertas: estaciones, epicentros, focos de
-        # calor y volcanes (``points``), polígonos de los avisos (``shapes``) y distritos con quebradas (``areas``).
-        detail = {k: e[k] for k in ("points", "shapes", "areas") if e.get(k)}
-        if detail:
-            item["detail"] = detail
-        if g:
-            item["geo"] = g
-            item.update(legacy_fields(g))
-        found.append(item)
+    for e in parsed.items:
+        item = _entry_item(f, e, st, seen_at, future, oldest)
+        if item is not None:
+            found.append(item)
     return st, found, body
 
 
@@ -947,19 +1261,22 @@ def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: i
 
     feeds = FEEDS if feeds is None else feeds
     results: dict[str, tuple] = {}
+    listings: dict[str, tuple] = {}  # listados de servicios ArcGIS (``check_layer``): uno por servicio y corrida
     started = time.monotonic()
 
     def run_group(group: list[Feed]) -> None:
         fails = 0
         for f in group:
             if fails >= host_failures:
-                results[f.id] = (_status(f, now, "omitido: el servidor no respondió a los feeds anteriores"), [], None)
+                results[f.id] = (_status(f, now, "omitido: el servidor no respondió a los feeds anteriores")
+                                 | {"omitted": "host"}, [], None)
                 continue
             if deadline is not None and time.monotonic() - started > deadline:
-                results[f.id] = (_status(f, now, "omitido: se agotó el tiempo de la recolección de noticias"), [], None)
+                results[f.id] = (_status(f, now, "omitido: se agotó el tiempo de la recolección de noticias")
+                                 | {"omitted": "deadline"}, [], None)
                 continue
             try:
-                results[f.id] = _read_feed(f, fetch, now)
+                results[f.id] = _read_feed(f, fetch, now, listings)
             except Exception as exc:  # noqa: BLE001 — un feed que falla de forma inesperada no detiene a los demás
                 results[f.id] = (_status(f, now, f"error inesperado: {type(exc).__name__}: {exc}"[:300]), [], None)
             if on_result is not None:

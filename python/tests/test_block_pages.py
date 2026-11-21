@@ -86,7 +86,7 @@ def test_relay_never_serves_a_saved_challenge_page(tmp_path):
     assert _relay(tmp_path, IMUNIFY).get(FEED_URL) is None
 
 
-def _hazard_run(tmp_path, monkeypatch, prev_ok: bool, relay=None):
+def _hazard_run(tmp_path, monkeypatch, prev_ok: bool, relay=None, prev_at="2026-11-19T13:54:57+00:00", prev_extra=None):
     """Una corrida de noticias con un solo feed oficial de peligros (CIIFEN) que responde con la página de Imunify360."""
     from datetime import datetime, timezone
 
@@ -101,7 +101,7 @@ def _hazard_run(tmp_path, monkeypatch, prev_ok: bool, relay=None):
     site = tmp_path / "site"
     (site / "news").mkdir(parents=True)
     (site / "news" / "feeds.json").write_text(json.dumps({"feeds": [
-        {"id": "ciifen", "ok": prev_ok, "error": "" if prev_ok else "x", "checkedAt": "2026-11-19T21:54:57+00:00"}]}),
+        {"id": "ciifen", "ok": prev_ok, "error": "" if prev_ok else "x", "checkedAt": prev_at, **(prev_extra or {})}]}),
         encoding="utf-8")
     fetcher = Fetcher(polite_delay=0, relay=relay)
     log = obs.EventLog()
@@ -122,3 +122,74 @@ def test_hazard_feed_down_once_stays_info(tmp_path, monkeypatch):
     assert not st["ok"]
     assert not [e for e in log.events if e.code == "hazard-feed-down"]
     assert [e for e in log.events if e.code == "feed-down" and e.severity == "info"]
+
+
+# --- Marcas genéricas (reCAPTCHA, «security check») en páginas normales ------------------------------------------
+
+#: Una página de avisos de 9 KB con un formulario de suscripción con reCAPTCHA: con la marca «g-recaptcha» y menos de
+#: ``SMALL_PAGE`` bytes, ``block_page`` la descartaba como verificación y ``Fetcher.get`` perdía la fuente.
+NOTICE = ("<!DOCTYPE html><html lang='es'><head><title>Avisos meteorológicos</title>"
+          "<script src='https://www.google.com/recaptcha/api.js' async defer></script></head><body>"
+          "<h1>Avisos meteorológicos vigentes</h1>"
+          + "".join(f"<article><h2>Aviso {n}: lluvias de moderada a fuerte intensidad en la sierra</h2>"
+                    f"<p>Se prevén precipitaciones acompañadas de descargas eléctricas y ráfagas de viento en "
+                    f"Cajamarca, Amazonas y San Martín entre el {n} y el {n + 2} de noviembre.</p></article>"
+                    for n in range(1, 13))
+          + "<form action='/suscribir' method='post'><input name='correo'><div class='g-recaptcha' "
+            "data-sitekey='k'></div><button>Suscribirse</button></form>"
+            "<p>Complete el security check del formulario para recibir los avisos por correo.</p></body></html>"
+          ).encode()
+
+
+def _serving(body: bytes, ct: str = "text/html; charset=utf-8") -> Fetcher:
+    f = Fetcher(retries=1, polite_delay=0, allow_archive=False)
+    f.client = httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(200, content=body,
+                                                                                         headers={"content-type": ct})))
+    return f
+
+
+def test_small_page_with_a_recaptcha_form_is_content():
+    assert len(NOTICE) < reach.SMALL_PAGE and reach.block_mark(NOTICE) == "human-verification"
+    assert reach.classify(200, NOTICE, headers={"content-type": "text/html"}) == "challenge"  # n8n: sin cambio
+    assert block_page(NOTICE) == ""
+    r = _serving(NOTICE).get(["https://example.gob.pe/avisos"], archive=False, accept=("html",))
+    assert r.channel == "direct" and r.body == NOTICE
+
+
+def test_generic_mark_with_challenge_evidence_is_still_a_challenge():
+    # Casi sin texto (hCaptcha, «Verify you are human»).
+    bare = b"<html><head><title>Security check</title></head><body><div class='h-captcha'></div></body></html>"
+    assert block_page(bare) == "human-verification"
+    # Con texto, pero se recarga sola.
+    reload_ = NOTICE.replace(b"</head>", b"<meta http-equiv='refresh' content='5'></head>")
+    assert block_page(reload_) == "human-verification"
+    js = NOTICE.replace(b"</body>", b"<script>setTimeout(function(){location.reload()},5000)</script></body>")
+    assert block_page(js) == "human-verification"
+    # HTML en lugar del PDF pedido.
+    assert block_page(NOTICE, accept=("pdf", "octet-stream")) == "human-verification"
+    with pytest.raises(FetchError) as exc:
+        _serving(NOTICE).get(["https://example.gob.pe/x.pdf"], archive=False, accept=("pdf", "octet-stream"))
+    assert exc.value.attempts[-1]["class"] == "challenge"
+    # HTML en lugar del feed XML o del JSON pedido («xml» está en «application/xhtml+xml», pero no se pidió HTML).
+    assert block_page(NOTICE, accept=("xml",)) == "human-verification"
+    assert block_page(NOTICE, accept=("json",)) == "human-verification"
+    assert block_page(NOTICE, accept=("html",)) == "" and block_page(NOTICE, accept=("text",)) == ""
+    # Un script sin cerrar no cuenta como texto visible.
+    unclosed = b"<html><body><p>Verify you are human</p><script>" + b"var token = compute(i);" * 200
+    assert block_page(unclosed) == "human-verification"
+    # Las verificaciones reales archivadas siguen siéndolo.
+    assert block_page((FIX / "blocked" / "dhn-human-check-informe-20-2026.html").read_bytes()) == "human-verification"
+    assert block_page(IMUNIFY) == "imunify360"
+
+
+def test_own_family_marks_need_no_extra_evidence():
+    """Una marca propia de un cortafuegos (Imunify360, Cloudflare) basta aunque la página tenga texto."""
+    page = NOTICE.replace(b"<form ", b"<form id='wsidchk' ")
+    assert reach.block_families(page) == ["human-verification", "captcha", "imunify360"]
+    assert reach.block_mark(page) == "human-verification"  # la primera, como n8n
+    assert block_page(page) == "imunify360"
+    assert block_page(NOTICE, headers={"cf-mitigated": "challenge"}) == "cloudflare-challenge"
+
+
+def test_relay_serves_a_copy_with_a_recaptcha_form(tmp_path):
+    assert _relay(tmp_path, NOTICE).get(FEED_URL) is not None

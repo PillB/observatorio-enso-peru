@@ -174,9 +174,28 @@ def oni_category(v: Optional[float]) -> Optional[dict]:
 
 
 def anomaly_tone(v: Optional[float], neutral: float = 0.5) -> str:
+    """Tono de una anomalía de cuenca (Niño 3.4, 3, 4, contenido de calor): umbral simétrico ±0,5 °C de NOAA/CPC
+    (El Niño ≥ +0,5; La Niña ≤ −0,5)."""
     if v is None:
         return "na"
     return "warm" if v >= neutral else "cool" if v <= -neutral else "neutral"
+
+
+#: Rango neutro de la costa norte (Niño 1+2): el del ICEN en la Nota Técnica ENFEN 01-2024 y el «normal» de la tabla
+#: GRD, [−0,7; +0,5] °C. No es simétrico: el umbral simétrico ±0,5 de la cuenca pintaba de frío una anomalía de
+#: −0,6 °C que el ENFEN y el equipo GRD llaman neutra/normal.
+COASTAL_NEUTRAL = (-0.7, 0.5)
+
+
+def coastal_tone(v: Optional[float]) -> str:
+    """Tono de una anomalía mensual de Niño 1+2 con el rango neutro del ENFEN: cálido > +0,5, frío < −0,7 (ambos
+    extremos son neutros, como en ``ICEN_CATEGORIES``). Es solo el color de la tarjeta: una anomalía mensual no es el
+    ICEN (media de 3 meses) y no da categoría."""
+    if v is None:
+        return "na"
+    r = round(v, 2)
+    lo, hi = COASTAL_NEUTRAL
+    return "warm" if r > hi else "cool" if r < lo else "neutral"
 
 
 def icen_events(points: list[dict], min_months: int = 3) -> list[dict]:

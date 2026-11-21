@@ -216,6 +216,7 @@ def _report_entries() -> list[Entry]:
     las búsquedas del repositorio del IMARPE (``feeds.imarpe_repo``): así la sonda mide su alcance y lee su robots.txt,
     y el pipeline sabe por dónde pedirlas."""
     from . import reports
+    from .feeds import gobpe_enfen as gob
     from .feeds import imarpe_bsobp as bsobp
     from .feeds import imarpe_repo as repo
 
@@ -224,6 +225,13 @@ def _report_entries() -> list[Entry]:
               url=reports.INFORMES_PAGE, alt_urls=[reports.DHN_INFORMES_PAGE], alt_expect=["html"], expect="html",
               method="html", kind="document-list", home=reports.INFORMES_PAGE, hazards=["enso"],
               parser="enso.reports:informe_entries (réplica de la DHN: dhn_entries)"),
+        Entry(id="gobpe-senamhi-enfen", group="senamhi",
+              name="gob.pe: comunicados e informes técnicos del ENFEN que publica el SENAMHI", institution="SENAMHI",
+              url=gob.LISTING_URL, expect="rss", method="feed", kind="document-list",
+              home="https://www.gob.pe/institucion/senamhi/colecciones/1308-comunicados-enfen", hazards=["enso"],
+              parser="enso.feeds.gobpe_enfen:parse_listing",
+              notes="el PDF de cada ítem está en cdn.www.gob.pe (robots.txt solo prohíbe /admin/); ruta directa "
+                    "desde Actions cuando la DHN pide verificación humana"),
         Entry(id="imarpe-repositorio-enfen", group="imarpe",
               name="Repositorio del IMARPE: comunicados e informes técnicos del ENFEN", institution="IMARPE",
               url=repo.listing_urls()[0], alt_urls=repo.listing_urls()[1:], alt_expect=["json"],

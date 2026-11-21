@@ -48,8 +48,11 @@ def series(data: Any, path: str = "") -> Iterator[tuple[str, list[dict]]]:
     """Las series de una fuente: cada lista de puntos con ``period`` o ``date`` (y ``value`` o ``anom``), con su ruta
     dentro de ``data`` (``anom.nino12``, ``original``…). Lo demás (textos, listados de documentos) se ignora."""
     if isinstance(data, list):
-        if data and all(isinstance(p, dict) and _key(p) for p in data) and any(_value(p) is not None for p in data):
-            yield path or "$", data
+        # Un punto suelto sin periodo (un lector con un error) no convierte la serie en «desaparecida»: basta con
+        # que la mayoría tenga periodo; los que no lo tienen no se comparan.
+        keyed = [p for p in data if isinstance(p, dict) and _key(p)]
+        if data and len(keyed) * 2 > len(data) and any(_value(p) is not None for p in keyed):
+            yield path or "$", keyed
         return
     if isinstance(data, dict):
         for k, v in data.items():
@@ -91,7 +94,7 @@ def compare(previous: Any, current: Any, source: str = "") -> list[tuple[str, st
             if pv is None or v is None:
                 continue
             old_pts += 1
-            d = abs(v - pv)
+            d = round(abs(v - pv), 6)  # 0,25 exacto no cuenta (sin el redondeo, 2,61−2,36 da 0,2500000001)
             if d > REWRITE_DELTA:
                 changed += 1
                 if worst is None or d > worst[2]:

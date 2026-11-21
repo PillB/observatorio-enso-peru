@@ -83,6 +83,13 @@ def _state(today: date, due: Optional[date], grace: int, *, stale: bool = False,
     return "al-dia"
 
 
+def _relay(m: dict) -> dict:
+    """La copia que un recolector arrastró (``observatory._relay_fields``): el dato llegó, pero no del servidor en
+    esta corrida. No degrada el estado (lo mide el periodo del dato; el aviso es ``relay-carried-copy``, uno por
+    fuente): se muestra."""
+    return {k: m[k] for k in ("relayCarried", "copyAt", "upstreamDown") if m.get(k)}
+
+
 def _series_item(key: str, s: dict, today: date, meta: dict) -> dict:
     l = s.get("latest") or {}
     period = l.get("period")
@@ -96,7 +103,8 @@ def _series_item(key: str, s: dict, today: date, meta: dict) -> dict:
             "observedKind": s.get("periodKind", "month"), "expectedNext": due.isoformat(),
             "state": _state(today, due, GRACE_DAYS["monthly"], stale=bool(l.get("stale")), degraded=degraded),
             "source": s.get("source"), "institution": m.get("institution"), "retrievedAt": m.get("retrievedAt"),
-            "channel": m.get("channel"), "carried": bool(l.get("carried")), "sloDays": s.get("sloDays")}
+            "channel": m.get("channel"), "carried": bool(l.get("carried")), "sloDays": s.get("sloDays"),
+            **_relay(m)}
 
 
 def _official_item(key: str, o: Optional[dict], today: date, label: str, source: str) -> dict:
@@ -135,7 +143,8 @@ def build(series: dict, weekly: Optional[dict], official: dict, meta: dict, feed
                                 degraded=(m.get("channel") or "") == "previous-publication"
                                 or (m.get("channel") or "").startswith("archive")),
                 "source": "cpc-wksst", "institution": m.get("institution"), "retrievedAt": m.get("retrievedAt"),
-                "channel": m.get("channel"), "carried": (m.get("channel") or "") == "previous-publication"}
+                "channel": m.get("channel"), "carried": (m.get("channel") or "") == "previous-publication",
+                **_relay(m)}
     if "weekly" not in items:
         items["weekly"] = {"id": "weekly", "label": "Temperatura del mar semanal (OISST)", "state": "sin-dato",
                            "source": "cpc-wksst"}
