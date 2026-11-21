@@ -31,7 +31,13 @@ Noticias, «Descargas y estado de los feeds»; en Metodología, la arquitectura,
 
 - En el sitio publicado en Cloudflare, la primera visita recibe A o B al azar
   (experimento `sitio` de `ab.js`, con las mismas reglas que los mapas: si un
-  día hay una ganadora, 4 de cada 5 primeras visitas la reciben).
+  día hay una ganadora, 4 de cada 5 primeras visitas la reciben y el resto
+  sale del sorteo parejo entre A y B). Qué gana lo decide solo la primera
+  visita sorteada de cada navegador (si abrió una segunda pestaña), no las
+  visitas de quien ya eligió ni las de un enlace `?sitio=`: ver
+  [mapa-alertas.md](mapa-alertas.md#analítica-anónima-y-decisión).
+  `sitio.js` no espera `/api/ab/defaults` antes de asignar, así que en la
+  práctica la versión del sitio sale casi siempre del sorteo parejo.
 - En local y en el espejo de GitHub Pages, que no tienen servidor de
   analítica, se ve la A mientras la persona no elija otra.
 - El botón **Versión** de la cabecera dice cuál se está viendo y deja

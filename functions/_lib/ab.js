@@ -13,10 +13,13 @@
 //   GET  defaults  → {mapa: 'B' | null, memoria: …, noticias: …}: la versión que ganó, que el sitio muestra a la
 //                  mayoría de quienes llegan por primera vez (ab.js). Se guarda una hora en el borde.
 //
-// La decisión (decide): la tasa de uso de cada versión, las visitas en las que la persona hizo algo con el mapa
-// (filtró o abrió algo: el evento «use») sobre las visitas que la vieron, con su intervalo de Wilson al 95 %.
-// Gana una versión solo si todas tienen al menos MIN_VIEWS visitas y el límite inferior de su intervalo supera el
-// límite superior de todas las demás. Mientras no haya ganadora, cada versión sale con la misma probabilidad.
+// La decisión (decide): la tasa de uso de cada versión en la primera visita sorteada de cada navegador (rview: la vio
+// en su primera visita, con la versión que salió del sorteo parejo; ruse: en esa visita filtró o abrió algo), con su
+// intervalo de Wilson al 95 %. Las visitas de quien ya eligió, las de un enlace y las de quien vuelve no entran: no
+// son al azar ni independientes. Gana una versión solo si todas tienen al menos MIN_VIEWS primeras visitas, el
+// reparto entre versiones es el que dio el sorteo (sin desajuste de proporciones, SRM) y el límite inferior de su
+// intervalo supera el límite superior de todas las demás. Mientras no haya ganadora, cada versión sale con la misma
+// probabilidad.
 //
 // La base la comparte la consola, y el plan gratuito de D1 (100 000 filas escritas por día) es por cuenta:
 // por eso cada solicitud escribe como mucho una fila por evento, se acepta un solo envío por evento y hay un
@@ -36,9 +39,12 @@ export const VARIANTS = EXPERIMENTS.mapa;
 // select: filtró o eligió un área desde el mapa · detail: abrió un aviso, una ficha o un registro desde el mapa
 // use: hizo select o detail (la tasa que decide) · choose: la eligió en el selector · leave: la dejó por otra
 // keep: volvió otro día y sigue con la versión que eligió.
-export const EVENTS = ['view', 'chosen', 'hover', 'select', 'detail', 'use', 'choose', 'leave', 'keep'];
+// rview / ruse: la primera visita sorteada de un navegador (vio / usó), contada para la versión sorteada: lo que decide.
+export const EVENTS = ['view', 'chosen', 'hover', 'select', 'detail', 'use', 'choose', 'leave', 'keep', 'rview', 'ruse'];
 export const DAILY_CAP = 20000;
 export const MIN_VIEWS = 200;
+// Umbral del control de proporciones (SRM): Fabijan et al., «Diagnosing Sample Ratio Mismatch», KDD 2019, p < 0,0005.
+export const SRM_ALPHA = 0.0005;
 const Z = 1.959964;
 const MAX_BODY = 512;
 const MAX_DAYS = 120;
@@ -117,21 +123,59 @@ export function wilson(y, t) {
   return [Math.max(0, centre - half), Math.min(1, centre + half)];
 }
 
+/** erfc(x), x ≥ 0 (Numerical Recipes, erfcc: error relativo < 1,2e-7). */
+function erfc(x) {
+  const t = 1 / (1 + 0.5 * x);
+  const poly = -1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (0.27886807
+    + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277))))))));
+  return t * Math.exp(-x * x + poly);
+}
+
+/** P(χ² ≥ x) con df grados de libertad enteros (forma cerrada de la gamma incompleta para semienteros). */
+export function chi2Sf(x, df) {
+  if (!(x > 0)) return 1;
+  const h = x / 2, odd = df % 2 === 1;
+  // df par: e^-h Σ h^i / i!, i < df/2. df impar: erfc(√h) + e^-h Σ h^(i-1/2) / Γ(i+1/2), i = 1…(df-1)/2.
+  let sum = odd ? erfc(Math.sqrt(h)) : 0;
+  let term = odd ? 2 * Math.exp(-h) * Math.sqrt(h / Math.PI) : Math.exp(-h);
+  for (let k = odd ? 1.5 : 1; k <= df / 2; k++) {
+    sum += term;
+    term *= h / k;
+  }
+  return Math.min(1, Math.max(0, sum));
+}
+
 /**
- * La versión que gana un experimento, o null. ``totals``: {versión: {view, use, …}} de las filas con «use» (las de
- * ab_exp: el mapa de alertas antes no lo mandaba). Devuelve también la tasa y el intervalo de cada versión.
+ * Desajuste de proporciones (SRM, Kohavi, Tang y Xu, «Trustworthy Online Controlled Experiments», cap. 21): el
+ * sorteo es parejo, así que las primeras visitas sorteadas deben repartirse por igual. Un χ² con p < SRM_ALPHA dice
+ * que algo pierde visitas de una versión (avisos que no llegan, una versión que falla al dibujarse, robots…), y
+ * entonces ninguna tasa es de fiar. Sin al menos 5 esperadas por versión no se prueba (el χ² no vale).
+ */
+export function srm(counts, alpha = SRM_ALPHA) {
+  const n = counts.reduce((a, b) => a + b, 0), k = counts.length, e = n / k;
+  if (k < 2 || e < 5) return { tested: false, mismatch: false, chi2: null, p: null };
+  const chi2 = counts.reduce((a, c) => a + ((c - e) ** 2) / e, 0);
+  const p = chi2Sf(chi2, k - 1);
+  return { tested: true, mismatch: p < alpha, chi2, p };
+}
+
+/**
+ * La versión que gana un experimento, o null. ``totals``: {versión: {rview, ruse, …}} de ab_exp. Decide con la
+ * primera visita sorteada (rview / ruse), no con todas (view / use): ver el comentario de arriba. Devuelve también
+ * la tasa, el intervalo y el control de proporciones (srm).
  */
 export function decide(variants, totals, minViews = MIN_VIEWS) {
   const rows = variants.map((v) => {
     const t = totals[v] || {};
-    const view = t.view || 0, use = Math.min(t.use || 0, view);
+    const view = t.rview || 0, use = Math.min(t.ruse || 0, view);
     const [lo, hi] = wilson(use, view);
     return { v, view, use, rate: view ? use / view : null, lo, hi };
   });
   const ready = rows.every((r) => r.view >= minViews);
+  const ratio = srm(rows.map((r) => r.view));
   const lead = [...rows].sort((a, b) => (b.rate ?? -1) - (a.rate ?? -1))[0];
-  const winner = ready && rows.every((r) => r === lead || lead.lo > r.hi) ? lead.v : null;
-  return { winner, ready, minViews, rows };
+  const winner = ready && !ratio.mismatch && rows.every((r) => r === lead || lead.lo > r.hi) ? lead.v : null;
+  return { winner, ready, minViews, srm: ratio, rows };
 }
 
 const sinceDay = (days) => new Date(Date.now() - (days - 1) * 864e5).toISOString().slice(0, 10);

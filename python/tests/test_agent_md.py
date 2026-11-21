@@ -51,5 +51,5 @@ def test_claude_md_points_to_agent_md_with_its_path():
 def test_agent_md_states_the_rules_it_is_required_to_state():
     """Lo que el dueño pidió que AGENT.md diga; cada frase es la regla, no un adorno."""
     for must in ("why that expert would reject", "State every trade-off", "Tautological tests",
-                 "Mutation proof", "chore(lint)", "10 or less", "Pre-execution", "fail verbose"):
+                 "Mutation proof", "5 ways it could be wrong", "chore(lint)", "10 or less", "Pre-execution", "fail verbose"):
         assert must.lower() in AGENT.lower(), must
