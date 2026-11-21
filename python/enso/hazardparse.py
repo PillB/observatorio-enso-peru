@@ -403,6 +403,11 @@ def _volcano_points(name: str) -> dict:
                         "source": f"https://volcano.si.edu/volcano.cfm?vn={pt[2]}"}]}
 
 
+def _slug(*parts: str) -> str:
+    """Fragmento de enlace estable con las partes dadas: minúsculas, lo que no es letra o cifra ASCII → «-»."""
+    return re.sub(r"[^a-z0-9]+", "-", " ".join(parts).lower()).strip("-")
+
+
 def parse_cenvul(body: bytes, base_url: str) -> Parsed:
     text = text_of(body)
     if "CENVUL" not in text:
@@ -423,7 +428,7 @@ def parse_cenvul(body: bytes, base_url: str) -> Parsed:
             kind = f.get("tipo de alerta", "")
             what = {"cenizas": "dispersión de cenizas", "lahares": "descenso de lahares"}.get(kind.lower(), kind.lower())
             items.append({"title": clean_text(f"Volcán {volcano}: alerta por {what} (IGP)", 300),
-                          "link": f"{base_url}#{re.sub(r'[^a-z0-9]+', '-', f'{volcano} {kind} {when or ''}'.lower()).strip('-')}",
+                          "link": f"{base_url}#{_slug(volcano, kind, when or '')}",
                           "published": when,
                           "summary": f"Alerta vulcanológica del CENVUL por {what} del volcán {volcano}." + _volcano_place(volcano),
                           "categories": ["volcan", kind], **_volcano_points(volcano)})
