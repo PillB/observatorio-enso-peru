@@ -1,0 +1,212 @@
+<!doctype html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        Verificación de seguridad
+    </title>
+
+
+    <script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer>
+    </script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                #f4f6f8;
+
+            color:
+                #1f2937;
+        }
+
+
+        .verification-card {
+
+            width: 100%;
+
+            max-width: 440px;
+
+            padding: 32px;
+
+            background:
+                #ffffff;
+
+            border:
+                1px solid #d9dee5;
+
+            border-radius:
+                8px;
+
+            text-align:
+                center;
+
+            box-shadow:
+                0 8px 24px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        h1 {
+
+            margin:
+                0 0 14px;
+
+            font-size:
+                24px;
+        }
+
+
+        p {
+
+            margin:
+                0 0 24px;
+
+            line-height:
+                1.5;
+        }
+
+
+        .turnstile-container {
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+        }
+
+
+        .error {
+
+            margin-bottom:
+                20px;
+
+            padding:
+                12px;
+
+            background:
+                #fdecec;
+
+            color:
+                #8a1c1c;
+
+            border-radius:
+                5px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="verification-card">
+
+
+    <h1>
+        Verificación de seguridad
+    </h1>
+
+
+    <p>
+        Complete la verificación para acceder
+        al recurso solicitado.
+    </p>
+
+
+    
+
+    <form
+        id="human-form"
+        method="post"
+        action=""
+    >
+
+
+        <input
+            type="hidden"
+            name="return"
+            value="/Archivos/oceanografia/enfen/informe-tecnico/20-2026.pdf"
+        >
+
+
+        <div class="turnstile-container">
+
+            <div
+                class="cf-turnstile"
+
+                data-sitekey="0x4AAAAAAEMUHIUkyM3TvHKH"
+
+                data-action="dhn_human_gate"
+
+                data-theme="auto"
+
+                data-callback="humanVerified"
+            ></div>
+
+        </div>
+
+
+    </form>
+
+
+</main>
+
+
+<script>
+
+function humanVerified()
+{
+    var form =
+        document.getElementById(
+            'human-form'
+        );
+
+    if (form) {
+        form.submit();
+    }
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -478,12 +478,20 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         # Avisos del lector (meses no leídos, servidor sin respuesta con el histórico publicado, histórico viejo).
         for stage, code, msg in (parsed.meta or {}).get("events") or []:
             log.add("warning", src.id, stage, code, msg)
-        if prev and prev.get("data") is not None and not prev.get("carried"):
+        if prev and prev.get("data") is not None:
             # Misma forma pero peor que ayer: historia recortada, último dato hacia atrás o valores antiguos
             # reescritos (``enso.drift``). PSL reescribió así toda la serie Niño 3.4 ERSSTv6 entre el 6 y el 18 de
-            # noviembre de 2026 (hasta +0,58 °C) sin cambiar la cabecera: la huella no lo vio.
+            # noviembre de 2026 (hasta +0,58 °C) sin cambiar la cabecera: la huella no lo vio. Una publicación que
+            # arrastró el dato también sirve de base: es la última lectura buena (si no, el cambio que llega el día
+            # en que la fuente vuelve no se compararía nunca).
+            since = f" (base: lectura del {prev.get('retrievedAt')}, arrastrada)" if prev.get("carried") else ""
             for code, msg in drift.compare(prev["data"], parsed.data, src.id):
-                log.add("warning", src.id, "validate", code, msg)
+                log.add("warning", src.id, "validate", code, msg + since)
+        elif drift.series(parsed.data) and previous.base and previous.state.get(prev_name) != "missing":
+            # Sin base no hay comparación: que se vea (una fuente nueva, en cambio, no tiene publicación anterior).
+            log.add("info", src.id, "validate", "drift-unchecked",
+                    "No se pudo leer la publicación anterior de esta fuente: hoy no se comparó su serie con la de ayer "
+                    f"({previous.state.get(prev_name) or 'sin dato'}).")
         if acq.format_drift:
             log.add("warning", src.id, "parse", "format-drift",
                     f"Se detectó un cambio en el formato de la fuente (huella {acq.previous_fingerprint} → {parsed.fingerprint}). "
@@ -1132,7 +1140,7 @@ class Builder:
                              f"Último dato semanal {region} del {last['date']} ({lastage} días).")
         return out
 
-    def ensodisc_basis(self, values: dict) -> Optional[str]:
+    def ensodisc_basis(self, values: dict, issued: Optional[str] = None) -> Optional[str]:
         """Con qué índice coinciden los valores de Niño que cita la discusión de NOAA. Hasta 2025 eran las anomalías
         tradicionales de la última semana; desde la adopción del RONI (2026) cita las anomalías **relativas** del último
         mes (``rel_mthsst9120.txt``: en noviembre de 2026, +2,5 en Niño 3.4 frente a +3,3 tradicional). Sin este
@@ -1145,11 +1153,15 @@ class Builder:
             common = [r for r in values if ref.get(r) is not None]
             return bool(common) and all(abs(values[r] - ref[r]) <= 0.15 for r in common)
 
-        wk = self.data("cpc-wksst") or {}
+        # Las semanas y los meses que la discusión pudo citar: los anteriores a su fecha (sin fecha, los últimos). Sin
+        # ese ancla el campo cambiaba solo a «other» dos semanas después de cada discusión, con las series nuevas.
+        day = str(issued or "")[:10] or "9999-12-31"
+        wk = {r: [p for p in pts if str(p.get("date") or "") <= day] for r, pts in (self.data("cpc-wksst") or {}).items()}
         if any(near({r: (pts[i] if len(pts) > -i - 1 else {}).get("anom") for r, pts in wk.items() if pts})
                for i in (-1, -2)):
             return "traditional-weekly"
-        mo = (self.data("cpc-sstoi") or {}).get("anom") or {}
+        mo = {r: [p for p in pts if str(p.get("period") or "") < day[:7]]
+              for r, pts in ((self.data("cpc-sstoi") or {}).get("anom") or {}).items()}
         if any(near({r: (pts[i]["value"] if len(pts) > -i - 1 else None) for r, pts in mo.items() if pts})
                for i in (-1, -2)):
             return "traditional-monthly"
@@ -1169,7 +1181,7 @@ class Builder:
                 "nextIssue": noaa.get("next_issue") or second_thursday_after(noaa.get("issued"), self.today),
                 "nextIssueEstimated": not noaa.get("next_issue"),
                 "synopsis": noaa.get("synopsis"), "valuesInText": noaa.get("weekly_values_in_text"),
-                "valuesInTextBasis": self.ensodisc_basis(noaa.get("weekly_values_in_text") or {}),
+                "valuesInTextBasis": self.ensodisc_basis(noaa.get("weekly_values_in_text") or {}, noaa.get("issued")),
                 "url": SOURCE_BY_ID["cpc-ensodisc"].urls[0], "channel": a.channel, "carried": a.carried,
                 "retrievedAt": a.retrieved_at, "stale": stale,
             }
@@ -1239,19 +1251,23 @@ class Builder:
         tmp, last = inf.get("icenProvisional"), inf.get("lastOfficial")
         if icen:
             igp = {p["period"]: p["value"] for p in icen["points"] if p["value"] is not None}
-            if last and last["period"] in igp and abs(last["icen"] - igp[last["period"]]) > 0.05:
+            if last and last["period"] in igp and round(abs(last["icen"] - igp[last["period"]]), 6) > 0.05:
                 msg = (f"El ICEN de {last['period']} del informe técnico ({last['icen']:+.2f}) difiere del archivo "
                        f"del IGP ({igp[last['period']]:+.2f}).")
                 if tmp:
                     # ¿Cuál de los dos no cuadra? El ICEN es una media móvil de 3 meses: el temporal del mes siguiente
                     # queda cerca del oficial correcto. Informe N° 20 de 2026: Set-26 +4,98 en la tabla, +4,50 en el
                     # IGP y temporal de Oct-26 +4,69 (la serie de Niño 1+2 subía): la tabla del informe es la que falla.
-                    near = "IGP" if abs(tmp["icen"] - igp[last["period"]]) < abs(tmp["icen"] - last["icen"]) else "informe"
+                    d_igp, d_inf = abs(tmp["icen"] - igp[last["period"]]), abs(tmp["icen"] - last["icen"])
+                    # Con distancias casi iguales el temporal no decide (el ICEN se mueve 0,4–0,7 por mes en 2026).
+                    near = ("undetermined" if abs(d_igp - d_inf) < 0.05 else "IGP" if d_igp < d_inf else "informe")
                     inf["icenMismatch"] = {"period": last["period"], "informe": last["icen"], "igp": igp[last["period"]],
                                            "provisional": tmp["icen"], "consistentWith": near}
                     msg += (f" El temporal de {tmp['period']} del mismo informe ({tmp['icen']:+.2f}) "
                             + ("está más cerca del IGP: probable errata en la tabla del informe; el sitio publica el "
                                "valor del IGP." if near == "IGP" else
+                               "queda a la misma distancia de los dos: no permite decidir cuál falla; el sitio publica "
+                               "el valor del IGP." if near == "undetermined" else
                                "está más cerca del informe: el archivo del IGP podría estar atrasado o revisado; el "
                                "sitio publica el valor del IGP hasta que se aclare."))
                 self.log.add("warning", "enfen-informe", "validate", "informe-icen-mismatch", msg)
@@ -1262,10 +1278,11 @@ class Builder:
             if not (ser and last and isinstance(last.get(field_), (int, float))):
                 continue
             noaa = {p["period"]: p["value"] for p in ser["points"] if p["value"] is not None}
-            if last["period"] in noaa and abs(last[field_] - noaa[last["period"]]) > 0.1:
+            if last["period"] in noaa and round(abs(last[field_] - noaa[last["period"]]), 6) > 0.1:
                 self.log.add("warning", "enfen-informe", "validate", f"informe-{key}-mismatch",
                              f"El {key.upper()} de {last['period']} del informe técnico ({last[field_]:+.2f}) difiere del "
-                             f"de NOAA/CPC ({noaa[last['period']]:+.2f}): revisar la lectura de la tabla de índices.")
+                             f"de NOAA/CPC hoy ({noaa[last['period']]:+.2f}): NOAA revisó el valor después del informe o el lector "
+                             "tomó otra columna; revisar la tabla de índices.")
         if icen:
             if tmp and icen["latest"]["period"] and tmp["period"] <= icen["latest"]["period"]:
                 inf["icenSuperseded"] = tmp["period"]
@@ -1937,6 +1954,25 @@ def official_alerts(feed) -> bool:
                 and (getattr(feed, "covers", None) or feed.id in ("ciifen", "imarpe", "gdacs")))
 
 
+def hazard_down(st: Optional[dict]) -> bool:
+    """El feed de avisos no llegó del servidor en esa corrida: falló, o solo llegó la copia que un recolector arrastra.
+    Un feed que no se pidió (``skipped``, ``carried``, ``omitted``: tiempo agotado o servidor ya caído) no cuenta."""
+    if not st or st.get("skipped") or st.get("carried") or st.get("omitted"):
+        return False
+    if str(st.get("error") or "").startswith("omitido:"):  # publicaciones anteriores a la marca «omitted»
+        return False
+    return st.get("ok") is False or bool(st.get("upstreamDown"))
+
+
+def _hours_between(before: dict, after: dict) -> float:
+    try:
+        a = datetime.fromisoformat(str(before.get("checkedAt")).replace("Z", "+00:00"))
+        b = datetime.fromisoformat(str(after.get("checkedAt")).replace("Z", "+00:00"))
+        return (b - a).total_seconds() / 3600
+    except (ValueError, TypeError):
+        return 24.0  # sin hora (o sin zona): se cuenta como corrida de otro día
+
+
 def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
                  now: datetime, raw_dir: Optional[Path], history_dir: Optional[Path] = None,
                  reader: Optional[set[str]] = None, history_absent: bool = False,
@@ -1984,7 +2020,8 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                 note_request(url)
             try:
                 r = (reader_fetcher if url in (reader or ()) else news_fetcher).get([url], archive=False)
-                return 200, r.body, r.content_type, "", {"channel": r.channel, "copyAt": r.archived_at or None}
+                return 200, r.body, r.content_type, "", {"channel": r.channel, "copyAt": r.archived_at or None,
+                                                         "upstreamDown": r.upstream_down}
             except FetchError as exc:
                 last = exc.attempts[-1] if exc.attempts else {}
                 return last.get("status"), b"", "", last.get("error") or f"HTTP {last.get('status')}"
@@ -2266,14 +2303,18 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
             continue
         feed = N.FEED_BY_ID.get(st.get("id"))
         before = prev_status.get(st.get("id")) or {}
+        if official_alerts(feed) and hazard_down(st) and hazard_down(before) and _hours_between(before, st) >= 6:
+            # Una fuente oficial de avisos (SENAMHI, INDECI/COEN, DHN, IGP, PTWC, NASA, CIIFEN…) caída dos corridas
+            # seguidas (con al menos 6 h entre ellas: dos corridas de un día de cambios distan 40 min) deja al sitio
+            # sin esos avisos: no puede quedar como «info» que nadie lee (incidencia propia por fuente; se cierra sola
+            # cuando vuelve a responder). Caída también si solo llegó la copia que n8n arrastra (``upstreamDown``).
+            why = st["error"] if not st["ok"] else (
+                f"solo llegó la copia que n8n conserva del {st.get('copyAt')} (el servidor respondió "
+                f"{(st.get('upstreamDown') or {}).get('status') or 'con error'})")
+            log.add("warning", f"news-{st['id']}", "fetch", "hazard-feed-down",
+                    f"{st['name']} no respondió con un feed en dos corridas seguidas: {why}")
         if not st["ok"]:
             log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
-            if official_alerts(feed) and before and before.get("ok") is False and not before.get("skipped"):
-                # Una fuente oficial de avisos (SENAMHI, INDECI/COEN, DHN, IGP, PTWC, NASA, CIIFEN…) caída dos corridas
-                # seguidas deja al sitio sin esos avisos: no puede quedar como «info» que nadie lee (incidencia propia
-                # por fuente; se cierra sola cuando vuelve a responder).
-                log.add("warning", f"news-{st['id']}", "fetch", "hazard-feed-down",
-                        f"{st['name']} no respondió con un feed en dos corridas seguidas: {st['error']}")
         elif not st["active"]:
             log.add("info", "news", "fetch", "feed-inactive",
                     f"{st['name']}: " + (f"la entrada más reciente es del {st['latest']}." if st["latest"] else

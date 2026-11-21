@@ -101,6 +101,9 @@ class Response:
     archived_at: Optional[str] = None
     retrieved_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat(timespec="seconds"))
     attempts: list = field(default_factory=list)
+    #: Copia de un recolector que la arrastró: el servidor ya no la daba (``{"status", "verdict", "at"}`` del último
+    #: intento). n8n conserva así la última copia buena de una URL que dejó de responder.
+    upstream_down: Optional[dict] = None
 
     @property
     def text(self) -> str:
@@ -217,7 +220,11 @@ class Relay:
                 continue
             if block_page(body):  # una copia de una página de verificación no es la fuente (``block_page``)
                 continue
-            return Response(url, body, self.channel, 200, ct, archived_at=e.get("fetched_at") or self.collected_at)
+            last = e.get("last_attempt") if isinstance(e.get("last_attempt"), dict) else {}
+            down = ({"status": last.get("status"), "verdict": last.get("verdict"), "at": last.get("at")}
+                    if e.get("carried") else None)
+            return Response(url, body, self.channel, 200, ct, archived_at=e.get("fetched_at") or self.collected_at,
+                            upstream_down=down)
         return None
 
 
@@ -545,7 +552,12 @@ class Fetcher:
                 ts, original = rows[-1][1], rows[-1][2]
                 copy = f"https://web.archive.org/web/{ts}id_/{original}"
                 got = None if self._archive_skip(copy, attempts) else self._get(copy, attempts)
-                if got is not None and got.status_code == 200 and got.content:
+                blocked = block_page(got.content, got.headers) if got is not None and got.status_code == 200 else ""
+                if blocked:
+                    # El Internet Archive también guarda la página de verificación que le sirvió el servidor.
+                    attempts[-1]["error"] = f"la copia archivada es una página de verificación ({blocked}): no se usa"
+                    attempts[-1]["class"] = "challenge"
+                elif got is not None and got.status_code == 200 and got.content:
                     snap = Response(url, got.content, "archive", 200, got.headers.get("content-type", ""),
                                     archived_at=_ts_iso(ts), attempts=attempts)
             else:
@@ -553,7 +565,11 @@ class Fetcher:
         save = f"https://web.archive.org/save/{url}"
         if fresh and (snap is None or _age_hours(snap.archived_at) > 24) and not self._archive_skip(save, attempts):
             r = self._get(save, attempts)
-            if r is not None and r.status_code == 200 and r.content:
+            blocked = block_page(r.content, r.headers) if r is not None and r.status_code == 200 else ""
+            if blocked:
+                attempts[-1]["error"] = f"la copia nueva es una página de verificación ({blocked}): no se usa"
+                attempts[-1]["class"] = "challenge"
+            elif r is not None and r.status_code == 200 and r.content:
                 return Response(url, r.content, "archive-fresh", 200, r.headers.get("content-type", ""),
                                 archived_at=_wayback_ts(str(r.url)), attempts=attempts)
         return snap

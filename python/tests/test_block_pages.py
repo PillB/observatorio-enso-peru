@@ -86,7 +86,7 @@ def test_relay_never_serves_a_saved_challenge_page(tmp_path):
     assert _relay(tmp_path, IMUNIFY).get(FEED_URL) is None
 
 
-def _hazard_run(tmp_path, monkeypatch, prev_ok: bool, relay=None):
+def _hazard_run(tmp_path, monkeypatch, prev_ok: bool, relay=None, prev_at="2026-11-19T13:54:57+00:00", prev_extra=None):
     """Una corrida de noticias con un solo feed oficial de peligros (CIIFEN) que responde con la página de Imunify360."""
     from datetime import datetime, timezone
 
@@ -101,7 +101,7 @@ def _hazard_run(tmp_path, monkeypatch, prev_ok: bool, relay=None):
     site = tmp_path / "site"
     (site / "news").mkdir(parents=True)
     (site / "news" / "feeds.json").write_text(json.dumps({"feeds": [
-        {"id": "ciifen", "ok": prev_ok, "error": "" if prev_ok else "x", "checkedAt": "2026-11-19T21:54:57+00:00"}]}),
+        {"id": "ciifen", "ok": prev_ok, "error": "" if prev_ok else "x", "checkedAt": prev_at, **(prev_extra or {})}]}),
         encoding="utf-8")
     fetcher = Fetcher(polite_delay=0, relay=relay)
     log = obs.EventLog()

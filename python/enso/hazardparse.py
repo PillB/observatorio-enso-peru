@@ -251,12 +251,19 @@ _PTWC_THREAT_RE = re.compile(r"TSUNAMI THREAT FORECAST.*?\n-+\n(?P<txt>.*?)(?:\n
 _MON = {m: i for i, m in enumerate(["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"], 1)}
 
 
+_PTWC_TEST_RE = re.compile(r"\bTHIS IS A TEST\b|FOR TEST PURPOSES ONLY|\bDUMMY MESSAGE\b|^\s*TEST\.\.\.", re.M)
+
+
 def parse_ptwc_text(body: bytes, base_url: str = "") -> Parsed:
     """Último mensaje del Centro de Alerta de Tsunamis del Pacífico (el filtro de relevancia
     deja solo los que nombran al Perú, como con su feed Atom)."""
     text = body.decode("utf-8", errors="replace").replace("\r", "")
     if "TSUNAMI" not in text or "PACIFIC TSUNAMI WARNING CENTER" not in text:
         raise FeedError("no es un mensaje del PTWC")
+    if _PTWC_TEST_RE.search("\n".join(text.splitlines()[:15])):
+        # Simulacro (PACWAVE26, noviembre de 2026: «TEST... DUMMY MESSAGE FOR PACWAVE26 EXERCISE... THIS IS A TEST»):
+        # no es un aviso. Sin entradas, como una capa de avisos vacía.
+        return Parsed("ptwc-text", [])
     params = {k: v.strip() for k, v in _PTWC_PARAM_RE.findall(text)}
     num = re.search(r"TSUNAMI MESSAGE NUMBER\s+(\d+)", text)
     head = re.search(r"\.\.\.(PTWC [^.]+?)\.\.\.", text)

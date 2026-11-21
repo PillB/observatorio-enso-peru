@@ -54,18 +54,51 @@ espera y con lo publicado. La pregunta no era «¿falla?» (eso ya lo vigilan `f
   verificaciones; si se repiten, `hazard-feed-down` (GDACS) o `feed-down` lo registran.
 - **IGP, alertas del CENVUL**: la más reciente es del 1 de junio de 2026; puede ser real (sin alertas nuevas).
 
+## Revisión del 21 de noviembre (después de fusionar)
+
+Segunda pasada adversarial, con las tres corridas diarias posteriores a la fusión: las guardias corren en todas las
+fuentes con series y la auditoría completa de `data-archive` no da falsos positivos, pero el fallback antirobots aún no
+se usó en producción (los 13 feeds respondieron directo). Se corrigió:
+
+- **La guardia se saltaba** el día en que una fuente volvía después de una corrida que arrastró el dato, y sin aviso si
+  la publicación anterior no se podía leer: ahora compara también con la base arrastrada y anota `drift-unchecked`.
+- **Los avisos de `enso.drift` se cerraban solos** al día siguiente (solo aparecen el día del cambio) con el dato malo
+  publicado: ahora no se cierran solos, y el issue dice «reescritura del histórico», no «cambio de formato».
+- **Copias que n8n arrastra**: el IGP (CENVUL) daba HTTP 500 a n8n y el sitio mostraba el feed como bueno con la copia
+  del día anterior. Esa copia ahora cuenta como caída para `hazard-feed-down`, que además exige 6 h entre las dos
+  corridas e ignora los feeds que no se pidieron.
+- **Internet Archive**: sus copias de una página de verificación ya no se usan como fuente.
+- **Firmas**: Imunify360 por el formulario `wsidchk`, la cabecera `server: imunify360-webshield` y su página de
+  captcha; Sucuri CloudProxy (`sucuri_cloudproxy_js`), Wordfence, SiteGround (`sgcaptcha`), GoDaddy y Vercel. Paridad
+  con n8n en `fixtures/reach-parity.json`.
+- **DHN**: desde noviembre todos los PDF de `/Archivos` redirigen a `/human-check.php` (Turnstile); se reconoce como
+  verificación y los PDF del ENFEN dependen de la copia del recolector del Perú.
+- **PTWC**: el simulacro PACWAVE26 (5-11-2026) salía como aviso de tsunami; los mensajes de prueba ya no son entradas.
+- `valuesInTextBasis` se calcula con las semanas y meses anteriores a la fecha de la discusión (antes pasaba a
+  `other` dos semanas después); el contraste del ICEN dice `undetermined` cuando el temporal queda a igual distancia;
+  los umbrales (0,05, 0,1 y 0,25) ya no fallan por redondeo en el valor exacto.
+- **Auditoría semanal**: los 39 hallazgos ya revisados (38 páginas de Imunify360 y la corrección de PSL) están en
+  `python/tools/drift_audit_known.json` y no la hacen fallar (la primera corrida, el lunes 23, habría fallado con 26);
+  `--days` lee solo la ventana más la versión anterior, `--source` limita todo, revisa también `.html` y `.csv`, sale
+  con 2 si no puede auditar y, si encuentra algo, abre un issue `incidente-datos`.
+
+Sin cambio: la ventana del ICEN si el IGP pasa a ERSSTv6 (el aviso ya dice que el archivo del IGP podría estar
+revisado) y un cambio de base de PSL (el sitio recalcula la base: no se usa la del archivo).
+
 ## Cómo repetirla
 
 ```bash
 cd python
-git fetch origin data-archive
-python -m tools.drift_audit            # releer todo el archivo con los lectores y las firmas actuales
-python -m pytest tests/test_drift.py tests/test_block_pages.py tests/test_cross_checks.py tests/test_reports.py
-node --test ../n8n/test/lib.test.mjs   # la misma firma en n8n
+git fetch --depth=1 origin data-archive
+python -m tools.drift_audit --ref FETCH_HEAD          # 0: nada nuevo; 1: hallazgos; 2: no pudo auditar
+python -m tools.drift_audit --ref FETCH_HEAD --all    # también los ya revisados (39 al 21-11-2026)
+python -m pytest tests/test_drift.py tests/test_drift_followup.py tests/test_drift_audit.py tests/test_block_pages.py \
+  tests/test_cross_checks.py tests/test_reports.py tests/test_reach_parity.py
+node --test ../n8n/test/lib.test.mjs   # las mismas firmas en n8n
 ```
 
-`tools.drift_audit` sale con 1 si encuentra algo. Cada lunes, `.github/workflows/drift-audit.yml` lo corre sobre las
-copias de la última semana (`--days 8`) y la corrida falla si aparece algo nuevo; la corrida diaria, además, compara
-cada lectura con la publicación anterior y abre un issue por cada hallazgo. Las copias que muestran cada caso están en
-`python/tests/fixtures/drift/` (PSL), `python/tests/fixtures/sources/blocked/` (Imunify360) y
-`python/tests/fixtures/reports/` (informe N° 20).
+Cada lunes, `.github/workflows/drift-audit.yml` corre la auditoría sobre las copias de la última semana (`--days 7`) y
+falla, con un issue, si aparece algo nuevo; la corrida diaria, además, compara cada lectura con la publicación anterior
+y abre un issue por cada hallazgo. Lo revisado se agrega a `python/tools/drift_audit_known.json` con una nota. Las
+copias que muestran cada caso están en `python/tests/fixtures/drift/` (PSL), `python/tests/fixtures/sources/blocked/`
+(Imunify360, DHN) y `python/tests/fixtures/reports/` (informe N° 20).

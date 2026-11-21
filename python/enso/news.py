@@ -855,6 +855,10 @@ def _read_feed(f: Feed, fetch, now: datetime) -> tuple[dict, list[dict], Optiona
         # Copia de otro recolector (Perú, n8n) o réplica: el sitio dice de cuándo es y por qué canal llegó.
         st["channel"] = via["channel"]
         st["copyAt"] = via.get("copyAt")
+        if via.get("upstreamDown"):
+            # El recolector arrastró su última copia buena: el servidor no la está dando (n8n: HTTP 500 del CENVUL
+            # el 20-11-2026 con la copia del 19 publicada como si el feed respondiera).
+            st["upstreamDown"] = via["upstreamDown"]
     if code != 200 or not body:
         st["error"] = err or f"HTTP {code}"
         return st, [], None
@@ -953,10 +957,12 @@ def collect(fetch, now: datetime, feeds: Optional[list[Feed]] = None, workers: i
         fails = 0
         for f in group:
             if fails >= host_failures:
-                results[f.id] = (_status(f, now, "omitido: el servidor no respondió a los feeds anteriores"), [], None)
+                results[f.id] = (_status(f, now, "omitido: el servidor no respondió a los feeds anteriores")
+                                 | {"omitted": "host"}, [], None)
                 continue
             if deadline is not None and time.monotonic() - started > deadline:
-                results[f.id] = (_status(f, now, "omitido: se agotó el tiempo de la recolección de noticias"), [], None)
+                results[f.id] = (_status(f, now, "omitido: se agotó el tiempo de la recolección de noticias")
+                                 | {"omitted": "deadline"}, [], None)
                 continue
             try:
                 results[f.id] = _read_feed(f, fetch, now)

@@ -1,0 +1,201 @@
+{
+ "about": "Hallazgos de tools.drift_audit ya revisados (docs/auditoria-deriva-fuentes.md): no hacen fallar la auditoría semanal. Agregar aquí solo lo revisado; --all los vuelve a mostrar.",
+ "reviewed": "2026-11-21",
+ "findings": [
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-ciifen/2026-10-30-966679d18f26.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-ciifen/2026-11-15-424d30d2d45b.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-ciifen/2026-11-19-d6c997a92001.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-diario-del-cusco/2026-10-30-001ff663bf14.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-diario-del-cusco/2026-11-19-e9997bb09013.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-los-andes/2026-10-30-a5f54f58bbb2.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-los-andes/2026-11-15-51aad4527a0c.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-los-andes/2026-11-19-b7e9b6d1ebbd.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-nacional-callao-tv/2026-10-30-0ee283b1b58c.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-nacional-callao-tv/2026-11-15-1f6451245efb.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-nacional-callao-tv/2026-11-19-39d7075b29fe.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-pregon-apurimac/2026-10-30-ae7c330df636.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-pregon-apurimac/2026-11-15-24145a9eff03.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-pregon-apurimac/2026-11-19-7e63b2757826.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-huancayo/2026-10-30-58ece0275388.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-huancayo/2026-11-15-8307173a79e3.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-huancayo/2026-11-19-5907d7ba3b61.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-santa-rosa/2026-10-30-100d7c95c0e3.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-santa-rosa/2026-11-15-2231ebed2658.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-santa-rosa/2026-11-19-aa13eb7b8eb4.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-yaravi/2026-10-30-0c5fbe3ac49b.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-yaravi/2026-11-15-d8a38faace20.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-radio-yaravi/2026-11-19-95c2302a38b5.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-reina-de-la-selva/2026-10-30-6f45406ec86e.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-reina-de-la-selva/2026-11-15-99c5dcbf3c0e.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-reina-de-la-selva/2026-11-19-4c3cb99b4a23.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-cajamarca/2026-10-30-7caa08da5a97.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-cajamarca/2026-11-15-d8535250bc6b.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-cajamarca/2026-11-19-9963ceae82ec.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-la-libertad/2026-10-30-a549bdb100fb.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-la-libertad/2026-11-15-02bad0e3465b.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-la-libertad/2026-11-19-c3ecc74aaa8f.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-lambayeque/2026-10-30-20a3c6758df6.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-lambayeque/2026-11-15-21a8941d4dc1.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-lambayeque/2026-11-19-4184d15864ba.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-piura/2026-10-30-afcf91d83124.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-piura/2026-11-15-e1d188e24140.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "archived-block-page",
+   "file": "sources/news-soltv-piura/2026-11-19-a27431ee6ccc.xml",
+   "note": "Página «One moment, please...» de Imunify360 archivada como feed antes de la firma (PR #131)"
+  },
+  {
+   "kind": "history-rewritten",
+   "file": "sources/psl-ersst6-nino34/2026-11-18-2a29ee9267c0.txt",
+   "note": "PSL corrigió la longitud de la caja Niño 3.4 (170°E→170°W); revisado en docs/auditoria-deriva-fuentes.md"
+  }
+ ]
+}
