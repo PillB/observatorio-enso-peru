@@ -37,7 +37,13 @@ COMPASS = {"N": "N", "NNE": "NNE", "NE": "NE", "ENE": "ENE", "E": "E", "ESE": "E
            "S": "S", "SSW": "SSO", "SW": "SO", "WSW": "OSO", "W": "O", "WNW": "ONO", "NW": "NO", "NNW": "NNO"}
 _USGS_PLACE_RE = re.compile(r"^(\d+)\s*km\s+([NSEW]{1,3})\s+of\s+(.+)$")
 SIMULACRO_RE = re.compile(r"\bsimulacros?\b|\bdrill\b|\bexercise\b", re.I)
-_EN_DATE = "%A, %B %d, %Y"
+#: «Monday, November 16, 2026» del CENVUL. Con tabla propia y no con ``strptime("%A, %B %d, %Y")``: los nombres de
+#: ``%A`` y ``%B`` salen del ``LC_TIME`` del proceso, y en un recolector con el sistema en castellano (o si alguna
+#: biblioteca llama a ``locale.setlocale``) la variante inglesa dejaba de leerse sin ningún error.
+_EN_MONTHS = {m: i for i, m in enumerate(("january", "february", "march", "april", "may", "june", "july", "august",
+                                          "september", "october", "november", "december"), 1)}
+_EN_DATE_RE = re.compile(r"^(?:(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday),\s*)?"
+                         r"([a-z]+)\s+(\d{1,2}),\s*(\d{4})$", re.I)
 
 
 def _iso(dt: datetime) -> str:
@@ -315,17 +321,20 @@ def _card_date(s: str, hm: str = "") -> Optional[str]:
     s = re.sub(r"\s+", " ", (s or "").replace("\u00a0", " ").replace("\u202f", " ")).strip()
     if not s:
         return None
+    en = _EN_DATE_RE.match(s)
+    es = None if en else _ES_DATE_RE.match(s)
+    if en:
+        month, day, year = _EN_MONTHS.get(en.group(1).lower()), en.group(2), en.group(3)
+    elif es:
+        month, day, year = _ES_MONTHS.get(es.group(2).lower()), es.group(1), es.group(3)
+    else:
+        return None
+    if not month:
+        return None
     try:
-        d = datetime.strptime(s, _EN_DATE)
+        d = datetime(int(year), month, int(day))
     except ValueError:
-        m = _ES_DATE_RE.match(s)
-        month = _ES_MONTHS.get(m.group(2).lower()) if m else None
-        if not month:
-            return None
-        try:
-            d = datetime(int(m.group(3)), month, int(m.group(1)))
-        except ValueError:
-            return None
+        return None
     t = _HM_RE.match(re.sub(r"\s+", " ", (hm or "").replace("\u00a0", " ").replace("\u202f", " ")).strip())
     if t:
         h, mi, sec = int(t.group(1)), int(t.group(2)), int(t.group(3) or 0)

@@ -118,6 +118,20 @@ def _utc_today() -> date:
     return datetime.now(timezone.utc).date()
 
 
+#: Hora del Perú: UTC−5 todo el año (sin horario de verano desde 1994).
+LIMA = timezone(timedelta(hours=-5), "America/Lima")
+
+
+def run_date(started: datetime) -> date:
+    """El día de la corrida en Lima, que es el de las fuentes peruanas y el de quien lee el sitio.
+
+    La corrida diaria empieza a las 04:37 UTC (``observatory.yml``), las 23:37 del día anterior en Lima: con la fecha
+    UTC, el sitio contaba cada noche un día de más (edades, atrasos) y el último día de cada mes daba por vencido el
+    escenario del CENEPRED vigente hasta ese mes y pasaba al siguiente. El archivo crudo sigue nombrado por la fecha
+    UTC (``archive_raw``), como las copias que ya tiene ``data-archive``."""
+    return started.astimezone(LIMA).date()
+
+
 def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date] = None):
     """D20 de los meses de GODAS posteriores al histórico versionado (``enso/data/godas-d20.json``).
 
@@ -1827,8 +1841,9 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                       budget_s=OFFICIAL_BUDGET_S if fixtures is None else None,
                       robots=live, robots_known=registry.url_robots() if live else None)
     prev = PreviousPublication(previous, fetcher)
+    raw_day = today or (started.date() if fixtures is None else _fixture_date(fixtures)) or started.date()
     if today is None:
-        today = (started.date() if fixtures is None else _fixture_date(fixtures)) or started.date()
+        today = (run_date(started) if fixtures is None else _fixture_date(fixtures)) or run_date(started)
     acquired: dict[str, Acquired] = {}
     # Primero las fuentes peruanas y la crítica: el tiempo de las fuentes oficiales (OFFICIAL_BUDGET_S) es uno
     # solo, y un día malo de NOAA no debe dejar sin leer el comunicado del ENFEN publicado ese día.
@@ -1942,7 +1957,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                             freshness=fresh, manual_needed=needs.as_json(prev.get("manual-needed.json"), today),
                             imarpe_bsobp=bsobp, levels=levels, escenario=escenario, degraded=degraded)
     if raw_dir is not None:
-        res["rawArchived"] = archive_raw(raw_dir, acquired, today)
+        res["rawArchived"] = archive_raw(raw_dir, acquired, raw_day)
     fetcher.close()
     res.update({"worst": log.worst(), "events": len(log.events)})
     return res
@@ -2404,7 +2419,18 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
                 f"No se pudo leer el histórico de noticias de la publicación anterior{was} ({why}) y {copy}: se "
                 "publica solo con las notas de hoy, marcado «restarted», y se completa en cuanto se lea la copia.")
     history = N.read_jsonl(prev_text)
-    added = N.new_lines(history, found + restored)
+    repeated: list[dict] = []
+    added = N.new_lines(history, found + restored, skipped=repeated)
+    revised = [i for i in added if i.get("revises")]
+    if repeated or revised:
+        # No es un problema de la fuente: el registro dice cuántas se juntaron y de qué feeds, para ver si un medio
+        # empieza a cambiar los enlaces de todas sus notas (eso sí sería un cambio de formato).
+        from collections import Counter
+        by_feed = Counter(i["feed"] for i in repeated + revised)
+        log.add("info", "news", "fetch", "news-same-story",
+                f"{len(repeated)} notas ya guardadas llegaron con otro enlace o titular equivalente y no se repiten; "
+                f"{len(revised)} son una corrección del titular de una nota ya guardada («revises»). Por feed: "
+                + ", ".join(f"{k} ({v})" for k, v in by_feed.most_common(8)) + ".")
     live_ids = {i["id"] for i in found}
     back_from_state = sum(1 for i in added if i["id"] not in live_ids)
     if back_from_state:

@@ -119,6 +119,38 @@ La revisión adversarial encontró tres huecos; se corrigieron con pruebas que f
   `ensodisc_basis` y el tamaño de `block_page` se podían cambiar sin que fallara ninguna prueba. Ahora cada uno tiene
   una prueba en su borde.
 
+## Errores de la misma clase (21 de noviembre, tercera pasada)
+
+Se buscaron en todo el código las mismas clases de error que los hallazgos anteriores: servidores que responden
+distinto según el pedido, lectura de fechas que depende del idioma, claves de identidad hechas con campos que
+cambian, umbrales con decimales, valores por omisión que callan un problema y el día de Lima. Se corrigió:
+
+- **La misma nota, varias veces en el histórico**: el `id` de cada nota sale del enlace y del titular tal como
+  llegan. El feed de Pro & Contra arma los enlaces con el esquema y el servidor del pedido (57 copias en
+  `data-archive` con cuatro variantes: `http`/`https`, con y sin `www`), GDACS alterna `http` y `https`, Google
+  Noticias cambia el nombre del medio que agrega al titular y los medios corrigen titulares: 397 de las 13.458
+  notas del histórico eran otra copia de una nota ya guardada (la nota «Defensora ambiental…» estaba cuatro
+  veces, el sismo `us6000u1kt` del USGS dos, una con la magnitud preliminar). `news.new_lines` ahora reconoce la
+  nota por su enlace canónico (`news.canonical_link`: `https`, sin `www`, sin parámetros de seguimiento; la ruta,
+  la consulta y el fragmento se conservan, porque distinguen avisos de la DHN y del CENVUL y notas de Google
+  Noticias). Una variante con el mismo titular no se agrega; un titular distinto es una corrección y se agrega
+  con `revises` (el `id` de la primera versión), y los grupos (`news.cluster`) muestran la última versión. FIRMS,
+  cuyo resumen diario enlaza siempre al mismo mapa, sigue por `id` (`Feed.link_is_id`), y también un enlace que
+  un feed pone a dos titulares en la misma lectura. Repasado con el histórico entero: 66 notas no se habrían
+  repetido y 273 habrían quedado como corrección. Entre las correcciones hay entradas que el medio o la institución publica en el mismo enlace pero que no son la misma nota: los en vivo de RPP y El Comercio («Temblor en Perú, hoy 22 de octubre» → «hoy 24 de octubre» en la misma dirección) y los reportes sucesivos del COEN de una misma emergencia (Reporte N° 02 → N° 03). El histórico guarda cada una; los grupos muestran solo la última. El registro dice cuántas cada
+  día (`news-same-story`, `info`). Los `id` no cambian: las anclas del archivo y el histórico publicado siguen
+  sirviendo.
+- **Fechas en inglés del CENVUL según el idioma del proceso**: se leían con `strptime("%A, %B %d, %Y")`, cuyos
+  nombres salen del `LC_TIME` del proceso; con el sistema en castellano (un recolector en una máquina en es_PE,
+  o una biblioteca que llame a `locale.setlocale`) la variante inglesa dejaba de leerse. Ahora con tabla propia.
+- **El día de la corrida era el UTC**: la corrida diaria empieza a las 04:37 UTC, las 23:37 del día anterior en
+  Lima, así que cada noche el sitio contaba un día de más y el último día de cada mes daba por vencido el
+  escenario del CENEPRED (`observatory.run_date`). El archivo crudo sigue nombrado por la fecha UTC.
+
+Pruebas: `tests/test_news_identity.py` (copias reales de Pro & Contra y del USGS, y tres líneas reales del
+histórico), `tests/test_hazards.py::test_cenvul_english_dates_do_not_depend_on_the_process_locale` y
+`tests/test_lima_day.py` (con la hora del cron real). Cada una falla con el error.
+
 ## Cómo repetirla
 
 ```bash

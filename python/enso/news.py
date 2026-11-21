@@ -29,6 +29,7 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Optional
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .archive import news_page
 from .feedparse import LIMA, FeedError, parse as parse_any
@@ -62,6 +63,9 @@ class Feed:
     #: trae campos, así que «sin avisos vigentes» y «la capa se renumeró o se retiró» se ven iguales: cuando llega
     #: vacía se comprueba el nombre en el listado del servicio (``check_layer``).
     layer: str = ""
+    #: El enlace de cada entrada identifica la nota (``identity_key``). ``False`` en un feed que pone el mismo enlace
+    #: a entradas distintas (FIRMS: el resumen del día siempre enlaza al mismo mapa).
+    link_is_id: bool = True
 
     @property
     def fixture(self) -> str:
@@ -438,7 +442,7 @@ FEEDS: list[Feed] = [
          kind="gobierno", scope="hazard", stale_days=4, adapter="arcgis", layer="SDE.SENAMHI_AvisoPP24H", covers=("lluvias",)),
     Feed("firms-focos", "NASA FIRMS · focos de calor (VIIRS, NOAA-20)", "peru",
          "https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_South_America_24h.csv",
-         kind="organismo", scope="hazard", stale_days=2, adapter="firms", covers=("incendio",)),
+         kind="organismo", scope="hazard", stale_days=2, adapter="firms", covers=("incendio",), link_is_id=False),
     Feed("usgs-sismos", "USGS · sismos de magnitud 4 o más (Perú y alrededores)", "peru",
          "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minlatitude=-20&maxlatitude=1"
          "&minlongitude=-84&maxlongitude=-68&minmagnitude=4&orderby=time&limit=100",
@@ -658,6 +662,76 @@ def item_id(link: str, title: str) -> str:
     return hashlib.sha256(f"{link.strip()}|{title.strip().lower()}".encode()).hexdigest()[:16]
 
 
+#: Parámetros de consulta que no cambian la nota: campañas, clics de redes y anuncios, AMP.
+_TRACKING_RE = re.compile(r"(utm_[a-z_]+|fbclid|gclid|dclid|msclkid|mc_[ce]id|igshid|ref|ref_src|outputtype|cmpid|amp)", re.I)
+
+
+def canonical_link(url: str) -> str:
+    """El enlace con que se identifica una nota: ``https``, el servidor en minúsculas sin «www.» ni puerto por
+    omisión, sin parámetros de seguimiento (``_TRACKING_RE``) y sin barra final. La ruta, el resto de la consulta y
+    el fragmento se conservan tal cual: distinguen mayúsculas (los identificadores de Google Noticias) y el
+    fragmento es lo único que distingue un aviso de otro en los lectores sin RSS (``avisos-especiales#5356`` de la
+    DHN, ``boletines-vulcanologicos#IGP-CENVUL-SAB-BV-2026-0043`` del CENVUL).
+
+    El mismo servidor escribe la misma nota con otro esquema o servidor según quién la pida: el feed de Pro &
+    Contra arma los enlaces con el servidor y el esquema del pedido (en data-archive, 57 copias del feed con cuatro
+    variantes: ``http``/``https`` y con o sin ``www``), y GDACS alterna ``http`` y ``https``."""
+    raw = (url or "").strip()
+    try:
+        p = urlsplit(raw)
+    except ValueError:
+        return raw
+    if p.scheme.lower() not in ("http", "https") or not p.netloc:
+        return raw
+    host = (p.hostname or "").lower().removeprefix("www.")
+    try:
+        port = p.port
+    except ValueError:
+        port = None
+    if port and port not in (80, 443):
+        host = f"{host}:{port}"
+    query = urlencode([(k, v) for k, v in parse_qsl(p.query, keep_blank_values=True) if not _TRACKING_RE.fullmatch(k)])
+    return urlunsplit(("https", host, p.path.rstrip("/") or "", query, p.fragment))
+
+
+def _title_key(title: str) -> str:
+    """El titular comparable: sin diferencias de mayúsculas ni de espacios (también los de no separación)."""
+    return " ".join(unicodedata.normalize("NFC", title or "").split()).casefold()
+
+
+def _link_ids(f_id: str) -> bool:
+    f = FEED_BY_ID.get(f_id)
+    return f.link_is_id if f else True
+
+
+def _shared_links(items: list[dict]) -> set[tuple[str, str]]:
+    """Enlaces que un feed puso, en una misma lectura, a entradas con titulares distintos: ahí el enlace no
+    identifica la nota (la portada del medio, un mapa)."""
+    seen: dict[tuple[str, str, str], str] = {}
+    shared = set()
+    for i in items:
+        k = (i.get("feed") or "", i.get("first_seen") or "", canonical_link(i.get("link") or ""))
+        t = _title_key(i.get("title") or "")
+        if seen.setdefault(k, t) != t:
+            shared.add(k[:1] + k[2:])
+    return shared
+
+
+def identity_key(item: dict, shared: frozenset | set = frozenset()) -> tuple:
+    """Qué nota es una entrada: el feed y su enlace canónico (``canonical_link``), o el ``id`` si el enlace no la
+    identifica (``Feed.link_is_id`` falso, o el enlace está en ``shared``).
+
+    El ``id`` (``item_id``) sale del enlace y del titular tal como llegaron, así que cambia con cada variante del
+    mismo servidor (``http``/``https``, «www.»), con el nombre del medio que Google Noticias agrega al titular y
+    con cada corrección del titular: en data-archive, 397 de 13 458 notas eran otra copia de una nota ya
+    guardada (21-11-2026). El ``id`` no cambia (lo usan las anclas del archivo y el histórico ya publicado)."""
+    feed = item.get("feed") or ""
+    link = canonical_link(item.get("link") or "")
+    if not link or not _link_ids(feed) or (feed, link) in shared:
+        return (feed, "id", item.get("id") or "")
+    return (feed, link)
+
+
 # --- Agrupación de entradas similares ----------------------------------------
 
 STOP = set("""a al ante con de del desde e el en entre es la las lo los para por que se sin su sus un una y o
@@ -712,6 +786,7 @@ def _without_title(i: dict) -> str:
 def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
     """Grupos de entradas similares de los últimos ``days`` días, más recientes primero."""
     since = (now - timedelta(days=days)).isoformat()
+    items = latest_versions(items)  # la misma nota con otro enlace o titular, una vez (la última versión)
     recent = sorted((i for i in items if (i.get("published") or i["first_seen"]) >= since),
                     key=lambda i: i.get("published") or i["first_seen"])
     groups: list[dict] = []
@@ -810,14 +885,56 @@ def read_jsonl(text: str) -> list[dict]:
     return out
 
 
-def new_lines(history: list[dict], fresh: list[dict]) -> list[dict]:
-    """Entradas de ``fresh`` que aún no están en el histórico (por id)."""
+def new_lines(history: list[dict], fresh: list[dict], skipped: Optional[list] = None) -> list[dict]:
+    """Entradas de ``fresh`` que aún no están en el histórico.
+
+    Una entrada ya está si su ``id`` ya está o si es la misma nota (``identity_key``) con un titular ya visto: otra
+    variante del enlace (``http``/``https``, «www.», parámetros de seguimiento) o el mismo titular con otro sufijo
+    del medio o con otros espacios. Esas se anotan en ``skipped``. Si el titular es otro, es una corrección (el
+    USGS recalcula el lugar y la magnitud, el COEN completa el reporte, un medio cambia el titular): se agrega con
+    ``revises``, el ``id`` de la primera versión, y ``cluster`` muestra la última."""
     seen = {h["id"] for h in history}
+    shared = _shared_links(fresh)
+    first: dict[tuple, str] = {}
+    titles: dict[tuple, set[str]] = {}
+    for h in history:
+        k = identity_key(h, shared)
+        first.setdefault(k, h.get("revises") or h["id"])
+        titles.setdefault(k, set()).add(_title_key(h.get("title") or ""))
     out = []
     for f in fresh:
-        if f["id"] not in seen:
-            seen.add(f["id"])
-            out.append(f)
+        if f["id"] in seen:
+            continue
+        seen.add(f["id"])
+        k = identity_key(f, shared)
+        t = _title_key(f.get("title") or "")
+        if k in titles and t in titles[k]:
+            if skipped is not None:
+                skipped.append(f)
+            continue
+        if k in first:
+            f = dict(f, revises=first[k])
+        else:
+            first[k] = f["id"]
+        titles.setdefault(k, set()).add(t)
+        out.append(f)
+    return out
+
+
+def latest_versions(items: list[dict]) -> list[dict]:
+    """Una entrada por nota (``identity_key``): la última versión vista, en el lugar de la primera. Las copias
+    del histórico anteriores a ``new_lines`` con ``revises`` (otra variante del enlace o del titular) se juntan
+    igual, porque la clave sale del enlace canónico y no de ese campo."""
+    shared = _shared_links(items)
+    pos: dict[tuple, int] = {}
+    out: list[dict] = []
+    for i in items:
+        k = identity_key(i, shared)
+        if k not in pos:
+            pos[k] = len(out)
+            out.append(i)
+        elif (i.get("first_seen") or "") >= (out[pos[k]].get("first_seen") or ""):
+            out[pos[k]] = i
     return out
 
 

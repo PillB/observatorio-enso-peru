@@ -498,3 +498,31 @@ def test_layer_republished_under_another_schema_is_not_a_move():
     fetch, _ = _fetch_with_listing(json.dumps(listing).encode())
     st, _, _ = N._read_feed(N.FEED_BY_ID["senamhi-incendios"], fetch, NOW)
     assert st["ok"] and st["layerCheck"] == "ok"
+
+
+@pytest.fixture
+def spanish_lc_time(monkeypatch):
+    """Un proceso con ``LC_TIME`` en castellano (un recolector con el sistema en es_PE, o una biblioteca que llama a
+    ``locale.setlocale(LC_ALL, "")``), sin depender de que la máquina tenga instalada esa localización: se le da a
+    ``_strptime`` la tabla de nombres que tendría (la que usan ``%A`` y ``%B``)."""
+    import _strptime
+
+    lt = _strptime.LocaleTime()
+    lt.f_month = ["", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre",
+                  "octubre", "noviembre", "diciembre"]
+    lt.a_month = ["", *(m[:3] for m in lt.f_month[1:])]
+    lt.f_weekday = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+    lt.a_weekday = [d[:3] for d in lt.f_weekday]
+    with _strptime._cache_lock:
+        monkeypatch.setattr(_strptime, "_TimeRE_cache", _strptime.TimeRE(lt))
+        monkeypatch.setattr(_strptime, "_regex_cache", {})
+    from datetime import datetime as _dt
+    with pytest.raises(ValueError):
+        _dt.strptime("Monday, June 1, 2026", "%A, %B %d, %Y")  # la simulación hace lo que haría el sistema
+    return lt
+
+
+def test_cenvul_english_dates_do_not_depend_on_the_process_locale(spanish_lc_time):
+    en = H.parse_cenvul((FIX / "news-igp-cenvul-alertas.html").read_bytes(), _CENVUL["alertas"])
+    assert len(en.items) == 10 and en.items[0]["published"] == "2026-06-01T16:54:00Z"
+    assert H._card_date("Monday, June 1, 2026", "11:54:00 AM") == "2026-06-01T16:54:00Z"
