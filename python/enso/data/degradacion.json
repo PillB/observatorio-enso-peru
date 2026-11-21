@@ -7,13 +7,14 @@
     "carried": {"what": "se publica la lectura anterior", "factor": 0.5, "minDays": 3, "maxDays": 10, "minRuns": 3},
     "failed": {"what": "falló sin un dato anterior que conservar", "factor": 0.5, "minDays": 2, "maxDays": 7, "minRuns": 2},
     "down": {"what": "no responde con un feed", "factor": 0.5, "minDays": 3, "maxDays": 10, "minRuns": 3},
-    "unreadable": {"what": "responde, pero sus entradas no se pueden leer (otra forma o sin fechas)", "factor": 0.5, "minDays": 2, "maxDays": 7, "minRuns": 2},
+    "unreadable": {"what": "responde, pero sus entradas no se pueden leer (otra forma, sin fechas o cortadas)", "factor": 0.5, "minDays": 2, "maxDays": 7, "minRuns": 2},
+    "empty": {"what": "responde con un feed válido pero sin ninguna entrada", "factor": 1.0, "minDays": 3, "maxDays": 14, "minRuns": 3},
     "inactive": {"what": "no publica entradas nuevas", "factor": 1.0, "minDays": 14, "maxDays": 60, "minRuns": 3}
   },
   "escalate": {
     "source": ["relay", "archive"],
-    "official-feed": ["relay", "carried", "unreadable"],
-    "feed": ["relay", "down", "carried", "unreadable"]
+    "official-feed": ["relay", "carried", "unreadable", "empty"],
+    "feed": ["relay", "down", "carried", "unreadable", "empty"]
   },
   "readerCarryHours": 44,
   "recoverHours": 24,

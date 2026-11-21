@@ -14,7 +14,8 @@ Estados (uno por fuente o feed, el primero que aplique):
 * fuentes oficiales (``sources.json``): ``failed`` (sin dato), ``carried`` (se publica el anterior), ``archive`` (solo
   el Internet Archive), ``relay`` (solo la copia de n8n o del Perú, aunque el registro la asigna a Actions; una URL
   que el registro deja al Perú, como el portal del ENFEN, no cuenta);
-* feeds (``news/feeds.json``): ``down``, ``unreadable`` (otra forma, o entradas sin fecha), ``carried`` (la lectura de
+* feeds (``news/feeds.json``): ``down``, ``unreadable`` (otra forma, entradas sin fecha o respuesta cortada), ``empty`` (un feed válido
+  sin entradas; una capa de avisos o FIRMS vacía, o un simulacro del PTWC, no cuenta: es que no hay avisos), ``carried`` (la lectura de
   un feed «lector» lleva más de ``readerCarryHours`` sin renovarse), ``relay`` (como arriba) e ``inactive`` (sin
   entradas nuevas: cuenta desde que pasó su ``stale_days``).
 
@@ -96,8 +97,13 @@ def feed_state(st: dict, feed, plan: dict, now: datetime, cfg: dict) -> tuple[Op
         return "carried", at
     if not st.get("ok") or st.get("upstreamDown"):
         return ("unreadable" if st.get("formatError") else "down"), None
-    if (st.get("items") or 0) > 0 and not st.get("latest"):
+    if ((st.get("items") or 0) > 0 and not st.get("latest")) or st.get("truncated"):
         return "unreadable", None
+    if not st.get("items") and st.get("error"):
+        # Respondió un feed válido sin ninguna entrada («feed sin entradas»; las capas de avisos y FIRMS vacías no
+        # traen error: es que no hay avisos). Antes no tenía estado: un feed vaciado quedaba como «info» para siempre
+        # (``tools/drift_sim.py``, mutación ``items-none``).
+        return "empty", None
     if _unplanned_relay(str(st.get("channel") or ""), getattr(feed, "url", None) or st.get("url"), plan):
         return "relay", None
     if not st.get("active") and st.get("latest"):
@@ -198,10 +204,10 @@ def update(previous: Optional[dict], now: datetime, log, *, sources: Optional[li
             if state == UNOBSERVED:
                 continue
             kind = "official-feed" if official is not None and official(feed) else "feed"
-            detail = st.get("error") or (f"Canal: {st.get('channel')}" + (f" (copia del {st['copyAt']})" if st.get("copyAt") else "")
+            detail = st.get("error") or st.get("truncated") or (f"Canal: {st.get('channel')}" + (f" (copia del {st['copyAt']})" if st.get("copyAt") else "")
                                          if st.get("channel") else "")
             observe(f"feed:{st['id']}", kind, st["id"], st.get("name") or st["id"], state,
-                    getattr(feed, "stale_days", 7) if state in ("inactive", "carried") else 1, hint, str(detail)[:200])
+                    getattr(feed, "stale_days", 7) if state in ("inactive", "carried", "empty") else 1, hint, str(detail)[:200])
     for kind, ident, msg in pending:
         if kind == "feed":
             groups.setdefault(str((prev.get(f"feed:{ident}") or {}).get("state")), []).append(msg)

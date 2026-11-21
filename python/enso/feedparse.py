@@ -207,6 +207,9 @@ def _decode(body: bytes, repairs: list[str]) -> str:
     except UnicodeDecodeError:
         pass
     if declared in ("utf-8", "utf8"):
+        if mostly_cp1252(body):
+            repairs.append(f"codificación: declarada {declared}, leída como windows-1252")
+            return body.decode("cp1252", errors="replace")
         # UTF-8 con algunos bytes sueltos de Windows-1252: solo esos bytes se leen como windows-1252.
         repairs.append(f"codificación: declarada {declared}, bytes sueltos leídos como windows-1252")
         return body.decode("utf-8", errors="enso-cp1252")
@@ -215,6 +218,67 @@ def _decode(body: bytes, repairs: list[str]) -> str:
     except (UnicodeDecodeError, LookupError):
         repairs.append(f"codificación: declarada {declared}, leída como windows-1252")
         return body.decode("cp1252", errors="replace")
+
+
+def text_of(body: bytes) -> str:
+    """Texto de una página o archivo sin declaración de codificación fiable (los lectores de HTML de peligros, gob.pe).
+
+    Como el algoritmo de decodificación de WHATWG: la marca de orden de bytes manda (UTF-8 o UTF-16); si no hay, UTF-8
+    y los bytes que no lo son se leen como windows-1252 (un servidor que pasa a Latin-1 no deja «�» en los títulos:
+    ``tools/drift_sim.py``, mutación ``latin1``)."""
+    if body.startswith((b"\xff\xfe", b"\xfe\xff")):
+        return body.decode("utf-16", errors="replace")
+    if body.startswith(b"\xef\xbb\xbf"):
+        body = body[3:]
+    try:
+        return body.decode("utf-8")
+    except UnicodeDecodeError:
+        pass
+    return body.decode("cp1252", errors="replace") if mostly_cp1252(body) else body.decode("utf-8", errors="enso-cp1252")
+
+
+_UTF8_SEQ_RE = re.compile(rb"[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xf4][\x80-\xbf]{3}")
+
+
+def mostly_cp1252(body: bytes) -> bool:
+    """El documento está en windows-1252 (con alguna coincidencia que parece UTF-8), no en UTF-8 con bytes sueltos.
+
+    Leer como windows-1252 solo los bytes que no son UTF-8 sirve para un feed UTF-8 con un par de bytes de Windows
+    pegados; en un documento todo en windows-1252 un par como «Ú–» (DA 96) es UTF-8 válido y se leía «ږ»
+    (``tools/drift_sim.py``, mutación ``latin1``, Tumbes de Miércoles). Si las secuencias UTF-8 válidas de más de
+    un byte son menos de una por cada diez bytes que no lo son, el documento entero es windows-1252."""
+    high = sum(1 for b in body if b >= 0x80)
+    valid = sum(len(m.group(0)) for m in _UTF8_SEQ_RE.finditer(body))
+    invalid = high - valid
+    return invalid > 0 and valid // 2 <= invalid // 10
+
+
+_HTML_ADAPTERS = ("gobpe", "dhn", "dhn-avisos", "cenvul", "telegram")
+
+
+def truncated(body: bytes, adapter: str = "feed") -> str:
+    """Por qué la respuesta parece cortada (el XML o el HTML no cierran, la última fila del CSV está incompleta), o "".
+
+    El lector tolerante rescata las entradas de un XML roto (``_salvage``) y los de HTML leen las tarjetas que haya: con
+    una copia cortada (un recolector, un límite de tamaño) publicaban la mitad de las entradas sin ningún aviso
+    (``tools/drift_sim.py``, mutación ``truncate``). Las entradas rescatadas son reales y se usan; el feed queda
+    «ilegible» para ``persistent`` (y escala si se repite). Ninguna de las 503 copias reales de ``tests/fixtures`` lo
+    cumple."""
+    low = body[-20000:].lower()
+    head = body[:5000].lower()
+    if adapter in ("feed", "indeci-coen"):
+        for open_, close in ((b"<rss", b"</rss"), (b"<feed", b"</feed"), (b"<rdf:rdf", b"</rdf:rdf")):
+            if open_ in head and close not in low:
+                return f"el documento no cierra ({close.decode()}>): llegó cortado"
+    elif adapter in _HTML_ADAPTERS:
+        if b"<html" in head and b"</html" not in low:
+            return "la página no cierra (</html>): llegó cortada"
+    elif adapter == "firms" and body.strip():
+        text = text_of(body)
+        lines = text.rstrip("\r\n").split("\n")
+        if len(lines) > 1 and not text.endswith("\n") and lines[-1].count(",") < lines[0].count(","):
+            return "la última fila del CSV está incompleta: llegó cortado"
+    return ""
 
 
 def _named_entity(m: re.Match) -> str:
@@ -406,13 +470,33 @@ def _atom_entry(e: ET.Element, base: str, tz: timezone, now: datetime) -> dict:
     links = _children(e, "link")
     link = next((l.get("href") for l in links if l.get("rel", "alternate") == "alternate" and l.get("href")), None)
     link = link or next((l.get("href") for l in links if l.get("href")), "") or _first(e, "id")
-    return {
+    item = {
         "title": clean_text(_first(e, "title"), 300),
         "link": _abs(link, base),
         "published": parse_date(_first(e, "published", "issued", "updated", "modified"), tz, now),
         "summary": clean_summary(_first(e, "summary", "content", "description")),
         "categories": [clean_text(c.get("term") or c.get("label") or _text(c), 80) for c in _children(e, "category")][:12],
     }
+    # El medio original (RFC 4287 §4.2.11, ``atom:source``), como ``<source>`` en RSS: sin él, un agregador que pasara
+    # a Atom perdía el medio de cada nota y con él el filtro de medios de otro país (``tools/drift_sim.py``,
+    # mutación ``rss-to-atom``).
+    src = _children(e, "source")
+    if src:
+        item.update(_atom_source(src[0]))
+    return item
+
+
+def _atom_source(src: ET.Element) -> dict:
+    """``outlet`` y ``outletUrl`` de un ``atom:source`` (RFC 4287 §4.2.11)."""
+    out = {}
+    outlet = clean_text(_first(src, "title"), 120)
+    if outlet:
+        m = re.match(r"^https?://(?:www\.)?([^/\s]+)/?$", outlet)  # como en RSS: a veces es la URL del medio
+        out["outlet"] = m.group(1) if m else outlet
+    href = next((l.get("href", "") for l in _children(src, "link") if l.get("href")), "")
+    if href.startswith(("http://", "https://")):
+        out["outletUrl"] = href
+    return out
 
 
 def _json_feed(body: bytes, base: str, tz: timezone, now: datetime) -> Parsed:
@@ -452,7 +536,7 @@ _GOBPE_DESC_RE = re.compile(r'id="[^"]*-description"[^>]*>(.*?)</div>\s*</div>',
 
 def parse_gobpe(body: bytes, base_url: str = "https://www.gob.pe/", now: Optional[datetime] = None) -> Parsed:
     now = now or datetime.now(timezone.utc)
-    text = body.decode("utf-8", errors="replace")
+    text = text_of(body)
     if "gob.pe" not in text[:5000] and "gob.pe" not in base_url:
         raise FeedError("no es una página de gob.pe")
     items = []
@@ -463,6 +547,14 @@ def parse_gobpe(body: bytes, base_url: str = "https://www.gob.pe/", now: Optiona
                       "summary": clean_summary(desc.group(1) if desc else ""), "categories": []})
     if not items:
         raise FeedError("la página de gob.pe no tiene notas con el formato esperado")
+    inst = re.search(r"/institucion/([\w-]+)/", base_url)
+    if inst and not any(f"/institucion/{inst.group(1)}/" in i["link"] for i in items):
+        # gob.pe redirigió a otra página con notas (otra institución, la portada): tiene la forma de un listado y se
+        # leía como si fuera el de la institución (``tools/drift_sim.py``, mutación ``homepage``). El listado de una
+        # institución trae a veces notas de otras (la PCM y la Presidencia), pero nunca ninguna suya.
+        others = sorted({m.group(1) for i in items if (m := re.search(r"/institucion/([\w-]+)/", i["link"]))})
+        raise FeedError(f"el listado no tiene ninguna nota de «{inst.group(1)}» (son de {', '.join(others[:5]) or 'otro sitio'}): "
+                        "¿gob.pe redirigió a otra página?")
     p = _finish(Parsed("gobpe-html", items))
     p.items.sort(key=lambda i: i["published"] or "", reverse=True)
     return p

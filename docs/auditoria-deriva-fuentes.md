@@ -137,7 +137,7 @@ cambian, umbrales con decimales, valores por omisión que callan un problema y e
   con `revises` (el `id` de la primera versión), y los grupos (`news.cluster`) muestran la última versión. FIRMS,
   cuyo resumen diario enlaza siempre al mismo mapa, sigue por `id` (`Feed.link_is_id`), y también un enlace que
   un feed pone a dos titulares en la misma lectura. Repasado con el histórico entero: 66 notas no se habrían
-  repetido y 273 habrían quedado como corrección. Entre las correcciones hay entradas que el medio o la institución publica en el mismo enlace pero que no son la misma nota: los en vivo de RPP y El Comercio («Temblor en Perú, hoy 22 de octubre» → «hoy 24 de octubre» en la misma dirección) y los reportes sucesivos del COEN de una misma emergencia (Reporte N° 02 → N° 03). El histórico guarda cada una; los grupos muestran solo la última. El registro dice cuántas cada
+  repetido y 273 habrían quedado como corrección. Entre las correcciones hay entradas que el medio o la institución publica en el mismo enlace pero que no son la misma nota: los en vivo de RPP y El Comercio («Temblor en Perú, hoy 22 de octubre» → «hoy 24 de octubre» en la misma dirección) y los reportes sucesivos del COEN de una misma emergencia (Reporte N° 02 → N° 03). El histórico guarda cada una; los grupos muestran solo la última, como un lector de feeds con el mismo `guid` (RSS 2.0) o el mismo `id` de Atom: la dirección ya muestra la versión nueva, y un titular viejo enlazado a ella sería el error. El registro dice cuántas cada
   día (`news-same-story`, `info`). Los `id` no cambian: las anclas del archivo y el histórico publicado siguen
   sirviendo.
 - **Fechas en inglés del CENVUL según el idioma del proceso**: se leían con `strptime("%A, %B %d, %Y")`, cuyos
@@ -151,6 +151,54 @@ Pruebas: `tests/test_news_identity.py` (copias reales de Pro & Contra y del USGS
 histórico), `tests/test_hazards.py::test_cenvul_english_dates_do_not_depend_on_the_process_locale` y
 `tests/test_lima_day.py` (con la hora del cron real). Cada una falla con el error.
 
+## Simulador de deriva (21 de noviembre)
+
+Las auditorías anteriores miraban lo que ya había cambiado. `python/tools/drift_sim.py` se adelanta: aplica a las copias
+reales de `tests/fixtures/sources` 74 cambios que una fuente puede hacer sin avisar (columnas corridas, faltantes o de
+más, cabecera renombrada, ×10, ÷10, °F, otro centinela, coma decimal, fechas en otro idioma o formato, otra zona
+horaria, archivo cortado, filas repetidas o al revés, Latin-1, UTF-16, BOM, gzip sin `Content-Encoding`, la página de
+Imunify360 con HTTP 200, la portada del sitio, un feed válido sin entradas, RSS que pasa a Atom, claves de JSON
+renombradas, una capa de ArcGIS renumerada o en Web Mercator, latitud y longitud intercambiadas…) y lee cada copia
+mutada por el mismo camino que la corrida (`observatory.acquire`, con la huella y `enso.drift` contra la lectura sin
+mutar como publicación anterior; `news._read_feed` con `persistent.feed_state`). Cada par (fuente, mutación) queda
+**LOUD** (abre issue o deja el feed degradado), **BENIGN** (se publica lo mismo), **NOISY** (un cambio que no altera el
+contenido y aun así avisa) o **SILENT-WRONG** (se publica otra cosa sin aviso). La verdad de cada caso es la lectura de
+la copia sin mutar; nada se escribe a mano. `tests/test_drift_sim.py` falla con cualquier SILENT-WRONG fuera de
+`ALLOWLIST` (17 fuentes y un feed por familia de formato, 16 s); `--all-feeds` corre los 168 feeds (≈3 min).
+
+Las 17 fuentes de `SOURCES` ya eran casi todas ruidosas: la validación de rangos, la huella y la guardia de regresión
+atrapan ×10, °F, columnas corridas, recortes y copias atrasadas. Lo que salía mal sin aviso:
+
+| Mutación | Dónde | Qué publicaba | Causa | Qué se hizo |
+|---|---|---|---|---|
+| Feed válido sin entradas | Todos los feeds RSS/Atom y HTML | Nada, como «info» (`feed-inactive`) para siempre | `persistent.feed_state` no tenía estado para «respondió sin entradas» | Estado `empty` en `degradacion.json` (escala como `unreadable`, con el `stale_days` del feed) |
+| Copia cortada | Feeds RSS, DHN, Telegram, COEN, PTWC, discusión de NOAA | La mitad de las entradas, o la discusión sin próxima emisión | El lector tolerante rescata lo que puede, sin marca | `feedparse.truncated` (XML o HTML que no cierran, CSV con la última fila incompleta): las entradas se usan y el feed queda `unreadable`; la discusión cortada es `format-changed`. Ninguna de las 503 copias reales lo cumple |
+| Latin-1 | gob.pe, DHN, Telegram, CENVUL | «fortalecer�» en títulos y resúmenes; el CENVUL, sin boletines | Los lectores de HTML decodificaban UTF-8 con `errors="replace"` | `feedparse.text_of`: BOM, UTF-8 y windows-1252 para lo que no lo es; `mostly_cp1252` lee entero como windows-1252 un documento que casi no tiene UTF-8 (antes un «Ú–» se leía «ږ») |
+| Portada de otra institución | gob.pe | Las notas del INDECI como si fueran del IMARPE | Cualquier página de gob.pe con tarjetas valía | Si ninguna nota es de la institución del URL, `FeedError` (el listado de la PCM trae notas de la Presidencia y sigue valiendo) |
+| Otra capa con datos | Capas del SENAMHI en GEOSINPAD | Avisos de incendios como hidrológicos | Nada comparaba lo leído con la capa pedida | `hazardparse.arcgis_kind_error` contra `Feed.layer` |
+| Web Mercator, ×10 en la geometría | Capas del SENAMHI | Avisos sin lugar ni polígono | Los puntos fuera del Perú se descartaban en silencio | `FeedError` si menos de la mitad de la geometría cae en el Perú |
+| Latitud y longitud intercambiadas, ×10 | USGS | Epicentros en otro lugar, o a latitud −114 | Sin control de rango | `hazardparse._vet`: coordenadas imposibles o fuera del recuadro de la consulta FDSN son `FeedError` |
+| Segundos en lugar de milisegundos | USGS (y cualquier lector de peligros) | Sismos de 1970 | Sin control de fecha | Fechas anteriores a 1995 son `FeedError` |
+| Otro separador, coma decimal, columnas cambiadas, archivo vacío | FIRMS | «Sin focos de calor en el Perú» | La cabecera se miraba como texto y las filas ilegibles se saltaban | Columnas exactas; `FeedError` si la mitad de las filas no tiene coordenadas, si más del 5 % cae fuera de Sudamérica o si el CSV de Sudamérica no trae ninguna fila |
+| Fechas en inglés | DHN, avisos especiales | Avisos sin fecha | La fecha no leída quedaba `None` | `FeedError` (como el CENVUL) |
+| Espacios al final de línea | PTWC (texto) | El mensaje sin la sección de amenaza; sin fecha | Las expresiones anclaban en `$` | Líneas sin espacios al final antes de leer |
+| RSS → Atom | Google Noticias, ONU | Notas sin medio (y sin el filtro de medios de otro país) | `atom:source` no se leía | Se lee como `<source>` |
+| BOM, UTF-16 | Las tablas de NOAA, PSL e IGP y el resumen de GODAS | `format-changed` (falsa alarma) | `Response.text` no miraba la marca de orden de bytes | La marca manda (WHATWG) |
+| gzip sin `Content-Encoding`, PDF, binario | Todas las fuentes | Un error que no decía nada («no se encontraron filas», `JSONDecodeError`) | — | `observatory.binary_body`: `format-changed` que dice qué llegó (no se descomprime: RFC 9110 §8.4) |
+
+Queda aceptado (`ALLOWLIST`, con su costo): una capa de avisos de ArcGIS vacía no se distingue, desde la respuesta, de
+una capa que el servidor dejó de llenar; `check_layer` y `emptySince` cubren lo que se puede comprobar, y el contraste
+con la tabla de avisos vigentes del SENAMHI queda pendiente. Siguen ruidosos a propósito (NOISY): filas al revés y
+filas repetidas (`check_series` los rechaza en lugar de reordenar), gzip sin cabecera, JSON en Latin-1 (RFC 8259 exige
+UTF-8) y un cambio de cabecera que el lector sí entiende pero cambia la huella (`format-drift`, que revisa una persona).
+
+Se compararon antes tres diseños: operadores escritos a mano sobre copias reales (el elegido: cada caso tiene una
+causa que se puede nombrar y un resultado reproducible), composiciones aleatorias con Hypothesis (300 ejemplos sobre
+4 tablas en 3 s: ningún hallazgo nuevo y un falso positivo, ×10 seguido de ÷10, que no es un cambio de la fuente) y
+relaciones metamórficas, que quedaron como pruebas propias: el orden de las entradas, la codificación y la zona
+horaria no cambian lo publicado, y un cambio de la base de la anomalía de PSL no cambia la serie llevada a 1991–2020
+(Hypothesis elige las doce constantes por mes).
+
 ## Cómo repetirla
 
 ```bash
@@ -158,8 +206,10 @@ cd python
 git fetch --shallow-since="$(date -u -d '12 days ago' +%F)" origin data-archive  # con historia: orden del mismo día
 python -m tools.drift_audit --ref FETCH_HEAD          # 0: nada nuevo; 1: hallazgos; 2: no pudo auditar
 python -m tools.drift_audit --ref FETCH_HEAD --all    # también los ya revisados (39 al 21-11-2026)
+python -m tools.drift_sim                              # simulador: 0 sin SILENT-WRONG nuevos; --all-feeds, --json
 python -m pytest tests/test_drift.py tests/test_drift_followup.py tests/test_drift_audit.py tests/test_block_pages.py \
-  tests/test_cross_checks.py tests/test_reports.py tests/test_reach_parity.py tests/test_guard_thresholds.py
+  tests/test_cross_checks.py tests/test_reports.py tests/test_reach_parity.py tests/test_guard_thresholds.py \
+  tests/test_drift_sim.py
 node --test ../n8n/test/lib.test.mjs   # las mismas firmas en n8n
 ```
 

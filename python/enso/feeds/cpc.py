@@ -156,7 +156,11 @@ def parse_nino_monthly(text: str, *, name: str) -> Parsed:
         y, mth = int(parts[0]), int(parts[1])
         region = None
         for c, v in zip(cols[2:], parts[2:]):
-            val = norm_missing(float(v), -99.0)
+            try:
+                val = norm_missing(float(v), -99.0)
+            except ValueError:
+                raise FormatChanged(f"{name}: valor no numérico «{v}» en la columna {c} de {y}-{mth:02d} "
+                                    "(¿coma decimal u otro centinela?)") from None
             if c in REGION_ALIASES:
                 region = REGION_ALIASES[c]
                 sst.setdefault(region, []).append({"period": period(y, mth), "value": val})
@@ -269,7 +273,11 @@ def parse_psl_matrix(text: str, *, name: str) -> Parsed:
         if re.fullmatch(r"\d{4}", parts[0]) and len(parts) == 13:
             y = int(parts[0])
             for m, v in enumerate(parts[1:], start=1):
-                pts.append({"period": period(y, m), "value": norm_missing(float(v), -99.0)})
+                try:
+                    pts.append({"period": period(y, m), "value": norm_missing(float(v), -99.0)})
+                except ValueError:
+                    raise FormatChanged(f"{name}: valor no numérico «{v}» en {y}-{m:02d} "
+                                        "(¿coma decimal u otro centinela?)") from None
         else:
             footer.append(line)
     tail = " ".join(footer)
@@ -337,6 +345,10 @@ def _date_en(s: str) -> Optional[str]:
 
 def parse_enso_discussion(doc: str) -> Parsed:
     """Extrae estado, fecha, sinopsis y próxima emisión del boletín mensual."""
+    if "<html" in doc[:5000].lower() and "</html" not in doc[-20000:].lower():
+        # Una copia cortada conserva el estado y pierde la sinopsis y la próxima emisión: se publicaba a medias sin
+        # aviso (``tools/drift_sim.py``, mutación ``truncate``). Las nueve copias de 2016 a 2026 cierran.
+        raise FormatChanged("ensodisc: la página no cierra (</html>): llegó cortada")
     text = re.sub(r"\s+", " ", html_to_text(doc))
     m = re.search(r"Alert System Status\s*:?\s*(.{3,120}?)\s*Synopsis", text, re.I)
     if not m:
@@ -373,6 +385,10 @@ def parse_enso_discussion(doc: str) -> Parsed:
         if vm:
             values[region] = float(vm.group(1))
     warnings = [] if issued else ["ensodisc: no se pudo leer la fecha de emisión"]
+    if not next_issue:
+        # Todas las discusiones la anuncian; sin ella el calendario del sitio (``freshness``) espera la siguiente a ciegas.
+        warnings.append("ensodisc: no se pudo leer la fecha de la próxima discusión («next ENSO Diagnostics Discussion "
+                        "is scheduled for …»)")
     data = {
         "status": " / ".join(labels), "codes": codes, "raw_status": raw_status,
         "issued": issued, "synopsis": synopsis, "next_issue": next_issue,

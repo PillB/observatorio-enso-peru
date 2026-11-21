@@ -112,6 +112,12 @@ class Response:
 
     @property
     def text(self) -> str:
+        # La marca de orden de bytes manda (WHATWG, «decode»): con ella, «﻿YR MON …» no era la cabecera y
+        # el lector daba la tabla por cambiada (tools/drift_sim.py, mutaciones ``bom`` y ``utf16``).
+        if self.body.startswith((b"\xff\xfe", b"\xfe\xff")):
+            return self.body.decode("utf-16", errors="replace")
+        if self.body.startswith(b"\xef\xbb\xbf"):
+            return self.body[3:].decode("utf-8", errors="replace")
         for enc in ("utf-8", "latin-1"):
             try:
                 return self.body.decode(enc)

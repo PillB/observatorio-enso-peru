@@ -235,7 +235,11 @@ def _fetch_godas(fetcher, previous: Optional[dict] = None, today: Optional[date]
 
 
 def _parse_godas(resp) -> Parsed:
-    return godas.build_series(json.loads(resp.text), godas.load_history())
+    try:
+        body = json.loads(resp.text)
+    except ValueError as exc:
+        raise FormatChanged(f"godas: el resumen de los GRIB no es JSON ({exc})") from exc
+    return godas.build_series(body, godas.load_history())
 
 
 def _parse_enfen(resp) -> Parsed:
@@ -524,6 +528,9 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
                                                                      accept=src.accept)
         acq.attempts = resp.attempts
         acq.raw = resp.body
+        odd = None if src.binary else binary_body(resp.body)
+        if odd:
+            raise FormatChanged(odd)
         parsed = src.parse(resp)
         acq.data = parsed.data
         acq.ok = True
@@ -588,6 +595,20 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
                 f"({prev_name}: el sitio falló o no respondió): esta publicación sale sin dato de la fuente y la "
                 "siguiente no tendrá qué arrastrar.")
     return acq
+
+
+def binary_body(body: bytes) -> str:
+    """Por qué una respuesta que debía ser texto es binaria, o "": el lector fallaba con un mensaje que no decía nada
+    («no se encontraron filas…», un ``JSONDecodeError``) ante un cuerpo comprimido dos veces o un PDF
+    (``tools/drift_sim.py``, mutación ``gzip``). No se descomprime: un servidor que manda gzip sin decirlo está mal
+    configurado y se avisa (RFC 9110 §8.4: la codificación va en Content-Encoding)."""
+    if body[:2] == b"\x1f\x8b":
+        return "la respuesta llegó comprimida con gzip sin Content-Encoding (el servidor cambió su configuración)"
+    if body[:5] == b"%PDF-":
+        return "la respuesta es un PDF, no el archivo de texto esperado"
+    if b"\x00" in body[:4096] and not body.startswith((b"\xff\xfe", b"\xfe\xff")):
+        return "la respuesta es binaria (bytes nulos), no texto"
+    return ""
 
 
 def _fixture_response(src: Source, fixtures: Path):

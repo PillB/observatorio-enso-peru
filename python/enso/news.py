@@ -32,7 +32,7 @@ from typing import Optional
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .archive import news_page
-from .feedparse import LIMA, FeedError, parse as parse_any
+from .feedparse import LIMA, FeedError, parse as parse_any, truncated
 from .geo import FOREIGN_RE, PERU_RE as PERU_WORD_RE
 
 
@@ -1036,6 +1036,15 @@ def check_layer(f: Feed, fetch, st: dict, listings: Optional[dict] = None) -> st
                f"; «{f.layer}» no figura en el listado del servicio (¿se retiró?)") + f" — {listing}")
 
 
+def _quiet_empty(f: Feed, parsed) -> bool:
+    """La respuesta sin entradas quiere decir «no hay avisos vigentes», no un feed vaciado: una capa de avisos o FIRMS
+    sin focos, o el último mensaje del PTWC cuando es un simulacro (PACWAVE26: sin esto el feed quedaba «empty» y
+    escalaba a issue a los 14 días aunque nada hubiera cambiado en la fuente)."""
+    from .hazardparse import PTWC_EXERCISE
+
+    return f.adapter in ("arcgis", "firms") or (f.adapter == "ptwc-text" and PTWC_EXERCISE in parsed.repairs)
+
+
 def _read_feed(f: Feed, fetch, now: datetime, listings: Optional[dict] = None) -> tuple[dict, list[dict], Optional[bytes]]:
     from .geo import legacy_fields, locate_item
 
@@ -1069,7 +1078,17 @@ def _read_feed(f: Feed, fetch, now: datetime, listings: Optional[dict] = None) -
     except Exception as exc:  # noqa: BLE001 — un feed raro no debe detener la recolección de los demás
         st["error"] = f"error inesperado al leer el feed: {type(exc).__name__}: {exc}"[:300]
         return st, [], body
+    if f.adapter == "arcgis" and f.layer:
+        from .hazardparse import arcgis_kind_error
+
+        wrong = arcgis_kind_error(f.layer, parsed.title)
+        if wrong:
+            st.update({"error": wrong, "formatError": True})
+            return st, [], body
     entries = parsed.items
+    cut = truncated(body, f.adapter)
+    if cut:
+        st["truncated"] = cut  # las entradas rescatadas se usan; ``persistent`` lo cuenta como ilegible
     dates = [e["published"] for e in entries if e["published"]]
     st.update({"ok": True, "items": len(entries), "latest": max(dates) if dates else None,
                "format": parsed.format, "repairs": parsed.repairs})
@@ -1077,7 +1096,7 @@ def _read_feed(f: Feed, fetch, now: datetime, listings: Optional[dict] = None) -
     gap = longest_gap_days(dates)
     if gap is not None:
         st["longestGapDays"] = gap  # el hueco más largo entre dos entradas del feed: lo que el medio suele callar
-    if not entries and f.adapter not in ("arcgis", "firms"):  # una capa de avisos vacía es que no hay avisos vigentes
+    if not entries and not _quiet_empty(f, parsed):  # una capa de avisos vacía es que no hay avisos vigentes
         st["error"] = "feed sin entradas"
     if not entries and f.layer:
         # Vacía: o no hay avisos vigentes, o la capa del URL ya no es la de estos avisos (sin campos no se distingue).
