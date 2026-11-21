@@ -316,7 +316,8 @@ function freshestStrip() {
   const items = Object.entries(names).filter(([k]) => w[k]).map(([k, n]) => {
     const l = w[k].latest;
     const stale = l.ageDays > 16;
-    const tone = l.anom > 0.5 ? 'warm' : l.anom < -0.5 ? 'cool' : 'neutral';
+    // El tono lo calcula el pipeline (Builder.weekly): Niño 1+2 con el rango neutro del ENFEN, la cuenca con ±0,5.
+    const tone = ['warm', 'cool', 'neutral'].includes(l.tone) ? l.tone : 'neutral';
     return html`<div class="fresh-item"><div class="fresh-name">${n}</div>
       ${stale ? html`<div class="metric-value na">N/D</div>` : html`<div class="fresh-val ${tone}">${F.fmtValue(l.anom, 'degC')}</div>`}
       ${raw(sparkline(w[k].recent, { width: 96, height: 26 }))}</div>`;
@@ -441,7 +442,7 @@ VIEWS[''] = {
         <div class="grid g4">
           ${metricCard('icen', { title: 'ICEN oficial', scope: 'Costa norte del Perú · ENFEN', href: '#/costero', extra: icenProvisional() })}
           ${metricCard('nino12_oisst', { title: 'Niño 1+2 mensual', scope: 'Costa de Ecuador y Perú · NOAA OISST', href: '#/costero' })}
-          ${metricCard('roni', { title: 'RONI', scope: 'Pacífico central · índice oficial de NOAA', href: '#/pacifico' })}
+          ${metricCard('roni', { title: 'RONI', scope: 'Pacífico central · índice oficial de NOAA', href: '#/pacifico', note: 'NOAA puede revisar los dos últimos trimestres.' })}
           ${metricCard('nino34_oisst', { title: 'Niño 3.4 mensual', scope: 'Pacífico central · NOAA OISST', href: '#/pacifico' })}
           ${metricCard('cpac850_anom', { title: 'Vientos alisios', scope: 'Pacífico central, 850 hPa · anomalía', href: '#/oceano', note: 'Negativo: alisios debilitados o viento del oeste.' })}
           ${metricCard('heat_180w100w', { title: 'Calor bajo la superficie', scope: '0–300 m, 180°–100°O · NOAA GODAS', href: '#/oceano' })}
@@ -497,7 +498,7 @@ VIEWS.costero = {
       </div>
       ${outlookCard()}
       ${probabilityCard()}
-      ${chartCard('ch-icen', { title: 'ICEN oficial', tour: 'coastal-icen', range: '15', desc: 'Media móvil de tres meses centrada de la anomalía de Niño 1+2. Las bandas marcan las categorías de ENFEN.', foot: 'Fuente: ENFEN (archivo del IGP), base 1991–2020. El valor de un mes necesita el mes siguiente, por eso el ICEN va unos dos meses detrás.' })}
+      ${chartCard('ch-icen', { title: 'ICEN oficial', tour: 'coastal-icen', range: '15', desc: 'Media móvil de tres meses centrada de la anomalía de Niño 1+2. Las bandas marcan las categorías de ENFEN.', foot: 'Fuente: ENFEN (archivo del IGP). Base móvil de 30 años centrados, renovada cada 5 años (la vigente, 1991–2020). El valor de un mes necesita el mes siguiente, por eso el ICEN va unos dos meses detrás.' })}
       <div class="grid g2">
         <section class="card" data-tour-id="coastal-scale" aria-labelledby="scale-h"><h2 id="scale-h">Categorías del ICEN</h2>
           <div class="scale" role="list">${scale.map(([n, r, t]) => html`<div role="listitem" class="scale-row ${n === cur ? 'current' : ''}"><span class="scale-dot dot-${t}"></span><span>${n}${n === cur ? html` <strong>· actual</strong>` : ''}</span><span class="mono">${r} °C</span></div>`)}</div>

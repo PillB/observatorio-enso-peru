@@ -983,6 +983,11 @@ def _fixture_meta(fixtures: Path, name: str) -> dict:
 # ---------------------------------------------------------------------------
 # Derivados
 # ---------------------------------------------------------------------------
+#: Base de los índices que siguen el método del ONI (ONI de NOAA e ICEN del ENFEN): cada tramo de 5 años se compara con
+#: los 30 años centrados en él, y los últimos con 1991–2020. Decir solo «1991–2020» era falso para la historia.
+MOVING_BASE = "móvil de 30 años centrados, renovada cada 5 años (la vigente, 1991–2020)"
+
+
 def centered_mean3(points: list[dict]) -> list[dict]:
     """Media móvil de 3 meses centrada (metodología ICEN, ENFEN 01-2024)."""
     out = []
@@ -1109,14 +1114,17 @@ class Builder:
                 continue
             self.add_series(key, pts, label=f"{label} (ERSSTv6)", units="degC", scope="coastal" if key == "nino12" else "basin",
                             source=sid, frequency="mensual", slo_days=50, climatology="1991–2020",
-                            category=lambda v: {"tone": sig.anomaly_tone(v)},
+                            category=(lambda v: {"tone": sig.coastal_tone(v)}) if key == "nino12"
+                            else (lambda v: {"tone": sig.anomaly_tone(v)}),
                             description=f"Anomalía mensual de TSM en la región {region}. NOAA ERSSTv6, llevada a la base 1991–2020.")
         oi = self.data("cpc-sstoi")
         if oi:
             meta = dict(units="degC", source="cpc-sstoi", frequency="mensual", slo_days=50, climatology="1991–2020",
                         category=lambda v: {"tone": sig.anomaly_tone(v)}, history_from="1982-01")
+            # La costa usa el rango neutro del ENFEN [−0,7; +0,5], no el ±0,5 de la cuenca (``sig.coastal_tone``).
             self.add_series("nino12_oisst", oi["anom"]["nino12"], label="Niño 1+2 (OISST)", scope="coastal",
-                            description="Anomalía mensual de TSM Niño 1+2 del análisis OISST v2.1. Disponible antes que ERSST.", **meta)
+                            description="Anomalía mensual de TSM Niño 1+2 del análisis OISST v2.1. Disponible antes que ERSST.",
+                            **{**meta, "category": lambda v: {"tone": sig.coastal_tone(v)}})
             self.add_series("nino34_oisst", oi["anom"]["nino34"], label="Niño 3.4 (OISST)", scope="basin",
                             description="Anomalía mensual de TSM Niño 3.4 del análisis OISST v2.1. Disponible antes que ERSST.", **meta)
             self.add_series("nino3_oisst", oi["anom"]["nino3"], label="Niño 3 (OISST)", scope="basin",
@@ -1126,7 +1134,7 @@ class Builder:
         icen = self.data("igp-icen")
         if icen:
             self.add_series("icen", icen, label="ICEN oficial", units="degC", scope="coastal", source="igp-icen",
-                            frequency="mensual", slo_days=110, climatology="1991–2020", category=sig.icen_category,
+                            frequency="mensual", slo_days=110, climatology=MOVING_BASE, category=sig.icen_category,
                             description="Índice Costero El Niño oficial publicado por ENFEN (archivo del IGP). Media de 3 meses centrada de la anomalía de TSM Niño 1+2, según la Nota Técnica ENFEN 01-2024.")
         for sid, key, label, desc in (
             ("cpc-roni", "roni", "RONI", "Índice Oceánico Relativo de El Niño de NOAA/CPC: anomalía de Niño 3.4 menos la anomalía media tropical (20°N–20°S), reescalada. Trimestres móviles (ERSSTv6, base 1991–2020). Es el índice oficial de NOAA desde febrero de 2026."),
@@ -1134,8 +1142,11 @@ class Builder:
         ):
             d = self.data(sid)
             if d:
+                # El RONI usa una base fija 1991–2020 (CPC, página del RONI); el ONI, bases de 30 años centradas que se
+                # renuevan cada 5 años: los valores de 1950 no son anomalías frente a 1991–2020.
                 self.add_series(key, d, label=label, units="degC", scope="basin", source=sid, frequency="trimestral móvil",
-                                slo_days=80, climatology="1991–2020", period_kind="season", category=sig.oni_category,
+                                slo_days=80, climatology="1991–2020" if key == "roni" else MOVING_BASE,
+                                period_kind="season", category=sig.oni_category,
                                 description=desc)
         soi = self.data("cpc-soi")
         if soi:
@@ -1209,8 +1220,11 @@ class Builder:
             if not pts:
                 continue
             last = pts[-1]
+            # El color se decide aquí y no en app.js: la costa (Niño 1+2) usa el rango neutro del ENFEN y la cuenca el
+            # ±0,5 de NOAA, con la misma regla que las tarjetas mensuales (``sig.coastal_tone`` / ``sig.anomaly_tone``).
+            tone = sig.coastal_tone(last["anom"]) if region == "nino12" else sig.anomaly_tone(last["anom"])
             out[region] = {
-                "latest": {"date": last["date"], "anom": last["anom"], "sst": last["sst"],
+                "latest": {"date": last["date"], "anom": last["anom"], "sst": last["sst"], "tone": tone,
                            "ageDays": (self.today - date.fromisoformat(last["date"])).days},
                 "points": [{"date": p["date"], "value": p["anom"], "sst": p["sst"]} for p in pts if p["date"] >= "1990-01-01"],
             }
