@@ -188,8 +188,13 @@ DHN_LITORAL = {"norte": ("Tumbes", "Piura", "Lambayeque", "La Libertad"),
 
 
 def _es_date(day: str, month: str, year: str) -> Optional[datetime]:
+    """La fecha, o None si no existe: «31 de noviembre» (una errata) lanzaba ``ValueError`` y tumbaba el feed entero
+    como «error inesperado» sin probar la vigencia del aviso."""
     mo = _ES_MONTHS.get((month or "").lower())
-    return datetime(int(year), mo, int(day), 12, tzinfo=LIMA) if mo else None
+    try:
+        return datetime(int(year), mo, int(day), 12, tzinfo=LIMA) if mo else None
+    except ValueError:
+        return None
 
 
 def _dhn_aviso_when(im, vm) -> Optional[datetime]:
@@ -226,48 +231,105 @@ def _dhn_viento(body_txt: str) -> str:
     return what
 
 
+#: Avisos sin fecha que se toleran en el listado de la DHN. El listado completo (583 avisos desde 2015, leído el
+#: 21-11-2026) trae 7 avisos de viento antiguos (2015–2023, N° 04, 05, 07, 11, 12, 19 y 63) que nunca dijeron «Callao, …»
+#: ni su vigencia: con ``FeedError`` por cada uno, el feed entero caía (``hazard-feed-down`` a la corrida siguiente y
+#: ``degraded-persistent`` a los dos días) y el sitio perdía los 576 avisos con fecha. Un cambio de formato o de idioma
+#: llega primero a los avisos nuevos, que son los primeros del listado, o a todos: un aviso sin fecha entre los
+#: ``DHN_UNDATED_RECENT`` primeros, o más de 1 de cada ``DHN_UNDATED_SHARE`` avisos sin fecha, sigue siendo un cambio de
+#: formato (``tools/drift_sim.py``). Los antiguos sin fecha se omiten (no se pueden ordenar) y se anotan en ``repairs``.
+DHN_UNDATED_RECENT = 10
+DHN_UNDATED_SHARE = 20
+
+
+def _dhn_aviso_parts(chunk: str) -> Optional[tuple]:
+    """(encabezado, número, tipo, líneas) de un bloque del listado de la DHN; None si el bloque no es un aviso."""
+    tm = re.search(r'class="accordion-title">(.*?)</div>', chunk, re.S)
+    head = _DHN_AV_TITLE_RE.search(clean_text(tm.group(1), 300)) if tm else None
+    if not head:
+        return None
+    kind = re.sub(r"s$", "", (head.group("kind") or head.group("tag") or "").strip().lower())  # «vientos»
+    if not kind:
+        return None
+    content = chunk.split('class="accordion-content">', 1)[-1]
+    lines = [x for x in (clean_text(y, 1000) for y in re.split(r"<br\s*/?>|</h4>", content)) if x]
+    return head, re.sub(r"\s+", "", head.group("num")), kind, lines
+
+
+def _dhn_aviso(chunk: str, base_url: str) -> Optional[tuple[Optional[dict], str, str]]:
+    """(aviso, número, muestra) de un bloque del listado de la DHN; el aviso es None si no tiene una fecha legible
+    (la muestra dice qué se leyó en su lugar). None si el bloque no es un aviso."""
+    parts = _dhn_aviso_parts(chunk)
+    if parts is None:
+        return None
+    head, num, kind, lines = parts
+    body_txt = " ".join(lines)
+    valid = clean_text(head.group("valid") or "", 120)
+    im = _DHN_AV_ISSUED_RE.search(body_txt)
+    when = _dhn_aviso_when(im, _DHN_AV_VALID_RE.search(valid))
+    if when is None:
+        return None, num, (im.group(0) if im else valid or body_txt[:60])[:80]
+    return _dhn_aviso_item(chunk, base_url, (num, kind, valid, when), lines), num, ""
+
+
+def _dhn_aviso_item(chunk: str, base_url: str, meta: tuple, lines: list[str]) -> dict:
+    """El aviso de la DHN ya fechado: título con lo que dice y su vigencia, resumen, enlace y departamentos."""
+    num, kind, valid, when = meta
+    body_txt = " ".join(lines)
+    period = f"válido {valid.split(' ', 1)[1]}" if valid.lower().startswith("válido ") else valid.lower()
+    what, geo = _dhn_oleaje(lines) if kind == "oleaje" else (_dhn_viento(body_txt), [])
+    title = f"DHN · aviso especial de {kind} N° {num}" + (f": {what}" if what else "") + (f" ({period})" if period else "")
+    summary = _DHN_AV_LEAD_RE.sub("", " ".join(x for x in lines if not re.match(r"^(?:[a-d]\.|Atentamente|DIRECCI|dihidronav)", x)))
+    aid = _DHN_AV_ID_RE.search(chunk)
+    item = {"title": clean_text(title, 300), "link": f"{base_url.split('#')[0]}#{aid.group(1) if aid else num}",
+            "published": _iso(when), "summary": clean_text(summary[:1].upper() + summary[1:], 600),
+            "categories": [kind, f"aviso especial {num}"]}
+    if geo:
+        item["geo"] = [", ".join(geo)]
+    return item
+
+
+def _dhn_undated(undated: list[tuple[int, str, str]], total: int) -> Optional[str]:
+    """Nota de los avisos antiguos sin fecha que se omiten (None si no hay); ``FeedError`` si los avisos sin fecha
+    dicen que la página cambió. ``undated``: (posición en el listado, número, muestra).
+
+    Desde 2024 los avisos se numeran «NN-AA» (42-26) y todos dicen «Callao, 2 de julio de 2026» o su vigencia; los
+    siete sin fecha son de antes y sin «-AA». Es un cambio de formato (otro idioma u otro formato de fecha:
+    ``tools/drift_sim.py``, ``months-en``) si no tiene fecha un aviso «NN-AA», uno de los ``DHN_UNDATED_RECENT``
+    primeros del listado (va del más nuevo al más viejo) o más de 1 de cada ``DHN_UNDATED_SHARE``."""
+    if not undated:
+        return None
+    current = [u for u in undated if "-" in u[1]]
+    pos, num, sample = (current or undated)[0]
+    if current or pos < DHN_UNDATED_RECENT or len(undated) * DHN_UNDATED_SHARE > total:
+        raise FeedError(f"el aviso especial N° {num} (el {pos + 1}.° del listado) no tiene una fecha que se pueda "
+                        f"leer («{sample}»; {len(undated)} de {total} avisos sin fecha)")
+    return (f"{len(undated)} avisos especiales antiguos sin fecha legible omitidos "
+            f"(N° {', '.join(n for _, n, _ in undated[:8])})")
+
+
 def parse_dhn_avisos(body: bytes, base_url: str = "https://www.dhn.mil.pe/portal/avisos-especiales") -> Parsed:
     """Avisos especiales de la DHN: oleaje anómalo y vientos en el litoral y el mar peruano."""
     text = text_of(body)
     if "avisos-especiales" not in text or "AVISO ESPECIAL" not in text.upper():
         raise FeedError("no es el listado de avisos especiales de la DHN")
-    items = []
+    items, undated, total = [], [], 0
     for chunk in text.split('class="position-relative"')[1:]:
-        tm = re.search(r'class="accordion-title">(.*?)</div>', chunk, re.S)
-        head = _DHN_AV_TITLE_RE.search(clean_text(tm.group(1), 300)) if tm else None
-        if not head:
+        got = _dhn_aviso(chunk, base_url)
+        if got is None:
             continue
-        num = re.sub(r"\s+", "", head.group("num"))
-        kind = re.sub(r"s$", "", (head.group("kind") or head.group("tag") or "").strip().lower())  # «vientos»
-        if not kind:
-            continue
-        content = chunk.split('class="accordion-content">', 1)[-1]
-        lines = [clean_text(x, 1000) for x in re.split(r"<br\s*/?>|</h4>", content)]
-        lines = [x for x in lines if x]
-        body_txt = " ".join(lines)
-        valid = clean_text(head.group("valid") or "", 120)
-        vm, im = _DHN_AV_VALID_RE.search(valid), _DHN_AV_ISSUED_RE.search(body_txt)
-        when = _dhn_aviso_when(im, vm)
-        period = f"válido {valid.split(' ', 1)[1]}" if valid.lower().startswith("válido ") else valid.lower()
-        what, geo = _dhn_oleaje(lines) if kind == "oleaje" else (_dhn_viento(body_txt), [])
-        title = f"DHN · aviso especial de {kind} N° {num}" + (f": {what}" if what else "") + (f" ({period})" if period else "")
-        summary = _DHN_AV_LEAD_RE.sub("", " ".join(x for x in lines if not re.match(r"^(?:[a-d]\.|Atentamente|DIRECCI|dihidronav)", x)))
-        summary = summary[:1].upper() + summary[1:]
-        aid = _DHN_AV_ID_RE.search(chunk)
-        if when is None:
-            # Todos los avisos dicen «Callao, 2 de julio de 2026» o su vigencia: sin fecha, la página cambió (otro idioma
-            # u otro formato) y el aviso saldría sin fecha y sin poder ordenarse (``tools/drift_sim.py``).
-            raise FeedError(f"el aviso especial N° {num} no tiene una fecha que se pueda leer "
-                            f"(«{(im.group(0) if im else valid or body_txt[:60])[:80]}»)")
-        item = {"title": clean_text(title, 300), "link": f"{base_url.split('#')[0]}#{aid.group(1) if aid else num}",
-                "published": _iso(when), "summary": clean_text(summary, 600),
-                "categories": [kind, f"aviso especial {num}"]}
-        if geo:
-            item["geo"] = [", ".join(geo)]
-        items.append(item)
+        if got[0] is None:
+            undated.append((total, got[1], got[2]))
+        else:
+            items.append(got[0])
+        total += 1
+    note = _dhn_undated(undated, total)
     if not items:
         raise FeedError("el listado de la DHN no tiene avisos especiales con el formato esperado")
-    return _finish(Parsed("dhn-avisos-html", items))
+    out = _finish(Parsed("dhn-avisos-html", items))
+    if note:
+        out.repairs.append(note)
+    return out
 
 
 # --- PTWC: mensaje de texto (WEPA40) ------------------------------------------------

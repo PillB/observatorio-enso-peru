@@ -126,9 +126,11 @@ def test_each_index_declares_the_base_its_institution_uses():
     b = obs.Builder(acq, obs.EventLog(), date(2026, 11, 20))
     b.build_series()
     assert b.series["roni"]["climatology"] == "1991–2020"
-    for k in ("oni", "icen"):
+    # La base vigente de cada uno se deduce de sus datos en ``test_ready_science_ux.py``: el ONI ya usa 1996–2025 desde
+    # 2011 (decía 1991–2020 copiado del ICEN); el ICEN del IGP sigue en 1991–2020.
+    for k, vigente in (("oni", "1996–2025"), ("icen", "1991–2020")):
         c = b.series[k]["climatology"]
-        assert "móvil" in c and "5 años" in c and "1991–2020" in c, (k, c)
+        assert "móvil" in c and "5 años" in c and vigente in c, (k, c)
 
 
 # ---------------------------------------------------------------------------
@@ -221,8 +223,13 @@ def test_the_two_dark_theme_blocks_do_not_drift_apart():
 
 @pytest.mark.parametrize("theme", ["light", "dark"])
 def test_warm_and_cool_tints_have_the_same_weight(theme):
-    """A diverging scale must not weigh one side more (Brewer; Moreland 2009): the warm and cool area/chip
-    tints share one alpha, so neither anomaly sign looks stronger on charts or in the probability table."""
+    """Una escala divergente no debe pesar más de un lado (Brewer; Moreland 2009). El peso se mide frente al fondo,
+    no con el alfa: por luminosidad (ΔL*) y por diferencia total (CIEDE2000). En claro el azul subió a 0,18 y las dos
+    medidas mejoran; en oscuro se contradicen y se queda el alfa igual. La medición está en
+    ``test_ready_science_ux.py``; aquí se exige que ningún lado pese más de 1,6 veces el otro por ninguna medida."""
+    from test_ready_science_ux import _imbalance
+
     t = LIGHT if theme == "light" else DARK
-    alpha = lambda v: float(re.findall(r"[\d.]+", v)[-1])
-    assert alpha(t["warm-soft"]) == alpha(t["cool-soft"]), (theme, t["warm-soft"], t["cool-soft"])
+    for page in ("bg", "bg-elev"):
+        r_l, r_e = _imbalance(t, page)
+        assert max(r_l, r_e) <= 1.6, (theme, page, round(r_l, 2), round(r_e, 2))

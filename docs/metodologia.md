@@ -83,7 +83,11 @@ publica el ICEN oficial.
   calentamiento global.
 - **Base:** el RONI usa una base fija 1991–2020 (página del RONI de CPC); el
   ONI, bases de 30 años centradas que se renuevan cada 5 años, así que su
-  valor de 1950 no es una anomalía frente a 1991–2020. Cada serie publica su
+  valor de 1950 no es una anomalía frente a 1991–2020. En 2026 CPC agregó la
+  base 1996–2025: en `oni.ascii.txt` la climatología implícita (TOTAL − ANOM)
+  de 2011 en adelante es la media 1996–2025 (JFM 26,78 °C; con 1991–2020 sería
+  26,90). El ICEN del IGP sigue cuadrando con ERSSTv5 y 1991–2020 (diferencias
+  ≤ 0,08 °C en 2021–2026). Cada serie publica su
   base en `climatology`. CPC advierte que los dos últimos meses del RONI pueden
   revisarse (filtro de alta frecuencia sobre ERSSTv6); la tarjeta lo dice.
 - **ONI:** índice tradicional, se muestra solo como referencia.

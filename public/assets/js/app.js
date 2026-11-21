@@ -510,7 +510,10 @@ VIEWS.costero = {
   async after() {
     const refs = [{ v: 0.5, label: '+0,5', tone: 'warm' }, { v: 1.3, label: '+1,3', tone: 'warm' }, { v: 2.1, label: '+2,1', tone: 'warm' }, { v: 3.5, label: '+3,5', tone: 'warm' }, { v: -0.7, label: '−0,7', tone: 'cool' }];
     await mountChart($('#ch-icen'), { title: 'ICEN', units: 'degC', refLines: refs, series: [{ key: 'icen', label: 'ICEN oficial' }], fill: true }, { range: '15' });
-    await mountChart($('#ch-n12w'), { title: 'Niño 1+2 semanal', units: 'degC', series: [{ weekly: 'nino12', label: 'Niño 1+2 semanal' }], fill: true, periodLabel: monthLabel }, { range: '2' });
+    // El rango neutro costero que colorea la tarjeta semanal (``signals.coastal_tone``): sin él, el área azul de una
+    // semana a −0,6 °C contradecía el valor gris de la tarjeta.
+    const band = [{ v: 0.5, label: '+0,5', tone: 'warm' }, { v: -0.7, label: '−0,7', tone: 'cool' }];
+    await mountChart($('#ch-n12w'), { title: 'Niño 1+2 semanal', units: 'degC', refLines: band, series: [{ weekly: 'nino12', label: 'Niño 1+2 semanal' }], fill: true, periodLabel: monthLabel }, { range: '2' });
   },
 };
 

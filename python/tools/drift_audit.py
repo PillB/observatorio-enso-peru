@@ -14,7 +14,9 @@ comparada con la versión anterior aunque sea más vieja; así la corrida semana
 avisa lo nuevo y lee poco. Los hallazgos ya revisados (``drift_audit_known.json``: las páginas de Imunify360 de
 octubre y noviembre de 2026 y la corrección de PSL del 18-11) no cuentan salvo con ``--all``.
 
-Sale con 0 si no hay nada nuevo, 1 si encontró algo y 2 si no pudo auditar (la ref no existe, una fuente desconocida).
+Sale con 0 si no hay nada nuevo, 1 si encontró algo y 2 si no pudo auditar (la ref no existe, una fuente desconocida,
+``drift_audit_known.json`` mal formado o, sin ``--source``, ninguna copia en la ventana de ``--days``). Un lector que
+falla con cualquier excepción es un hallazgo ``unreadable`` (como en ``observatory.acquire``), no una corrida rota.
 Las versiones del mismo día se ordenan por la hora del commit que las agregó a data-archive (``added_times``: cada corrida
 archiva en su propio commit), no por el nombre: el hash del nombre no dice cuál llegó primero, y ordenadas así dos
 copias del mismo día se comparaban al revés (``series-regressed`` o ``series-shrunk`` falsos; en noviembre de 2026,
@@ -34,7 +36,6 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from enso import drift
-from enso.feeds import FormatChanged
 from enso.fetch import Response, block_page
 from enso.observatory import SOURCES
 
@@ -109,7 +110,21 @@ def known() -> set[tuple[str, str]]:
     """(tipo, archivo) de los hallazgos ya revisados."""
     if not KNOWN.is_file():
         return set()
-    return {(k["kind"], k["file"]) for k in json.loads(KNOWN.read_text(encoding="utf-8"))["findings"]}
+    try:
+        return {(k["kind"], k["file"]) for k in json.loads(KNOWN.read_text(encoding="utf-8"))["findings"]}
+    except (ValueError, KeyError, TypeError) as exc:
+        raise AuditError(f"{KNOWN.name} está mal formado ({type(exc).__name__}: {exc}); sin ella no se sabe qué es "
+                         "nuevo") from None
+
+
+def require_copies_in_window(ref: str, since: str | None, only: set[str] | None) -> None:
+    """Cada corrida diaria archiva al menos las noticias: una ventana sin ninguna copia es que el archivo dejó de
+    recibirlas (o la ref es otra), no que todo esté bien. Con ``--source`` sí puede no haber (una fuente mensual)."""
+    if not since or only:
+        return
+    if not any(_day(f) >= since for f in _git("ls-tree", "-r", "--name-only", ref, "sources").split()):
+        raise AuditError(f"ninguna copia archivada desde el {since} en {ref}: el archivo diario no está llegando a "
+                         "data-archive (ver la corrida diaria) o la ref no es la de data-archive")
 
 
 def audit(ref: str, only: set[str] | None = None, since: str | None = None) -> list[dict]:
@@ -144,7 +159,7 @@ def audit(ref: str, only: set[str] | None = None, since: str | None = None) -> l
             for path in versions:
                 try:
                     data = src.parse(Response(src.urls[0], blobs.read(path), "archive", 200)).data
-                except (FormatChanged, ValueError, KeyError) as exc:
+                except Exception as exc:  # noqa: BLE001 — como observatory.acquire: un lector roto es un hallazgo
                     if not since or _day(path) >= since:
                         found.append({"kind": "unreadable", "file": path, "error": f"{type(exc).__name__}: {exc}"[:300]})
                     continue
@@ -168,11 +183,13 @@ def main(argv: list[str] | None = None) -> int:
     a = ap.parse_args(argv)
     since = (date.today() - timedelta(days=a.days)).isoformat() if a.days is not None else None
     try:
-        found = audit(a.ref, set(a.source) if a.source else None, since)
+        only = set(a.source) if a.source else None
+        require_copies_in_window(a.ref, since, only)
+        reviewed = set() if a.all else known()
+        found = audit(a.ref, only, since)
     except AuditError as exc:
         print(f"no se pudo auditar: {exc}", file=sys.stderr)
         return 2
-    reviewed = set() if a.all else known()
     skipped = [f for f in found if (f["kind"], f["file"]) in reviewed]
     found = [f for f in found if (f["kind"], f["file"]) not in reviewed]
     for f in found:

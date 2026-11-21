@@ -109,15 +109,17 @@ def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
     from .archive import news_page
     from .geo import department_names
     from .hazardparse import TG_KINDS
-    from .news import FEED_BY_ID
+    from .news import FEED_BY_ID, latest_versions
     from .severity import assess
 
     since = (now - timedelta(days=ALERTS_DAYS)).isoformat()
     deps = department_names()
     out, seen = [], set()
-    # Con la misma fecha, la nota guardada después primero: si el lector cambió el titular de una publicación,
-    # su enlace llega dos veces al histórico y vale la versión nueva.
-    for i in sorted(news_items, key=lambda i: (i.get("published") or i["first_seen"], i["first_seen"]), reverse=True):
+    # Una línea por aviso (``latest_versions``): la versión vista después. Ordenar por fecha no basta: el USGS, al
+    # revisar el sismo us6000u1kt (magnitud 5,2 → 5,3), le corrigió también la hora en un segundo hacia atrás, y la
+    # versión vieja quedaba primero y tapaba a la nueva.
+    for i in sorted(latest_versions(news_items), key=lambda i: (i.get("published") or i["first_seen"], i["first_seen"]),
+                    reverse=True):
         f = FEED_BY_ID.get(i.get("feed") or "")
         when = i.get("published") or i["first_seen"]
         if not f or not f.covers or when < since or i["link"] in seen:

@@ -28,7 +28,7 @@ import re
 import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Optional
+from typing import Iterable, Optional
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .archive import news_page
@@ -789,10 +789,46 @@ def _without_title(i: dict) -> str:
     return summ
 
 
-def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
-    """Grupos de entradas similares de los últimos ``days`` días, más recientes primero."""
+def _display_versions(items: list[dict], shared: set) -> list[dict]:
+    """Una entrada por enlace canónico y región, la vista después: lo que muestran los grupos.
+
+    Cada feed guarda sus versiones (``latest_versions``), pero la misma nota llega a veces por dos feeds (dos
+    secciones del mismo medio, dos búsquedas de Google Noticias) y uno sigue con el titular viejo: en data-archive
+    (21-11-2026), 26 enlaces en más de un feed con distinto último titular. Y FIRMS enlaza todos sus resúmenes
+    diarios al mismo mapa (``Feed.link_is_id`` falso): el histórico guarda cada día, pero solo el último resumen
+    sigue vigente; antes el grupo mostraba el más antiguo de las dos semanas. Un enlace que el feed puso en una
+    misma lectura a dos titulares (``_shared_links``, una portada) no junta nada. La región separa: la misma nota
+    sale en «Perú» y en «Mundo» si llegó por feeds de las dos."""
+    pos: dict[tuple, int] = {}
+    out: list[dict] = []
+    for i in items:
+        link = canonical_link(i.get("link") or "")
+        shared_here = (i.get("feed") or "", link) in shared
+        k = ("id", i.get("id")) if not link or shared_here else (i.get("region"), link)
+        if k not in pos:
+            pos[k] = len(out)
+            out.append(i)
+        elif (i.get("first_seen") or "") >= (out[pos[k]].get("first_seen") or ""):
+            out[pos[k]] = i
+    return out
+
+
+def _unique_in_group(items: list[dict], tokens: list[set[str]]) -> list[dict]:
+    """Las notas de un grupo sin el mismo titular repetido por un medio (con otro enlace), en su lugar."""
+    uniq: dict = {}
+    for i, tok in zip(items, tokens):
+        uniq.setdefault((_outlet(i).lower(), frozenset(tok)), i)
+    return list(uniq.values())
+
+
+def cluster(items: list[dict], now: datetime, days: int = 14, current: Iterable[dict] = ()) -> list[dict]:
+    """Grupos de entradas similares de los últimos ``days`` días, más recientes primero. ``current``: las entradas
+    leídas en esta corrida (``latest_versions``)."""
     since = (now - timedelta(days=days)).isoformat()
-    items = latest_versions(items)  # la misma nota con otro enlace o titular, una vez (la última versión)
+    # La misma nota con otro enlace o titular, una vez: la versión que el feed trae hoy, o la última vista.
+    current = list(current)
+    shared = _shared_links(items) | _shared_links(current)
+    items = _display_versions(latest_versions(items, current), shared)
     recent = sorted((i for i in items if (i.get("published") or i["first_seen"]) >= since),
                     key=lambda i: i.get("published") or i["first_seen"])
     groups: list[dict] = []
@@ -817,16 +853,7 @@ def cluster(items: list[dict], now: datetime, days: int = 14) -> list[dict]:
                            "_deps": set(it.get("departments") or [])})
     out = []
     for g in groups:
-        # La misma nota puede llegar por el feed del medio y por Google Noticias.
-        uniq: dict = {}
-        links: set = set()
-        for i, tok in zip(g["items"], g["_tokens"]):
-            link = _norm_link(i["link"])
-            if link in links:
-                continue  # la misma nota llegó por dos feeds (el del medio y una búsqueda)
-            if uniq.setdefault((_outlet(i).lower(), frozenset(tok)), i) is i:
-                links.add(link)
-        its = list(uniq.values())
+        its = _unique_in_group(g["items"], g["_tokens"])
         lead = its[0]
         # El resumen acompaña al titular que se muestra: primero el de esa misma nota; si no trae, el de otra nota
         # del grupo cuyo titular se le parece. Nunca el de una nota que solo entró por parecerse a una tercera.
@@ -933,11 +960,21 @@ def new_lines(history: list[dict], fresh: list[dict], skipped: Optional[list] = 
     return out
 
 
-def latest_versions(items: list[dict]) -> list[dict]:
+def latest_versions(items: list[dict], current: Iterable[dict] = ()) -> list[dict]:
     """Una entrada por nota (``identity_key``): la última versión vista, en el lugar de la primera. Las copias
     del histórico anteriores a ``new_lines`` con ``revises`` (otra variante del enlace o del titular) se juntan
-    igual, porque la clave sale del enlace canónico y no de ese campo."""
-    shared = _shared_links(items)
+    igual, porque la clave sale del enlace canónico y no de ese campo.
+
+    ``current``: las entradas leídas en esta corrida. Un feed que vuelve a un titular que ya tuvo (A → B → A: en
+    data-archive, El Comercio con los conteos de la ONPE, GDACS con la lista de países) no agrega otra línea
+    (``new_lines``: el titular ya se vio), así que la última línea guardada es B; con ``current`` se muestra la
+    versión que el feed trae hoy. Si ``current`` trae la nota más de una vez, vale la lectura más reciente: a lo
+    leído en la corrida se suman las notas guardadas de los feeds «reader» (Google Noticias), que son de su
+    lectura anterior, y con el titular de ayer una corrección que llega hoy se mostraba como el titular viejo."""
+    current = list(current)
+    shared = _shared_links(items) | _shared_links(current)
+    today = {identity_key(c, shared): _title_key(c.get("title") or "")
+             for c in sorted(current, key=lambda c: c.get("first_seen") or "")}
     pos: dict[tuple, int] = {}
     out: list[dict] = []
     for i in items:
@@ -945,9 +982,19 @@ def latest_versions(items: list[dict]) -> list[dict]:
         if k not in pos:
             pos[k] = len(out)
             out.append(i)
-        elif (i.get("first_seen") or "") >= (out[pos[k]].get("first_seen") or ""):
+        elif _replaces(i, out[pos[k]], today.get(k)):
             out[pos[k]] = i
     return out
+
+
+def _replaces(new: dict, old: dict, today: Optional[str]) -> bool:
+    """Si la versión ``new`` se muestra en lugar de ``old``: la que trae hoy el feed (``today``, su titular
+    comparable) gana; si las dos o ninguna lo son, la vista después."""
+    if today is not None:
+        is_new, is_old = _title_key(new.get("title") or "") == today, _title_key(old.get("title") or "") == today
+        if is_new != is_old:
+            return is_new
+    return (new.get("first_seen") or "") >= (old.get("first_seen") or "")
 
 
 def _csv_safe(v) -> str:

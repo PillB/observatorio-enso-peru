@@ -1034,6 +1034,10 @@ def _fixture_meta(fixtures: Path, name: str) -> dict:
 #: Base de los índices que siguen el método del ONI (ONI de NOAA e ICEN del ENFEN): cada tramo de 5 años se compara con
 #: los 30 años centrados en él, y los últimos con 1991–2020. Decir solo «1991–2020» era falso para la historia.
 MOVING_BASE = "móvil de 30 años centrados, renovada cada 5 años (la vigente, 1991–2020)"
+#: El ONI ya rotó: en oni.ascii.txt la climatología implícita (TOTAL − ANOM) de 2011 en adelante es la media 1996–2025
+#: (JFM 26,78 frente a 26,90 de 1991–2020), y la de 2006–2010 sigue en 1991–2020. El ICEN del IGP aún cuadra con
+#: ERSSTv5 y 1991–2020. Por eso cada índice declara la suya (``tests/test_ready_science_ux.py`` la deduce de los datos).
+ONI_BASE = "móvil de 30 años centrados, renovada cada 5 años (la vigente, 1996–2025)"
 
 
 def centered_mean3(points: list[dict]) -> list[dict]:
@@ -1212,14 +1216,14 @@ class Builder:
                             description="Índice Costero El Niño oficial publicado por ENFEN (archivo del IGP). Media de 3 meses centrada de la anomalía de TSM Niño 1+2, según la Nota Técnica ENFEN 01-2024.")
         for sid, key, label, desc in (
             ("cpc-roni", "roni", "RONI", "Índice Oceánico Relativo de El Niño de NOAA/CPC: anomalía de Niño 3.4 menos la anomalía media tropical (20°N–20°S), reescalada. Trimestres móviles (ERSSTv6, base 1991–2020). Es el índice oficial de NOAA desde febrero de 2026."),
-            ("cpc-oni", "oni", "ONI", "Índice Oceánico de El Niño tradicional de NOAA/CPC: media de 3 meses de la anomalía Niño 3.4 (ERSST, bases de 30 años actualizadas cada 5 años)."),
+            ("cpc-oni", "oni", "ONI", "Índice Oceánico de El Niño tradicional de NOAA/CPC: media de 3 meses de la anomalía Niño 3.4 (ERSST, bases de 30 años actualizadas cada 5 años; desde 2011, 1996–2025)."),
         ):
             d = self.data(sid)
             if d:
                 # El RONI usa una base fija 1991–2020 (CPC, página del RONI); el ONI, bases de 30 años centradas que se
                 # renuevan cada 5 años: los valores de 1950 no son anomalías frente a 1991–2020.
                 self.add_series(key, d, label=label, units="degC", scope="basin", source=sid, frequency="trimestral móvil",
-                                slo_days=80, climatology="1991–2020" if key == "roni" else MOVING_BASE,
+                                slo_days=80, climatology="1991–2020" if key == "roni" else ONI_BASE,
                                 period_kind="season", category=sig.oni_category,
                                 description=desc)
         soi = self.data("cpc-soi")
@@ -1305,7 +1309,7 @@ class Builder:
 
         def near(ref: dict) -> bool:
             common = [r for r in values if ref.get(r) is not None]
-            return bool(common) and all(abs(values[r] - ref[r]) <= 0.15 for r in common)
+            return bool(common) and all(round(abs(values[r] - ref[r]), 6) <= 0.15 for r in common)
 
         # Las semanas y los meses que la discusión pudo citar: los anteriores a su fecha (sin fecha, los últimos). Sin
         # ese ancla el campo cambiaba solo a «other» dos semanas después de cada discusión, con las series nuevas.
@@ -1414,7 +1418,7 @@ class Builder:
                     # IGP y temporal de Oct-26 +4,69 (la serie de Niño 1+2 subía): la tabla del informe es la que falla.
                     d_igp, d_inf = abs(tmp["icen"] - igp[last["period"]]), abs(tmp["icen"] - last["icen"])
                     # Con distancias casi iguales el temporal no decide (el ICEN se mueve 0,4–0,7 por mes en 2026).
-                    near = ("undetermined" if abs(d_igp - d_inf) < 0.05 else "IGP" if d_igp < d_inf else "informe")
+                    near = ("undetermined" if round(abs(d_igp - d_inf), 6) < 0.05 else "IGP" if d_igp < d_inf else "informe")
                     inf["icenMismatch"] = {"period": last["period"], "informe": last["icen"], "igp": igp[last["period"]],
                                            "provisional": tmp["icen"], "consistentWith": near}
                     msg += (f" El temporal de {tmp['period']} del mismo informe ({tmp['icen']:+.2f}) "
@@ -2273,9 +2277,25 @@ def _mark_stale(st: dict, feed, before: dict, now: datetime, log: EventLog) -> O
     return stale
 
 
+def _down_since(st: dict, before: dict) -> Optional[str]:
+    """Desde cuándo está caído el feed (la hora de la primera corrida caída de la racha); None si no está caído."""
+    if not hazard_down(st):
+        return None
+    if hazard_down(before):
+        return before.get("downSince") or before.get("checkedAt")
+    return st.get("checkedAt")
+
+
 def _hazard_down_event(st: dict, feed, before: dict, log: EventLog) -> None:
-    """Avisa (``hazard-feed-down``) una fuente oficial de avisos caída dos corridas seguidas."""
-    if official_alerts(feed) and hazard_down(st) and hazard_down(before) and _hours_between(before, st) >= 6:
+    """Avisa (``hazard-feed-down``) una fuente oficial de avisos caída dos corridas seguidas, con al menos 6 h desde
+    la primera caída de la racha (``downSince``)."""
+    since = _down_since(st, before) if official_alerts(feed) else None
+    if since:
+        # La racha se mide desde su primera corrida caída, no desde la anterior: con solo la anterior, la segunda
+        # corrida de un día (40 min después) dejaba de avisar y sync_issues cerraba el issue de una fuente que
+        # seguía caída, para reabrir otro al día siguiente.
+        st["downSince"] = since
+    if since and hazard_down(before) and _hours_between({"checkedAt": since}, st) >= 6:
         # Una fuente oficial de avisos (SENAMHI, INDECI/COEN, DHN, IGP, PTWC, NASA, CIIFEN…) caída dos corridas
         # seguidas (con al menos 6 h entre ellas: dos corridas de un día de cambios distan 40 min) deja al sitio
         # sin esos avisos: no puede quedar como «info» que nadie lee (incidencia propia por fuente; se cierra sola
@@ -2687,7 +2707,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
         "feeds": {"feeds": status, "history": {"items": len(items), "added": len(added),
                                                "since": min((i["first_seen"] for i in items), default=None),
                                                **({"restarted": True} if not complete else {})}},
-        "clusters": {"days": 14, "clusters": N.cluster(items, now), "departmentNames": department_names()},
+        "clusters": {"days": 14, "clusters": N.cluster(items, now, current=found + restored), "departmentNames": department_names()},
         "geo": {"items": {"generatedAt": now.isoformat(timespec="seconds"), "items": GO.console_items(items, now)},
                 "overrides": {"source": ov_source, "overrides": overrides}, "quality": geo_quality,
                 "ubigeo": GO.console_gazetteer()},

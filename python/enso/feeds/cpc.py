@@ -383,10 +383,11 @@ def parse_enso_discussion(doc: str) -> Parsed:
         raise FormatChanged(f"ensodisc: estado no reconocido «{raw_status}»")
     labels, codes = _distinct_statuses(statuses)
     issued = _issued_date(text[: m.start()])
-    synopsis = _synopsis_html(doc) or _synopsis(text[m.end() - 9:])
+    synopsis, synopsis_warning = _synopsis_any(doc, text[m.end() - 9:])
     next_issue = _next_issue(text)
     values = _weekly_values(text)
     warnings = [] if issued else ["ensodisc: no se pudo leer la fecha de emisión"]
+    warnings += [synopsis_warning] if synopsis_warning else []
     if not next_issue:
         # Todas las discusiones la anuncian; sin ella el calendario del sitio (``freshness``) espera la siguiente a ciegas.
         warnings.append("ensodisc: no se pudo leer la fecha de la próxima discusión («next ENSO Diagnostics Discussion "
@@ -419,8 +420,12 @@ def _issued_date(head: str) -> Optional[str]:
     return _date_en(im.group(1)) if im else _date_en(head[-200:])
 
 
-_SYNOPSIS_HTML_RE = re.compile(r"Synopsis\s*:\s*(?:</u>|</b>|</strong>)?(?:\s|&nbsp;|<[^>]*>)*?<strong>(.*?)</strong>",
+# ``<strong>`` en todas las copias (2016 a 2026); ``<b>`` es el mismo énfasis en otra etiqueta y CPC ya la usa en otras
+# páginas: con solo ``<strong>``, ese cambio devolvía en silencio la sinopsis que sigue con el primer párrafo.
+_SYNOPSIS_HTML_RE = re.compile(r"Synopsis\s*:\s*(?:</u>|</b>|</strong>)?(?:\s|&nbsp;|<[^>]*>)*?<(strong|b)\b[^>]*>(.*?)</\1\s*>",
                                re.I | re.S)
+# Sin negrita, el párrafo que contiene «Synopsis:» es el límite (``</p>``, otro ``<p>`` o el fin de la celda).
+_SYNOPSIS_PARA_RE = re.compile(r"Synopsis\s*:(.*?)(?:</p\s*>|<p\b|</td\s*>)", re.I | re.S)
 
 
 def _synopsis_html(doc: str) -> str:
@@ -428,7 +433,19 @@ def _synopsis_html(doc: str) -> str:
     plano, sin ese límite, una sinopsis corta seguía con el primer párrafo de la discusión hasta «[Fig» y el sitio lo
     mostraba como «Síntesis de NOAA» (copias de 2022-06 y 2026-10)."""
     sm = _SYNOPSIS_HTML_RE.search(doc)
-    return _synopsis("Synopsis: " + re.sub(r"\s+", " ", html_to_text(sm.group(1))).strip()) if sm else ""
+    return _synopsis("Synopsis: " + re.sub(r"\s+", " ", html_to_text(sm.group(2))).strip()) if sm else ""
+
+
+def _synopsis_any(doc: str, text_tail: str) -> tuple[str, Optional[str]]:
+    """Sinopsis y, si no vino en negrita, el aviso de que se leyó con un límite más débil (no se calla el cambio)."""
+    found = _synopsis_html(doc)
+    if found:
+        return found, None
+    pm = _SYNOPSIS_PARA_RE.search(doc)
+    para = _synopsis("Synopsis: " + re.sub(r"\s+", " ", html_to_text(pm.group(1))).strip()) if pm else ""
+    return (para or _synopsis(text_tail)), ("ensodisc: la sinopsis ya no viene en negrita (<strong>/<b>) tras "
+                                            "«Synopsis:»; se leyó hasta el fin de su párrafo. Revise que el sitio no "
+                                            "muestre parte de la discusión como «Síntesis de NOAA».")
 
 
 def _synopsis(text: str) -> str:

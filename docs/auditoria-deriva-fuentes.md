@@ -140,6 +140,24 @@ cambian, umbrales con decimales, valores por omisión que callan un problema y e
   repetido y 273 habrían quedado como corrección. Entre las correcciones hay entradas que el medio o la institución publica en el mismo enlace pero que no son la misma nota: los en vivo de RPP y El Comercio («Temblor en Perú, hoy 22 de octubre» → «hoy 24 de octubre» en la misma dirección) y los reportes sucesivos del COEN de una misma emergencia (Reporte N° 02 → N° 03). El histórico guarda cada una; los grupos muestran solo la última, como un lector de feeds con el mismo `guid` (RSS 2.0) o el mismo `id` de Atom: la dirección ya muestra la versión nueva, y un titular viejo enlazado a ella sería el error. El registro dice cuántas cada
   día (`news-same-story`, `info`). Los `id` no cambian: las anclas del archivo y el histórico publicado siguen
   sirviendo.
+  Revisión antes del despliegue (`tests/test_ready_news_identity.py`, contra el histórico de `data-archive` del
+  21-11-2026 y sus respuestas crudas): (1) los grupos juntaban las notas por enlace sin mirar `link_is_id` y se
+  quedaban con la primera, así que FIRMS mostraba el resumen más antiguo de las dos semanas (191 focos, 7-8 de
+  noviembre) en lugar del de hoy (79, 20-21 de noviembre); ahora `news._display_versions` deja una entrada por
+  enlace canónico y región, la vista después, salvo el enlace que un feed puso a dos titulares en la misma
+  lectura. (2) La misma nota por dos feeds (26 enlaces, p. ej. `gnews-peru` y `gnews-07`, `rpp-piura` y `rpp`)
+  salía con el titular del que la vio primero. (3) Un titular que vuelve (A → B → A: El Comercio con el conteo de
+  la ONPE, 35 casos entre días en las respuestas crudas) no agrega línea, así que se mostraba B: `cluster` recibe
+  ahora lo leído en la corrida (`current`) y muestra la versión que el feed trae hoy (la lectura más
+  reciente: a los feeds «reader» de Google Noticias se suma su lectura guardada de ayer, que no debe tapar la de hoy). (4) Los avisos
+  (`sourcefeed.alerts`) ordenaban por fecha: el USGS corrigió la hora del sismo `us6000u1kt` un segundo hacia
+  atrás al revisar la magnitud, y quedaba la versión 5,2; ahora toman `latest_versions`. Se comprobó que se
+  mantiene: la ventana de 14 días cuenta desde la fecha de la nota (de 13 a 31 correcciones por día caen fuera, todas
+  revisiones del USGS o del SENAMHI de hechos de hace semanas, ninguna nota que la primera versión habría
+  mostrado), la codificación de la consulta no separa la misma nota, y la copia de cada versión está en la página
+  del día UTC en que se vio. Queda abierto: los grupos listan solo sus 8 primeras notas, de la más antigua a la más
+  nueva (43 grupos tienen más de 8), y el orden de los parámetros de la consulta separa dos enlaces (ningún feed
+  de `data-archive` los reordena).
 - **Fechas en inglés del CENVUL según el idioma del proceso**: se leían con `strptime("%A, %B %d, %Y")`, cuyos
   nombres salen del `LC_TIME` del proceso; con el sistema en castellano (un recolector en una máquina en es_PE,
   o una biblioteca que llame a `locale.setlocale`) la variante inglesa dejaba de leerse. Ahora con tabla propia.
@@ -180,11 +198,13 @@ atrapan ×10, °F, columnas corridas, recortes y copias atrasadas. Lo que salía
 | Latitud y longitud intercambiadas, ×10 | USGS | Epicentros en otro lugar, o a latitud −114 | Sin control de rango | `hazardparse._vet`: coordenadas imposibles o fuera del recuadro de la consulta FDSN son `FeedError` |
 | Segundos en lugar de milisegundos | USGS (y cualquier lector de peligros) | Sismos de 1970 | Sin control de fecha | Fechas anteriores a 1995 son `FeedError` |
 | Otro separador, coma decimal, columnas cambiadas, archivo vacío | FIRMS | «Sin focos de calor en el Perú» | La cabecera se miraba como texto y las filas ilegibles se saltaban | Columnas exactas; `FeedError` si la mitad de las filas no tiene coordenadas, si más del 5 % cae fuera de Sudamérica o si el CSV de Sudamérica no trae ninguna fila |
-| Fechas en inglés | DHN, avisos especiales | Avisos sin fecha | La fecha no leída quedaba `None` | `FeedError` (como el CENVUL) |
+| Fechas en inglés | DHN, avisos especiales | Avisos sin fecha | La fecha no leída quedaba `None` | `FeedError` si no tiene fecha un aviso «NN-AA», uno de los 10 más recientes o la mitad; los siete de 2023 que nunca la tuvieron se omiten con una nota (la primera versión tumbaba el feed: las 9 copias de `data-archive` fallaban) |
 | Espacios al final de línea | PTWC (texto) | El mensaje sin la sección de amenaza; sin fecha | Las expresiones anclaban en `$` | Líneas sin espacios al final antes de leer |
 | RSS → Atom | Google Noticias, ONU | Notas sin medio (y sin el filtro de medios de otro país) | `atom:source` no se leía | Se lee como `<source>` |
 | BOM, UTF-16 | Las tablas de NOAA, PSL e IGP y el resumen de GODAS | `format-changed` (falsa alarma) | `Response.text` no miraba la marca de orden de bytes | La marca manda (WHATWG) |
 | gzip sin `Content-Encoding`, PDF, binario | Todas las fuentes | Un error que no decía nada («no se encontraron filas», `JSONDecodeError`) | — | `observatory.binary_body`: `format-changed` que dice qué llegó (no se descomprime: RFC 9110 §8.4) |
+
+**Repetición contra `data-archive` (21-11-2026, antes de desplegar)**: las 8995 copias de feeds, las 129 del relevo n8n y las 60 de series, leídas con el código anterior a las guardias y con el nuevo. Ningún `truncated`, ningún FIRMS vacío ni fuera de Sudamérica (los archivos traen de 2646 a 21 689 filas y como mucho 5 focos fuera, 0,06 % de 8334), ninguna fecha anterior a 1995, ninguna geometría fuera del Perú, ningún gob.pe de otra institución, ningún cuerpo binario en una fuente de texto y ninguna copia que `mostly_cp1252` lea distinto (la única que no es UTF-8, Exitosa, declara ISO-8859-1). Vacíos: el WEPA40 con el simulacro PACWAVE26 durante 16 días (exento) y el Atom del PTWC un día (umbral 14). Lo único que cambió de bien a mal fueron los avisos especiales de la DHN, corregido arriba; la prueba es `tests/test_ready_drift_guards.py`.
 
 Queda aceptado (`ALLOWLIST`, con su costo): una capa de avisos de ArcGIS vacía no se distingue, desde la respuesta, de
 una capa que el servidor dejó de llenar; `check_layer` y `emptySince` cubren lo que se puede comprobar, y el contraste

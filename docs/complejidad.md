@@ -65,9 +65,13 @@ anidada se cuentan en la función que la contiene (se evalúan ahí). El cuerpo 
 | Función de la lista que quedó en 10 o menos | `[CUMPLE] …` | `--update` (borra la línea) |
 | Función de la lista que ya no existe | `[NO EXISTE] …` | `--update` (borra la línea) |
 | Función de la lista renombrada, sin cambiar su número | `[NUEVA] … Parece la función «vieja»` | `--update` la traslada (solo si hay una sola candidata en el mismo archivo con el mismo número) |
+| La lista agregó o subió una línea a mano (o con `--rebaseline` sin cambio de herramienta) respecto de la rama base | `La lista agregó o subió líneas respecto de la ref base…` (con `--base-ref HEAD^1`, como en el job «lint») | Devolver la línea a su número de la rama base y corregir la función |
 
 En GitHub Actions cada hallazgo es además una anotación en la línea del PR. Sale con 2 (no con 1) si no pudo
-medir: falta Node o ESLint, un archivo no se analiza, la lista está mal formada o se midió con otra versión.
+medir: falta Node o ESLint, un archivo no se analiza, la lista está mal formada o se midió con otra versión, o la ref de `--base-ref` no está en el clon (el job «lint» trae dos commits:
+`fetch-depth: 2`). Sin `--base-ref` solo se compara el código con la lista, y una línea subida a mano pasaría:
+el job «lint» lo usa siempre, y en un PR `HEAD^1` es la punta de la rama base.
+Un cambio de herramienta cuenta por lenguaje y por la versión medida (no por lo que diga el campo «tools» de la lista): una ESLint nueva deja rebaselinear el JavaScript, no subir líneas de Python, y con `--python-only` las líneas de JavaScript no se comparan con la base. Límite: una función de la lista borrada puede ceder su línea a una nueva del mismo archivo con un número igual o menor (es lo que deja un renombre seguido de una mejora).
 
 ### Cambiar de versión de ESLint o de la regla de Python
 

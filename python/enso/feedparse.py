@@ -279,11 +279,18 @@ def truncated(body: bytes, adapter: str = "feed") -> str:
     return ""
 
 
+#: La raíz de cada formato y su cierre, como elementos enteros: «<feed» también es el comienzo de ``<feedburner:info>``
+#: (un RSS de FeedBurner que cierra bien con ``</rss>`` quedaba «cortado») y «</feed» el de ``</feedburner:origLink>``
+#: (un Atom de FeedBurner cortado pasaba por cerrado).
+_XML_ROOTS = tuple((re.compile(rb"<" + n + rb"[\s>]"), re.compile(rb"</" + n + rb"\s*>"), n.decode())
+                   for n in (b"rss", b"feed", b"rdf:rdf"))
+
+
 def _xml_unclosed(head: bytes, low: bytes) -> str:
     """Por qué un feed XML parece cortado (abre la raíz y no la cierra), o ""."""
-    for open_, close in ((b"<rss", b"</rss"), (b"<feed", b"</feed"), (b"<rdf:rdf", b"</rdf:rdf")):
-        if open_ in head and close not in low:
-            return f"el documento no cierra ({close.decode()}>): llegó cortado"
+    for open_, close, name in _XML_ROOTS:
+        if open_.search(head) and not close.search(low):
+            return f"el documento no cierra (</{name}>): llegó cortado"
     return ""
 
 

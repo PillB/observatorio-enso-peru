@@ -26,6 +26,8 @@ Uso (desde python/):
                                                # o de la regla de Python; el diff se justifica en el PR)
     python -m tools.complexity --python-only   # sin Node ni ESLint (las líneas de JS de la lista no se juzgan)
     python -m tools.complexity --report 20     # además, las 20 funciones más complejas
+    python -m tools.complexity --base-ref HEAD^1   # además, la lista no agregó ni subió líneas respecto de esa ref
+                                               # (el job «lint»: en un PR, HEAD^1 es la punta de la rama base)
 
 El JavaScript necesita ``npm ci --prefix scripts/lint`` (una vez). En GitHub Actions, el job «lint» de ci.yml.
 """
@@ -488,7 +490,7 @@ def _rebaseline_source(path: Path) -> dict:
 
 
 def run(root: Path = ROOT, *, update: bool = False, rebaseline: bool = False, python_only: bool = False,
-        report: int = 0, baseline_path: Path | None = None) -> int:
+        report: int = 0, baseline_path: Path | None = None, base_ref: str | None = None) -> int:
     path = baseline_path or root / BASELINE_REL
     m = measure(root, python_only=python_only)
     if report:
@@ -505,14 +507,87 @@ def run(root: Path = ROOT, *, update: bool = False, rebaseline: bool = False, py
     found, renames = judge(m, data["functions"])
     if update:
         return _run_update(path, data, m, found, renames)
+    return _verdict(found, m, data, base_problems(root, base_ref, path, data, m) if base_ref else [])
+
+
+def _verdict(found: list[Finding], m: Measurement, data: dict, raised: list[str]) -> int:
+    """0 si todo está dentro de la lista y la lista no subió; 1 si no (con el detalle en stderr)."""
     if found:
         _print_findings(found)
         fixable = all(not f.blocking_update for f in found)
         tail = "Todo se resuelve con: python -m tools.complexity --update" if fixable else FIX_HINT
         print(f"\n{len(found)} problema(s) de complejidad. {tail}", file=sys.stderr)
+    if raised:
+        print("La lista agregó o subió líneas respecto de la ref base, sin un cambio de herramienta (la lista solo "
+              "baja; --update nunca agrega ni sube, así que esto es una edición a mano o un --rebaseline sin motivo):\n  "
+              + "\n  ".join(raised) + "\nDeje esas líneas como en la ref base y corrija el código. " + FIX_HINT,
+              file=sys.stderr)
+    if found or raised:
         return 1
     print(_summary(m, data["functions"]))
     return 0
+
+
+# ------------------------------------------------------------------------------------------- trinquete contra la base
+
+def _git_baseline(root: Path, ref: str, rel: str) -> dict | None:
+    """La lista tal como está en ``ref`` (None si en esa ref todavía no existía); ToolError si la ref no está."""
+    def git(*args: str) -> subprocess.CompletedProcess:
+        return subprocess.run(["git", "-C", str(root), *args], capture_output=True)
+    if git("rev-parse", "--verify", "--quiet", f"{ref}^{{commit}}").returncode:
+        raise ToolError(f"la ref base {ref!r} no existe en este clon (en Actions: actions/checkout con "
+                        "fetch-depth: 2, para que HEAD^1 esté). Sin ella no se puede saber si la lista subió.")
+    if git("cat-file", "-e", f"{ref}:{rel}").returncode:
+        return None
+    try:
+        return json.loads(git("show", f"{ref}:{rel}").stdout.decode("utf-8"))
+    except ValueError as e:
+        raise ToolError(f"{rel} en {ref} no es JSON válido: {e}") from None
+
+
+def base_problems(root: Path, ref: str, path: Path, data: dict, m: Measurement) -> list[str]:
+    """Líneas que la lista agregó o subió respecto de ``ref``. Valen solo si cambió la herramienta o el techo (un
+    ``--rebaseline`` justificado); un renombre que ``--update`` trasladó (la línea vieja ya no existe en el código,
+    mismo archivo, número igual o menor) tampoco cuenta."""
+    rel = path.relative_to(root).as_posix() if path.is_relative_to(root) else BASELINE_REL
+    old = _git_baseline(root, ref, rel)
+    langs = _unchanged_langs(old, m) if old else ()
+    if not langs:
+        return []
+    return _raised(old.get("functions") or {}, data["functions"], {f.key for f in m.fns}, langs)
+
+
+def _unchanged_langs(old: dict, m: Measurement) -> tuple[str, ...]:
+    """Los lenguajes medidos cuya herramienta (la versión medida ahora, no la que dice la lista) y techo son los de la
+    base: solo en esos se juzga la lista. Mirar el campo «tools» de la lista dejaba saltarse todo con una clave de más
+    (``_tool_mismatch`` no mira las que no se miden), y un cambio de ESLint habilitaba subir líneas de Python."""
+    if old.get("ceiling") != CEILING:
+        return ()
+    saved = old.get("tools") if isinstance(old.get("tools"), dict) else {}
+    changed = {"py" if k == "python" else "js" for k, v in m.tools.items() if saved.get(k) != v}
+    return tuple(lang for lang in m.langs if lang not in changed)
+
+
+def _raised(before: dict[str, int], now: dict[str, int], measured: set[str], langs: tuple[str, ...]) -> list[str]:
+    before, now = _only_langs(before, langs), _only_langs(now, langs)
+    gone = {k: v for k, v in before.items() if k not in now}
+    out = [f"{k}: {before[k]} -> {v} (subió)" for k, v in sorted(now.items()) if k in before and v > before[k]]
+    added = [(k, v) for k, v in sorted(now.items()) if k not in before]
+    return out + [f"{k}: agregada con {v}" for k, v in added if not _take_rename(k, v, gone, measured, langs)]
+
+
+def _only_langs(lines: dict[str, int], langs: tuple[str, ...]) -> dict[str, int]:
+    return {k: v for k, v in lines.items() if lang_of(k) in langs}
+
+
+def _take_rename(key: str, score: int, gone: dict[str, int], measured: set[str], langs: tuple[str, ...]) -> bool:
+    """Empareja una línea agregada con una borrada del mismo archivo que de verdad ya no existe (y la consume)."""
+    path = key.split("::", 1)[0]
+    match = next((g for g, b in sorted(gone.items()) if g.split("::", 1)[0] == path and b >= score
+                  and g not in measured and lang_of(g) in langs), None)
+    if match:
+        del gone[match]
+    return match is not None
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -522,11 +597,12 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument("--rebaseline", action="store_true", help="reescribe la lista entera (cambio de herramienta)")
     ap.add_argument("--python-only", action="store_true", help="sin Node ni ESLint")
     ap.add_argument("--report", type=int, default=0, metavar="N", help="muestra las N funciones más complejas")
+    ap.add_argument("--base-ref", metavar="REF", help="falla si la lista agregó o subió líneas respecto de REF")
     ap.add_argument("--root", type=Path, default=ROOT, help=argparse.SUPPRESS)
     args = ap.parse_args(argv)
     try:
         return run(args.root.resolve(), update=args.update, rebaseline=args.rebaseline,
-                   python_only=args.python_only, report=args.report)
+                   python_only=args.python_only, report=args.report, base_ref=args.base_ref)
     except ToolError as e:
         print(f"complexity: no se pudo medir: {e}", file=sys.stderr)
         return 2

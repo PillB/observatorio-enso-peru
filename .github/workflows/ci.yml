@@ -26,7 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      # Dos commits: HEAD^1 es la punta de la rama base en un PR (el commit de fusión) o el commit anterior en un
+      # push, y --base-ref compara la lista con la de ahí (sin esto, subir una línea a mano pasaba).
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
@@ -52,7 +56,7 @@ jobs:
           pip install -r "$RUNNER_TEMP/lint-req.txt"
       - name: Cyclomatic complexity ceiling (ratchet)
         working-directory: python
-        run: python -m tools.complexity --report 15
+        run: python -m tools.complexity --report 15 --base-ref HEAD^1
       - name: The complexity check itself (hand-counted CFGs, radon cross-check, ratchet mutations)
         working-directory: python
         env:

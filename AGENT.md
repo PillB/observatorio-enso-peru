@@ -95,7 +95,8 @@ python3.11 -m compileall -q -x tests/fixtures enso tools tests      # the Peru c
 **When it fails** (each finding names `file:line function`, its score, the ceiling and the fix):
 
 - `NUEVA` / `CRECIÓ` (new over 10, or a listed function grew): split the function — named helpers, a dispatch table
-  instead of an `if/elif` chain, guard clauses. Never edit the baseline by hand; `--update` refuses to add or raise.
+  instead of an `if/elif` chain, guard clauses. Never edit the baseline by hand; `--update` refuses to add or raise, and the `lint` job runs
+  `--base-ref HEAD^1`, which fails if the baseline added or raised a line against the base branch without a tool change.
   This applies to urgent source-drift fixes too: extract the new branch into a helper in the same PR.
 - `BAJÓ` / `CUMPLE` / `NO EXISTE` (a listed function improved, now complies, or was removed): run
   `python -m tools.complexity --update` and commit the baseline diff, so the slack cannot be spent later unnoticed.
@@ -152,6 +153,7 @@ Every upstream here has already changed silently at least once (section 6). Rule
 | Relay carried yesterday's copy while the source returned HTTP 500 | Carried copy indistinguishable from a live read | Carried ≠ live |
 | PTWC exercise PACWAVE26 shown as a tsunami warning | Test messages not filtered | Filter exercises/tests explicitly, with a fixture |
 | Threshold comparisons failed on exact float values | No edge tests | Test thresholds at their edge; round before comparing |
+| A new drift guard (FeedError on any DHN aviso without a date) would have dropped the whole official wave/wind feed on the first run after merge: the live page lists 583 avisos, 7 of them legacy ones that never had a date | The fixture held only the 30 newest avisos; nobody ran the branch against live sources | Before merging a guard, dry-run the pipeline against live sources and diff it with `main` (per-feed `ok`/`items`, events, `tools.sync_issues --dry-run`); a per-item guard tolerates legacy anomalies and stays loud for recent ones (`python/tests/test_ready_prod_dryrun.py`) |
 
 ## 7. Fail verbose, with clear diagnostics
 
