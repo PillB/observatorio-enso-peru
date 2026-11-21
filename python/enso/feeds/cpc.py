@@ -383,7 +383,7 @@ def parse_enso_discussion(doc: str) -> Parsed:
         raise FormatChanged(f"ensodisc: estado no reconocido «{raw_status}»")
     labels, codes = _distinct_statuses(statuses)
     issued = _issued_date(text[: m.start()])
-    synopsis = _synopsis(text[m.end() - 9:])
+    synopsis = _synopsis_html(doc) or _synopsis(text[m.end() - 9:])
     next_issue = _next_issue(text)
     values = _weekly_values(text)
     warnings = [] if issued else ["ensodisc: no se pudo leer la fecha de emisión"]
@@ -417,6 +417,18 @@ def _issued_date(head: str) -> Optional[str]:
     """Fecha de emisión: la de «issued by …» o, si no, la última del texto previo al estado."""
     im = re.search(r"issued by.{0,80}?(\d{1,2}\s+\w+\s+\d{4})", head, re.I)
     return _date_en(im.group(1)) if im else _date_en(head[-200:])
+
+
+_SYNOPSIS_HTML_RE = re.compile(r"Synopsis\s*:\s*(?:</u>|</b>|</strong>)?(?:\s|&nbsp;|<[^>]*>)*?<strong>(.*?)</strong>",
+                               re.I | re.S)
+
+
+def _synopsis_html(doc: str) -> str:
+    """La sinopsis es el ``<strong>`` que sigue a «Synopsis:» en todas las discusiones (2016 a 2026). Leída del texto
+    plano, sin ese límite, una sinopsis corta seguía con el primer párrafo de la discusión hasta «[Fig» y el sitio lo
+    mostraba como «Síntesis de NOAA» (copias de 2022-06 y 2026-10)."""
+    sm = _SYNOPSIS_HTML_RE.search(doc)
+    return _synopsis("Synopsis: " + re.sub(r"\s+", " ", html_to_text(sm.group(1))).strip()) if sm else ""
 
 
 def _synopsis(text: str) -> str:

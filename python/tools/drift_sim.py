@@ -307,9 +307,12 @@ def _header_reorder(body, ctx):
         s = list(seq)
         s[:width], s[-width:] = s[-width:], s[:width]
         return s
-    eol = lines[heads[-1]][len(lines[heads[-1]].rstrip("\r\n")):]
-    lines[heads[-1]] = " ".join(h[:keys] + swap(h[keys:])) + eol
-    _swap_region_names(lines, heads[-1], width, len(toks))
+    # Cada sección (SOI, Tahití, Darwin y los vientos traen dos o tres tablas, cada una con su cabecera) mueve su
+    # cabecera con sus datos: si solo se moviera la última, las demás tablas quedarían con datos corridos.
+    for hd in (i for i in heads if len(lines[i].split()) == len(h)):
+        eol = lines[hd][len(lines[hd].rstrip("\r\n")):]
+        lines[hd] = " ".join(lines[hd].split()[:keys] + swap(lines[hd].split()[keys:])) + eol
+        _swap_region_names(lines, hd, width, len(toks))
     _swap_data_rows(lines, idx, len(h) - keys, swap)
     return _same_or_none("".join(lines).encode("utf-8"), body)
 
