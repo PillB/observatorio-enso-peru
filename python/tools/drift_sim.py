@@ -301,7 +301,7 @@ def _header_reorder(body, ctx):
     keys = len(lead.split())
     if len(h) != keys + len(toks) or len(toks) < 2:
         return None
-    width = 2 if len(toks) >= 4 and len(toks) % 2 == 0 else 1
+    width = _swap_width(toks)
 
     def swap(seq):
         s = list(seq)
@@ -309,17 +309,32 @@ def _header_reorder(body, ctx):
         return s
     eol = lines[heads[-1]][len(lines[heads[-1]].rstrip("\r\n")):]
     lines[heads[-1]] = " ".join(h[:keys] + swap(h[keys:])) + eol
-    above = next((i for i in range(heads[-1] - 1, -1, -1) if lines[i].strip()), None)
+    _swap_region_names(lines, heads[-1], width, len(toks))
+    _swap_data_rows(lines, idx, len(h) - keys, swap)
+    return _same_or_none("".join(lines).encode("utf-8"), body)
+
+
+def _swap_width(toks: list[str]) -> int:
+    """Cuántas columnas se intercambian: de a dos si los datos van en pares (valor y anomalía), si no de a una."""
+    return 2 if len(toks) >= 4 and len(toks) % 2 == 0 else 1
+
+
+def _swap_region_names(lines: list[str], head: int, width: int, ntoks: int) -> None:
+    """Mueve con sus columnas los nombres de las regiones que van en la línea de arriba de la cabecera."""
+    above = next((i for i in range(head - 1, -1, -1) if lines[i].strip()), None)
     names = lines[above].split() if above is not None else []
-    if width == 2 and len(names) * 2 == len(toks):
+    if width == 2 and len(names) * 2 == ntoks:
         # Los nombres de las regiones van en otra línea («Nino1+2 Nino3 Nino34 Nino4»): se mueven con sus columnas.
         names[0], names[-1] = names[-1], names[0]
         lines[above] = "        " + "      ".join(names) + "\n"
+
+
+def _swap_data_rows(lines: list[str], idx: list[int], ncols: int, swap: Callable[[list[str]], list[str]]) -> None:
+    """Reordena las columnas de cada fila de datos que tiene tantas columnas como la cabecera."""
     for i in idx:
         lead, toks, eol = _split(lines[i])
-        if len(toks) == len(h) - keys:
+        if len(toks) == ncols:
             lines[i] = _join(lead, swap(toks), eol)
-    return _same_or_none("".join(lines).encode("utf-8"), body)
 
 
 def _row_op(fn: Callable[[list[str], list[int]], Optional[list[str]]]):
@@ -533,28 +548,53 @@ def _rss_to_atom(body, ctx):
     ET.SubElement(feed, f"{{{A}}}title").text = chan.findtext("title") or ""
     ET.SubElement(feed, f"{{{A}}}link", href=chan.findtext("link") or "")
     for it in chan.findall("item"):
-        e = ET.SubElement(feed, f"{{{A}}}entry")
-        ET.SubElement(e, f"{{{A}}}title").text = it.findtext("title") or ""
-        ET.SubElement(e, f"{{{A}}}link", href=(it.findtext("link") or "").strip())
-        ET.SubElement(e, f"{{{A}}}id").text = it.findtext("guid") or it.findtext("link") or ""
-        d = _read_date(it.findtext("pubDate") or "")
-        if d is not None:
-            ET.SubElement(e, f"{{{A}}}published").text = d.isoformat()
-        local = {}
-        for c in it:
-            local.setdefault(c.tag.rsplit("}", 1)[-1], []).append(c)
-        desc = next((c.text for k in ("description", "encoded") for c in local.get(k, []) if (c.text or "").strip()), "")
-        ET.SubElement(e, f"{{{A}}}summary", type="html").text = desc or ""
-        for c in local.get("category", []) + local.get("subject", []):
-            if (c.text or "").strip():
-                ET.SubElement(e, f"{{{A}}}category", term=c.text.strip())
-        src = it.find("source")
-        if src is not None:  # el medio de una nota de Google Noticias: <source url="…">Medio</source>
-            s_ = ET.SubElement(e, f"{{{A}}}source")
-            ET.SubElement(s_, f"{{{A}}}title").text = src.text or ""
-            ET.SubElement(s_, f"{{{A}}}link", href=src.get("url") or "")
+        _atom_entry(feed, it, A)
     ET.register_namespace("", A)
     return ET.tostring(feed, encoding="utf-8", xml_declaration=True)
+
+
+def _atom_entry(feed: ET.Element, it: ET.Element, A: str) -> None:
+    """Agrega al feed Atom la entrada equivalente a un <item> de RSS."""
+    e = ET.SubElement(feed, f"{{{A}}}entry")
+    ET.SubElement(e, f"{{{A}}}title").text = it.findtext("title") or ""
+    ET.SubElement(e, f"{{{A}}}link", href=(it.findtext("link") or "").strip())
+    ET.SubElement(e, f"{{{A}}}id").text = it.findtext("guid") or it.findtext("link") or ""
+    d = _read_date(it.findtext("pubDate") or "")
+    if d is not None:
+        ET.SubElement(e, f"{{{A}}}published").text = d.isoformat()
+    local = _rss_children(it)
+    ET.SubElement(e, f"{{{A}}}summary", type="html").text = _rss_description(local) or ""
+    _atom_categories(e, local, A)
+    _atom_source(e, it, A)
+
+
+def _rss_children(it: ET.Element) -> dict[str, list[ET.Element]]:
+    """Los hijos de un <item> por su nombre local (sin el espacio de nombres)."""
+    local: dict[str, list[ET.Element]] = {}
+    for c in it:
+        local.setdefault(c.tag.rsplit("}", 1)[-1], []).append(c)
+    return local
+
+
+def _rss_description(local: dict[str, list[ET.Element]]) -> str:
+    """El primer texto no vacío entre <description> y <content:encoded>."""
+    return next((c.text for k in ("description", "encoded") for c in local.get(k, []) if (c.text or "").strip()), "")
+
+
+def _atom_categories(e: ET.Element, local: dict[str, list[ET.Element]], A: str) -> None:
+    """Pasa <category> y <dc:subject> no vacíos a <category term=…> de Atom."""
+    for c in local.get("category", []) + local.get("subject", []):
+        if (c.text or "").strip():
+            ET.SubElement(e, f"{{{A}}}category", term=c.text.strip())
+
+
+def _atom_source(e: ET.Element, it: ET.Element, A: str) -> None:
+    """Pasa el <source> de RSS (el medio de una nota de Google Noticias) a <source> de Atom."""
+    src = it.find("source")
+    if src is not None:  # el medio de una nota de Google Noticias: <source url="…">Medio</source>
+        s_ = ET.SubElement(e, f"{{{A}}}source")
+        ET.SubElement(s_, f"{{{A}}}title").text = src.text or ""
+        ET.SubElement(s_, f"{{{A}}}link", href=src.get("url") or "")
 
 
 # --- HTML (gob.pe, DHN, CENVUL, Telegram, NOAA) ------------------------------------------------------------------
@@ -588,12 +628,17 @@ def _months_abbr(body, ctx):
 
 @mutation("entities", {"html", "xml"}, True, "acentos como entidades HTML (&aacute;, &ntilde;)")
 def _entities(body, ctx):
-    import html as H
-    names = {c: f"&{n};" for n, c in H.entities.html5.items() if n.endswith(";") and len(c) == 1 and c in "áéíóúñÁÉÍÓÚÑ"}
-    names = {c: "&" + min((n for n, v in H.entities.html5.items() if v == c and n.endswith(";")), key=len) for c in names}
+    names = _accent_entities()
     if ctx["family"] == "xml":
         names = {c: f"&#{ord(c)};" for c in names}  # en XML solo valen las numéricas
     return _text_op(lambda t: "".join(names.get(ch, ch) for ch in t))(body, ctx)
+
+
+def _accent_entities() -> dict[str, str]:
+    """Cada vocal tildada y la eñe con su entidad HTML con nombre más corta («á» → «&aacute;»)."""
+    import html as H
+    names = {c: f"&{n};" for n, c in H.entities.html5.items() if n.endswith(";") and len(c) == 1 and c in "áéíóúñÁÉÍÓÚÑ"}
+    return {c: "&" + min((n for n, v in H.entities.html5.items() if v == c and n.endswith(";")), key=len) for c in names}
 
 
 @mutation("reflow", {"html"}, True, "el HTML llega en una sola línea (minificado)")
@@ -729,16 +774,26 @@ def _mercator(lon: float, lat: float) -> tuple[float, float]:
 
 def _to_3857(d):
     if isinstance(d, dict):
-        out = {k: _to_3857(v) for k, v in d.items()}
-        for a, b in (("LONGITUD", "LATITUD"), ("x", "y")):
-            if _num(out.get(a)) and _num(out.get(b)):
-                out[a], out[b] = _mercator(out[a], out[b])
-        return out
+        return _dict_to_3857(d)
     if isinstance(d, list):
-        if len(d) >= 2 and all(_num(v) for v in d[:2]) and -180 <= d[0] <= 180 and -90 <= d[1] <= 90:
-            return [*_mercator(d[0], d[1]), *d[2:]]
-        return [_to_3857(v) for v in d]
+        return _list_to_3857(d)
     return d
+
+
+def _dict_to_3857(d: dict) -> dict:
+    """Un objeto con sus pares de coordenadas («LONGITUD»/«LATITUD», «x»/«y») llevados a Web Mercator."""
+    out = {k: _to_3857(v) for k, v in d.items()}
+    for a, b in (("LONGITUD", "LATITUD"), ("x", "y")):
+        if _num(out.get(a)) and _num(out.get(b)):
+            out[a], out[b] = _mercator(out[a], out[b])
+    return out
+
+
+def _list_to_3857(d: list) -> list:
+    """Una lista: si es un punto [lon, lat, …] se proyecta; si no, cada elemento."""
+    if len(d) >= 2 and all(_num(v) for v in d[:2]) and -180 <= d[0] <= 180 and -90 <= d[1] <= 90:
+        return [*_mercator(d[0], d[1]), *d[2:]]
+    return [_to_3857(v) for v in d]
 
 
 @mutation("arcgis-web-mercator", {"json"}, False, "geometría en Web Mercator (EPSG:3857, metros): se perdió outSR=4326")
@@ -982,21 +1037,36 @@ def _first_diff(a, b, path: str) -> str:
     if type(a) is not type(b):
         return f"{path}: {str(a)[:120]} → {str(b)[:120]}"
     if isinstance(a, dict):
-        for k in sorted(set(a) | set(b)):
-            if a.get(k) != b.get(k):
-                return _first_diff(a.get(k), b.get(k), f"{path}.{k}")
-        return ""
+        return _first_diff_dict(a, b, path)
     if isinstance(a, list):
-        if len(a) != len(b):
-            extra = [x for x in b if x not in a][:1] or [x for x in a if x not in b][:1]
-            return f"{path}: {len(a)} → {len(b)} elementos (p. ej. {str(extra)[:200]})"
-        for i, (x, y) in enumerate(zip(a, b)):
-            if x != y:
-                if isinstance(x, str) and isinstance(y, str) and x.startswith("{"):
-                    return _first_diff(json.loads(x), json.loads(y), f"{path}[{i}]")
-                return _first_diff(x, y, f"{path}[{i}]")
-        return ""
+        return _first_diff_list(a, b, path)
     return f"{path}: {str(a)[:120]} → {str(b)[:120]}"
+
+
+def _first_diff_dict(a: dict, b: dict, path: str) -> str:
+    """Primera clave (en orden) cuyo valor cambió, o "" si ninguna."""
+    for k in sorted(set(a) | set(b)):
+        if a.get(k) != b.get(k):
+            return _first_diff(a.get(k), b.get(k), f"{path}.{k}")
+    return ""
+
+
+def _first_diff_list(a: list, b: list, path: str) -> str:
+    """Cambio de largo (con un elemento de ejemplo) o primer elemento distinto, o "" si ninguno."""
+    if len(a) != len(b):
+        extra = [x for x in b if x not in a][:1] or [x for x in a if x not in b][:1]
+        return f"{path}: {len(a)} → {len(b)} elementos (p. ej. {str(extra)[:200]})"
+    for i, (x, y) in enumerate(zip(a, b)):
+        if x != y:
+            return _first_diff_item(x, y, f"{path}[{i}]")
+    return ""
+
+
+def _first_diff_item(x, y, path: str) -> str:
+    """Diferencia entre dos elementos; un texto que es JSON («{…}») se compara ya leído."""
+    if isinstance(x, str) and isinstance(y, str) and x.startswith("{"):
+        return _first_diff(json.loads(x), json.loads(y), path)
+    return _first_diff(x, y, path)
 
 
 def applicable(t: Target, m: Mutation) -> bool:
@@ -1025,10 +1095,19 @@ def simulate(targets: list[Target], mutations: Optional[list[str]] = None) -> li
 
 def build_targets(all_feeds: bool = False, only: Optional[set] = None, work: Optional[Path] = None) -> list[Target]:
     work = work or Path(tempfile.mkdtemp(prefix="drift-sim-"))
-    out = [source_target(s, work) for s in O.SOURCES if not only or s.id in only]
-    feeds = [f for f in N.FEEDS if (FIXTURES / f.fixture).exists()] if all_feeds or only else representative_feeds()
-    out += [feed_target(f) for f in feeds if not only or f.id in only]
+    out = [source_target(s, work) for s in O.SOURCES if _selected(s.id, only)]
+    out += [feed_target(f) for f in _feeds_to_simulate(all_feeds, only) if _selected(f.id, only)]
     return out
+
+
+def _selected(id_: str, only: Optional[set]) -> bool:
+    """Si el objetivo entra en la selección de --target (sin selección entran todos)."""
+    return not only or id_ in only
+
+
+def _feeds_to_simulate(all_feeds: bool, only: Optional[set]) -> list:
+    """Todos los feeds con copia (con --all-feeds o --target) o uno representativo por familia."""
+    return [f for f in N.FEEDS if (FIXTURES / f.fixture).exists()] if all_feeds or only else representative_feeds()
 
 
 #: (objetivo o «*», mutación) → por qué un SILENT-WRONG está revisado y se acepta. Cada entrada es una decisión con su
@@ -1055,43 +1134,73 @@ def summary(results: list[Result]) -> dict:
     return by
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def _parser() -> argparse.ArgumentParser:
+    """Las opciones de la línea de órdenes."""
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--all-feeds", action="store_true", help="todos los feeds con copia, no uno por familia")
     ap.add_argument("--target", action="append", help="solo este objetivo (id de fuente o feed); repetible")
     ap.add_argument("--mutation", action="append", help="solo esta mutación; repetible")
     ap.add_argument("--show", action="store_true", help="todas las filas, no solo SILENT-WRONG y NOISY")
     ap.add_argument("--json", help="escribe los resultados en este archivo")
-    a = ap.parse_args(argv)
-    unknown = [m for m in a.mutation or [] if m not in MUTATIONS]
+    return ap
+
+
+def _run(a: argparse.Namespace) -> tuple[list[Target], list[Result]]:
+    """Arma los objetivos pedidos y los simula; RuntimeError si --target no nombra ninguno."""
+    targets = build_targets(a.all_feeds, set(a.target) if a.target else None)
+    if a.target and not targets:
+        raise RuntimeError(f"objetivo desconocido: {', '.join(a.target)}")
+    return targets, simulate(targets, a.mutation)
+
+
+def _print_rows(results: list[Result], show: bool) -> None:
+    """Imprime las filas SILENT-WRONG y NOISY (todas con --show)."""
+    for r in results:
+        if show or r.verdict in (SILENT, NOISY):
+            tag = " (revisado: " + allowed(r) + ")" if r.verdict == SILENT and allowed(r) else ""
+            print(f"{r.verdict:12} {r.kind:6} {r.target:28} {r.mutation:24} {','.join(r.signals) or r.detail}{tag}")
+
+
+def _print_summary(targets: list[Target], results: list[Result], bad: list[Result], t0: float) -> None:
+    """Imprime la línea de resumen: objetivos, mutaciones, tiempo y cuenta por veredicto."""
+    print(f"\n{len(targets)} objetivos, {len(MUTATIONS)} mutaciones, {time.monotonic() - t0:.1f} s: "
+          + ", ".join(f"{k} {v}" for k, v in sorted(summary(results).items()))
+          + f"; SILENT-WRONG sin revisar: {len(bad)}")
+
+
+def _write_json(path: str, results: list[Result]) -> None:
+    """Escribe los resultados, el resumen y las mutaciones en un archivo JSON (--json)."""
+    Path(path).write_text(json.dumps({"generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                      "summary": summary(results),
+                                      "mutations": {m.name: {"what": m.what, "preserving": m.preserving,
+                                                             "families": sorted(m.families)}
+                                                    for m in MUTATIONS.values()},
+                                      "results": [r.__dict__ | {"allowed": allowed(r)} for r in results]},
+                                     ensure_ascii=False, indent=1, default=list), encoding="utf-8")
+
+
+def _unknown_mutations(names: Optional[list[str]]) -> list[str]:
+    """Las mutaciones pedidas con --mutation que no existen."""
+    return [m for m in names or [] if m not in MUTATIONS]
+
+
+def main(argv: Optional[list[str]] = None) -> int:
+    a = _parser().parse_args(argv)
+    unknown = _unknown_mutations(a.mutation)
     if unknown:
         print(f"mutación desconocida: {', '.join(unknown)}; hay: {', '.join(MUTATIONS)}", file=sys.stderr)
         return 2
     t0 = time.monotonic()
     try:
-        targets = build_targets(a.all_feeds, set(a.target) if a.target else None)
-        if a.target and not targets:
-            raise RuntimeError(f"objetivo desconocido: {', '.join(a.target)}")
-        results = simulate(targets, a.mutation)
+        targets, results = _run(a)
     except (RuntimeError, OSError) as exc:
         print(f"drift_sim: no se pudo simular: {exc}", file=sys.stderr)
         return 2
     bad = [r for r in results if r.verdict == SILENT and not allowed(r)]
-    for r in results:
-        if a.show or r.verdict in (SILENT, NOISY):
-            tag = " (revisado: " + allowed(r) + ")" if r.verdict == SILENT and allowed(r) else ""
-            print(f"{r.verdict:12} {r.kind:6} {r.target:28} {r.mutation:24} {','.join(r.signals) or r.detail}{tag}")
-    print(f"\n{len(targets)} objetivos, {len(MUTATIONS)} mutaciones, {time.monotonic() - t0:.1f} s: "
-          + ", ".join(f"{k} {v}" for k, v in sorted(summary(results).items()))
-          + f"; SILENT-WRONG sin revisar: {len(bad)}")
+    _print_rows(results, a.show)
+    _print_summary(targets, results, bad, t0)
     if a.json:
-        Path(a.json).write_text(json.dumps({"generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                                            "summary": summary(results),
-                                            "mutations": {m.name: {"what": m.what, "preserving": m.preserving,
-                                                                   "families": sorted(m.families)}
-                                                          for m in MUTATIONS.values()},
-                                            "results": [r.__dict__ | {"allowed": allowed(r)} for r in results]},
-                                           ensure_ascii=False, indent=1, default=list), encoding="utf-8")
+        _write_json(a.json, results)
     return 1 if bad else 0
 
 

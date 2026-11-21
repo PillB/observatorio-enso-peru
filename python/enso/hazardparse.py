@@ -192,6 +192,40 @@ def _es_date(day: str, month: str, year: str) -> Optional[datetime]:
     return datetime(int(year), mo, int(day), 12, tzinfo=LIMA) if mo else None
 
 
+def _dhn_aviso_when(im, vm) -> Optional[datetime]:
+    """Fecha de un aviso especial: la de emisión («Callao, 2 de julio de 2026») o, si no, la de su vigencia."""
+    when = _es_date(*im.groups()) if im else None
+    if not when and vm:
+        when = _es_date(vm.group(1), vm.group(2) or vm.group(5), vm.group(3) or vm.group(6))
+    return when
+
+
+def _dhn_oleaje(lines: list[str]) -> tuple[str, list[str]]:
+    """Qué dice un aviso de oleaje (el nivel más alto y en qué tramos del litoral) y los departamentos que toca."""
+    level: dict[str, int] = {}
+    for lm in _DHN_AV_LITORAL_RE.finditer("\n".join(lines)):
+        found = [_SWELL.index(x.lower()) for x in _SWELL_RE.findall(lm.group("txt"))]
+        if found:
+            level[lm.group(1).lower()] = max(found)
+    if not level:
+        return "", []
+    top = max(level.values())
+    where = [k for k in ("norte", "centro", "sur") if level.get(k) == top]
+    geo = [f"departamento de {d}" for d in dict.fromkeys(x for k in level for x in DHN_LITORAL[k])]
+    return f"oleaje {_SWELL[top]} en el litoral {_join(where)}", geo
+
+
+def _dhn_viento(body_txt: str) -> str:
+    """Qué dice un aviso de vientos: el viento, hasta cuántos nudos y entre qué lugares; "" si no se reconoce."""
+    wm = _DHN_AV_WIND_RE.search(body_txt)
+    if not wm:
+        return ""
+    what = f"{wm.group('what').lower()} (hasta {wm.group('kt')} nudos)"
+    if wm.group("a"):
+        what += f" entre {wm.group('a').strip()} y {wm.group('b').strip()}"
+    return what
+
+
 def parse_dhn_avisos(body: bytes, base_url: str = "https://www.dhn.mil.pe/portal/avisos-especiales") -> Parsed:
     """Avisos especiales de la DHN: oleaje anómalo y vientos en el litoral y el mar peruano."""
     text = text_of(body)
@@ -213,28 +247,9 @@ def parse_dhn_avisos(body: bytes, base_url: str = "https://www.dhn.mil.pe/portal
         body_txt = " ".join(lines)
         valid = clean_text(head.group("valid") or "", 120)
         vm, im = _DHN_AV_VALID_RE.search(valid), _DHN_AV_ISSUED_RE.search(body_txt)
-        when = _es_date(*im.groups()) if im else None
-        if not when and vm:
-            when = _es_date(vm.group(1), vm.group(2) or vm.group(5), vm.group(3) or vm.group(6))
+        when = _dhn_aviso_when(im, vm)
         period = f"válido {valid.split(' ', 1)[1]}" if valid.lower().startswith("válido ") else valid.lower()
-        geo, what = [], ""
-        if kind == "oleaje":
-            level: dict[str, int] = {}
-            for lm in _DHN_AV_LITORAL_RE.finditer("\n".join(lines)):
-                found = [_SWELL.index(x.lower()) for x in _SWELL_RE.findall(lm.group("txt"))]
-                if found:
-                    level[lm.group(1).lower()] = max(found)
-            if level:
-                top = max(level.values())
-                where = [k for k in ("norte", "centro", "sur") if level.get(k) == top]
-                what = f"oleaje {_SWELL[top]} en el litoral {_join(where)}"
-                geo = [f"departamento de {d}" for d in dict.fromkeys(x for k in level for x in DHN_LITORAL[k])]
-        else:
-            wm = _DHN_AV_WIND_RE.search(body_txt)
-            if wm:
-                what = f"{wm.group('what').lower()} (hasta {wm.group('kt')} nudos)"
-                if wm.group("a"):
-                    what += f" entre {wm.group('a').strip()} y {wm.group('b').strip()}"
+        what, geo = _dhn_oleaje(lines) if kind == "oleaje" else (_dhn_viento(body_txt), [])
         title = f"DHN · aviso especial de {kind} N° {num}" + (f": {what}" if what else "") + (f" ({period})" if period else "")
         summary = _DHN_AV_LEAD_RE.sub("", " ".join(x for x in lines if not re.match(r"^(?:[a-d]\.|Atentamente|DIRECCI|dihidronav)", x)))
         summary = summary[:1].upper() + summary[1:]
@@ -268,6 +283,15 @@ _MON = {m: i for i, m in enumerate(["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "J
 _PTWC_TEST_RE = re.compile(r"\bTHIS IS A TEST\b|FOR TEST PURPOSES ONLY|\bDUMMY MESSAGE\b|^\s*TEST\.\.\.", re.M)
 
 
+def _ptwc_issued(text: str) -> Optional[str]:
+    """Fecha y hora de emisión del mensaje del PTWC (línea «0712 UTC TUE NOV 17 2026»), en ISO; ``None`` si no está."""
+    iss = _PTWC_ISSUED_RE.search(text)
+    if not (iss and iss.group(2) in _MON):
+        return None
+    return _iso(datetime(int(iss.group(4)), _MON[iss.group(2)], int(iss.group(3)),
+                         int(iss.group(1)[:2]), int(iss.group(1)[2:]), tzinfo=timezone.utc))
+
+
 def parse_ptwc_text(body: bytes, base_url: str = "") -> Parsed:
     """Último mensaje del Centro de Alerta de Tsunamis del Pacífico (el filtro de relevancia
     deja solo los que nombran al Perú, como con su feed Atom)."""
@@ -283,11 +307,7 @@ def parse_ptwc_text(body: bytes, base_url: str = "") -> Parsed:
     params = {k: v.strip() for k, v in _PTWC_PARAM_RE.findall(text)}
     num = re.search(r"TSUNAMI MESSAGE NUMBER\s+(\d+)", text)
     head = re.search(r"\.\.\.(PTWC [^.]+?)\.\.\.", text)
-    iss = _PTWC_ISSUED_RE.search(text)
-    published = None
-    if iss and iss.group(2) in _MON:
-        published = _iso(datetime(int(iss.group(4)), _MON[iss.group(2)], int(iss.group(3)),
-                                  int(iss.group(1)[:2]), int(iss.group(1)[2:]), tzinfo=timezone.utc))
+    published = _ptwc_issued(text)
     threat = _PTWC_THREAT_RE.search(text)
     threat_txt = re.sub(r"\s+", " ", threat.group("txt")).strip(" *") if threat else ""
     title = (f"PTWC · sismo de magnitud {params.get('MAGNITUDE', '?')} en {params.get('LOCATION', '?').title()}: "
@@ -345,14 +365,22 @@ def _card_date(s: str, hm: str = "") -> Optional[str]:
         d = datetime(int(year), month, int(day))
     except ValueError:
         return None
-    t = _HM_RE.match(re.sub(r"\s+", " ", (hm or "").replace("\u00a0", " ").replace("\u202f", " ")).strip())
-    if t:
-        h, mi, sec = int(t.group(1)), int(t.group(2)), int(t.group(3) or 0)
-        if t.group(4):  # 12 h: «AM»/«PM» o «a. m.»/«p. m.»
-            h = h % 12 + (12 if t.group(4).lower() == "p" else 0)
-        if h < 24 and mi < 60 and sec < 60:
-            return _iso(d.replace(hour=h, minute=mi, second=sec, tzinfo=LIMA))
+    hms = _card_time(hm)
+    if hms:
+        h, mi, sec = hms
+        return _iso(d.replace(hour=h, minute=mi, second=sec, tzinfo=LIMA))
     return _iso(d.replace(hour=12, tzinfo=LIMA))  # sin hora: mediodía de Lima, para que la fecha no cambie al pasar a UTC
+
+
+def _card_time(hm: str) -> Optional[tuple[int, int, int]]:
+    """Hora (h, min, s) de una tarjeta del CENVUL, de 24 o de 12 horas; ``None`` si no hay o no es válida."""
+    t = _HM_RE.match(re.sub(r"\s+", " ", (hm or "").replace("\u00a0", " ").replace("\u202f", " ")).strip())
+    if not t:
+        return None
+    h, mi, sec = int(t.group(1)), int(t.group(2)), int(t.group(3) or 0)
+    if t.group(4):  # 12 h: «AM»/«PM» o «a. m.»/«p. m.»
+        h = h % 12 + (12 if t.group(4).lower() == "p" else 0)
+    return (h, mi, sec) if h < 24 and mi < 60 and sec < 60 else None
 
 
 #: Dónde está cada volcán que vigila el IGP, para ubicar sus boletines y alertas.
@@ -624,17 +652,48 @@ _PERU_ENVELOPE = (-21.0, -84.0, 2.5, -66.0)
 def _xy(c) -> Iterator[tuple[float, float]]:
     """Pares (x, y) de una geometría GeoJSON (``coordinates`` anidadas) o de Esri (``rings``, ``paths``, ``x``/``y``)."""
     if isinstance(c, dict):
-        if isinstance(c.get("x"), (int, float)) and isinstance(c.get("y"), (int, float)):
-            yield float(c["x"]), float(c["y"])
-        for k in ("coordinates", "rings", "paths", "points"):
-            if k in c:
-                yield from _xy(c[k])
+        yield from _xy_dict(c)
     elif isinstance(c, list):
-        if len(c) >= 2 and all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in c[:2]):
-            yield float(c[0]), float(c[1])
-        else:
-            for v in c:
-                yield from _xy(v)
+        yield from _xy_list(c)
+
+
+def _xy_dict(c: dict) -> Iterator[tuple[float, float]]:
+    """Pares (x, y) de un objeto de geometría: su punto Esri (``x``/``y``) y los de sus listas de coordenadas."""
+    if isinstance(c.get("x"), (int, float)) and isinstance(c.get("y"), (int, float)):
+        yield float(c["x"]), float(c["y"])
+    for k in ("coordinates", "rings", "paths", "points"):
+        if k in c:
+            yield from _xy(c[k])
+
+
+def _xy_list(c: list) -> Iterator[tuple[float, float]]:
+    """Pares (x, y) de una lista: ella misma si empieza con dos números, si no los de cada elemento."""
+    if len(c) >= 2 and all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in c[:2]):
+        yield float(c[0]), float(c[1])
+    else:
+        for v in c:
+            yield from _xy(v)
+
+
+def _in_box(box: tuple[float, float, float, float], lat: float, lon: float) -> bool:
+    """Si (lat, lon) cae dentro del recuadro ``box`` (lat0, lon0, lat1, lon1), bordes incluidos."""
+    return box[0] <= lat <= box[2] and box[1] <= lon <= box[3]
+
+
+def _geometry_points(feats: list) -> list[tuple[float, float]]:
+    """Los puntos (lat, lon) de la geometría de cada elemento de la capa (hasta 200 por elemento)."""
+    return [(lat, lon) for f in feats for lon, lat in itertools.islice(_xy((f or {}).get("geometry") or {}), 200)]
+
+
+def _row_points(rows: list[dict]) -> list[tuple[float, float]]:
+    """Los puntos (lat, lon) de las columnas LATITUD/LONGITUD de las filas que las traen numéricas."""
+    pts = []
+    for r in rows:
+        try:
+            pts.append((float(r["LATITUD"]), float(r["LONGITUD"])))
+        except (KeyError, TypeError, ValueError):
+            pass
+    return pts
 
 
 def _arcgis_off_peru(feats: list, rows: list[dict]) -> str:
@@ -642,25 +701,19 @@ def _arcgis_off_peru(feats: list, rows: list[dict]) -> str:
     ArcGIS responde en metros; latitud y longitud intercambiadas), o "". Mira la geometría y, en las estaciones, las
     columnas LATITUD/LONGITUD: si menos de la mitad de los puntos cae en el Perú, la capa no se lee (antes los avisos
     salían sin lugar ni polígono: ``tools/drift_sim.py``, mutaciones ``json-scale-x10`` y ``arcgis-web-mercator``)."""
-    pts = [(lat, lon) for f in feats for lon, lat in itertools.islice(_xy((f or {}).get("geometry") or {}), 200)]
-    for r in rows:
-        try:
-            pts.append((float(r["LATITUD"]), float(r["LONGITUD"])))
-        except (KeyError, TypeError, ValueError):
-            pass
+    pts = _geometry_points(feats) + _row_points(rows)
     if not pts:
         return ""
-    inside = sum(1 for lat, lon in pts if _PERU_ENVELOPE[0] <= lat <= _PERU_ENVELOPE[2]
-                 and _PERU_ENVELOPE[1] <= lon <= _PERU_ENVELOPE[3])
+    inside = sum(1 for lat, lon in pts if _in_box(_PERU_ENVELOPE, lat, lon))
     if inside * 2 >= len(pts):
         return ""
-    lat, lon = next((p for p in pts if not (_PERU_ENVELOPE[0] <= p[0] <= _PERU_ENVELOPE[2]
-                                           and _PERU_ENVELOPE[1] <= p[1] <= _PERU_ENVELOPE[3])))
+    lat, lon = next((p for p in pts if not _in_box(_PERU_ENVELOPE, p[0], p[1])))
     return (f"la geometría de la capa no está en el Perú ({len(pts) - inside} de {len(pts)} puntos fuera; p. ej. "
             f"lat {lat:g}, lon {lon:g}): ¿otra proyección (falta outSR=4326) o latitud y longitud intercambiadas?")
 
 
-def parse_arcgis(body: bytes, base_url: str) -> Parsed:
+def _arcgis_features(body: bytes) -> list:
+    """La lista ``features`` de una respuesta de ArcGIS; ``FeedError`` si no es JSON, es un error o no la trae."""
     try:
         data = json.loads(body.decode("utf-8-sig"))
     except (UnicodeDecodeError, ValueError) as exc:
@@ -671,6 +724,17 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
     feats = (data or {}).get("features") if isinstance(data, dict) else None
     if not isinstance(feats, list):
         raise FeedError("respuesta de ArcGIS sin lista de elementos")
+    return feats
+
+
+def _main_departments(by_dep: dict) -> list:
+    """Los departamentos de un aviso, de mayor a menor área, sin las astillas de menos del 3 % del área."""
+    total = sum(by_dep.values())
+    return [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+
+
+def parse_arcgis(body: bytes, base_url: str) -> Parsed:
+    feats = _arcgis_features(body)
     rows = [(f or {}).get("attributes") or (f or {}).get("properties") or {} for f in feats]
     if not rows:
         return Parsed("arcgis-json", [], ["la capa no tiene avisos vigentes"])
@@ -753,9 +817,8 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             shapes.setdefault(k, []).extend(shape_rings((f or {}).get("geometry") or {}))
         for (fecha, intensidad, rango), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, kv[0][1]), reverse=True):
             rings = cap_rings(shapes.get((fecha, intensidad, rango)) or [])
-            total = sum(by_dep.values())
             # Las astillas de menos del 3 % del área no nombran un departamento.
-            codes = [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+            codes = _main_departments(by_dep)
             when = _day_ms(fecha)
             deps = [names.get(c, c) for c in codes]
             level = intensidad.lower() or "sin nivel"
@@ -790,8 +853,7 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             for code, area in polygon_departments((f or {}).get("geometry") or {}, sample=True).items():
                 g[code] = g.get(code, 0.0) + area
         for (fecha, nivel), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, kv[0][1]), reverse=True):
-            total = sum(by_dep.values())
-            codes = [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+            codes = _main_departments(by_dep)
             when = _day_ms(fecha)
             deps = [names.get(c, c) for c in codes]
             more = len(deps) - 6
@@ -856,6 +918,54 @@ def _days_es(a: datetime, b: datetime) -> str:
     return f"{a.day} de {months[a.month]} y {b.day} de {months[b.month]}"
 
 
+def _firms_coords(r: dict) -> Optional[tuple[float, float]]:
+    """(lat, lon) de una fila del CSV de FIRMS; ``None`` si no son números."""
+    try:
+        return float(r["latitude"]), float(r["longitude"])
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
+def _firms_time(r: dict) -> Optional[datetime]:
+    """Hora UTC de la pasada del satélite de una fila del CSV de FIRMS (``acq_date`` y ``acq_time``); ``None`` si no se lee."""
+    hhmm = str(r.get("acq_time") or "").strip().zfill(4)
+    try:
+        return datetime.strptime(f"{r['acq_date']} {hhmm}", "%Y-%m-%d %H%M").replace(tzinfo=timezone.utc)
+    except (KeyError, ValueError):
+        return None
+
+
+def _firms_check_rows(rows: int, numeric: int, outside: int) -> None:
+    """``FeedError`` si el CSV de FIRMS está vacío, sin coordenadas numéricas o con los focos fuera de Sudamérica."""
+    if not rows:
+        # El archivo es el de toda Sudamérica en 24 horas: VIIRS ve allí cientos de focos cada día (quemas agrícolas,
+        # mecheros de gas, incendios en la Amazonía); un CSV sin ninguna fila es un archivo vacío, no un día sin
+        # fuego, y se publicaba «sin focos de calor en el Perú» (``tools/drift_sim.py``, mutación ``csv-header-only``).
+        raise FeedError("el CSV de focos de calor de Sudamérica de FIRMS no trae ninguna fila")
+    if numeric < rows / 2:
+        raise FeedError(f"solo {numeric} de {rows} filas del CSV de FIRMS tienen coordenadas numéricas: "
+                        "¿coma decimal u otro separador?")
+    if numeric and outside > numeric * 0.05:
+        raise FeedError(f"{outside} de {numeric} focos del CSV de Sudamérica de FIRMS caen fuera de Sudamérica: "
+                        "¿latitud y longitud intercambiadas?")
+
+
+def _firms_text(per: list, names: dict, times: list, sat: str) -> tuple[str, str]:
+    """Título y resumen del aviso de focos de calor: cuántos, en qué días, dónde y con qué satélite."""
+    total = sum(n for _, n in per)
+    top = [f"{names.get(c, c)} ({n})" for c, n in per[:3]]
+    sat_name = {"N": "Suomi NPP", "1": "NOAA-20", "N20": "NOAA-20", "J1": "NOAA-20", "N21": "NOAA-21", "J2": "NOAA-21"}.get(sat, sat)
+    span = (f"entre el {min(times).astimezone(LIMA):%d/%m %H:%M} y el {max(times).astimezone(LIMA):%d/%m %H:%M} (UTC−5)"
+            if times else "en las últimas 24 horas")
+    title = (f"NASA FIRMS · {total} foco{'s' if total != 1 else ''} de calor en el Perú"
+             + (f" ({_days_es(min(times), max(times))})" if times else "") + ": "
+             + _join(top + ([f"{len(per) - 3} departamentos más"] if len(per) > 3 else [])))
+    summary = (f"Detecciones del satélite {sat_name or '?'} (VIIRS, 375 m) {span}: "
+               + ", ".join(f"{names.get(c, c)} {n}" for c, n in per) + ". Un foco de calor es una temperatura alta "
+               "detectada desde el espacio: puede ser un incendio forestal, una quema agrícola u otra fuente de calor.")
+    return title, summary
+
+
 def parse_firms(body: bytes, base_url: str = "") -> Parsed:
     import csv
     import io
@@ -876,15 +986,15 @@ def parse_firms(body: bytes, base_url: str = "") -> Parsed:
     rows = numeric = outside = 0
     for r in reader:
         rows += 1
-        try:
-            lat, lon = float(r["latitude"]), float(r["longitude"])
-        except (KeyError, TypeError, ValueError):
+        xy = _firms_coords(r)
+        if xy is None:
             continue
+        lat, lon = xy
         numeric += 1
-        if not (_FIRMS_BOX[0] <= lat <= _FIRMS_BOX[2] and _FIRMS_BOX[1] <= lon <= _FIRMS_BOX[3]):
+        if not _in_box(_FIRMS_BOX, lat, lon):
             outside += 1
             continue
-        if not (_PERU_BOX[0] <= lat <= _PERU_BOX[2] and _PERU_BOX[1] <= lon <= _PERU_BOX[3]):
+        if not _in_box(_PERU_BOX, lat, lon):
             continue
         code = department_at(lat, lon)
         if not code:
@@ -895,37 +1005,15 @@ def parse_firms(body: bytes, base_url: str = "") -> Parsed:
         by_dep[code] = by_dep.get(code, 0) + 1
         spots.append((lat, lon))
         sat = sat or str(r.get("satellite") or "").strip()
-        hhmm = str(r.get("acq_time") or "").strip().zfill(4)
-        try:
-            times.append(datetime.strptime(f"{r['acq_date']} {hhmm}", "%Y-%m-%d %H%M").replace(tzinfo=timezone.utc))
-        except (KeyError, ValueError):
-            pass
-    if not rows:
-        # El archivo es el de toda Sudamérica en 24 horas: VIIRS ve allí cientos de focos cada día (quemas agrícolas,
-        # mecheros de gas, incendios en la Amazonía); un CSV sin ninguna fila es un archivo vacío, no un día sin
-        # fuego, y se publicaba «sin focos de calor en el Perú» (``tools/drift_sim.py``, mutación ``csv-header-only``).
-        raise FeedError("el CSV de focos de calor de Sudamérica de FIRMS no trae ninguna fila")
-    if numeric < rows / 2:
-        raise FeedError(f"solo {numeric} de {rows} filas del CSV de FIRMS tienen coordenadas numéricas: "
-                        "¿coma decimal u otro separador?")
-    if numeric and outside > numeric * 0.05:
-        raise FeedError(f"{outside} de {numeric} focos del CSV de Sudamérica de FIRMS caen fuera de Sudamérica: "
-                        "¿latitud y longitud intercambiadas?")
+        when = _firms_time(r)
+        if when is not None:
+            times.append(when)
+    _firms_check_rows(rows, numeric, outside)
     repairs = [f"{low} detecciones de baja confianza no contadas"] if low else []
     if not by_dep:
         return Parsed("firms-csv", [], repairs + ["sin focos de calor en el Perú en las últimas 24 horas"])
     per = sorted(by_dep.items(), key=lambda x: (-x[1], names.get(x[0], x[0])))
-    total = sum(n for _, n in per)
-    top = [f"{names.get(c, c)} ({n})" for c, n in per[:3]]
-    sat_name = {"N": "Suomi NPP", "1": "NOAA-20", "N20": "NOAA-20", "J1": "NOAA-20", "N21": "NOAA-21", "J2": "NOAA-21"}.get(sat, sat)
-    span = (f"entre el {min(times).astimezone(LIMA):%d/%m %H:%M} y el {max(times).astimezone(LIMA):%d/%m %H:%M} (UTC−5)"
-            if times else "en las últimas 24 horas")
-    title = (f"NASA FIRMS · {total} foco{'s' if total != 1 else ''} de calor en el Perú"
-             + (f" ({_days_es(min(times), max(times))})" if times else "") + ": "
-             + _join(top + ([f"{len(per) - 3} departamentos más"] if len(per) > 3 else [])))
-    summary = (f"Detecciones del satélite {sat_name or '?'} (VIIRS, 375 m) {span}: "
-               + ", ".join(f"{names.get(c, c)} {n}" for c, n in per) + ". Un foco de calor es una temperatura alta "
-               "detectada desde el espacio: puede ser un incendio forestal, una quema agrícola u otra fuente de calor.")
+    title, summary = _firms_text(per, names, times, sat)
     from .geopoly import grid_points
 
     # Dónde están los focos: celdas de 0,1° (~11 km) con cuántos caen en cada una (un foco es un píxel de 375 m).

@@ -51,7 +51,13 @@ def test_canonical_link_joins_server_variants_and_keeps_what_identifies():
     assert N.canonical_link("") == "" and N.canonical_link("mailto:a@b.pe") == "mailto:a@b.pe"
 
 
-def test_same_feed_with_other_scheme_and_host_adds_nothing():
+def _proycontra_path(link: str) -> str:
+    """El enlace sin esquema ni servidor (la parte que no cambia entre las dos copias)."""
+    return re.sub(r"^https?://(www\.)?proycontra\.com\.pe", "", link)
+
+
+def _proycontra_copies() -> tuple[list[dict], list[dict]]:
+    """Las dos copias del mismo día leídas por el lector del sitio: casi las mismas notas, con otros id."""
     a_xml = (FIX / "pro-y-contra-2026-11-10-https.xml").read_bytes()
     b_xml = (FIX / "pro-y-contra-2026-11-10-http-www.xml").read_bytes()
     common = set(_paths(a_xml)) & set(_paths(b_xml))
@@ -59,38 +65,73 @@ def test_same_feed_with_other_scheme_and_host_adds_nothing():
     a = _collect("pro-y-contra", a_xml, datetime(2026, 11, 10, 6, 0, tzinfo=timezone.utc))
     b = _collect("pro-y-contra", b_xml, datetime(2026, 11, 10, 12, 0, tzinfo=timezone.utc))
     assert a and b and {i["id"] for i in a}.isdisjoint({i["id"] for i in b}), "los id cambian con el enlace"
+    return a, b
+
+
+def _repeated(a: list[dict], b: list[dict]) -> tuple[set[str], list[dict]]:
+    """Las rutas de la primera copia y las notas de la segunda que ya estaban en la primera."""
+    in_a = {_proycontra_path(i["link"]) for i in a}
+    return in_a, [i for i in b if _proycontra_path(i["link"]) in in_a]
+
+
+def _assert_only_new_stories_added(added: list[dict], in_a: set[str]) -> None:
+    """Lo agregado es solo lo que no estaba en la primera copia, y nada como corrección."""
+    assert not added or all(_proycontra_path(i["link"]) not in in_a for i in added)
+    assert not any(i.get("revises") for i in added)
+
+
+def _cluster_links(items: list[dict], now: datetime) -> list[str]:
+    """Los enlaces que muestran los grupos de esas notas."""
+    return [link["url"] for g in N.cluster(items, now) for link in g["links"]]
+
+
+def test_same_feed_with_other_scheme_and_host_adds_nothing():
+    a, b = _proycontra_copies()
     hist = N.new_lines([], a)
     skipped: list[dict] = []
     added = N.new_lines(hist, b, skipped=skipped)
-    in_a = {re.sub(r"^https?://(www\.)?proycontra\.com\.pe", "", i["link"]) for i in a}
-    again = [i for i in b if re.sub(r"^https?://(www\.)?proycontra\.com\.pe", "", i["link"]) in in_a]
+    in_a, again = _repeated(a, b)
     assert again, "hay notas relevantes en las dos copias"
     assert {i["id"] for i in skipped} == {i["id"] for i in again}
-    assert not added or all(re.sub(r"^https?://(www\.)?proycontra\.com\.pe", "", i["link"]) not in in_a for i in added)
-    assert not any(i.get("revises") for i in added)
+    _assert_only_new_stories_added(added, in_a)
     # El grupo muestra una sola vez cada nota aunque el histórico viejo tenga las dos copias.
-    links = [link["url"] for g in N.cluster(a + b, datetime(2026, 11, 10, 12, 0, tzinfo=timezone.utc)) for link in g["links"]]
+    links = _cluster_links(a + b, datetime(2026, 11, 10, 12, 0, tzinfo=timezone.utc))
     assert len(links) == len({N.canonical_link(u) for u in links})
 
 
 def test_usgs_revision_is_kept_and_the_latest_is_shown():
     raw1 = (FIX / "usgs-sismos-2026-10-21.json").read_bytes()
     raw2 = (FIX / "usgs-sismos-2026-10-23.json").read_bytes()
-    mag = {name: next(f["properties"]["mag"] for f in json.loads(r)["features"] if f["id"] == "us6000u1kt")
-           for name, r in (("old", raw1), ("new", raw2))}
+    mag = _usgs_mags(raw1, raw2)
     assert (mag["old"], mag["new"]) == (5.2, 5.3)
     t1, t2 = datetime(2026, 10, 21, 20, 0, tzinfo=timezone.utc), datetime(2026, 10, 23, 3, 0, tzinfo=timezone.utc)
     first, second = _collect("usgs-sismos", raw1, t1), _collect("usgs-sismos", raw2, t2)
     hist = N.new_lines([], first)
     added = N.new_lines(hist, second)
-    old = next(i for i in hist if i["link"].endswith("/us6000u1kt"))
-    rev = [i for i in added if i["link"].endswith("/us6000u1kt")]
+    old, rev = _usgs_versions(hist, added)
     assert len(rev) == 1 and rev[0]["revises"] == old["id"] and "5.3" in rev[0]["title"]
     # Una segunda revisión remite a la primera versión, no a la anterior.
     third = dict(rev[0], id="otro", title=rev[0]["title"].replace("5.3", "5.4"), first_seen="2026-10-24T03:00:00+00:00")
     assert N.new_lines(hist + added, [third])[0]["revises"] == old["id"]
-    shown = [link for g in N.cluster(hist + added, t2) for link in g["links"] if link["url"].endswith("/us6000u1kt")]
+    shown = _shown_usgs_links(hist + added, t2)
     assert len(shown) == 1 and "5.3" in shown[0]["title"]
+
+
+def _usgs_mags(raw1: bytes, raw2: bytes) -> dict[str, float]:
+    """La magnitud del sismo us6000u1kt en cada copia, leída del GeoJSON sin el lector del sitio."""
+    return {name: next(f["properties"]["mag"] for f in json.loads(r)["features"] if f["id"] == "us6000u1kt")
+            for name, r in (("old", raw1), ("new", raw2))}
+
+
+def _usgs_versions(hist: list[dict], added: list[dict]) -> tuple[dict, list[dict]]:
+    """La línea original del sismo us6000u1kt y las que se agregaron después para él."""
+    old = next(i for i in hist if i["link"].endswith("/us6000u1kt"))
+    return old, [i for i in added if i["link"].endswith("/us6000u1kt")]
+
+
+def _shown_usgs_links(items: list[dict], now: datetime) -> list[dict]:
+    """Los enlaces al sismo us6000u1kt que muestran los grupos."""
+    return [link for g in N.cluster(items, now) for link in g["links"] if link["url"].endswith("/us6000u1kt")]
 
 
 def test_a_link_that_does_not_identify_the_story_keeps_every_entry():

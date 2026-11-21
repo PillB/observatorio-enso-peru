@@ -201,11 +201,15 @@ def _decode(body: bytes, repairs: list[str]) -> str:
     declared = (m.group(1).decode().lower() if m else "utf-8")
     try:
         text = body.decode("utf-8")
-        if declared not in ("utf-8", "utf8") and not text.isascii():
-            repairs.append(f"codificación: declarada {declared}, leída como UTF-8")
-        return text
     except UnicodeDecodeError:
-        pass
+        return _decode_not_utf8(body, declared, repairs)
+    if declared not in ("utf-8", "utf8") and not text.isascii():
+        repairs.append(f"codificación: declarada {declared}, leída como UTF-8")
+    return text
+
+
+def _decode_not_utf8(body: bytes, declared: str, repairs: list[str]) -> str:
+    """Texto de un feed que no es UTF-8 válido, según la codificación declarada."""
     if declared in ("utf-8", "utf8"):
         if mostly_cp1252(body):
             repairs.append(f"codificación: declarada {declared}, leída como windows-1252")
@@ -267,17 +271,35 @@ def truncated(body: bytes, adapter: str = "feed") -> str:
     low = body[-20000:].lower()
     head = body[:5000].lower()
     if adapter in ("feed", "indeci-coen"):
-        for open_, close in ((b"<rss", b"</rss"), (b"<feed", b"</feed"), (b"<rdf:rdf", b"</rdf:rdf")):
-            if open_ in head and close not in low:
-                return f"el documento no cierra ({close.decode()}>): llegó cortado"
-    elif adapter in _HTML_ADAPTERS:
-        if b"<html" in head and b"</html" not in low:
-            return "la página no cierra (</html>): llegó cortada"
-    elif adapter == "firms" and body.strip():
-        text = text_of(body)
-        lines = text.rstrip("\r\n").split("\n")
-        if len(lines) > 1 and not text.endswith("\n") and lines[-1].count(",") < lines[0].count(","):
-            return "la última fila del CSV está incompleta: llegó cortado"
+        return _xml_unclosed(head, low)
+    if adapter in _HTML_ADAPTERS:
+        return _html_unclosed(head, low)
+    if adapter == "firms" and body.strip():
+        return _csv_unfinished(body)
+    return ""
+
+
+def _xml_unclosed(head: bytes, low: bytes) -> str:
+    """Por qué un feed XML parece cortado (abre la raíz y no la cierra), o ""."""
+    for open_, close in ((b"<rss", b"</rss"), (b"<feed", b"</feed"), (b"<rdf:rdf", b"</rdf:rdf")):
+        if open_ in head and close not in low:
+            return f"el documento no cierra ({close.decode()}>): llegó cortado"
+    return ""
+
+
+def _html_unclosed(head: bytes, low: bytes) -> str:
+    """Por qué una página HTML parece cortada (abre ``<html`` y no lo cierra), o ""."""
+    if b"<html" in head and b"</html" not in low:
+        return "la página no cierra (</html>): llegó cortada"
+    return ""
+
+
+def _csv_unfinished(body: bytes) -> str:
+    """Por qué un CSV parece cortado (la última fila tiene menos columnas y no acaba en salto de línea), o ""."""
+    text = text_of(body)
+    lines = text.rstrip("\r\n").split("\n")
+    if len(lines) > 1 and not text.endswith("\n") and lines[-1].count(",") < lines[0].count(","):
+        return "la última fila del CSV está incompleta: llegó cortado"
     return ""
 
 
@@ -466,13 +488,17 @@ def _rss_item(e: ET.Element, base: str, tz: timezone, now: datetime) -> dict:
     return item
 
 
-def _atom_entry(e: ET.Element, base: str, tz: timezone, now: datetime) -> dict:
+def _atom_link(e: ET.Element) -> str:
+    """Enlace de una entrada Atom: el ``alternate``, si no el primero con ``href``, si no el ``id``."""
     links = _children(e, "link")
     link = next((l.get("href") for l in links if l.get("rel", "alternate") == "alternate" and l.get("href")), None)
-    link = link or next((l.get("href") for l in links if l.get("href")), "") or _first(e, "id")
+    return link or next((l.get("href") for l in links if l.get("href")), "") or _first(e, "id")
+
+
+def _atom_entry(e: ET.Element, base: str, tz: timezone, now: datetime) -> dict:
     item = {
         "title": clean_text(_first(e, "title"), 300),
-        "link": _abs(link, base),
+        "link": _abs(_atom_link(e), base),
         "published": parse_date(_first(e, "published", "issued", "updated", "modified"), tz, now),
         "summary": clean_summary(_first(e, "summary", "content", "description")),
         "categories": [clean_text(c.get("term") or c.get("label") or _text(c), 80) for c in _children(e, "category")][:12],
@@ -539,14 +565,28 @@ def parse_gobpe(body: bytes, base_url: str = "https://www.gob.pe/", now: Optiona
     text = text_of(body)
     if "gob.pe" not in text[:5000] and "gob.pe" not in base_url:
         raise FeedError("no es una página de gob.pe")
+    items = _gobpe_items(text, now)
+    if not items:
+        raise FeedError("la página de gob.pe no tiene notas con el formato esperado")
+    _check_gobpe_institution(items, base_url)
+    p = _finish(Parsed("gobpe-html", items))
+    p.items.sort(key=lambda i: i["published"] or "", reverse=True)
+    return p
+
+
+def _gobpe_items(text: str, now: datetime) -> list[dict]:
+    """Entradas de las tarjetas de noticias de un listado de gob.pe."""
     items = []
     for m in _GOBPE_CARD_RE.finditer(text):
         desc = _GOBPE_DESC_RE.search(m.group("rest"))
         items.append({"title": clean_text(m.group("title"), 300), "link": urljoin("https://www.gob.pe/", m.group("href")),
                       "published": parse_date(m.group("dt").split(".")[0], LIMA, now),
                       "summary": clean_summary(desc.group(1) if desc else ""), "categories": []})
-    if not items:
-        raise FeedError("la página de gob.pe no tiene notas con el formato esperado")
+    return items
+
+
+def _check_gobpe_institution(items: list[dict], base_url: str) -> None:
+    """Rechaza un listado sin ninguna nota de la institución de ``base_url`` (gob.pe redirigió a otra página)."""
     inst = re.search(r"/institucion/([\w-]+)/", base_url)
     if inst and not any(f"/institucion/{inst.group(1)}/" in i["link"] for i in items):
         # gob.pe redirigió a otra página con notas (otra institución, la portada): tiene la forma de un listado y se
@@ -555,9 +595,6 @@ def parse_gobpe(body: bytes, base_url: str = "https://www.gob.pe/", now: Optiona
         others = sorted({m.group(1) for i in items if (m := re.search(r"/institucion/([\w-]+)/", i["link"]))})
         raise FeedError(f"el listado no tiene ninguna nota de «{inst.group(1)}» (son de {', '.join(others[:5]) or 'otro sitio'}): "
                         "¿gob.pe redirigió a otra página?")
-    p = _finish(Parsed("gobpe-html", items))
-    p.items.sort(key=lambda i: i["published"] or "", reverse=True)
-    return p
 
 
 _ENTITY_DECL_RE = re.compile(r"<!ENTITY", re.I)

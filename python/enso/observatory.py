@@ -543,20 +543,7 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         # Avisos del lector (meses no leídos, servidor sin respuesta con el histórico publicado, histórico viejo).
         for stage, code, msg in (parsed.meta or {}).get("events") or []:
             log.add("warning", src.id, stage, code, msg)
-        if prev and prev.get("data") is not None:
-            # Misma forma pero peor que ayer: historia recortada, último dato hacia atrás o valores antiguos
-            # reescritos (``enso.drift``). PSL reescribió así toda la serie Niño 3.4 ERSSTv6 entre el 6 y el 18 de
-            # noviembre de 2026 (hasta +0,58 °C) sin cambiar la cabecera: la huella no lo vio. Una publicación que
-            # arrastró el dato también sirve de base: es la última lectura buena (si no, el cambio que llega el día
-            # en que la fuente vuelve no se compararía nunca).
-            since = f" (base: lectura del {prev.get('retrievedAt')}, arrastrada)" if prev.get("carried") else ""
-            for code, msg in drift.compare(prev["data"], parsed.data, src.id):
-                log.add("warning", src.id, "validate", code, msg + since)
-        elif drift.series(parsed.data) and previous.base and previous.state.get(prev_name) != "missing":
-            # Sin base no hay comparación: que se vea (una fuente nueva, en cambio, no tiene publicación anterior).
-            log.add("info", src.id, "validate", "drift-unchecked",
-                    "No se pudo leer la publicación anterior de esta fuente: hoy no se comparó su serie con la de ayer "
-                    f"({previous.state.get(prev_name) or 'sin dato'}).")
+        _drift_events(src, prev, parsed, previous, prev_name, log)
         if acq.format_drift:
             log.add("warning", src.id, "parse", "format-drift",
                     f"Se detectó un cambio en el formato de la fuente (huella {acq.previous_fingerprint} → {parsed.fingerprint}). "
@@ -579,7 +566,34 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         acq.error = f"{type(exc).__name__}: {exc}"
         log.add("error", src.id, "parse", "exception", acq.error)
 
-    if not acq.ok and prev and prev.get("data") is not None:
+    if not acq.ok:
+        _carry_previous(acq, src, prev, previous, prev_name, log)
+    return acq
+
+
+def _drift_events(src: Source, prev: Optional[dict], parsed: Parsed, previous: PreviousPublication, prev_name: str,
+                  log: EventLog) -> None:
+    """Compara la serie leída con la de la publicación anterior (``enso.drift``), o avisa que no hubo con qué."""
+    if prev and prev.get("data") is not None:
+        # Misma forma pero peor que ayer: historia recortada, último dato hacia atrás o valores antiguos
+        # reescritos (``enso.drift``). PSL reescribió así toda la serie Niño 3.4 ERSSTv6 entre el 6 y el 18 de
+        # noviembre de 2026 (hasta +0,58 °C) sin cambiar la cabecera: la huella no lo vio. Una publicación que
+        # arrastró el dato también sirve de base: es la última lectura buena (si no, el cambio que llega el día
+        # en que la fuente vuelve no se compararía nunca).
+        since = f" (base: lectura del {prev.get('retrievedAt')}, arrastrada)" if prev.get("carried") else ""
+        for code, msg in drift.compare(prev["data"], parsed.data, src.id):
+            log.add("warning", src.id, "validate", code, msg + since)
+    elif drift.series(parsed.data) and previous.base and previous.state.get(prev_name) != "missing":
+        # Sin base no hay comparación: que se vea (una fuente nueva, en cambio, no tiene publicación anterior).
+        log.add("info", src.id, "validate", "drift-unchecked",
+                "No se pudo leer la publicación anterior de esta fuente: hoy no se comparó su serie con la de ayer "
+                f"({previous.state.get(prev_name) or 'sin dato'}).")
+
+
+def _carry_previous(acq: Acquired, src: Source, prev: Optional[dict], previous: PreviousPublication, prev_name: str,
+                    log: EventLog) -> None:
+    """Fuente sin dato hoy: conserva el de la publicación anterior, o avisa que tampoco se pudo leer."""
+    if prev and prev.get("data") is not None:
         acq.data = prev["data"]
         acq.carried = True
         acq.channel = "previous-publication"
@@ -589,12 +603,11 @@ def acquire(src: Source, fetcher, fixtures: Optional[Path], previous: PreviousPu
         acq.fingerprint = prev.get("fingerprint", "")
         log.add("info", src.id, "fetch", "carried-forward",
                 f"Se mantiene el último dato válido obtenido el {acq.retrieved_at}.")
-    elif not acq.ok and previous.state.get(prev_name) == "unreachable":
+    elif previous.state.get(prev_name) == "unreachable":
         log.add("warning", src.id, "fetch", "previous-unreachable",
                 f"La fuente no respondió y tampoco se pudo leer su último dato de la publicación anterior "
                 f"({prev_name}: el sitio falló o no respondió): esta publicación sale sin dato de la fuente y la "
                 "siguiente no tendrá qué arrastrar.")
-    return acq
 
 
 def binary_body(body: bytes) -> str:
@@ -1130,7 +1143,8 @@ class Builder:
             "description": description, "climatology": climatology, "latest": latest, "points": pts,
         }
 
-    def build_series(self) -> None:
+    def _ersst_series(self) -> None:
+        """Niño 1+2 y Niño 3.4 de ERSSTv6, llevados a la base 1991–2020."""
         # ERSSTv6 (NOAA dejó de actualizar ERSSTv5 en 2026). PSL publica la
         # anomalía con base 1981–2010; se lleva a 1991–2020 restando la media
         # de cada mes en ese periodo. No se usa para estimar el ICEN: frente
@@ -1152,6 +1166,9 @@ class Builder:
                             category=(lambda v: {"tone": sig.coastal_tone(v)}) if key == "nino12"
                             else (lambda v: {"tone": sig.anomaly_tone(v)}),
                             description=f"Anomalía mensual de TSM en la región {region}. NOAA ERSSTv6, llevada a la base 1991–2020.")
+
+    def _oisst_series(self) -> None:
+        """Las cuatro regiones Niño del análisis OISST v2.1 (CPC)."""
         oi = self.data("cpc-sstoi")
         if oi:
             meta = dict(units="degC", source="cpc-sstoi", frequency="mensual", slo_days=50, climatology="1991–2020",
@@ -1166,6 +1183,28 @@ class Builder:
                             description="Anomalía mensual de TSM en la región Niño 3 (5°N–5°S, 150°–90°O), OISST v2.1.", **meta)
             self.add_series("nino4_oisst", oi["anom"]["nino4"], label="Niño 4 (OISST)", scope="basin",
                             description="Anomalía mensual de TSM en la región Niño 4 (5°N–5°S, 160°E–150°O), OISST v2.1.", **meta)
+
+    def _wind_series(self) -> None:
+        """Índices de alisios a 850 hPa de NOAA/CPC (anomalía y valor), por región."""
+        for sid, key, label, region in (("cpc-wpac850", "wpac850", "Alisios Pacífico occidental", "135°E–180°"),
+                                        ("cpc-cpac850", "cpac850", "Alisios Pacífico central", "175°O–140°O"),
+                                        ("cpc-epac850", "epac850", "Alisios Pacífico oriental", "135°O–120°O")):
+            d = self.data(sid)
+            if not d:
+                continue
+            if d.get("anomaly"):
+                self.add_series(f"{key}_anom", d["anomaly"], label=f"{label} (anomalía)", units="m_per_s", scope="basin",
+                                source=sid, frequency="mensual", slo_days=50, climatology="1991–2020", history_from="1979-01",
+                                category=lambda v: {"tone": "warm" if v <= -1 else "cool" if v >= 1 else "neutral"},
+                                description=f"Anomalía del índice de vientos alisios a 850 hPa ({region}, 5°N–5°S). Negativa = alisios más débiles o vientos del oeste (favorece El Niño); positiva = alisios más fuertes.")
+            if d.get("original"):
+                self.add_series(key, d["original"], label=label, units="m_per_s", scope="basin", source=sid,
+                                frequency="mensual", slo_days=50, history_from="1979-01",
+                                description=f"Índice de vientos alisios a 850 hPa ({region}, 5°N–5°S) de NOAA/CPC, en m/s con signo invertido: positivo = viento del este (alisios normales); negativo = flujo de oeste a este.")
+
+    def build_series(self) -> None:
+        self._ersst_series()
+        self._oisst_series()
         icen = self.data("igp-icen")
         if icen:
             self.add_series("icen", icen, label="ICEN oficial", units="degC", scope="coastal", source="igp-icen",
@@ -1201,21 +1240,7 @@ class Builder:
                                 frequency="mensual", slo_days=50, climatology="1951–1992",
                                 category=lambda v: {"tone": "warm" if v <= -7 else "cool" if v >= 7 else "neutral"},
                                 description="SOI en la escala de Troup usada por la Oficina de Meteorología de Australia (×10; umbrales ±7), calculado por el observatorio con las presiones de Tahití y Darwin de NOAA/CPC.")
-        for sid, key, label, region in (("cpc-wpac850", "wpac850", "Alisios Pacífico occidental", "135°E–180°"),
-                                        ("cpc-cpac850", "cpac850", "Alisios Pacífico central", "175°O–140°O"),
-                                        ("cpc-epac850", "epac850", "Alisios Pacífico oriental", "135°O–120°O")):
-            d = self.data(sid)
-            if not d:
-                continue
-            if d.get("anomaly"):
-                self.add_series(f"{key}_anom", d["anomaly"], label=f"{label} (anomalía)", units="m_per_s", scope="basin",
-                                source=sid, frequency="mensual", slo_days=50, climatology="1991–2020", history_from="1979-01",
-                                category=lambda v: {"tone": "warm" if v <= -1 else "cool" if v >= 1 else "neutral"},
-                                description=f"Anomalía del índice de vientos alisios a 850 hPa ({region}, 5°N–5°S). Negativa = alisios más débiles o vientos del oeste (favorece El Niño); positiva = alisios más fuertes.")
-            if d.get("original"):
-                self.add_series(key, d["original"], label=label, units="m_per_s", scope="basin", source=sid,
-                                frequency="mensual", slo_days=50, history_from="1979-01",
-                                description=f"Índice de vientos alisios a 850 hPa ({region}, 5°N–5°S) de NOAA/CPC, en m/s con signo invertido: positivo = viento del este (alisios normales); negativo = flujo de oeste a este.")
+        self._wind_series()
 
         heat = self.data("cpc-heat")
         if heat:
@@ -1833,6 +1858,72 @@ def archive_raw(raw_dir: Path, acquired: dict[str, "Acquired"], today: date) -> 
     return n
 
 
+def _enfen_extras(a: "Acquired", fetcher, fixtures: Optional[Path], prev: "PreviousPublication", log: EventLog,
+                  today: date, needs: "manual.ManualNeeds") -> None:
+    """Último comunicado del ENFEN y su informe técnico, sin que un error detenga la publicación."""
+    try:
+        enfen_latest(a, fetcher, fixtures, prev, log, today, needs)
+    except Exception as exc:  # noqa: BLE001 — el último comunicado no debe detener la publicación
+        log.add("error", "enfen-comunicados", "parse", "latest-exception",
+                f"No se pudo buscar el último comunicado: {type(exc).__name__}: {exc}"[:300])
+    if fixtures is None and isinstance(a.data, dict):
+        # Informe técnico del comunicado vigente: ICEN temporal y probabilidades del ENFEN.
+        prev_inf = ((prev.get("sources/enfen-comunicados.json") or {}).get("data") or {}).get("informe")
+        try:
+            a.data["informe"] = reports.acquire_informe(a.data.get("latest"), fetcher, prev_inf, log, today,
+                                                        documents=a.documents, needs=needs)
+        except Exception as exc:  # noqa: BLE001 — el informe nunca detiene la publicación
+            a.data["informe"] = prev_inf
+            log.add("error", "enfen-informe", "parse", "informe-exception",
+                    f"{type(exc).__name__}: {exc}"[:300])
+
+
+def _acquire_bsobp(fetcher, fixtures: Optional[Path], offline: bool, only, prev: "PreviousPublication", log: EventLog,
+                   today: date, needs: "manual.ManualNeeds"):
+    """Historial de boletines del IMARPE (BSOBP): semilla en pruebas, lectura en la corrida real o lo publicado."""
+    if fixtures is not None and not only:
+        from .feeds import imarpe_bsobp
+
+        return imarpe_bsobp.from_seed(today)  # pruebas: los boletines ya leídos que trae el repositorio
+    if not offline and not only:
+        from .feeds import imarpe_bsobp
+
+        # El historial de boletines (un año) es dato arrastrado: se lee con los reintentos de las fuentes. Si aun así
+        # no llega, se reconstruye desde la semilla del repositorio y lo nuevo del listado.
+        prev_bs = prev.get("imarpe-bsobp.json", carry=True)
+        try:
+            return imarpe_bsobp.acquire(fetcher, prev_bs, log, today, needs)
+        except Exception as exc:  # noqa: BLE001 — el boletín nunca detiene la publicación
+            log.add("error", imarpe_bsobp.SOURCE, "parse", "bsobp-exception", f"{type(exc).__name__}: {exc}"[:300])
+            return prev_bs
+    if fixtures is None:
+        return prev.get("imarpe-bsobp.json", carry=True)  # corrida parcial o sin red: se conserva lo publicado
+    return None
+
+
+def _previous_alerts(fetcher, fixtures: Optional[Path], offline: bool, prev: "PreviousPublication", log: EventLog):
+    """Sin noticias en esta corrida: las alertas del histórico anterior y cada fuente de alertas como no leída."""
+    # Las alertas son las últimas conocidas (del histórico anterior) y cada fuente de alertas figura como no leída,
+    # para que nadie lea su silencio como calma.
+    from . import news as N
+    news_items = N.read_jsonl(prev.get_text("news/items.jsonl") or "")
+    try:  # con los lugares que tenían publicados: ubicados de nuevo y con las correcciones de la consola
+        from . import geo_overrides as GO
+        ov_fix = fixtures / "geo-overrides.json" if fixtures is not None else None
+        if ov_fix is not None and ov_fix.exists():
+            overrides = GO.valid_overrides(json.loads(ov_fix.read_text(encoding="utf-8")))
+        else:  # sin red (pruebas, --offline): las de la publicación anterior
+            live = fixtures is None and not offline
+            overrides = GO.fetch_overrides(getattr(fetcher, "client", None) if live else None, prev, log)[0]
+        GO.apply_all(news_items, overrides, N.FEED_BY_ID)
+    except Exception as exc:  # noqa: BLE001 — quedan como se guardaron
+        log.add("warning", "geo", "parse", "alerts-places",
+                f"Las alertas anteriores quedan con el lugar con que se guardaron ({type(exc).__name__}: {exc})"[:300])
+    feed_status = [{"id": f.id, "ok": False, "error": "no se leyeron las noticias en esta corrida"}
+                   for f in N.FEEDS if f.covers]
+    return news_items, feed_status
+
+
 def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, offline: bool = False,
         today: Optional[date] = None, only: Optional[list[str]] = None, raw_dir: Optional[Path] = None,
         relay_dir: Optional[Path] = None, n8n_dir: Optional[Path] = None,
@@ -1874,40 +1965,8 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
             continue
         acquired[src.id] = acquire(src, fetcher, fixtures, prev, log)
         if src.id == "enfen-comunicados":
-            try:
-                enfen_latest(acquired[src.id], fetcher, fixtures, prev, log, today, needs)
-            except Exception as exc:  # noqa: BLE001 — el último comunicado no debe detener la publicación
-                log.add("error", "enfen-comunicados", "parse", "latest-exception",
-                        f"No se pudo buscar el último comunicado: {type(exc).__name__}: {exc}"[:300])
-            if fixtures is None and isinstance(acquired[src.id].data, dict):
-                # Informe técnico del comunicado vigente: ICEN temporal y probabilidades del ENFEN.
-                a = acquired[src.id]
-                prev_inf = ((prev.get("sources/enfen-comunicados.json") or {}).get("data") or {}).get("informe")
-                try:
-                    a.data["informe"] = reports.acquire_informe(a.data.get("latest"), fetcher, prev_inf, log, today,
-                                                                documents=a.documents, needs=needs)
-                except Exception as exc:  # noqa: BLE001 — el informe nunca detiene la publicación
-                    a.data["informe"] = prev_inf
-                    log.add("error", "enfen-informe", "parse", "informe-exception",
-                            f"{type(exc).__name__}: {exc}"[:300])
-    bsobp = None
-    if fixtures is not None and not only:
-        from .feeds import imarpe_bsobp
-
-        bsobp = imarpe_bsobp.from_seed(today)  # pruebas: los boletines ya leídos que trae el repositorio
-    elif not offline and not only:
-        from .feeds import imarpe_bsobp
-
-        # El historial de boletines (un año) es dato arrastrado: se lee con los reintentos de las fuentes. Si aun así
-        # no llega, se reconstruye desde la semilla del repositorio y lo nuevo del listado.
-        prev_bs = prev.get("imarpe-bsobp.json", carry=True)
-        try:
-            bsobp = imarpe_bsobp.acquire(fetcher, prev_bs, log, today, needs)
-        except Exception as exc:  # noqa: BLE001 — el boletín nunca detiene la publicación
-            bsobp = prev_bs
-            log.add("error", imarpe_bsobp.SOURCE, "parse", "bsobp-exception", f"{type(exc).__name__}: {exc}"[:300])
-    elif fixtures is None:
-        bsobp = prev.get("imarpe-bsobp.json", carry=True)  # corrida parcial o sin red: se conserva lo publicado
+            _enfen_extras(acquired[src.id], fetcher, fixtures, prev, log, today, needs)
+    bsobp = _acquire_bsobp(fetcher, fixtures, offline, only, prev, log, today, needs)
     escenario = acquire_escenario(fetcher, fixtures, offline, only, prev, log, today)
     needs.log(log)
     acquired = {s.id: acquired[s.id] for s in SOURCES if s.id in acquired}
@@ -1932,24 +1991,7 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
                    **(_relay_fields(acquired[s.id]) if s.id in acquired else {})} for s in SOURCES}
     news_items, feed_status = (news or {}).get("items"), ((news or {}).get("feeds") or {}).get("feeds")
     if news is None and not only:
-        # Sin noticias en esta corrida: las alertas son las últimas conocidas (del histórico anterior) y cada
-        # fuente de alertas figura como no leída, para que nadie lea su silencio como calma.
-        from . import news as N
-        news_items = N.read_jsonl(prev.get_text("news/items.jsonl") or "")
-        try:  # con los lugares que tenían publicados: ubicados de nuevo y con las correcciones de la consola
-            from . import geo_overrides as GO
-            ov_fix = fixtures / "geo-overrides.json" if fixtures is not None else None
-            if ov_fix is not None and ov_fix.exists():
-                overrides = GO.valid_overrides(json.loads(ov_fix.read_text(encoding="utf-8")))
-            else:  # sin red (pruebas, --offline): las de la publicación anterior
-                live = fixtures is None and not offline
-                overrides = GO.fetch_overrides(getattr(fetcher, "client", None) if live else None, prev, log)[0]
-            GO.apply_all(news_items, overrides, N.FEED_BY_ID)
-        except Exception as exc:  # noqa: BLE001 — quedan como se guardaron
-            log.add("warning", "geo", "parse", "alerts-places",
-                    f"Las alertas anteriores quedan con el lugar con que se guardaron ({type(exc).__name__}: {exc})"[:300])
-        feed_status = [{"id": f.id, "ok": False, "error": "no se leyeron las noticias en esta corrida"}
-                       for f in N.FEEDS if f.covers]
+        news_items, feed_status = _previous_alerts(fetcher, fixtures, offline, prev, log)
     levels = sourcefeed.levels_table(relay, log, started)  # el nivel de los avisos del SENAMHI
     feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=news_items,
                             now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
@@ -2179,6 +2221,103 @@ def _hours_between(before: dict, after: dict) -> float:
         return (b - a).total_seconds() / 3600
     except (ValueError, TypeError):
         return 24.0  # sin hora (o sin zona): se cuenta como corrida de otro día
+
+
+def _log_same_story(repeated: list[dict], revised: list[dict], log: EventLog) -> None:
+    """Registra las notas ya guardadas que llegaron repetidas o corregidas, por feed."""
+    # No es un problema de la fuente: el registro dice cuántas se juntaron y de qué feeds, para ver si un medio
+    # empieza a cambiar los enlaces de todas sus notas (eso sí sería un cambio de formato).
+    from collections import Counter
+    by_feed = Counter(i["feed"] for i in repeated + revised)
+    log.add("info", "news", "fetch", "news-same-story",
+            f"{len(repeated)} notas ya guardadas llegaron con otro enlace o titular equivalente y no se repiten; "
+            f"{len(revised)} son una corrección del titular de una nota ya guardada («revises»). Por feed: "
+            + ", ".join(f"{k} ({v})" for k, v in by_feed.most_common(8)) + ".")
+
+
+def _stale_basis(st: dict, before: dict) -> Optional[dict]:
+    """Con qué lectura se mide si un feed está callado: la de hoy, o la marca que dejó la publicación anterior."""
+    # ``feed-stale`` no puede faltar en una corrida que no leyó el feed (lectura arrastrada de un feed «reader» o
+    # una caída de un día, p. ej. una verificación antirobots): el issue se cerraría y se reabriría.
+    # La marca guarda la fecha y el hueco que midió: un feed caído varios días seguidos no trae ``latest`` (el
+    # estado de una caída lo tiene vacío) y sin ellos el issue se cerraría al segundo día de caída.
+    mark = before.get("stale") if isinstance(before.get("stale"), dict) else None
+    if st.get("ok") and not st.get("active"):
+        return st
+    if not st.get("ok") and mark:
+        return {"ok": True, "latest": before.get("latest") or mark.get("latest"),
+                "longestGapDays": before.get("longestGapDays", mark.get("longestGapDays"))}
+    return None
+
+
+def _mark_stale(st: dict, feed, before: dict, now: datetime, log: EventLog) -> Optional[dict]:
+    """Marca y registra (``feed-stale``) un feed callado más de lo que se espera de él; devuelve la marca."""
+    basis = _stale_basis(st, before)
+    stale = feed_stale(feed, basis, now) if basis else None
+    st.pop("stale", None)  # una lectura arrastrada trae el de su día
+    if not stale:
+        return stale
+    stale = {**stale, "latest": basis.get("latest"),
+             **({"longestGapDays": basis["longestGapDays"]} if basis.get("longestGapDays") is not None else {})}
+    st["stale"] = stale
+    seen = "" if st.get("ok") and not st.get("carried") else (
+        " (lectura anterior: hoy no se leyó)" if st.get("carried") else " (hoy no respondió; dato de la última lectura)")
+    # Callado más del doble de lo que se espera de él y más que su hueco más largo: o el medio dejó de
+    # publicar o el feed ya no es el suyo (cambió de dirección, de etiqueta o de dueño). Un issue por feed que
+    # se cierra solo cuando vuelve a publicar o se quita o ajusta en ``news.py``.
+    log.add("warning", f"news-{st['id']}", "fetch", "feed-stale",
+            f"{st['name']}: sin entradas nuevas desde el {str(stale['latest'])[:10]} "
+            f"({stale['days']} días{seen}; se espera al menos una cada {feed.stale_days} días y avisa a los "
+            f"{stale['after']}). Ver si el medio sigue publicando en su sitio, si el feed cambió de dirección "
+            "o si el dominio cambió de dueño; ajustar o quitar el feed en python/enso/news.py.")
+    return stale
+
+
+def _hazard_down_event(st: dict, feed, before: dict, log: EventLog) -> None:
+    """Avisa (``hazard-feed-down``) una fuente oficial de avisos caída dos corridas seguidas."""
+    if official_alerts(feed) and hazard_down(st) and hazard_down(before) and _hours_between(before, st) >= 6:
+        # Una fuente oficial de avisos (SENAMHI, INDECI/COEN, DHN, IGP, PTWC, NASA, CIIFEN…) caída dos corridas
+        # seguidas (con al menos 6 h entre ellas: dos corridas de un día de cambios distan 40 min) deja al sitio
+        # sin esos avisos: no puede quedar como «info» que nadie lee (incidencia propia por fuente; se cierra sola
+        # cuando vuelve a responder). Caída también si solo llegó la copia que n8n arrastra (``upstreamDown``).
+        why = st["error"] if not st["ok"] else (
+            f"solo llegó la copia que n8n conserva del {st.get('copyAt')} (el servidor respondió "
+            f"{(st.get('upstreamDown') or {}).get('status') or 'con error'})")
+        log.add("warning", f"news-{st['id']}", "fetch", "hazard-feed-down",
+                f"{st['name']} no respondió con un feed en dos corridas seguidas: {why}")
+
+
+def _mark_empty_layer(st: dict, feed, before: dict) -> None:
+    """Anota desde cuándo una capa de avisos responde vacía (``emptySince``)."""
+    if st["ok"] and not st.get("items") and feed is not None and feed.layer:
+        # Capa de avisos vacía: desde cuándo (una capa que el servidor dejó de llenar se ve igual que «sin avisos»
+        # y la fecha lo deja a la vista; se borra al volver a traer avisos).
+        st["emptySince"] = (before.get("emptySince") if before.get("ok") and not before.get("items") else None) \
+            or st.get("checkedAt")
+
+
+def _log_feed_inactive(st: dict, log: EventLog) -> None:
+    """Registra (``feed-inactive``) un feed que respondió sin entradas recientes."""
+    since = f" Vacía desde el {str(st['emptySince'])[:10]}." if st.get("emptySince") else ""
+    check = {"ok": " La capa sigue siendo la de estos avisos en el listado del servidor."}.get(
+        st.get("layerCheck"), f" No se pudo comprobar la capa ({st['layerCheck']})." if st.get("layerCheck") else "")
+    log.add("info", "news", "fetch", "feed-inactive",
+            f"{st['name']}: " + (f"la entrada más reciente es del {st['latest']}." if st["latest"] else
+                                 f"respondió sin entradas con fecha ({st.get('items', 0)} entradas; una capa de "
+                                 "avisos vacía es normal si no hay avisos vigentes)." + since + check))
+
+
+def _feed_status_events(st: dict, feed, before: dict, now: datetime, log: EventLog) -> None:
+    """Estado de un feed leído (o pedido) en esta corrida frente al de la anterior: marcas y avisos."""
+    stale = _mark_stale(st, feed, before, now, log)
+    if st.get("carried"):
+        return
+    _hazard_down_event(st, feed, before, log)
+    _mark_empty_layer(st, feed, before)
+    if not st["ok"]:
+        log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
+    elif not st["active"] and not stale:
+        _log_feed_inactive(st, log)
 
 
 def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublication, log: EventLog,
@@ -2444,14 +2583,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     added = N.new_lines(history, found + restored, skipped=repeated)
     revised = [i for i in added if i.get("revises")]
     if repeated or revised:
-        # No es un problema de la fuente: el registro dice cuántas se juntaron y de qué feeds, para ver si un medio
-        # empieza a cambiar los enlaces de todas sus notas (eso sí sería un cambio de formato).
-        from collections import Counter
-        by_feed = Counter(i["feed"] for i in repeated + revised)
-        log.add("info", "news", "fetch", "news-same-story",
-                f"{len(repeated)} notas ya guardadas llegaron con otro enlace o titular equivalente y no se repiten; "
-                f"{len(revised)} son una corrección del titular de una nota ya guardada («revises»). Por feed: "
-                + ", ".join(f"{k} ({v})" for k, v in by_feed.most_common(8)) + ".")
+        _log_same_story(repeated, revised, log)
     live_ids = {i["id"] for i in found}
     back_from_state = sum(1 for i in added if i["id"] not in live_ids)
     if back_from_state:
@@ -2522,60 +2654,7 @@ def acquire_news(fetcher, fixtures: Optional[Path], previous: PreviousPublicatio
     for st in status:
         if st.get("skipped"):
             continue
-        feed = N.FEED_BY_ID.get(st.get("id"))
-        before = prev_status.get(st.get("id")) or {}
-        # ``feed-stale`` no puede faltar en una corrida que no leyó el feed (lectura arrastrada de un feed «reader» o
-        # una caída de un día, p. ej. una verificación antirobots): el issue se cerraría y se reabriría.
-        # La marca guarda la fecha y el hueco que midió: un feed caído varios días seguidos no trae ``latest`` (el
-        # estado de una caída lo tiene vacío) y sin ellos el issue se cerraría al segundo día de caída.
-        mark = before.get("stale") if isinstance(before.get("stale"), dict) else None
-        basis = st if st.get("ok") and not st.get("active") else (
-            {"ok": True, "latest": before.get("latest") or mark.get("latest"),
-             "longestGapDays": before.get("longestGapDays", mark.get("longestGapDays"))}
-            if not st.get("ok") and mark else None)
-        stale = feed_stale(feed, basis, now) if basis else None
-        st.pop("stale", None)  # una lectura arrastrada trae el de su día
-        if stale:
-            stale = {**stale, "latest": basis.get("latest"),
-                     **({"longestGapDays": basis["longestGapDays"]} if basis.get("longestGapDays") is not None else {})}
-            st["stale"] = stale
-            seen = "" if st.get("ok") and not st.get("carried") else (
-                " (lectura anterior: hoy no se leyó)" if st.get("carried") else " (hoy no respondió; dato de la última lectura)")
-            # Callado más del doble de lo que se espera de él y más que su hueco más largo: o el medio dejó de
-            # publicar o el feed ya no es el suyo (cambió de dirección, de etiqueta o de dueño). Un issue por feed que
-            # se cierra solo cuando vuelve a publicar o se quita o ajusta en ``news.py``.
-            log.add("warning", f"news-{st['id']}", "fetch", "feed-stale",
-                    f"{st['name']}: sin entradas nuevas desde el {str(stale['latest'])[:10]} "
-                    f"({stale['days']} días{seen}; se espera al menos una cada {feed.stale_days} días y avisa a los "
-                    f"{stale['after']}). Ver si el medio sigue publicando en su sitio, si el feed cambió de dirección "
-                    "o si el dominio cambió de dueño; ajustar o quitar el feed en python/enso/news.py.")
-        if st.get("carried"):
-            continue
-        if official_alerts(feed) and hazard_down(st) and hazard_down(before) and _hours_between(before, st) >= 6:
-            # Una fuente oficial de avisos (SENAMHI, INDECI/COEN, DHN, IGP, PTWC, NASA, CIIFEN…) caída dos corridas
-            # seguidas (con al menos 6 h entre ellas: dos corridas de un día de cambios distan 40 min) deja al sitio
-            # sin esos avisos: no puede quedar como «info» que nadie lee (incidencia propia por fuente; se cierra sola
-            # cuando vuelve a responder). Caída también si solo llegó la copia que n8n arrastra (``upstreamDown``).
-            why = st["error"] if not st["ok"] else (
-                f"solo llegó la copia que n8n conserva del {st.get('copyAt')} (el servidor respondió "
-                f"{(st.get('upstreamDown') or {}).get('status') or 'con error'})")
-            log.add("warning", f"news-{st['id']}", "fetch", "hazard-feed-down",
-                    f"{st['name']} no respondió con un feed en dos corridas seguidas: {why}")
-        if st["ok"] and not st.get("items") and feed is not None and feed.layer:
-            # Capa de avisos vacía: desde cuándo (una capa que el servidor dejó de llenar se ve igual que «sin avisos»
-            # y la fecha lo deja a la vista; se borra al volver a traer avisos).
-            st["emptySince"] = (before.get("emptySince") if before.get("ok") and not before.get("items") else None) \
-                or st.get("checkedAt")
-        if not st["ok"]:
-            log.add("info", "news", "fetch", "feed-down", f"{st['name']}: {st['error']}")
-        elif not st["active"] and not stale:
-            since = f" Vacía desde el {str(st['emptySince'])[:10]}." if st.get("emptySince") else ""
-            check = {"ok": " La capa sigue siendo la de estos avisos en el listado del servidor."}.get(
-                st.get("layerCheck"), f" No se pudo comprobar la capa ({st['layerCheck']})." if st.get("layerCheck") else "")
-            log.add("info", "news", "fetch", "feed-inactive",
-                    f"{st['name']}: " + (f"la entrada más reciente es del {st['latest']}." if st["latest"] else
-                                         f"respondió sin entradas con fecha ({st.get('items', 0)} entradas; una capa de "
-                                         "avisos vacía es normal si no hay avisos vigentes)." + since + check))
+        _feed_status_events(st, N.FEED_BY_ID.get(st.get("id")), prev_status.get(st.get("id")) or {}, now, log)
     active = sum(1 for st in status if st["active"])
     asked = sum(1 for st in status if not st.get("skipped"))
     if active < asked / 2:

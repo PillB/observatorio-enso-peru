@@ -44,15 +44,30 @@ def test_no_mutation_is_silent_wrong(results):
 
 def test_every_source_and_every_reader_family_is_simulated(targets, results):
     # Sin esto, la prueba de arriba pasaría con una lista vacía o con una fuente que dejó de leerse.
+    _assert_every_source_and_adapter_is_a_target(targets)
+    _assert_every_target_ran_real_mutations(targets, results)
+
+
+def _assert_every_source_and_adapter_is_a_target(targets):
+    """Cada fuente y cada adaptador de feed con copia tienen su objetivo."""
     ids = {t.id for t in targets}
     assert {s.id for s in O.SOURCES} <= ids
     adapters = {N.FEED_BY_ID[t.id].adapter for t in targets if t.kind == "feed"}
     assert adapters == {f.adapter for f in N.FEEDS if (D.FIXTURES / f.fixture).exists()}
+
+
+def _ran_per_target(targets, ran):
+    """Cuántas mutaciones aplicables (no N/A) pasó cada objetivo."""
+    return {t.id: sum(1 for r in ran if r.target == t.id) for t in targets}
+
+
+def _assert_every_target_ran_real_mutations(targets, results):
+    """Cada objetivo pasó por mutaciones de verdad y hubo veredictos LOUD y BENIGN."""
     ran = [r for r in results if r.verdict != D.NA]
     assert len(ran) > 600
     # Cada objetivo pasó por mutaciones de verdad (no solo N/A); GODAS solo por las de transporte (su cuerpo es el
     # resumen que arma la corrida con los GRIB), los demás por al menos diez.
-    per = {t.id: sum(1 for r in ran if r.target == t.id) for t in targets}
+    per = _ran_per_target(targets, ran)
     assert per.pop("cpc-godas-d20") >= 6 and min(per.values()) >= 10, per
     assert {r.verdict for r in ran} >= {D.LOUD, D.BENIGN}
 
@@ -152,11 +167,20 @@ def test_psl_rebase_is_invariant_to_a_new_base_period(ks):
     a = cpc.rebase_anomalies(cpc.parse_psl_matrix(text, name="x").data, (1991, 2020))
     b = cpc.rebase_anomalies(cpc.parse_psl_matrix(other, name="x").data, (1991, 2020))
     assert [p["period"] for p in a] == [p["period"] for p in b]
-    worst = max(abs(x["value"] - y["value"]) for x, y in zip(a, b) if x["value"] is not None)
+    worst = _worst_gap(a, b)
     assert worst <= 0.011  # el redondeo a dos decimales del archivo y del resultado
-    assert any(abs(x["value"] - y["value"]) > 0.25 for x, y in zip(cpc.parse_psl_matrix(text, name="x").data,
-                                                                   cpc.parse_psl_matrix(other, name="x").data)
-               if x["value"] is not None)  # la mutación sí cambió el archivo
+    assert _any_gap_over(cpc.parse_psl_matrix(text, name="x").data, cpc.parse_psl_matrix(other, name="x").data,
+                         0.25)  # la mutación sí cambió el archivo
+
+
+def _worst_gap(a, b):
+    """La mayor diferencia entre dos series mes a mes (sin los meses sin dato)."""
+    return max(abs(x["value"] - y["value"]) for x, y in zip(a, b) if x["value"] is not None)
+
+
+def _any_gap_over(a, b, limit):
+    """Si algún mes con dato difiere en más de ``limit`` entre las dos series."""
+    return any(abs(x["value"] - y["value"]) > limit for x, y in zip(a, b) if x["value"] is not None)
 
 
 def test_feed_order_and_encoding_are_invariants(targets, results):
@@ -316,12 +340,21 @@ def test_report_mode_json(tmp_path, capsys):
 def test_ptwc_exercise_as_last_message_never_escalates_as_an_emptied_feed():
     # PACWAVE26 (noviembre de 2026): el último mensaje del PTWC es el simulacro hasta el próximo sismo, que puede tardar
     # semanas. Sin entradas a propósito; con el estado «empty» abría un issue a los 14 días (umbral max(3, 365) → 14).
+    f = N.FEED_BY_ID["ptwc-wepa40"]
+    body = (D.FIXTURES / "news-ptwc-wepa40-test-pacwave26.txt").read_bytes()
+    prev, log = _ptwc_days(f, body, 20)
+    assert not (prev.get("entities") or {}).get("feed:ptwc-wepa40")
+    assert not [e for e in log.events if e[0] in ("warning", "error")]
+    # El mensaje real sí trae su entrada (la excepción es solo para el simulacro).
+    real = (D.FIXTURES / "news-ptwc-wepa40.txt").read_bytes()
+    assert N._read_feed(f, lambda u: (200, real, "text/plain", None), D.NOW)[0]["items"] == 1
+
+
+def _ptwc_days(f, body, days):
+    """Lee el mismo cuerpo del PTWC un día tras otro y lleva el estado persistente; devuelve el estado y la bitácora."""
     from datetime import timedelta
 
     from enso import persistent as P
-
-    f = N.FEED_BY_ID["ptwc-wepa40"]
-    body = (D.FIXTURES / "news-ptwc-wepa40-test-pacwave26.txt").read_bytes()
 
     class Log:
         def __init__(self):
@@ -330,16 +363,12 @@ def test_ptwc_exercise_as_last_message_never_escalates_as_an_emptied_feed():
         def add(self, *a):
             self.events.append(a)
     prev, log = None, Log()
-    for day in range(20):
+    for day in range(days):
         now = D.NOW + timedelta(days=day)
         st, items, _ = N._read_feed(f, lambda u: (200, body, "text/plain", None), now)
         assert st["ok"] and not items and not st.get("error"), st
         prev = P.update(prev, now, log, feeds=[(f, st)], official=lambda x: True)
-    assert not (prev.get("entities") or {}).get("feed:ptwc-wepa40")
-    assert not [e for e in log.events if e[0] in ("warning", "error")]
-    # El mensaje real sí trae su entrada (la excepción es solo para el simulacro).
-    real = (D.FIXTURES / "news-ptwc-wepa40.txt").read_bytes()
-    assert N._read_feed(f, lambda u: (200, real, "text/plain", None), D.NOW)[0]["items"] == 1
+    return prev, log
 
 
 # --- Lo que la prueba principal no distinguía (mutantes que sobrevivían) ------------------------------------------------
