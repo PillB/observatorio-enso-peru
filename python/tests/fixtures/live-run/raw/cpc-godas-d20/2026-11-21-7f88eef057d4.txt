@@ -1,0 +1,1 @@
+{"behind": 2, "errors": {}, "grib": ["https://ftp.cpc.ncep.noaa.gov/godas/monthly/godas.M.202610.grb"], "months": {"2026-10": {"d20_180w100w": {"d20": 147.82, "outcrop": 0.0, "points": 2400}, "d20_nino12": {"d20": 127.08, "outcrop": 0.0, "points": 282}, "d20_nino34": {"d20": 152.48, "outcrop": 0.0, "points": 1500}}}, "reused": [], "unreached": false}
