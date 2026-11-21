@@ -1,6 +1,6 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-20T02:03:43+00:00",
+ "at": "2026-11-21T02:04:47+00:00",
  "result": "ok",
  "reachable": "51/58",
  "summary": {
@@ -10,9 +10,9 @@
   "ana": "3/3",
   "imarpe": "5/5",
   "cenepred": "2/2",
-  "archive": "0/1",
+  "archive": "1/1",
   "bnp": "1/1",
-  "contraloria": "1/1",
+  "contraloria": "0/1",
   "midagri": "1/1",
   "unsa": "1/1",
   "enfen-docs": "2/8",
@@ -21,9 +21,9 @@
  },
  "failures": [
   {
-   "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
-   "status": 502,
-   "class": "http-5xx"
+   "url": "https://apps.contraloria.gob.pe/",
+   "class": "timeout",
+   "error": "ConnectTimeout: timed out"
   },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf",
@@ -83,5 +83,5 @@
   "empty": 1,
   "http-403": 2
  },
- "carried": 7
+ "carried": 4
 }

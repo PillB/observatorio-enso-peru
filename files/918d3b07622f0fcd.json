@@ -191,13 +191,112 @@
           }
         }
       }
+    }, {
+      "uuid" : "76cc62ca-4720-4556-9bb4-3af6ee20b409",
+      "name" : "THUMBNAIL",
+      "handle" : null,
+      "metadata" : {
+        "dc.title" : [ {
+          "value" : "THUMBNAIL",
+          "language" : null,
+          "authority" : null,
+          "confidence" : -1,
+          "place" : 0
+        } ]
+      },
+      "type" : "bundle",
+      "_links" : {
+        "item" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/76cc62ca-4720-4556-9bb4-3af6ee20b409/item"
+        },
+        "bitstreams" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/76cc62ca-4720-4556-9bb4-3af6ee20b409/bitstreams"
+        },
+        "primaryBitstream" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/76cc62ca-4720-4556-9bb4-3af6ee20b409/primaryBitstream"
+        },
+        "self" : {
+          "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/76cc62ca-4720-4556-9bb4-3af6ee20b409"
+        }
+      },
+      "_embedded" : {
+        "bitstreams" : {
+          "_embedded" : {
+            "bitstreams" : [ {
+              "id" : "ba217311-df4c-4140-a648-4bf0a3602153",
+              "uuid" : "ba217311-df4c-4140-a648-4bf0a3602153",
+              "name" : "comunicado-oficial-enfen-n-20-2026.pdf.jpg",
+              "handle" : null,
+              "metadata" : {
+                "dc.description" : [ {
+                  "value" : "Generated Thumbnail",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.source" : [ {
+                  "value" : "Written by FormatFilter org.dspace.app.mediafilter.PDFBoxThumbnail on 2026-11-20T03:01:51Z (GMT).",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
+                "dc.title" : [ {
+                  "value" : "comunicado-oficial-enfen-n-20-2026.pdf.jpg",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ]
+              },
+              "bundleName" : "THUMBNAIL",
+              "sizeBytes" : 5308,
+              "checkSum" : {
+                "checkSumAlgorithm" : "MD5",
+                "value" : "e4e51e22e8eaf003deba072e58f815c3"
+              },
+              "sequenceId" : 4,
+              "type" : "bitstream",
+              "_links" : {
+                "content" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/ba217311-df4c-4140-a648-4bf0a3602153/content"
+                },
+                "bundle" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/ba217311-df4c-4140-a648-4bf0a3602153/bundle"
+                },
+                "format" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/ba217311-df4c-4140-a648-4bf0a3602153/format"
+                },
+                "thumbnail" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/ba217311-df4c-4140-a648-4bf0a3602153/thumbnail"
+                },
+                "self" : {
+                  "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/ba217311-df4c-4140-a648-4bf0a3602153"
+                }
+              }
+            } ]
+          },
+          "page" : {
+            "number" : 0,
+            "size" : 20,
+            "totalPages" : 1,
+            "totalElements" : 1
+          },
+          "_links" : {
+            "self" : {
+              "href" : "https://repositorio.imarpe.gob.pe/server/api/core/bundles/76cc62ca-4720-4556-9bb4-3af6ee20b409/bitstreams"
+            }
+          }
+        }
+      }
     } ]
   },
   "page" : {
     "number" : 0,
     "size" : 20,
     "totalPages" : 1,
-    "totalElements" : 2
+    "totalElements" : 3
   },
   "_links" : {
     "self" : {
