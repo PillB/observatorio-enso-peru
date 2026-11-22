@@ -1,8 +1,8 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-21T02:04:47+00:00",
+ "at": "2026-11-22T02:02:40+00:00",
  "result": "ok",
- "reachable": "51/58",
+ "reachable": "52/58",
  "summary": {
   "enfen": "4/4",
   "igp": "1/1",
@@ -12,7 +12,7 @@
   "cenepred": "2/2",
   "archive": "1/1",
   "bnp": "1/1",
-  "contraloria": "0/1",
+  "contraloria": "1/1",
   "midagri": "1/1",
   "unsa": "1/1",
   "enfen-docs": "2/8",
@@ -20,11 +20,6 @@
   "enlaces": "3/3"
  },
  "failures": [
-  {
-   "url": "https://apps.contraloria.gob.pe/",
-   "class": "timeout",
-   "error": "ConnectTimeout: timed out"
-  },
   {
    "url": "https://www.dhn.mil.pe/Archivos/oceanografia/enfen/comunicado-oficial/20-2026.pdf",
    "status": 200,
@@ -74,14 +69,15 @@
  },
  "registry": {
   "origin": "github",
-  "generated_at": "2026-11-16T19:43:13+00:00",
+  "generated_at": "2026-11-21T04:39:16+00:00",
   "sources": 220,
   "peru_server": 19
  },
  "probes": {
   "dns": 5,
   "empty": 1,
-  "http-403": 2
+  "http-403": 2,
+  "ok": 1
  },
- "carried": 4
+ "carried": 3
 }
