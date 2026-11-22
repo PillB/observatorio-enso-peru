@@ -3,6 +3,16 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: monthly }
+  # ESLint mide la complejidad del JavaScript (scripts/lint): una versión nueva puede contar distinto y la
+  # revisión lo dice (sale con 2); se acepta con python -m tools.complexity --rebaseline en el mismo PR.
+  - package-ecosystem: npm
+    directory: /scripts/lint
+    schedule: { interval: monthly }
+    # ESLint y espree juntos: complexity.mjs exige que ESLint analice con el mismo espree fijado, así que un PR
+    # que suba solo uno de los dos nunca pasaría.
+    groups:
+      eslint:
+        patterns: ["eslint", "espree"]
   - package-ecosystem: pip
     directory: /python
     schedule: { interval: monthly }

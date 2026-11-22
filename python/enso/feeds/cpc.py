@@ -151,26 +151,42 @@ def parse_nino_monthly(text: str, *, name: str) -> Parsed:
             continue
         if cols is None or not re.fullmatch(r"\d{4}", parts[0]):
             continue
-        if len(parts) != len(cols):
-            continue
-        y, mth = int(parts[0]), int(parts[1])
-        region = None
-        for c, v in zip(cols[2:], parts[2:]):
-            val = norm_missing(float(v), -99.0)
-            if c in REGION_ALIASES:
-                region = REGION_ALIASES[c]
-                sst.setdefault(region, []).append({"period": period(y, mth), "value": val})
-            elif c == "ANOM" and region:
-                out.setdefault(region, []).append({"period": period(y, mth), "value": val})
+        _nino_row(parts, cols, name, out, sst)
     if not cols or "nino12" not in out or "nino34" not in out:
         raise FormatChanged(f"{name}: no se reconocen las columnas de regiones Niño")
+    warnings = _trim_nino_series(out, sst, name)
+    return Parsed({"anom": out, "sst": sst}, fingerprint(name, " ".join(cols)), warnings, {"columns": cols})
+
+
+def _nino_row(parts: list[str], cols: list[str], name: str, out: dict[str, list[dict]],
+              sst: dict[str, list[dict]]) -> None:
+    """Añade a ``sst`` y ``out`` los valores de una fila «YR MON ...» (cada «ANOM» es de la región anterior)."""
+    if len(parts) != len(cols):
+        return
+    y, mth = int(parts[0]), int(parts[1])
+    region = None
+    for c, v in zip(cols[2:], parts[2:]):
+        try:
+            val = norm_missing(float(v), -99.0)
+        except ValueError:
+            raise FormatChanged(f"{name}: valor no numérico «{v}» en la columna {c} de {y}-{mth:02d} "
+                                "(¿coma decimal u otro centinela?)") from None
+        if c in REGION_ALIASES:
+            region = REGION_ALIASES[c]
+            sst.setdefault(region, []).append({"period": period(y, mth), "value": val})
+        elif c == "ANOM" and region:
+            out.setdefault(region, []).append({"period": period(y, mth), "value": val})
+
+
+def _trim_nino_series(out: dict[str, list[dict]], sst: dict[str, list[dict]], name: str) -> list[str]:
+    """Recorta los faltantes de los extremos de cada serie y devuelve los avisos de las anomalías."""
     warnings: list[str] = []
     for k in list(out):
         out[k] = trim_missing(out[k])
         warnings += check_series(out[k], lo=-6.0, hi=7.0, name=f"{name}/{k}")
     for k in list(sst):
         sst[k] = trim_missing(sst[k])
-    return Parsed({"anom": out, "sst": sst}, fingerprint(name, " ".join(cols)), warnings, {"columns": cols})
+    return warnings
 
 
 # ---------------------------------------------------------------------------
@@ -262,27 +278,42 @@ def parse_psl_matrix(text: str, *, name: str) -> Parsed:
     if not lines or not re.fullmatch(r"\d{4}\s+\d{4}", lines[0]):
         raise FormatChanged(f"{name}: falta la línea de años inicial")
     y0, y1 = (int(x) for x in lines[0].split())
+    pts, footer = _psl_matrix_rows(lines[1:], name)
+    meta = _psl_matrix_footer(footer, name)
+    pts = trim_missing(pts)
+    if not pts or pts[0]["period"][:4] != str(y0) or int(pts[-1]["period"][:4]) != y1:
+        raise FormatChanged(f"{name}: los años de las filas no coinciden con la cabecera {y0}-{y1}")
+    warnings = check_series(pts, lo=-6, hi=8, name=name)
+    return Parsed(pts, fingerprint(name, "psl-matrix", meta["product"]), warnings, meta)
+
+
+def _psl_matrix_rows(lines: list[str], name: str) -> tuple[list[dict], list[str]]:
+    """Puntos de las filas «año + 12 valores» y las demás líneas (el pie) de una matriz de PSL."""
     pts: list[dict] = []
     footer: list[str] = []
-    for line in lines[1:]:
+    for line in lines:
         parts = line.split()
         if re.fullmatch(r"\d{4}", parts[0]) and len(parts) == 13:
             y = int(parts[0])
             for m, v in enumerate(parts[1:], start=1):
-                pts.append({"period": period(y, m), "value": norm_missing(float(v), -99.0)})
+                try:
+                    pts.append({"period": period(y, m), "value": norm_missing(float(v), -99.0)})
+                except ValueError:
+                    raise FormatChanged(f"{name}: valor no numérico «{v}» en {y}-{m:02d} "
+                                        "(¿coma decimal u otro centinela?)") from None
         else:
             footer.append(line)
+    return pts, footer
+
+
+def _psl_matrix_footer(footer: list[str], name: str) -> dict:
+    """Producto y base de la anomalía que indica el pie de una matriz de PSL."""
     tail = " ".join(footer)
     base = re.search(r"Anomaly from (\d{4})\s*-\s*(\d{4})", tail, re.I)
     product = re.search(r"ERSST\s*V(\d+)", tail, re.I)
     if not base or not product:
         raise FormatChanged(f"{name}: el pie no indica el producto o la base de la anomalía")
-    pts = trim_missing(pts)
-    if not pts or pts[0]["period"][:4] != str(y0) or int(pts[-1]["period"][:4]) != y1:
-        raise FormatChanged(f"{name}: los años de las filas no coinciden con la cabecera {y0}-{y1}")
-    warnings = check_series(pts, lo=-6, hi=8, name=name)
-    meta = {"product": f"ERSSTv{product.group(1)}", "base": (int(base.group(1)), int(base.group(2)))}
-    return Parsed(pts, fingerprint(name, "psl-matrix", meta["product"]), warnings, meta)
+    return {"product": f"ERSSTv{product.group(1)}", "base": (int(base.group(1)), int(base.group(2)))}
 
 
 def rebase_anomalies(points: list[dict], base: tuple[int, int]) -> list[dict]:
@@ -337,6 +368,10 @@ def _date_en(s: str) -> Optional[str]:
 
 def parse_enso_discussion(doc: str) -> Parsed:
     """Extrae estado, fecha, sinopsis y próxima emisión del boletín mensual."""
+    if "<html" in doc[:5000].lower() and "</html" not in doc[-20000:].lower():
+        # Una copia cortada conserva el estado y pierde la sinopsis y la próxima emisión: se publicaba a medias sin
+        # aviso (``tools/drift_sim.py``, mutación ``truncate``). Las nueve copias de 2016 a 2026 cierran.
+        raise FormatChanged("ensodisc: la página no cierra (</html>): llegó cortada")
     text = re.sub(r"\s+", " ", html_to_text(doc))
     m = re.search(r"Alert System Status\s*:?\s*(.{3,120}?)\s*Synopsis", text, re.I)
     if not m:
@@ -346,6 +381,27 @@ def parse_enso_discussion(doc: str) -> Parsed:
     statuses = [(label, code) for key, label, code in NOAA_STATUSES if key in low]
     if not statuses:
         raise FormatChanged(f"ensodisc: estado no reconocido «{raw_status}»")
+    labels, codes = _distinct_statuses(statuses)
+    issued = _issued_date(text[: m.start()])
+    synopsis, synopsis_warning = _synopsis_any(doc, text[m.end() - 9:])
+    next_issue = _next_issue(text)
+    values = _weekly_values(text)
+    warnings = [] if issued else ["ensodisc: no se pudo leer la fecha de emisión"]
+    warnings += [synopsis_warning] if synopsis_warning else []
+    if not next_issue:
+        # Todas las discusiones la anuncian; sin ella el calendario del sitio (``freshness``) espera la siguiente a ciegas.
+        warnings.append("ensodisc: no se pudo leer la fecha de la próxima discusión («next ENSO Diagnostics Discussion "
+                        "is scheduled for …»)")
+    data = {
+        "status": " / ".join(labels), "codes": codes, "raw_status": raw_status,
+        "issued": issued, "synopsis": synopsis, "next_issue": next_issue,
+        "weekly_values_in_text": values,
+    }
+    return Parsed(data, fingerprint("ensodisc", "Alert System Status", "Synopsis"), warnings)
+
+
+def _distinct_statuses(statuses: list[tuple[str, str]]) -> tuple[list[str], list[str]]:
+    """Etiquetas y códigos sin repetir ni los contenidos en otro («Advisory» dentro de «Final … Advisory»)."""
     # Puede haber dos estados simultáneos («Final La Niña Advisory / El Niño Watch»).
     seen, labels, codes = set(), [], []
     for label, code in statuses:
@@ -355,15 +411,58 @@ def parse_enso_discussion(doc: str) -> Parsed:
             seen.add(label)
             labels.append(label)
             codes.append(code)
-    head = text[: m.start()]
-    issued = None
+    return labels, codes
+
+
+def _issued_date(head: str) -> Optional[str]:
+    """Fecha de emisión: la de «issued by …» o, si no, la última del texto previo al estado."""
     im = re.search(r"issued by.{0,80}?(\d{1,2}\s+\w+\s+\d{4})", head, re.I)
-    issued = _date_en(im.group(1)) if im else _date_en(head[-200:])
-    sm = re.search(r"Synopsis\s*:\s*(.+?)(?:\s{2,}|\[Fig|$)", text[m.end() - 9:], re.I)
+    return _date_en(im.group(1)) if im else _date_en(head[-200:])
+
+
+# ``<strong>`` en todas las copias (2016 a 2026); ``<b>`` es el mismo énfasis en otra etiqueta y CPC ya la usa en otras
+# páginas: con solo ``<strong>``, ese cambio devolvía en silencio la sinopsis que sigue con el primer párrafo.
+_SYNOPSIS_HTML_RE = re.compile(r"Synopsis\s*:\s*(?:</u>|</b>|</strong>)?(?:\s|&nbsp;|<[^>]*>)*?<(strong|b)\b[^>]*>(.*?)</\1\s*>",
+                               re.I | re.S)
+# Sin negrita, el párrafo que contiene «Synopsis:» es el límite (``</p>``, otro ``<p>`` o el fin de la celda).
+_SYNOPSIS_PARA_RE = re.compile(r"Synopsis\s*:(.*?)(?:</p\s*>|<p\b|</td\s*>)", re.I | re.S)
+
+
+def _synopsis_html(doc: str) -> str:
+    """La sinopsis es el ``<strong>`` que sigue a «Synopsis:» en todas las discusiones (2016 a 2026). Leída del texto
+    plano, sin ese límite, una sinopsis corta seguía con el primer párrafo de la discusión hasta «[Fig» y el sitio lo
+    mostraba como «Síntesis de NOAA» (copias de 2022-06 y 2026-10)."""
+    sm = _SYNOPSIS_HTML_RE.search(doc)
+    return _synopsis("Synopsis: " + re.sub(r"\s+", " ", html_to_text(sm.group(2))).strip()) if sm else ""
+
+
+def _synopsis_any(doc: str, text_tail: str) -> tuple[str, Optional[str]]:
+    """Sinopsis y, si no vino en negrita, el aviso de que se leyó con un límite más débil (no se calla el cambio)."""
+    found = _synopsis_html(doc)
+    if found:
+        return found, None
+    pm = _SYNOPSIS_PARA_RE.search(doc)
+    para = _synopsis("Synopsis: " + re.sub(r"\s+", " ", html_to_text(pm.group(1))).strip()) if pm else ""
+    return (para or _synopsis(text_tail)), ("ensodisc: la sinopsis ya no viene en negrita (<strong>/<b>) tras "
+                                            "«Synopsis:»; se leyó hasta el fin de su párrafo. Revise que el sitio no "
+                                            "muestre parte de la discusión como «Síntesis de NOAA».")
+
+
+def _synopsis(text: str) -> str:
+    """Sinopsis del boletín (solo su primera oración si pasa de 400 caracteres)."""
+    sm = re.search(r"Synopsis\s*:\s*(.+?)(?:\s{2,}|\[Fig|$)", text, re.I)
     synopsis = sm.group(1).strip() if sm else ""
-    synopsis = re.split(r"(?<=[.!?])\s", synopsis, maxsplit=1)[0] if len(synopsis) > 400 else synopsis
+    return re.split(r"(?<=[.!?])\s", synopsis, maxsplit=1)[0] if len(synopsis) > 400 else synopsis
+
+
+def _next_issue(text: str) -> Optional[str]:
+    """Fecha anunciada de la próxima discusión, o ``None``."""
     nm = re.search(r"next ENSO Diagnostics? Discussion is scheduled for\s+(.{6,40}?)\.", text, re.I)
-    next_issue = _date_en(nm.group(1)) if nm else None
+    return _date_en(nm.group(1)) if nm else None
+
+
+def _weekly_values(text: str) -> dict[str, float]:
+    """Anomalías semanales por región citadas en el texto («+0.5°C in Niño-3.4»)."""
     values = {}
     for region, pat in (("nino34", r"([+-]?\d\.\d)\s*°?C?\s*in\s*Niño-?3\.4"),
                         ("nino3", r"([+-]?\d\.\d)\s*°?C?\s*in\s*Niño-?3(?!\.)"),
@@ -372,13 +471,7 @@ def parse_enso_discussion(doc: str) -> Parsed:
         vm = re.search(pat, text, re.I)
         if vm:
             values[region] = float(vm.group(1))
-    warnings = [] if issued else ["ensodisc: no se pudo leer la fecha de emisión"]
-    data = {
-        "status": " / ".join(labels), "codes": codes, "raw_status": raw_status,
-        "issued": issued, "synopsis": synopsis, "next_issue": next_issue,
-        "weekly_values_in_text": values,
-    }
-    return Parsed(data, fingerprint("ensodisc", "Alert System Status", "Synopsis"), warnings)
+    return values
 
 
 def parse_heat_content(text: str) -> Parsed:

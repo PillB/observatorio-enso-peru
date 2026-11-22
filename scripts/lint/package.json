@@ -1,0 +1,11 @@
+{
+  "name": "observatorio-lint",
+  "private": true,
+  "description": "Herramientas de lint (complejidad ciclomática del JavaScript). Ver docs/complejidad.md.",
+  "type": "module",
+  "engines": { "node": ">=22.13" },
+  "devDependencies": {
+    "eslint": "10.14.0",
+    "espree": "11.2.0"
+  }
+}

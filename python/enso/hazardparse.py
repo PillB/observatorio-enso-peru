@@ -25,19 +25,26 @@ Lo que es un simulacro no se publica como alerta.
 from __future__ import annotations
 
 import html
+import itertools
 import json
 import re
 import unicodedata
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Iterator, Optional
 
-from .feedparse import LIMA, FeedError, Parsed, clean_summary, clean_text, _finish
+from .feedparse import LIMA, FeedError, Parsed, clean_summary, clean_text, _finish, text_of
 
 COMPASS = {"N": "N", "NNE": "NNE", "NE": "NE", "ENE": "ENE", "E": "E", "ESE": "ESE", "SE": "SE", "SSE": "SSE",
            "S": "S", "SSW": "SSO", "SW": "SO", "WSW": "OSO", "W": "O", "WNW": "ONO", "NW": "NO", "NNW": "NNO"}
 _USGS_PLACE_RE = re.compile(r"^(\d+)\s*km\s+([NSEW]{1,3})\s+of\s+(.+)$")
 SIMULACRO_RE = re.compile(r"\bsimulacros?\b|\bdrill\b|\bexercise\b", re.I)
-_EN_DATE = "%A, %B %d, %Y"
+#: «Monday, November 16, 2026» del CENVUL. Con tabla propia y no con ``strptime("%A, %B %d, %Y")``: los nombres de
+#: ``%A`` y ``%B`` salen del ``LC_TIME`` del proceso, y en un recolector con el sistema en castellano (o si alguna
+#: biblioteca llama a ``locale.setlocale``) la variante inglesa dejaba de leerse sin ningún error.
+_EN_MONTHS = {m: i for i, m in enumerate(("january", "february", "march", "april", "may", "june", "july", "august",
+                                          "september", "october", "november", "december"), 1)}
+_EN_DATE_RE = re.compile(r"^(?:(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday),\s*)?"
+                         r"([a-z]+)\s+(\d{1,2}),\s*(\d{4})$", re.I)
 
 
 def _iso(dt: datetime) -> str:
@@ -122,7 +129,7 @@ _ES_MONTHS = {m: i for i, m in enumerate(["enero", "febrero", "marzo", "abril", 
 
 
 def parse_dhn(body: bytes, base_url: str = "https://www.dhn.mil.pe/portal/boletin-sismo-tsunami") -> Parsed:
-    text = body.decode("utf-8", errors="replace")
+    text = text_of(body)
     if "boletin-sismo-tsunami" not in text and "BOLETÍN DE SISMO" not in text.upper():
         raise FeedError("no es el listado de boletines de la DHN")
     items, drills = [], 0
@@ -181,90 +188,188 @@ DHN_LITORAL = {"norte": ("Tumbes", "Piura", "Lambayeque", "La Libertad"),
 
 
 def _es_date(day: str, month: str, year: str) -> Optional[datetime]:
+    """La fecha, o None si no existe: «31 de noviembre» (una errata) lanzaba ``ValueError`` y tumbaba el feed entero
+    como «error inesperado» sin probar la vigencia del aviso."""
     mo = _ES_MONTHS.get((month or "").lower())
-    return datetime(int(year), mo, int(day), 12, tzinfo=LIMA) if mo else None
+    try:
+        return datetime(int(year), mo, int(day), 12, tzinfo=LIMA) if mo else None
+    except ValueError:
+        return None
+
+
+def _dhn_aviso_when(im, vm) -> Optional[datetime]:
+    """Fecha de un aviso especial: la de emisión («Callao, 2 de julio de 2026») o, si no, la de su vigencia."""
+    when = _es_date(*im.groups()) if im else None
+    if not when and vm:
+        when = _es_date(vm.group(1), vm.group(2) or vm.group(5), vm.group(3) or vm.group(6))
+    return when
+
+
+def _dhn_oleaje(lines: list[str]) -> tuple[str, list[str]]:
+    """Qué dice un aviso de oleaje (el nivel más alto y en qué tramos del litoral) y los departamentos que toca."""
+    level: dict[str, int] = {}
+    for lm in _DHN_AV_LITORAL_RE.finditer("\n".join(lines)):
+        found = [_SWELL.index(x.lower()) for x in _SWELL_RE.findall(lm.group("txt"))]
+        if found:
+            level[lm.group(1).lower()] = max(found)
+    if not level:
+        return "", []
+    top = max(level.values())
+    where = [k for k in ("norte", "centro", "sur") if level.get(k) == top]
+    geo = [f"departamento de {d}" for d in dict.fromkeys(x for k in level for x in DHN_LITORAL[k])]
+    return f"oleaje {_SWELL[top]} en el litoral {_join(where)}", geo
+
+
+def _dhn_viento(body_txt: str) -> str:
+    """Qué dice un aviso de vientos: el viento, hasta cuántos nudos y entre qué lugares; "" si no se reconoce."""
+    wm = _DHN_AV_WIND_RE.search(body_txt)
+    if not wm:
+        return ""
+    what = f"{wm.group('what').lower()} (hasta {wm.group('kt')} nudos)"
+    if wm.group("a"):
+        what += f" entre {wm.group('a').strip()} y {wm.group('b').strip()}"
+    return what
+
+
+#: Avisos sin fecha que se toleran en el listado de la DHN. El listado completo (583 avisos desde 2015, leído el
+#: 21-11-2026) trae 7 avisos de viento antiguos (2015–2023, N° 04, 05, 07, 11, 12, 19 y 63) que nunca dijeron «Callao, …»
+#: ni su vigencia: con ``FeedError`` por cada uno, el feed entero caía (``hazard-feed-down`` a la corrida siguiente y
+#: ``degraded-persistent`` a los dos días) y el sitio perdía los 576 avisos con fecha. Un cambio de formato o de idioma
+#: llega primero a los avisos nuevos, que son los primeros del listado, o a todos: un aviso sin fecha entre los
+#: ``DHN_UNDATED_RECENT`` primeros, o más de 1 de cada ``DHN_UNDATED_SHARE`` avisos sin fecha, sigue siendo un cambio de
+#: formato (``tools/drift_sim.py``). Los antiguos sin fecha se omiten (no se pueden ordenar) y se anotan en ``repairs``.
+DHN_UNDATED_RECENT = 10
+DHN_UNDATED_SHARE = 20
+
+
+def _dhn_aviso_parts(chunk: str) -> Optional[tuple]:
+    """(encabezado, número, tipo, líneas) de un bloque del listado de la DHN; None si el bloque no es un aviso."""
+    tm = re.search(r'class="accordion-title">(.*?)</div>', chunk, re.S)
+    head = _DHN_AV_TITLE_RE.search(clean_text(tm.group(1), 300)) if tm else None
+    if not head:
+        return None
+    kind = re.sub(r"s$", "", (head.group("kind") or head.group("tag") or "").strip().lower())  # «vientos»
+    if not kind:
+        return None
+    content = chunk.split('class="accordion-content">', 1)[-1]
+    lines = [x for x in (clean_text(y, 1000) for y in re.split(r"<br\s*/?>|</h4>", content)) if x]
+    return head, re.sub(r"\s+", "", head.group("num")), kind, lines
+
+
+def _dhn_aviso(chunk: str, base_url: str) -> Optional[tuple[Optional[dict], str, str]]:
+    """(aviso, número, muestra) de un bloque del listado de la DHN; el aviso es None si no tiene una fecha legible
+    (la muestra dice qué se leyó en su lugar). None si el bloque no es un aviso."""
+    parts = _dhn_aviso_parts(chunk)
+    if parts is None:
+        return None
+    head, num, kind, lines = parts
+    body_txt = " ".join(lines)
+    valid = clean_text(head.group("valid") or "", 120)
+    im = _DHN_AV_ISSUED_RE.search(body_txt)
+    when = _dhn_aviso_when(im, _DHN_AV_VALID_RE.search(valid))
+    if when is None:
+        return None, num, (im.group(0) if im else valid or body_txt[:60])[:80]
+    return _dhn_aviso_item(chunk, base_url, (num, kind, valid, when), lines), num, ""
+
+
+def _dhn_aviso_item(chunk: str, base_url: str, meta: tuple, lines: list[str]) -> dict:
+    """El aviso de la DHN ya fechado: título con lo que dice y su vigencia, resumen, enlace y departamentos."""
+    num, kind, valid, when = meta
+    body_txt = " ".join(lines)
+    period = f"válido {valid.split(' ', 1)[1]}" if valid.lower().startswith("válido ") else valid.lower()
+    what, geo = _dhn_oleaje(lines) if kind == "oleaje" else (_dhn_viento(body_txt), [])
+    title = f"DHN · aviso especial de {kind} N° {num}" + (f": {what}" if what else "") + (f" ({period})" if period else "")
+    summary = _DHN_AV_LEAD_RE.sub("", " ".join(x for x in lines if not re.match(r"^(?:[a-d]\.|Atentamente|DIRECCI|dihidronav)", x)))
+    aid = _DHN_AV_ID_RE.search(chunk)
+    item = {"title": clean_text(title, 300), "link": f"{base_url.split('#')[0]}#{aid.group(1) if aid else num}",
+            "published": _iso(when), "summary": clean_text(summary[:1].upper() + summary[1:], 600),
+            "categories": [kind, f"aviso especial {num}"]}
+    if geo:
+        item["geo"] = [", ".join(geo)]
+    return item
+
+
+def _dhn_undated(undated: list[tuple[int, str, str]], total: int) -> Optional[str]:
+    """Nota de los avisos antiguos sin fecha que se omiten (None si no hay); ``FeedError`` si los avisos sin fecha
+    dicen que la página cambió. ``undated``: (posición en el listado, número, muestra).
+
+    Desde 2024 los avisos se numeran «NN-AA» (42-26) y todos dicen «Callao, 2 de julio de 2026» o su vigencia; los
+    siete sin fecha son de antes y sin «-AA». Es un cambio de formato (otro idioma u otro formato de fecha:
+    ``tools/drift_sim.py``, ``months-en``) si no tiene fecha un aviso «NN-AA», uno de los ``DHN_UNDATED_RECENT``
+    primeros del listado (va del más nuevo al más viejo) o más de 1 de cada ``DHN_UNDATED_SHARE``."""
+    if not undated:
+        return None
+    current = [u for u in undated if "-" in u[1]]
+    pos, num, sample = (current or undated)[0]
+    if current or pos < DHN_UNDATED_RECENT or len(undated) * DHN_UNDATED_SHARE > total:
+        raise FeedError(f"el aviso especial N° {num} (el {pos + 1}.° del listado) no tiene una fecha que se pueda "
+                        f"leer («{sample}»; {len(undated)} de {total} avisos sin fecha)")
+    return (f"{len(undated)} avisos especiales antiguos sin fecha legible omitidos "
+            f"(N° {', '.join(n for _, n, _ in undated[:8])})")
 
 
 def parse_dhn_avisos(body: bytes, base_url: str = "https://www.dhn.mil.pe/portal/avisos-especiales") -> Parsed:
     """Avisos especiales de la DHN: oleaje anómalo y vientos en el litoral y el mar peruano."""
-    text = body.decode("utf-8", errors="replace")
+    text = text_of(body)
     if "avisos-especiales" not in text or "AVISO ESPECIAL" not in text.upper():
         raise FeedError("no es el listado de avisos especiales de la DHN")
-    items = []
+    items, undated, total = [], [], 0
     for chunk in text.split('class="position-relative"')[1:]:
-        tm = re.search(r'class="accordion-title">(.*?)</div>', chunk, re.S)
-        head = _DHN_AV_TITLE_RE.search(clean_text(tm.group(1), 300)) if tm else None
-        if not head:
+        got = _dhn_aviso(chunk, base_url)
+        if got is None:
             continue
-        num = re.sub(r"\s+", "", head.group("num"))
-        kind = re.sub(r"s$", "", (head.group("kind") or head.group("tag") or "").strip().lower())  # «vientos»
-        if not kind:
-            continue
-        content = chunk.split('class="accordion-content">', 1)[-1]
-        lines = [clean_text(x, 1000) for x in re.split(r"<br\s*/?>|</h4>", content)]
-        lines = [x for x in lines if x]
-        body_txt = " ".join(lines)
-        valid = clean_text(head.group("valid") or "", 120)
-        vm, im = _DHN_AV_VALID_RE.search(valid), _DHN_AV_ISSUED_RE.search(body_txt)
-        when = _es_date(*im.groups()) if im else None
-        if not when and vm:
-            when = _es_date(vm.group(1), vm.group(2) or vm.group(5), vm.group(3) or vm.group(6))
-        period = f"válido {valid.split(' ', 1)[1]}" if valid.lower().startswith("válido ") else valid.lower()
-        geo, what = [], ""
-        if kind == "oleaje":
-            level: dict[str, int] = {}
-            for lm in _DHN_AV_LITORAL_RE.finditer("\n".join(lines)):
-                found = [_SWELL.index(x.lower()) for x in _SWELL_RE.findall(lm.group("txt"))]
-                if found:
-                    level[lm.group(1).lower()] = max(found)
-            if level:
-                top = max(level.values())
-                where = [k for k in ("norte", "centro", "sur") if level.get(k) == top]
-                what = f"oleaje {_SWELL[top]} en el litoral {_join(where)}"
-                geo = [f"departamento de {d}" for d in dict.fromkeys(x for k in level for x in DHN_LITORAL[k])]
+        if got[0] is None:
+            undated.append((total, got[1], got[2]))
         else:
-            wm = _DHN_AV_WIND_RE.search(body_txt)
-            if wm:
-                what = f"{wm.group('what').lower()} (hasta {wm.group('kt')} nudos)"
-                if wm.group("a"):
-                    what += f" entre {wm.group('a').strip()} y {wm.group('b').strip()}"
-        title = f"DHN · aviso especial de {kind} N° {num}" + (f": {what}" if what else "") + (f" ({period})" if period else "")
-        summary = _DHN_AV_LEAD_RE.sub("", " ".join(x for x in lines if not re.match(r"^(?:[a-d]\.|Atentamente|DIRECCI|dihidronav)", x)))
-        summary = summary[:1].upper() + summary[1:]
-        aid = _DHN_AV_ID_RE.search(chunk)
-        item = {"title": clean_text(title, 300), "link": f"{base_url.split('#')[0]}#{aid.group(1) if aid else num}",
-                "published": _iso(when) if when else None, "summary": clean_text(summary, 600),
-                "categories": [kind, f"aviso especial {num}"]}
-        if geo:
-            item["geo"] = [", ".join(geo)]
-        items.append(item)
+            items.append(got[0])
+        total += 1
+    note = _dhn_undated(undated, total)
     if not items:
         raise FeedError("el listado de la DHN no tiene avisos especiales con el formato esperado")
-    return _finish(Parsed("dhn-avisos-html", items))
+    out = _finish(Parsed("dhn-avisos-html", items))
+    if note:
+        out.repairs.append(note)
+    return out
 
 
 # --- PTWC: mensaje de texto (WEPA40) ------------------------------------------------
 
-_PTWC_ISSUED_RE = re.compile(r"^(\d{4}) UTC \w{3} (\w{3}) (\d{1,2}) (\d{4})$", re.M)
+_PTWC_ISSUED_RE = re.compile(r"^[ \t]*(\d{4}) UTC \w{3} (\w{3}) (\d{1,2}) (\d{4})[ \t]*$", re.M)
 _PTWC_PARAM_RE = re.compile(r"\*\s+(MAGNITUDE|ORIGIN TIME|COORDINATES|DEPTH|LOCATION)\s+(.+)")
 _PTWC_THREAT_RE = re.compile(r"TSUNAMI THREAT FORECAST.*?\n-+\n(?P<txt>.*?)(?:\n[A-Z][A-Z .]+\n-+\n|\Z)", re.S)
+#: Nota de un mensaje del PTWC que es un simulacro: sin entradas a propósito (``news._read_feed`` no lo da por vacío).
+PTWC_EXERCISE = "el último mensaje del PTWC es un simulacro: no hay mensajes vigentes"
 _MON = {m: i for i, m in enumerate(["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"], 1)}
+
+
+_PTWC_TEST_RE = re.compile(r"\bTHIS IS A TEST\b|FOR TEST PURPOSES ONLY|\bDUMMY MESSAGE\b|^\s*TEST\.\.\.", re.M)
+
+
+def _ptwc_issued(text: str) -> Optional[str]:
+    """Fecha y hora de emisión del mensaje del PTWC (línea «0712 UTC TUE NOV 17 2026»), en ISO; ``None`` si no está."""
+    iss = _PTWC_ISSUED_RE.search(text)
+    if not (iss and iss.group(2) in _MON):
+        return None
+    return _iso(datetime(int(iss.group(4)), _MON[iss.group(2)], int(iss.group(3)),
+                         int(iss.group(1)[:2]), int(iss.group(1)[2:]), tzinfo=timezone.utc))
 
 
 def parse_ptwc_text(body: bytes, base_url: str = "") -> Parsed:
     """Último mensaje del Centro de Alerta de Tsunamis del Pacífico (el filtro de relevancia
     deja solo los que nombran al Perú, como con su feed Atom)."""
-    text = body.decode("utf-8", errors="replace").replace("\r", "")
+    # Sin espacios al final de las líneas: «---- \n» cortaba la sección de la amenaza y el resumen la perdía.
+    text = "\n".join(l.rstrip() for l in text_of(body).replace("\r", "").split("\n"))
     if "TSUNAMI" not in text or "PACIFIC TSUNAMI WARNING CENTER" not in text:
         raise FeedError("no es un mensaje del PTWC")
+    if _PTWC_TEST_RE.search("\n".join(text.splitlines()[:15])):
+        # Simulacro (PACWAVE26, noviembre de 2026: «TEST... DUMMY MESSAGE FOR PACWAVE26 EXERCISE... THIS IS A TEST»):
+        # no es un aviso. Sin entradas, como una capa de avisos vacía: el último mensaje puede seguir siendo el del
+        # simulacro semanas (no hay otro mensaje hasta el próximo sismo), y eso no es un feed vaciado.
+        return Parsed("ptwc-text", [], [PTWC_EXERCISE])
     params = {k: v.strip() for k, v in _PTWC_PARAM_RE.findall(text)}
     num = re.search(r"TSUNAMI MESSAGE NUMBER\s+(\d+)", text)
     head = re.search(r"\.\.\.(PTWC [^.]+?)\.\.\.", text)
-    iss = _PTWC_ISSUED_RE.search(text)
-    published = None
-    if iss and iss.group(2) in _MON:
-        published = _iso(datetime(int(iss.group(4)), _MON[iss.group(2)], int(iss.group(3)),
-                                  int(iss.group(1)[:2]), int(iss.group(1)[2:]), tzinfo=timezone.utc))
+    published = _ptwc_issued(text)
     threat = _PTWC_THREAT_RE.search(text)
     threat_txt = re.sub(r"\s+", " ", threat.group("txt")).strip(" *") if threat else ""
     title = (f"PTWC · sismo de magnitud {params.get('MAGNITUDE', '?')} en {params.get('LOCATION', '?').title()}: "
@@ -293,20 +398,51 @@ def _cards(text: str) -> list[str]:
     return re.split(r"<!--\[--> # \d+<!--\]-->", seg)[1:]
 
 
-def _en_date(s: str, hm: str = "") -> Optional[str]:
+#: El CENVUL (Nuxt) escribe las fechas con el idioma de la instancia que atiende la petición, no con el que se le pide
+#: (``Accept-Language`` no cambia nada): la misma página llega, al azar, como «Monday, November 16, 2026 · 11:54:00 AM»
+#: o como «lunes, 16 de noviembre de 2026 · 11:54:00 a. m.» (copias de data-archive del 21-10 al 21-11-2026, dos
+#: variantes cada día). Hay que leer las dos: con solo la inglesa, la mitad de las lecturas salía sin fechas.
+_ES_MONTHS = {m: i for i, m in enumerate(("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
+                                          "septiembre", "octubre", "noviembre", "diciembre"), 1)} | {"setiembre": 9}
+_ES_DATE_RE = re.compile(r"^(?:[a-záéíóúñ]+,\s*)?(\d{1,2})\s+de\s+([a-z]+)\s+(?:de|del)\s+(\d{4})$", re.I)
+_HM_RE = re.compile(r"^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(?:(a|p)\.?\s*m\.?)?$", re.I)
+
+
+def _card_date(s: str, hm: str = "") -> Optional[str]:
+    """Fecha (y hora) de una tarjeta del CENVUL, en inglés o en castellano; ``None`` si no se reconoce."""
+    s = re.sub(r"\s+", " ", (s or "").replace("\u00a0", " ").replace("\u202f", " ")).strip()
+    if not s:
+        return None
+    en = _EN_DATE_RE.match(s)
+    es = None if en else _ES_DATE_RE.match(s)
+    if en:
+        month, day, year = _EN_MONTHS.get(en.group(1).lower()), en.group(2), en.group(3)
+    elif es:
+        month, day, year = _ES_MONTHS.get(es.group(2).lower()), es.group(1), es.group(3)
+    else:
+        return None
+    if not month:
+        return None
     try:
-        d = datetime.strptime(s.strip(), _EN_DATE)
+        d = datetime(int(year), month, int(day))
     except ValueError:
         return None
-    if hm:
-        try:
-            t = datetime.strptime(hm.strip(), "%I:%M:%S %p")
-            d = d.replace(hour=t.hour, minute=t.minute, second=t.second)
-        except ValueError:
-            pass
-    else:
-        d = d.replace(hour=12)  # sin hora: mediodía de Lima, para que la fecha no cambie al pasar a UTC
-    return _iso(d.replace(tzinfo=LIMA))
+    hms = _card_time(hm)
+    if hms:
+        h, mi, sec = hms
+        return _iso(d.replace(hour=h, minute=mi, second=sec, tzinfo=LIMA))
+    return _iso(d.replace(hour=12, tzinfo=LIMA))  # sin hora: mediodía de Lima, para que la fecha no cambie al pasar a UTC
+
+
+def _card_time(hm: str) -> Optional[tuple[int, int, int]]:
+    """Hora (h, min, s) de una tarjeta del CENVUL, de 24 o de 12 horas; ``None`` si no hay o no es válida."""
+    t = _HM_RE.match(re.sub(r"\s+", " ", (hm or "").replace("\u00a0", " ").replace("\u202f", " ")).strip())
+    if not t:
+        return None
+    h, mi, sec = int(t.group(1)), int(t.group(2)), int(t.group(3) or 0)
+    if t.group(4):  # 12 h: «AM»/«PM» o «a. m.»/«p. m.»
+        h = h % 12 + (12 if t.group(4).lower() == "p" else 0)
+    return (h, mi, sec) if h < 24 and mi < 60 and sec < 60 else None
 
 
 #: Dónde está cada volcán que vigila el IGP, para ubicar sus boletines y alertas.
@@ -357,23 +493,32 @@ def _volcano_points(name: str) -> dict:
                         "source": f"https://volcano.si.edu/volcano.cfm?vn={pt[2]}"}]}
 
 
+def _slug(*parts: str) -> str:
+    """Fragmento de enlace estable con las partes dadas: minúsculas, lo que no es letra o cifra ASCII → «-»."""
+    return re.sub(r"[^a-z0-9]+", "-", " ".join(parts).lower()).strip("-")
+
+
 def parse_cenvul(body: bytes, base_url: str) -> Parsed:
-    text = body.decode("utf-8", errors="replace")
+    text = text_of(body)
     if "CENVUL" not in text:
         raise FeedError("no es una página del CENVUL")
     alerts = "alertas-vulcanologicas" in base_url
     items, green, cards = [], 0, _cards(text)
+    dated = undated = 0  # tarjetas con «Fecha de publicación», leída o no
     for card in cards:
         f = {k.strip().lower(): html.unescape(v).strip() for k, v in _CARD_FIELD_RE.findall(card)}
         volcano = f.get("volcán") or f.get("volcan")
         if not volcano:
             continue
+        raw_date = f.get("fecha de publicación", "")
+        when = _card_date(raw_date, f.get("hora de publicación", "") if alerts else "")
+        if raw_date:
+            dated, undated = dated + bool(when), undated + (not when)
         if alerts:
             kind = f.get("tipo de alerta", "")
-            when = _en_date(f.get("fecha de publicación", ""), f.get("hora de publicación", ""))
             what = {"cenizas": "dispersión de cenizas", "lahares": "descenso de lahares"}.get(kind.lower(), kind.lower())
             items.append({"title": clean_text(f"Volcán {volcano}: alerta por {what} (IGP)", 300),
-                          "link": f"{base_url}#{re.sub(r'[^a-z0-9]+', '-', f'{volcano} {kind} {when or ''}'.lower()).strip('-')}",
+                          "link": f"{base_url}#{_slug(volcano, kind, when or '')}",
                           "published": when,
                           "summary": f"Alerta vulcanológica del CENVUL por {what} del volcán {volcano}." + _volcano_place(volcano),
                           "categories": ["volcan", kind], **_volcano_points(volcano)})
@@ -386,13 +531,20 @@ def parse_cenvul(body: bytes, base_url: str) -> Parsed:
                 continue
             items.append({"title": clean_text(f"Volcán {volcano}: boletín {code}" + (f", alerta {level.lower()}" if level else ""), 300),
                           "link": f"{base_url}#{re.sub(r'[^A-Za-z0-9]+', '-', code).strip('-')}",
-                          "published": _en_date(f.get("fecha de publicación", "")),
+                          "published": when,
                           "summary": f"Boletín vulcanológico del CENVUL (IGP) sobre el volcán {volcano}"
                                      + (f". Nivel de alerta: {level.lower()}." if level else ".") + _volcano_place(volcano),
                           "categories": ["volcan", level], **_volcano_points(volcano)})
     if not cards:
         raise FeedError("la página del CENVUL no tiene tarjetas con el formato esperado")
+    if undated and not dated:
+        # Otra forma de escribir la fecha: sin fechas, las alertas se fundían en una por volcán y el feed parecía
+        # «sin entradas con fecha» (un aviso informativo que nadie lee). Es un cambio de formato: se dice como tal.
+        sample = next(iter(re.findall(r"Fecha de publicaci[oó]n\s*:\s*</span>\s*([^<]{1,60})", text)), "")
+        raise FeedError(f"el CENVUL escribe las fechas de otra forma ({html.unescape(sample).strip()!r})")
     out = _finish(Parsed("cenvul-html", items))
+    if undated:
+        out.repairs.append(f"{undated} tarjetas con una fecha que no se pudo leer")
     if green:
         out.repairs.append(f"{green} boletines de volcanes en alerta verde omitidos")
     return out
@@ -424,7 +576,7 @@ def _tg_more(url: str) -> str:
 def parse_telegram(body: bytes, base_url: str = "") -> Parsed:
     """Vista pública del canal. Los avisos («#Aviso») y los reportes en curso («#Ahora») llevan
     un titular que los distingue (``TG_KINDS``); las notas de prensa, su propio titular."""
-    text = body.decode("utf-8", errors="replace")
+    text = text_of(body)
     if "tgme_widget_message" not in text:
         raise FeedError("no es la vista pública de un canal de Telegram")
     items = []
@@ -554,7 +706,76 @@ def _range_es(r: str) -> str:
     return f"entre {m.group(1)} y {m.group(2)}" if m else f"en {r}"
 
 
-def parse_arcgis(body: bytes, base_url: str) -> Parsed:
+#: Recuadro holgado del Perú (lat0, lon0, lat1, lon1) para la geometría de las capas: los polígonos de un aviso pueden
+#: asomar al mar o a un país vecino, no estar en otro continente ni en metros.
+_PERU_ENVELOPE = (-21.0, -84.0, 2.5, -66.0)
+
+
+def _xy(c) -> Iterator[tuple[float, float]]:
+    """Pares (x, y) de una geometría GeoJSON (``coordinates`` anidadas) o de Esri (``rings``, ``paths``, ``x``/``y``)."""
+    if isinstance(c, dict):
+        yield from _xy_dict(c)
+    elif isinstance(c, list):
+        yield from _xy_list(c)
+
+
+def _xy_dict(c: dict) -> Iterator[tuple[float, float]]:
+    """Pares (x, y) de un objeto de geometría: su punto Esri (``x``/``y``) y los de sus listas de coordenadas."""
+    if isinstance(c.get("x"), (int, float)) and isinstance(c.get("y"), (int, float)):
+        yield float(c["x"]), float(c["y"])
+    for k in ("coordinates", "rings", "paths", "points"):
+        if k in c:
+            yield from _xy(c[k])
+
+
+def _xy_list(c: list) -> Iterator[tuple[float, float]]:
+    """Pares (x, y) de una lista: ella misma si empieza con dos números, si no los de cada elemento."""
+    if len(c) >= 2 and all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in c[:2]):
+        yield float(c[0]), float(c[1])
+    else:
+        for v in c:
+            yield from _xy(v)
+
+
+def _in_box(box: tuple[float, float, float, float], lat: float, lon: float) -> bool:
+    """Si (lat, lon) cae dentro del recuadro ``box`` (lat0, lon0, lat1, lon1), bordes incluidos."""
+    return box[0] <= lat <= box[2] and box[1] <= lon <= box[3]
+
+
+def _geometry_points(feats: list) -> list[tuple[float, float]]:
+    """Los puntos (lat, lon) de la geometría de cada elemento de la capa (hasta 200 por elemento)."""
+    return [(lat, lon) for f in feats for lon, lat in itertools.islice(_xy((f or {}).get("geometry") or {}), 200)]
+
+
+def _row_points(rows: list[dict]) -> list[tuple[float, float]]:
+    """Los puntos (lat, lon) de las columnas LATITUD/LONGITUD de las filas que las traen numéricas."""
+    pts = []
+    for r in rows:
+        try:
+            pts.append((float(r["LATITUD"]), float(r["LONGITUD"])))
+        except (KeyError, TypeError, ValueError):
+            pass
+    return pts
+
+
+def _arcgis_off_peru(feats: list, rows: list[dict]) -> str:
+    """Por qué la geometría de la capa no está en el Perú (otra proyección: la consulta pide ``outSR=4326`` y sin él
+    ArcGIS responde en metros; latitud y longitud intercambiadas), o "". Mira la geometría y, en las estaciones, las
+    columnas LATITUD/LONGITUD: si menos de la mitad de los puntos cae en el Perú, la capa no se lee (antes los avisos
+    salían sin lugar ni polígono: ``tools/drift_sim.py``, mutaciones ``json-scale-x10`` y ``arcgis-web-mercator``)."""
+    pts = _geometry_points(feats) + _row_points(rows)
+    if not pts:
+        return ""
+    inside = sum(1 for lat, lon in pts if _in_box(_PERU_ENVELOPE, lat, lon))
+    if inside * 2 >= len(pts):
+        return ""
+    lat, lon = next((p for p in pts if not _in_box(_PERU_ENVELOPE, p[0], p[1])))
+    return (f"la geometría de la capa no está en el Perú ({len(pts) - inside} de {len(pts)} puntos fuera; p. ej. "
+            f"lat {lat:g}, lon {lon:g}): ¿otra proyección (falta outSR=4326) o latitud y longitud intercambiadas?")
+
+
+def _arcgis_features(body: bytes) -> list:
+    """La lista ``features`` de una respuesta de ArcGIS; ``FeedError`` si no es JSON, es un error o no la trae."""
     try:
         data = json.loads(body.decode("utf-8-sig"))
     except (UnicodeDecodeError, ValueError) as exc:
@@ -565,12 +786,27 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
     feats = (data or {}).get("features") if isinstance(data, dict) else None
     if not isinstance(feats, list):
         raise FeedError("respuesta de ArcGIS sin lista de elementos")
+    return feats
+
+
+def _main_departments(by_dep: dict) -> list:
+    """Los departamentos de un aviso, de mayor a menor área, sin las astillas de menos del 3 % del área."""
+    total = sum(by_dep.values())
+    return [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+
+
+def parse_arcgis(body: bytes, base_url: str) -> Parsed:
+    feats = _arcgis_features(body)
     rows = [(f or {}).get("attributes") or (f or {}).get("properties") or {} for f in feats]
     if not rows:
         return Parsed("arcgis-json", [], ["la capa no tiene avisos vigentes"])
+    off = _arcgis_off_peru(feats, rows)
+    if off:
+        raise FeedError(off)
     keys = set().union(*rows)
     items: list[dict] = []
     if "NUM_AVISO" in keys:  # avisos hidrológicos: una estación por fila
+        kind = "hidrologico"
         by_num: dict = {}
         for r in rows:
             by_num.setdefault(r.get("NUM_AVISO"), []).append(r)
@@ -593,6 +829,7 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                           "categories": [f"aviso hidrológico {num}"], "geo": list(dict.fromkeys(where)),
                           **({"points": points} if points else {})})
     elif "NIVEL" in keys and "NOMBDEP" in keys:  # activación de quebradas: cuántas por distrito (o por departamento)
+        kind = "quebradas"
         # Cada polígono de la capa es una quebrada (unas decenas de hectáreas), no un distrito: la consulta las cuenta
         # por nivel, fecha y distrito. Una respuesta sin NOMBDIST (la consulta vieja) solo dice cuántas por departamento.
         from .geo import gazetteer
@@ -627,6 +864,7 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                           "categories": ["huaico", str(nivel)], "geo": [", ".join(f"departamento de {d}" for d in deps)],
                           **({"areas": [{"code": c, "name": gz.label(c)["name"], "n": n} for c, n in dists]} if dists else {})})
     elif "INTENSIDAD" in keys and "RANGO" in keys:  # peligro de incendios forestales (FWI): polígonos sin lugares
+        kind = "fwi"
         from .geo import department_names
         from .geopoly import cap_rings, polygon_departments, shape_rings
 
@@ -641,9 +879,8 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             shapes.setdefault(k, []).extend(shape_rings((f or {}).get("geometry") or {}))
         for (fecha, intensidad, rango), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, kv[0][1]), reverse=True):
             rings = cap_rings(shapes.get((fecha, intensidad, rango)) or [])
-            total = sum(by_dep.values())
             # Las astillas de menos del 3 % del área no nombran un departamento.
-            codes = [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+            codes = _main_departments(by_dep)
             when = _day_ms(fecha)
             deps = [names.get(c, c) for c in codes]
             level = intensidad.lower() or "sin nivel"
@@ -661,6 +898,7 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                           "ubigeo": codes, "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else [],
                           **({"shapes": [{"rings": rings}]} if rings else {})})
     elif "NIVEL" in keys and "NOMBDEP" not in keys:  # avisos de precipitaciones de 24 horas: polígonos por nivel
+        kind = "lluvias"
         from .geo import department_names
         from .geopoly import cap_rings, polygon_departments, shape_rings
 
@@ -677,8 +915,7 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             for code, area in polygon_departments((f or {}).get("geometry") or {}, sample=True).items():
                 g[code] = g.get(code, 0.0) + area
         for (fecha, nivel), by_dep in sorted(groups.items(), key=lambda kv: (kv[0][0] or 0, kv[0][1]), reverse=True):
-            total = sum(by_dep.values())
-            codes = [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
+            codes = _main_departments(by_dep)
             when = _day_ms(fecha)
             deps = [names.get(c, c) for c in codes]
             more = len(deps) - 6
@@ -695,10 +932,27 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
                           "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else [],
                           **({"shapes": [{"rings": rings}]} if (rings := cap_rings(shapes.get((fecha, nivel)) or [])) else {})})
         if not items:
-            return Parsed("arcgis-json", [], ["la capa no tiene avisos de nivel 2 o más"])
+            return Parsed("arcgis-json", [], ["la capa no tiene avisos de nivel 2 o más"], kind)
     else:
         raise FeedError("capa de ArcGIS sin los campos de un aviso conocido")
-    return _finish(Parsed("arcgis-json", items))
+    out = _finish(Parsed("arcgis-json", items))
+    out.title = kind  # qué avisos trajo la capa: ``arcgis_kind_error`` lo compara con la capa que se pidió
+    return out
+
+
+#: Qué avisos trae cada capa del SENAMHI en GEOSINPAD (``news.Feed.layer`` → lo que ``parse_arcgis`` reconoce).
+ARCGIS_KINDS = (("AvisoActQuebrada", "quebradas"), ("AvisoHidrologico", "hidrologico"), ("AvisoFWI", "fwi"),
+                ("AvisoPP", "lluvias"))
+
+
+def arcgis_kind_error(layer: str, kind: str) -> str:
+    """Por qué la capa respondió otros avisos que los de ``layer`` (el URL apunta a otra capa: el servidor las
+    renumeró), o "". Una capa de otros avisos con datos se leía como si fuera la pedida: los avisos de incendios
+    salían como hidrológicos (``tools/drift_sim.py``, mutación ``arcgis-other-layer``)."""
+    want = next((k for name, k in ARCGIS_KINDS if name in (layer or "")), "")
+    if want and kind and kind != want:
+        return f"la capa respondió avisos de «{kind}», no los de {layer} («{want}»): ¿el servidor renumeró las capas?"
+    return ""
 
 
 # --- NASA FIRMS: focos de calor (VIIRS, 24 horas) -----------------------------------
@@ -708,6 +962,10 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
 # no se cuentan.
 
 FIRMS_MAP = "https://firms.modaps.eosdis.nasa.gov/map/#d:24hrs;@-75.0,-9.4,5.6z"
+FIRMS_COLUMNS = ("latitude", "longitude", "acq_date", "acq_time")
+#: El archivo es el de Sudamérica (``J1_VIIRS_C2_South_America_24h.csv``): un foco fuera de este recuadro (lat0, lon0,
+#: lat1, lon1) es una columna corrida, no un incendio.
+_FIRMS_BOX = (-60.0, -95.0, 15.0, -30.0)
 
 
 def _days_es(a: datetime, b: datetime) -> str:
@@ -722,45 +980,40 @@ def _days_es(a: datetime, b: datetime) -> str:
     return f"{a.day} de {months[a.month]} y {b.day} de {months[b.month]}"
 
 
-def parse_firms(body: bytes, base_url: str = "") -> Parsed:
-    import csv
-    import io
+def _firms_coords(r: dict) -> Optional[tuple[float, float]]:
+    """(lat, lon) de una fila del CSV de FIRMS; ``None`` si no son números."""
+    try:
+        return float(r["latitude"]), float(r["longitude"])
+    except (KeyError, TypeError, ValueError):
+        return None
 
-    from .geo import department_names
-    from .geopoly import department_at
 
-    text = body.decode("utf-8-sig", errors="replace")
-    head = text.split("\n", 1)[0].lower()
-    if "latitude" not in head or "acq_date" not in head:
-        raise FeedError("no es un CSV de focos de calor de FIRMS")
-    names = department_names()
-    by_dep: dict[str, int] = {}
-    times, low, sat, spots = [], 0, "", []
-    for r in csv.DictReader(io.StringIO(text)):
-        try:
-            lat, lon = float(r["latitude"]), float(r["longitude"])
-        except (KeyError, TypeError, ValueError):
-            continue
-        if not (_PERU_BOX[0] <= lat <= _PERU_BOX[2] and _PERU_BOX[1] <= lon <= _PERU_BOX[3]):
-            continue
-        code = department_at(lat, lon)
-        if not code:
-            continue  # países vecinos dentro del recuadro
-        if str(r.get("confidence") or "").strip().lower() in ("l", "low"):
-            low += 1
-            continue
-        by_dep[code] = by_dep.get(code, 0) + 1
-        spots.append((lat, lon))
-        sat = sat or str(r.get("satellite") or "").strip()
-        hhmm = str(r.get("acq_time") or "").strip().zfill(4)
-        try:
-            times.append(datetime.strptime(f"{r['acq_date']} {hhmm}", "%Y-%m-%d %H%M").replace(tzinfo=timezone.utc))
-        except (KeyError, ValueError):
-            pass
-    repairs = [f"{low} detecciones de baja confianza no contadas"] if low else []
-    if not by_dep:
-        return Parsed("firms-csv", [], repairs + ["sin focos de calor en el Perú en las últimas 24 horas"])
-    per = sorted(by_dep.items(), key=lambda x: (-x[1], names.get(x[0], x[0])))
+def _firms_time(r: dict) -> Optional[datetime]:
+    """Hora UTC de la pasada del satélite de una fila del CSV de FIRMS (``acq_date`` y ``acq_time``); ``None`` si no se lee."""
+    hhmm = str(r.get("acq_time") or "").strip().zfill(4)
+    try:
+        return datetime.strptime(f"{r['acq_date']} {hhmm}", "%Y-%m-%d %H%M").replace(tzinfo=timezone.utc)
+    except (KeyError, ValueError):
+        return None
+
+
+def _firms_check_rows(rows: int, numeric: int, outside: int) -> None:
+    """``FeedError`` si el CSV de FIRMS está vacío, sin coordenadas numéricas o con los focos fuera de Sudamérica."""
+    if not rows:
+        # El archivo es el de toda Sudamérica en 24 horas: VIIRS ve allí cientos de focos cada día (quemas agrícolas,
+        # mecheros de gas, incendios en la Amazonía); un CSV sin ninguna fila es un archivo vacío, no un día sin
+        # fuego, y se publicaba «sin focos de calor en el Perú» (``tools/drift_sim.py``, mutación ``csv-header-only``).
+        raise FeedError("el CSV de focos de calor de Sudamérica de FIRMS no trae ninguna fila")
+    if numeric < rows / 2:
+        raise FeedError(f"solo {numeric} de {rows} filas del CSV de FIRMS tienen coordenadas numéricas: "
+                        "¿coma decimal u otro separador?")
+    if numeric and outside > numeric * 0.05:
+        raise FeedError(f"{outside} de {numeric} focos del CSV de Sudamérica de FIRMS caen fuera de Sudamérica: "
+                        "¿latitud y longitud intercambiadas?")
+
+
+def _firms_text(per: list, names: dict, times: list, sat: str) -> tuple[str, str]:
+    """Título y resumen del aviso de focos de calor: cuántos, en qué días, dónde y con qué satélite."""
     total = sum(n for _, n in per)
     top = [f"{names.get(c, c)} ({n})" for c, n in per[:3]]
     sat_name = {"N": "Suomi NPP", "1": "NOAA-20", "N20": "NOAA-20", "J1": "NOAA-20", "N21": "NOAA-21", "J2": "NOAA-21"}.get(sat, sat)
@@ -772,6 +1025,57 @@ def parse_firms(body: bytes, base_url: str = "") -> Parsed:
     summary = (f"Detecciones del satélite {sat_name or '?'} (VIIRS, 375 m) {span}: "
                + ", ".join(f"{names.get(c, c)} {n}" for c, n in per) + ". Un foco de calor es una temperatura alta "
                "detectada desde el espacio: puede ser un incendio forestal, una quema agrícola u otra fuente de calor.")
+    return title, summary
+
+
+def parse_firms(body: bytes, base_url: str = "") -> Parsed:
+    import csv
+    import io
+
+    from .geo import department_names
+    from .geopoly import department_at
+
+    text = text_of(body)
+    reader = csv.DictReader(io.StringIO(text))
+    missing = [c for c in FIRMS_COLUMNS if c not in (reader.fieldnames or [])]
+    if missing:
+        # «latitude;longitude;…» (otro separador) pasaba el control de la cabecera y daba «sin focos» sin aviso.
+        raise FeedError(f"no es un CSV de focos de calor de FIRMS: faltan las columnas {', '.join(missing)} "
+                        f"(cabecera: «{text.split(chr(10), 1)[0][:120]}»)")
+    names = department_names()
+    by_dep: dict[str, int] = {}
+    times, low, sat, spots = [], 0, "", []
+    rows = numeric = outside = 0
+    for r in reader:
+        rows += 1
+        xy = _firms_coords(r)
+        if xy is None:
+            continue
+        lat, lon = xy
+        numeric += 1
+        if not _in_box(_FIRMS_BOX, lat, lon):
+            outside += 1
+            continue
+        if not _in_box(_PERU_BOX, lat, lon):
+            continue
+        code = department_at(lat, lon)
+        if not code:
+            continue  # países vecinos dentro del recuadro
+        if str(r.get("confidence") or "").strip().lower() in ("l", "low"):
+            low += 1
+            continue
+        by_dep[code] = by_dep.get(code, 0) + 1
+        spots.append((lat, lon))
+        sat = sat or str(r.get("satellite") or "").strip()
+        when = _firms_time(r)
+        if when is not None:
+            times.append(when)
+    _firms_check_rows(rows, numeric, outside)
+    repairs = [f"{low} detecciones de baja confianza no contadas"] if low else []
+    if not by_dep:
+        return Parsed("firms-csv", [], repairs + ["sin focos de calor en el Perú en las últimas 24 horas"])
+    per = sorted(by_dep.items(), key=lambda x: (-x[1], names.get(x[0], x[0])))
+    title, summary = _firms_text(per, names, times, sat)
     from .geopoly import grid_points
 
     # Dónde están los focos: celdas de 0,1° (~11 km) con cuántos caen en cada una (un foco es un píxel de 375 m).
@@ -923,10 +1227,54 @@ ADAPTERS = {"dhn": parse_dhn, "dhn-avisos": parse_dhn_avisos, "ptwc-text": parse
             "arcgis": parse_arcgis, "indeci-coen": parse_coen, "firms": parse_firms}
 
 
+#: Fechas anteriores a esto no son avisos vigentes ni recientes: son una fecha mal leída (segundos Unix leídos como
+#: milisegundos dan enero de 1970). El mismo límite que ``feedparse._plausible``.
+OLDEST = "1995-01-01"
+
+
+def _query_box(base_url: str) -> Optional[tuple[float, float, float, float]]:
+    """Recuadro (lat0, lon0, lat1, lon1) que pide el URL (``minlatitude``… de la consulta FDSN del USGS), o None."""
+    from urllib.parse import parse_qs, urlsplit
+
+    q = {k: v[0] for k, v in parse_qs(urlsplit(base_url).query).items()}
+    try:
+        return (float(q["minlatitude"]), float(q["minlongitude"]), float(q["maxlatitude"]), float(q["maxlongitude"]))
+    except (KeyError, ValueError):
+        return None
+
+
+def _vet(p: Parsed, base_url: str, adapter: str) -> Parsed:
+    """Lo que ningún lector de peligros debe publicar sin aviso: fechas imposibles y coordenadas fuera del mundo o del
+    área pedida. Una entrada así es un cambio de formato de la fuente (otra unidad de tiempo, latitud y longitud
+    intercambiadas, otra proyección): ``FeedError``, no una alerta en otro lugar u otro año (``tools/drift_sim.py``,
+    mutaciones ``json-epoch-seconds``, ``json-coords-swap`` y ``json-scale-x10``)."""
+    old = [i for i in p.items if i.get("published") and str(i["published"]) < OLDEST]
+    if old:
+        raise FeedError(f"{len(old)} de {len(p.items)} entradas con fecha anterior a {OLDEST[:4]} "
+                        f"(p. ej. {old[0]['published']}): ¿la fecha viene en otra unidad o formato?")
+    box = _query_box(base_url) if adapter == "geojson" else None
+    for i in p.items:
+        for pt in i.get("points") or []:
+            _vet_point(pt.get("lat"), pt.get("lon"), box, i["title"][:80])
+    return p
+
+
+def _vet_point(lat, lon, box: Optional[tuple], title: str) -> None:
+    """``FeedError`` si (lat, lon) es imposible o cae fuera del recuadro pedido (con medio grado de holgura)."""
+    if not (isinstance(lat, (int, float)) and isinstance(lon, (int, float))):
+        return
+    if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+        raise FeedError(f"coordenadas imposibles ({lat}, {lon}) en «{title}»: ¿otra unidad o proyección?")
+    if box and not (box[0] - 0.5 <= lat <= box[2] + 0.5 and box[1] - 0.5 <= lon <= box[3] + 0.5):
+        raise FeedError(f"«{title}» está en ({lat}, {lon}), fuera del área pedida {box}: "
+                        "¿latitud y longitud intercambiadas?")
+
+
 def parse(body: bytes, base_url: str, adapter: str) -> Parsed:
     if adapter == "geojson":
         try:
-            return parse_geojson(json.loads(body.decode("utf-8-sig")), base_url)
+            data = json.loads(body.decode("utf-8-sig"))
         except (UnicodeDecodeError, ValueError) as exc:
             raise FeedError(f"JSON inválido: {exc}") from exc
-    return ADAPTERS[adapter](body, base_url)
+        return _vet(parse_geojson(data, base_url), base_url, adapter)
+    return _vet(ADAPTERS[adapter](body, base_url), base_url, adapter)

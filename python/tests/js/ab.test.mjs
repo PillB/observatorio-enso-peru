@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
 
-import { DAILY_CAP, EXPERIMENTS, MIN_VIEWS, decide, handle, parseEvent, resetSchemaCache, wilson } from '../../../functions/_lib/ab.js';
+import { DAILY_CAP, EXPERIMENTS, MIN_VIEWS, SRM_ALPHA, chi2Sf, decide, handle, parseEvent, resetSchemaCache, srm, wilson } from '../../../functions/_lib/ab.js';
 import * as client from '../../../public/assets/js/ab.js';
 import { FakeD1 } from './fake-d1.mjs';
 
@@ -119,27 +119,30 @@ describe('decisión: la versión que más se usa', () => {
 
   it('gana solo con visitas suficientes y un intervalo que no se cruza con ningún otro', () => {
     const vs = ['a', 'b', 'c'];
-    const clear = { a: { view: 400, use: 200 }, b: { view: 400, use: 100 }, c: { view: 400, use: 90 } };
+    const clear = { a: { rview: 400, ruse: 200 }, b: { rview: 400, ruse: 100 }, c: { rview: 400, ruse: 90 } };
     assert.equal(decide(vs, clear).winner, 'a');
     // Una versión con pocas visitas impide decidir, aunque la diferencia sea grande.
-    assert.equal(decide(vs, { ...clear, c: { view: MIN_VIEWS - 1, use: 0 } }).winner, null);
-    assert.equal(decide(vs, { ...clear, c: { view: MIN_VIEWS - 1, use: 0 } }).ready, false);
+    assert.equal(decide(vs, { ...clear, c: { rview: MIN_VIEWS - 1, ruse: 0 } }).winner, null);
+    assert.equal(decide(vs, { ...clear, c: { rview: MIN_VIEWS - 1, ruse: 0 } }).ready, false);
     // Dos versiones con intervalos que se cruzan: ninguna gana.
-    const close = { a: { view: 400, use: 200 }, b: { view: 400, use: 185 }, c: { view: 400, use: 90 } };
+    const close = { a: { rview: 400, ruse: 200 }, b: { rview: 400, ruse: 185 }, c: { rview: 400, ruse: 90 } };
     const d = decide(vs, close);
     assert.equal(d.ready, true);
     assert.equal(d.winner, null);
     // «use» nunca pasa de las visitas (un envío repetido no infla la tasa).
-    assert.equal(decide(['a'], { a: { view: 10, use: 50 } }, 1).rows[0].rate, 1);
+    assert.equal(decide(['a'], { a: { rview: 10, ruse: 50 } }, 1).rows[0].rate, 1);
   });
 
   it('defaults devuelve la ganadora de cada experimento y se cachea en el borde', async () => {
-    seed('memoria', { resumen: { view: 300, use: 60 }, cuencas: { view: 300, use: 180 }, puntos: { view: 300, use: 70 }, riesgo: { view: 300, use: 65 } });
-    seed('noticias', { resumen: { view: 50, use: 40 }, cuencas: { view: 50, use: 2 }, distritos: { view: 50, use: 2 } });
+    seed('memoria', { resumen: { rview: 300, ruse: 60 }, cuencas: { rview: 300, ruse: 180 }, puntos: { rview: 300, ruse: 70 }, riesgo: { rview: 300, ruse: 65 } });
+    seed('noticias', { resumen: { rview: 50, ruse: 40 }, cuencas: { rview: 50, ruse: 2 }, distritos: { rview: 50, ruse: 2 } });
+    // Muchas visitas de quienes ya eligieron (view / use) no deciden: no son una muestra sorteada.
+    seed('boletin', { mapa: { view: 5000, use: 4000, chosen: 5000 }, mosaico: { view: 5000, use: 10 }, ficha: { view: 5000, use: 10 } });
     const r = await defaults();
     assert.equal(r.status, 200);
     assert.match(r.headers.get('Cache-Control'), /public, max-age=3600/);
     assert.deepEqual(await r.json(), { boletin: null, mapa: null, memoria: 'cuencas', noticias: null, sitio: null });
+    assert.equal((await stats()).experiments.boletin.decision.rows[0].view, 0);
     const s = await stats(7);
     assert.equal(s.experiments.memoria.decision.winner, 'cuencas');
     assert.equal(s.experiments.noticias.decision.ready, false);
@@ -151,6 +154,72 @@ describe('decisión: la versión que más se usa', () => {
     assert.equal(s.experiments.mapa.totals.A.view, 5000);
     assert.equal(s.experiments.mapa.decision.rows[0].view, 0);
     assert.equal((await (await defaults()).json()).mapa, null);
+  });
+
+  it('χ² de cola superior: cuantiles publicados de la tabla de la χ²', () => {
+    // Valores críticos de cualquier tabla de la χ² (p. ej. NIST/SEMATECH e-Handbook, 1.3.6.7.4).
+    for (const [x, df, p] of [[3.841459, 1, 0.05], [10.827566, 1, 0.001], [5.991465, 2, 0.05], [13.815511, 2, 0.001],
+      [7.814728, 3, 0.05], [16.266236, 3, 0.001], [9.487729, 4, 0.05]]) {
+      assert.ok(Math.abs(chi2Sf(x, df) - p) < 1e-6 * Math.max(1, p * 1e3), `${x} ${df}: ${chi2Sf(x, df)}`);
+    }
+    // df = 2 es exacto: e^(−x/2). df = 4: e^(−x/2)(1 + x/2).
+    assert.ok(Math.abs(chi2Sf(20, 4) - Math.exp(-10) * 11) < 1e-12);
+    assert.equal(chi2Sf(0, 3), 1);
+  });
+
+  it('control de proporciones (SRM): un reparto que el sorteo parejo no explica impide decidir', () => {
+    // 1000 frente a 870: χ² = (65² + 65²) / 935 = 9,037; p = 0,00265 > 0,0005: pasa.
+    const ok = srm([1000, 870]);
+    assert.ok(Math.abs(ok.chi2 - 8450 / 935) < 1e-9);
+    assert.equal(ok.mismatch, false);
+    // 1000 frente a 840: χ² = 2·80² / 920 = 13,913; p = 0,00019 < 0,0005: desajuste.
+    assert.equal(srm([1000, 840]).mismatch, true);
+    // Justo a cada lado del umbral: 1000 frente a 850 (χ² = 12,16, p = 0,00049) es desajuste; 1000 frente a 852
+    // (χ² = 11,83, p = 0,00058) no. Fija que el umbral es SRM_ALPHA y no la mitad ni el doble.
+    assert.equal(srm([1000, 850]).mismatch, true);
+    assert.equal(srm([1000, 852]).mismatch, false);
+    // El umbral en su borde: χ²(1) = 12,1157 deja p = 0,0005.
+    const x = 12.115665;
+    assert.ok(Math.abs(chi2Sf(x, 1) - SRM_ALPHA) < 1e-7);
+    // Pocas visitas: el χ² no vale y no se prueba.
+    assert.equal(srm([4, 0]).tested, false);
+    // Borde: 5 esperadas por versión sí se prueba; 4,5 no.
+    assert.equal(srm([5, 5]).tested, true);
+    assert.equal(srm([5, 4]).tested, false);
+    // Con desajuste, una diferencia que de otro modo ganaría no gana.
+    const vs = ['a', 'b'];
+    const fine = { a: { rview: 1000, ruse: 500 }, b: { rview: 870, ruse: 200 } };
+    assert.equal(decide(vs, fine).winner, 'a');
+    const bad = { a: { rview: 1000, ruse: 500 }, b: { rview: 840, ruse: 200 } };
+    assert.equal(decide(vs, bad).winner, null);
+    assert.equal(decide(vs, bad).srm.mismatch, true);
+  });
+
+  it('solo deciden las primeras visitas sorteadas (rview / ruse), no las de quien ya eligió (view / use)', () => {
+    const vs = ['a', 'b'];
+    // Quien elige «a» y vuelve a diario la usa mucho: con view / use, «a» ganaba sin haber sorteo de por medio.
+    const chosen = { a: { view: 900, use: 700, chosen: 880, rview: 210, ruse: 60 }, b: { view: 300, use: 60, rview: 205, ruse: 58 } };
+    const d = decide(vs, chosen);
+    assert.equal(d.winner, null);
+    assert.deepEqual(d.rows.map((r) => [r.view, r.use]), [[210, 60], [205, 58]]);
+  });
+
+  it('A/A: dos versiones iguales casi nunca «ganan» con una sola mirada (semilla fija, el decide real)', () => {
+    // Generador mulberry32 con semilla: reproducible. 2000 experimentos de 300 primeras visitas por versión, uso 20 %.
+    let st = 12345;
+    const rnd = () => { st = (st + 0x6D2B79F5) >>> 0; let t = st; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const draw = (n) => { let k = 0; for (let i = 0; i < n; i++) if (rnd() < 0.2) k++; return k; };
+    let wins = 0;
+    for (let i = 0; i < 2000; i++) if (decide(['a', 'b'], { a: { rview: 300, ruse: draw(300) }, b: { rview: 300, ruse: draw(300) } }).winner) wins++;
+    // Que dos intervalos al 95 % no se crucen equivale a |z| > 2,77 para la diferencia: p ≈ 0,0056 por mirada.
+    assert.ok(wins / 2000 < 0.015, `${wins}`);
+    // Y con una diferencia real de 10 puntos (0,30 frente a 0,20) con 300 por versión, casi siempre gana la buena.
+    let good = 0;
+    for (let i = 0; i < 500; i++) {
+      const a = { rview: 300, ruse: [...Array(300)].filter(() => rnd() < 0.3).length };
+      if (decide(['a', 'b'], { a, b: { rview: 300, ruse: draw(300) } }).winner === 'a') good++;
+    }
+    assert.ok(good / 500 > 0.5, `${good}`);
   });
 
   it('sin base vinculada no hay ganadoras', async () => {
@@ -170,13 +239,17 @@ describe('asignación en la primera visita', () => {
     assert.ok(all.includes(client.assign('memoria', 'B', seq(0.1))));
   });
 
-  it(`con ganadora, ella con probabilidad ${client.EXPLOIT} y otra al azar el resto`, () => {
-    assert.equal(client.assign('noticias', 'distritos', seq(client.EXPLOIT - 0.01)), 'distritos');
-    const rest = new Set([0.0, 0.5, 0.99].map((r) => client.assign('noticias', 'distritos', seq(0.95, r))));
-    assert.deepEqual([...rest].sort(), ['cuencas', 'resumen']);
-    // La proporción con un azar de verdad.
+  it(`con ganadora, ella con probabilidad ${client.EXPLOIT}; el resto, al azar entre todas y marcado para la decisión`, () => {
+    assert.deepEqual(client.assignment('noticias', 'distritos', seq(client.EXPLOIT - 0.01)), { v: 'distritos', r: false });
+    // El resto sale del sorteo parejo entre las tres (la ganadora incluida): antes era entre las otras dos, y la
+    // muestra que sigue midiendo no tenía ganadora con quien comparar.
+    const rest = [0.0, 0.5, 0.99].map((r) => client.assignment('noticias', 'distritos', seq(0.95, r)));
+    assert.deepEqual(rest.map((a) => a.v), ['resumen', 'cuencas', 'distritos']);
+    assert.ok(rest.every((a) => a.r));
+    assert.ok(client.assignment('memoria', null, seq(0.3)).r, 'sin ganadora, todo es sorteo parejo');
+    // La proporción con un azar de verdad: EXPLOIT + (1 − EXPLOIT) / 4 = 0,85 para la ganadora de cuatro.
     let n = 0;
     for (let i = 0; i < 20000; i++) if (client.assign('mapa', 'C') === 'C') n++;
-    assert.ok(Math.abs(n / 20000 - client.EXPLOIT) < 0.02, `${n}`);
+    assert.ok(Math.abs(n / 20000 - (client.EXPLOIT + (1 - client.EXPLOIT) / 4)) < 0.01, `${n}`);
   });
 });

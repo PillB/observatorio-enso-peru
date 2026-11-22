@@ -909,6 +909,16 @@ const EXP_TITLE = {
   sitio: ['Versión de todo el sitio', 'A, clásica: las trece pestañas en una fila. B, agrupada: cinco secciones con submenús y lo largo plegado. Aquí «usaron» quiere decir que abrieron una segunda pestaña; el tiempo en cada pestaña está en la analítica de la consola.'],
 };
 
+/** El veredicto de un experimento en #/variantes: ganadora, desajuste de proporciones (SRM), faltan visitas o empate. */
+function verdictText(dec) {
+  if (!dec) return '';
+  if (dec.winner) return `Gana «${dec.winner}»: el límite inferior de su tasa de uso supera el límite superior de todas las demás. Se muestra a 4 de cada 5 personas que llegan por primera vez; el resto recibe una al azar entre todas.`;
+  if (dec.srm?.mismatch) return `Sin ganadora: las primeras visitas sorteadas no se reparten como el sorteo parejo (χ² = ${dec.srm.chi2.toFixed(1)}, p = ${dec.srm.p.toExponential(1)}). Algo pierde visitas de una versión (avisos que no llegan, una versión que falla, robots); hasta corregirlo ninguna tasa es de fiar.`;
+  const need = dec.rows.filter((r) => r.view < dec.minViews);
+  if (need.length) return `Aún sin ganadora: cada versión necesita al menos ${dec.minViews} primeras visitas sorteadas (faltan en ${need.map((r) => `«${r.v}», ${r.view}`).join('; ')}). Mientras tanto, cada versión sale con la misma probabilidad.`;
+  return 'Aún sin ganadora: los intervalos de las versiones se cruzan. Cada versión sigue saliendo con la misma probabilidad.';
+}
+
 export function statsHtml(s) {
   if (!s) return html`<p>No se pudo leer la analítica. Solo funciona en el sitio publicado en Cloudflare Pages.</p>`;
   if (!s.available) return html`<p>La base de datos no está vinculada en este despliegue (GEO_DB): no hay datos.</p>`;
@@ -927,16 +937,12 @@ export function statsHtml(s) {
         <td class="num">${t.view || 0}</td><td class="num">${use}</td><td class="num">${pct(t.hover || 0, t.view)}</td><td class="num">${pct(t.select || 0, t.view)}</td><td class="num">${pct(t.detail || 0, t.view)}</td>
         <td class="num">${t.choose || 0}</td><td class="num">${t.leave || 0}</td><td class="num">${t.keep || 0}</td><td class="num">${pct(t.chosen || 0, t.view)}</td></tr>`;
     });
-    const need = dec ? dec.rows.filter((r) => r.view < dec.minViews) : [];
-    const verdict = !dec ? ''
-      : dec.winner ? `Gana «${dec.winner}»: el límite inferior de su tasa de uso supera el límite superior de todas las demás. Se muestra a 4 de cada 5 personas que llegan por primera vez; el resto recibe otra al azar.`
-        : need.length ? `Aún sin ganadora: cada versión necesita al menos ${dec.minViews} visitas medidas (faltan en ${need.map((r) => `«${r.v}», ${r.view}`).join('; ')}). Mientras tanto, cada versión sale con la misma probabilidad.`
-          : 'Aún sin ganadora: los intervalos de las versiones se cruzan. Cada versión sigue saliendo con la misma probabilidad.';
+    const verdict = verdictText(dec);
     const [title, sub] = EXP_TITLE[x];
     return html`<h3 class="amap-h3">${title}</h3><p class="muted small">${sub}</p>
       <div class="table-wrap"><table class="grd"><thead><tr><th scope="col">${x === 'mapa' || x === 'sitio' ? 'Versión' : 'Vista'}</th><th scope="col">Visitas</th><th scope="col">${x === 'sitio' ? 'Abrieron otra pestaña' : 'Usaron el mapa'}</th><th scope="col">Pasaron el cursor</th><th scope="col">Filtraron o eligieron</th><th scope="col">Abrieron algo</th><th scope="col">La eligieron</th><th scope="col">La dejaron</th><th scope="col">Volvieron con ella elegida</th><th scope="col">Visitas con ella elegida</th></tr></thead><tbody>${rows}</tbody></table></div>
       ${verdict ? html`<p class="small"><strong>${verdict}</strong></p>` : ''}`;
   };
   return html`${Object.keys(EXPERIMENTS).map(block)}
-    <p class="muted small">Últimos ${s.days} días (desde el ${s.since}). Cada visita cuenta una vez por evento. «Usaron el mapa»: visitas en las que la persona filtró, eligió un área o abrió algo desde el mapa, con su intervalo de Wilson al 95 %; es la tasa que decide, con los últimos ${s.decideDays || 60} días${s.decideDays && s.decideDays !== s.days ? ' (no con el periodo elegido)' : ''}. «Volvieron con ella elegida»: visitas de otro día de personas que eligieron esa versión y la mantienen. Las versiones se asignan al azar en la primera visita (o la ganadora, si la hay); elegir otra la deja como predeterminada en ese navegador. No se guarda ningún dato personal: solo contadores por día.</p>`;
+    <p class="muted small">Últimos ${s.days} días (desde el ${s.since}). Cada visita cuenta una vez por evento. «Usaron el mapa»: la tasa que decide, con su intervalo de Wilson al 95 % y los últimos ${s.decideDays || 60} días${s.decideDays && s.decideDays !== s.days ? ' (no con el periodo elegido)' : ''}: de las primeras visitas de cada navegador con la versión que salió del sorteo parejo, cuántas filtraron, eligieron un área o abrieron algo desde el mapa (cuenta para la versión sorteada aunque en esa visita se cambie de versión). Las visitas de quien ya eligió, las que llegan con un enlace y las de quien vuelve están en las otras columnas, pero no deciden. «Volvieron con ella elegida»: visitas de otro día de personas que eligieron esa versión y la mantienen. Las versiones se asignan al azar en la primera visita (o la ganadora, si la hay); elegir otra la deja como predeterminada en ese navegador. No se guarda ningún dato personal: solo contadores por día.</p>`;
 }

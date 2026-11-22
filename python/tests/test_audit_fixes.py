@@ -126,7 +126,7 @@ def test_http_error_cause():
 
 
 def test_enfen_latest_logs_the_repository_failure(monkeypatch):
-    monkeypatch.setattr(obs, "portal_enfen_listing", lambda f, log: [])
+    monkeypatch.setattr(obs, "portal_enfen_listing", lambda f, log, seen=None: [])
     exc = FetchError("x", [{"url": imarpe_repo.API, "status": 502}])
     acq = obs.Acquired("enfen-comunicados", ok=True, data={"listing": []})
     log = obs.EventLog()
@@ -215,7 +215,7 @@ def test_listing_merges_every_source_url(monkeypatch):
 
 def test_enfen_latest_reads_other_listings_even_when_the_first_answer_was_a_peru_copy(monkeypatch):
     called = []
-    monkeypatch.setattr(obs, "portal_enfen_listing", lambda f, log: called.append(1) or [])
+    monkeypatch.setattr(obs, "portal_enfen_listing", lambda f, log, seen=None: called.append(1) or [])
     monkeypatch.setattr(imarpe_repo, "communiques", lambda f, problems=None: [])
     acq = obs.Acquired("enfen-comunicados", ok=True, data={"listing": []}, channel="relay-peru",
                        url=obs.SOURCE_BY_ID["enfen-comunicados"].urls[1])

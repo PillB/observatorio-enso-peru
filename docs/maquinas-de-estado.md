@@ -144,11 +144,17 @@ stateDiagram-v2
   VistaPrevia --> Elegida: choose(la propia) o choose(la que se ve) — adoptar
   VistaPrevia --> Elegida: choose(otra)
   VistaPrevia --> Asignada: recargar sin el parámetro
-  note right of VistaPrevia: se ve otra versión, no se cuenta nada (mark() calla), la propia no cambia
+  note right of VistaPrevia: se ve otra versión, no se cuenta en sus totales (mark() calla), la propia no cambia
 ```
 
-Eventos por visita (se mandan una vez al ocultarse la página): `view`, `hover`, `select`, `detail`, `use`, `choose`,
-`chosen`, `keep`, `leave`. Con «No rastrear», GPC, la casilla del selector o sin servidor no se manda nada.
+Eventos por visita (se mandan al ocultarse la página; cada uno **una sola vez por visita**, aunque la página se oculte
+y vuelva varias veces): `view`, `hover`, `select`, `detail`, `use`, `choose`, `chosen`, `keep`, `leave`. La primera
+visita sorteada (`Asignada` desde el sorteo parejo, sin parámetros en el enlace y guardada en `localStorage`) manda además `rview` y `ruse` a la
+versión sorteada, aunque en esa visita haya vista previa o se elija otra: es lo único que decide (intención de tratar).
+Con «No rastrear», GPC, la casilla del selector o sin servidor no se manda nada.
+
+Antes, un evento se volvía a mandar en cada ocultamiento de la página: quien filtraba, cambiaba de pestaña y volvía a
+filtrar sumaba dos «use» con una sola «view».
 
 Antes, `choose(v)` con `v` igual a la versión que se veía no hacía nada, aunque fuera una vista previa: no había forma
 de quedarse con la versión de un enlace ni con la que dejó el tutorial (E2).

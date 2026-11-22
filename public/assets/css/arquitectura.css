@@ -1,6 +1,6 @@
 /* Explorador de la arquitectura (arquitectura.html). Los colores son los de los SVG (tools/architecture.py). */
 :root {
-  --bg: #f5f7fa; --bg-elev: #ffffff; --bg-sunk: #eaeef3; --fg: #0d1b2a; --fg-2: #3c4d61; --fg-3: #5d6e82;
+  --bg: #f5f7fa; --bg-elev: #ffffff; --bg-sunk: #eaeef3; --fg: #0d1b2a; --fg-2: #3c4d61; --fg-3: #58697d;
   --line: #d5dde7; --brand: #0b4f71; --brand-2: #0e7490; --cool: #2166ac; --warm: #b2182b; --ok: #1b7a43;
   --watch: #8a5a00; --s1: #c2410c; --s2: #0f766e; --na: #55657a;
   color-scheme: light dark;
