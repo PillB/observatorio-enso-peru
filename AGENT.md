@@ -21,6 +21,17 @@ For every feature and every decision:
 4. **State every trade-off** in the PR description and, if it lasts, in `docs/`. A trade-off that is absorbed
    silently is a bug report waiting to be written.
 
+The owner's words, kept as the rule (November 2026):
+
+> Are all features perfect and prod ready? For every feature and for every decision, research online and ask what
+> the best expert in that field would do (supported by evidence or preponderance of research or authoritative
+> resources) and why they would reject your current choice; if you can name that reason, don't make the choice.
+> Optimize for what that expert would judge correct (validating against the evidence-based benchmark or feasible
+> ideal), never for what satisfies the stated constraints most cheaply. Every trade-off you take must be stated to
+> the user, never absorbed. Give particular focus to methodological and scientific correctness and SOTA techniques
+> and practices and usability and intuitiveness of the user flow and QOL features. Tautological tests considered
+> harmful.
+
 Focus areas, in order: methodological and scientific correctness (index definitions, base periods, units,
 thresholds, provenance), state-of-the-art practice, then usability, intuitiveness of the user flow and
 quality-of-life features (freshness and provenance visible, uncertainty labelled, accessible, works on a phone).
@@ -36,6 +47,10 @@ Each task is done in rounds. **Every round ends with a test that would fail with
 | 2. Implement | The chosen route, smallest coherent diff. Real fixtures, not invented ones, wherever a real response exists. | New tests pass; the full suite passes. |
 | 3. Red team | **Every analysis and every design decision, always**: name the alternatives, then at least **5 ways it could be wrong, limited or improved**, and test each one (a test that passes shows it holds; one that fails is a fix). Then try to break it: edge cases, source drift (section 5), concurrency of the daily/n8n/Peru collectors, Lima time zone (UTC−5) day boundaries, empty-but-valid inputs, HTTP 200 challenge pages. | The five-ways table is in the PR; each hole found becomes a test that failed before the fix. |
 | 4. Retrospect | What would have caught this earlier? Add that guard or test, update section 6 and the relevant `docs/` page. | The new guard has a test. |
+
+**A test for every task and every round** means: the round's own exit test above, plus the gate of section 4
+(`python -m tools.complexity --report 10` and `tests/test_complexity.py`) and the offline suite of section 3, run
+before every commit. A round that cannot name its test is not finished.
 
 Scratch worktrees: `git worktree add <scratch>/wt-<name> <branch> --detach`. Never prototype on the working branch.
 
@@ -135,6 +150,15 @@ Every upstream here has already changed silently at least once (section 6). Rule
   allowlist with a reason.
 - **Weekly audit**: `.github/workflows/drift-audit.yml` re-reads the last week of `data-archive`. Reviewed findings go
   in `python/tools/drift_audit_known.json` with a note. How to repeat it by hand: `docs/auditoria-deriva-fuentes.md`.
+- **"No level" / "uncategorized" is a claim, not a default.** Every hazard alert without a level carries a reason
+  (`enso/severity.py`, `level_status`: not a warning, no scale, several levels, not computed, under evaluation,
+  pending a document). A source that assigns levels to everything it publishes (`severity.LEVELED`) and arrives
+  without one is a parse failure that opens `alert-level-unread`; a new hazard source without a rule opens
+  `alert-level-norule`. Take a scale from the source's own definition (an ArcGIS layer's `drawingInfo`, the
+  bulletin's legend), not from what the parser happened to match. Filters drop only values that are *known* to mean
+  "no warning" (`Nivel 1`), never "anything not in the list". See `docs/niveles-de-aviso.md`.
+- **When two sources give the same fact, compare them** and record the disagreement (`alert-level-conflict`), the
+  way the COEN PDF and the SENAMHI layer give the same river aviso.
 - When adding a source: archive a real response under `python/tests/fixtures/sources/`, add a parser test against it,
   a fingerprint, a plausibility range, a `stale_days` measured from its real publishing gaps (not guessed), and its
   block/variant behaviour.
@@ -154,6 +178,10 @@ Every upstream here has already changed silently at least once (section 6). Rule
 | PTWC exercise PACWAVE26 shown as a tsunami warning | Test messages not filtered | Filter exercises/tests explicitly, with a fixture |
 | Threshold comparisons failed on exact float values | No edge tests | Test thresholds at their edge; round before comparing |
 | A new drift guard (FeedError on any DHN aviso without a date) would have dropped the whole official wave/wind feed on the first run after merge: the live page lists 583 avisos, 7 of them legacy ones that never had a date | The fixture held only the 30 newest avisos; nobody ran the branch against live sources | Before merging a guard, dry-run the pipeline against live sources and diff it with `main` (per-feed `ok`/`items`, events, `tools.sync_issues --dry-run`); a per-item guard tolerates legacy anomalies and stays loud for recent ones (`python/tests/test_ready_prod_dryrun.py`) |
+
+| 824 of 1178 hazard alerts in 60 days showed the same grey "Sin nivel" ("uncategorized"); 26 had a level at the source (9 fire-danger avisos, 17 river avisos via the COEN), 2 tsunami-alert cancellations showed as active alerts, 15 green ones were filtered as "no level" | One label for every reason; the fire layer uses words (EXTREMO) and the parser looked for "Nivel N"; the river level was in the PDF, not the RSS; "cancelación de alerta de tsunami" contains "alerta de tsunami" | A missing level needs a reason; sources that always assign levels are loud when one is not read; scales come from the source's own definition; check the negating phrase first |
+| The rain layer dropped every value it did not list ("Nivel IV") as if it were "Nivel 1": the layer vanished silently | Filter written as an allow-list of warnings | Drop only values known to mean "no warning"; the drift simulator's `level-vocab` mutation now covers it |
+| During this fix, a new `if` was inserted in the middle of an `if/elif` chain in `documentos.read` (valid Python, different meaning); the existing suite stayed green | No test fed an aviso a text that a later branch would also match | Red-team your own diff for control-flow edits; the guard test feeds such a text (`tests/test_niveles_de_aviso.py`) |
 
 ## 7. Fail verbose, with clear diagnostics
 
