@@ -1,0 +1,1573 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>El Búho</title>
+	<atom:link href="https://elbuho.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://elbuho.pe/</link>
+	<description>Política, cultura y noticias desde Arequipa, Perú.</description>
+	<lastBuildDate>Sun, 22 Nov 2026 23:46:30 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.0.9</generator>
+
+<image>
+	<url>https://elbuho.pe/wp-content/uploads/2023/02/cropped-logo-buho-1-32x32.jpg</url>
+	<title>El Búho</title>
+	<link>https://elbuho.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Fusión nuclear: el futuro subatómico de la energía</title>
+		<link>https://elbuho.pe/2026/11/fusion-nuclear-el-futuro-subatomico-de-la-energia/</link>
+		
+		<dc:creator><![CDATA[Luis Esteban Gonzales Manrique]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 23:46:29 +0000</pubDate>
+				<category><![CDATA[Columnas]]></category>
+		<category><![CDATA[energía nuclear]]></category>
+		<category><![CDATA[fusión nuclear]]></category>
+		<category><![CDATA[Luis Esteban Gonzales Manrique]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443817</guid>
+
+					<description><![CDATA[La fusión nuclear emerge como una de las grandes apuestas del futuro energético y un nuevo terreno de competencia entre Estados Unidos y China, que impulsan dos modelos distintos de innovación para desarrollar una tecnología cuya viabilidad comercial aún está por demostrar.
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">La temperatura del centro del Sol alcanza los 15 millones de grados. Cada segundo en su núcleo cinco millones de toneladas métricas de masa se convierten en energía, el equivalente a la detonación de 90.000 millones de bombas de hidrógeno de una megatonelada cada una.</p>
+
+
+
+<p class="wp-block-paragraph">Las reacciones termonucleares empujan la energía hacia la superficie del astro, donde se libera en forma de luz, radiaciones y calor. La Tierra recibe solo la 1/2,2 millonésima parte de ella. El 35% de la que recibe regresa al espacio, reflejada por las nubes. Otro 19% la absorbe la atmósfera. Y aun así, la que queda es 12.000 veces mayor de lo que usan todos los dispositivos –motores, máquinas, aviones…– creados por seres humanos.</p>
+
+
+
+<p class="wp-block-paragraph">La AIE estima que, a escala global, se consumen unos 320.000 millones de kilovatios-hora diarios. Hacia fines de siglo, serán tres veces más. Solo Estados Unidos, con el 5% de la población, consume el 20%. A medida que la media mundial se acerque a esa cifra, encontrar otras fuentes de energía se hará cada vez más urgente. Solo dos de las renovables no las produce la radiación solar: la geotérmica y la generada por las mareas.</p>
+
+
+
+<p class="wp-block-paragraph">Quien consiga dominar la fusión nuclear podrá reproducir las reacciones termonucleares que permiten a las estrellas brillar durante miles de millones de años.</p>
+
+
+
+<h2 class="wp-block-heading">Las llaves del Sol</h2>
+
+
+
+<p class="wp-block-paragraph">Desde Galileo, cada vez se sabe más sobre la densidad, radiaciones, ciclos de actividad, composición química, emisiones y otras características del Sol, que representa el 99,8% de la masa del sistema solar. El astro guarda, sin embargo, muchos misterios, como las causas de las manchas y vientos solares y cómo ambos afectan al clima terrestre. Uno de los mayores desafíos científicos es reproducir la fusión nuclear, la reacción subatómica que alimenta las estrellas: el Grial de la energía inagotable.</p>
+
+
+
+<p class="wp-block-paragraph">En 1920 Arthur Eddington propuso por primera vez que la fusión de núcleos atómicos generaba la energía de las estrellas. En 1938, Hans Bethe (1906-2005) identificó las reacciones subatómicas que convierten elementos ligeros en otros más pesados en sus núcleos. El Sol era, concluyó, un reactor nuclear. En los años cincuenta, los físicos soviéticos Igor Tamm y Andréi Sájarov desarrollaron el concepto de confinamiento magnético del plasma, que permitiría aprovechar la energía de fusión para generar electricidad.</p>
+
+
+
+<p class="wp-block-paragraph">Problemas que parecían inalcanzables, como reproducir las condiciones extremas del núcleo solar, podrían resolverse en las próximas décadas, lo que activaría una revolución</p>
+
+
+
+<p class="wp-block-paragraph">industrial tan importante como la que provocó la máquina de vapor.</p>
+
+
+
+<p class="wp-block-paragraph">Eric Schmidt, ex CEO de Google e inversor en Pacific Fusion, cree que si la fusión llega a formar parte de su <em>mix </em>energético, Estados Unidos cubrirá la demanda de energía de la IA. En 2024 los centros de datos del mundo consumieron 415 teravatios-hora (TWh). En 2030 serán 945.</p>
+
+
+
+<h2 class="wp-block-heading">Fisión y fusión</h2>
+
+
+
+<p class="wp-block-paragraph">Desde 1954, la fisión nuclear proporciona electricidad con bajas emisiones de carbono y relativamente segura en países que van desde Francia y Japón a India y Brasil. Actualmente el 9% de la electricidad que consume el mundo procede de centrales de fisión. Algunos átomos, como el uranio-235, poseen núcleos grandes y pesados que los hacen inestables. Si se les bombardea con neutrones, su núcleo se escinde, liberando energía en forma de calor, según la célebre ecuación de Einstein: E=mc².</p>
+
+
+
+<p class="wp-block-paragraph">El calor que genera esa reacción en cadena se aprovecha para convertir agua en vapor que acciona turbinas que producen electricidad. Pero mientras que la fisión divide núcleos atómicos, la fusión trata de combinarlos reproduciendo las condiciones necesarias para que los núcleos superen las fuerzas que los separan.</p>
+
+
+
+<p class="wp-block-paragraph">Si los isótopos de hidrógeno se calientan a temperaturas</p>
+
+
+
+<p class="wp-block-paragraph">extraordinarias en estado de plasma –un gas ionizado–, las partículas se mueven tan rápido que chocan entre sí, fusionándose y convirtiéndose en helio. De modo similar, en el núcleo solar, bajo una presión 250.000 millones de veces mayor que la de la superficie terrestre, los núcleos de hidrógeno colisionan formando núcleos de helio.</p>
+
+
+
+<p class="wp-block-paragraph">En la Tierra, los isótopos del hidrógeno deben calentarse hasta decenas de millones de grados y mantenerse estables bajo una presión intensa. Pero con la teoría no es suficiente. En la superficie terrestre hay que confinar el plasma dentro de un campo magnético –o comprimir el combustible mediante otros procedimientos– y hacerlo liberando más energía de la que se invierte.</p>
+
+
+
+<p class="wp-block-paragraph">Una reacción de fusión produce por unidad de peso de combustible cuatro veces más energía que una reacción de fisión de uranio y cuatro millones de veces más que la combustión de combustibles fósiles.</p>
+
+
+
+<h2 class="wp-block-heading">Del laboratorio al mercado</h2>
+
+
+
+<p class="wp-block-paragraph">Los científicos están experimentando con dos dispositivos principales de confinamiento magnético: el tokamak, con forma de rosca, y el stellarator, de estructura en espiral. El tokamak (<em>Toroidalnaya</em><em> kamera magnetnaya katushka</em>) es una cámara magnética que diseñaron en los años cincuenta Tamm y Sájarov.</p>
+
+
+
+<p class="wp-block-paragraph">Los tokamaks deben alcanzar las condiciones de ignición, es decir, el punto en que el plasma alcanza las condiciones necesarias para autosostener la reacción, lo que sucede con campos magnéticos cientos de miles de veces más intensos que el terrestre. La reacción se detiene en cuanto se deja de suministrar combustible: deuterio y tritio, dos isótopos del hidrógeno.</p>
+
+
+
+<p class="wp-block-paragraph">A fines de 2022, en California, el Lawrence Livermore National Laboratory, donde el Pentágono realiza sus investigaciones nucleares, anunció que logró la ignición usando haces de láser para desencadenar la fusión calentando y comprimiendo cápsulas de deuterio y tritio. El experimento consiguió liberar más energía de la suministrada directamente al combustible, aunque no más de la consumida por el conjunto de la instalación.</p>
+
+
+
+<p class="wp-block-paragraph">Desde 2021, según la Fusion Industry Association, 56 empresas han recaudado 14.600 millones de dólares para desarrollar proyectos con diferentes tecnologías. De ellas, 32 aseguran que podrían suministrar energía a escala comercial en 2040.</p>
+
+
+
+<p class="wp-block-paragraph">La llegada de capital privado se está acelerando. Según PitchBook, las empresas emergentes de fusión captaron 3.800 millones de dólares durante los ocho primeros meses de 2026, frente a los 3.300 millones de todo 2025. En Albuquerque (Nuevo México), Pacific Fusion ha comenzado a construir un campus de investigación y fabricación de unos 1.000 millones de dólares, con el objetivo de demostrar en 2030 que su tecnología puede producir más energía de fusión de la</p>
+
+
+
+<p class="wp-block-paragraph">necesaria para impulsar directamente la reacción. Todavía no será una central eléctrica, pero el proyecto muestra cómo la fusión ha dejado de ser exclusivamente una cuestión de investigación científica para convertirse en un destino para el capital privado.</p>
+
+
+
+<p class="wp-block-paragraph">En julio de 2026, la canadiense General Fusion, entre cuyos inversores está Jeff Bezos, comenzó a cotizar en el Nasdaq. Commonwealth Fusion Systems (CFS) del MIT, que ha recaudado 1.000 millones de inversores privados y fondos soberanos, asegura que podría suministrar electricidad a la red en 2035 utilizando un tokamak que emplea superconductores para generar el campo magnético.</p>
+
+
+
+<p class="wp-block-paragraph">En 2021, la Academia Nacional de Ciencias propuso construir una planta piloto que demuestre su viabilidad técnica a escala comercial entre 2035 y 2040. En Cambridge (Massachusetts), CFS va a concentrar en su tokamak 18 imanes dispuestos en círculo, cada uno de 23 toneladas y con revestimiento de acero, que pueden generar un campo de 20 teslas, una intensidad extraordinariamente elevada.</p>
+
+
+
+<p class="wp-block-paragraph">Marathon Fusion, Type One Energy, Xcimer y Zap Energy, por su parte, están probando tecnologías y diseños que, si funcionan, harán que las sucesivas innovaciones sean más accesibles y baratas.</p>
+
+
+
+<h2 class="wp-block-heading">Reliquias multilaterales</h2>
+
+
+
+<p class="wp-block-paragraph">Estados Unidos, la UE, Rusia, Japón, China, Brasil, Canadá y Corea del Sur están cooperando en alguna medida en las investigaciones. En 1985, la Unión Soviética propuso construir un tokamak con la colaboración de Europa, Japón y EEUU bajo los auspicios del OIEA. Entre 1988 y 1990 se elaboraron los diseños iniciales del ITER, el reactor termonuclear experimental internacional en el que hoy participan 35 países y que ha logrado sobrevivir a las disputas geopolíticas.</p>
+
+
+
+<p class="wp-block-paragraph">En Cadarache (Francia) se construye el tokamak del ITER, que será el más grande del mundo cuando entre en funcionamiento. El proyecto contempla alcanzar una potencia de fusión de 500 MW, que no se transformará en electricidad comercial. En él participan Japón, China, Corea del Sur, Estados Unidos, Rusia, India y la Unión Europea, entre otros socios.</p>
+
+
+
+<p class="wp-block-paragraph">En abril de 2026, cuatro años después de su invasión de Ucrania, la ruptura de la cooperación científica europea con Rusia se había extendido a instituciones como el CERN, el laboratorio de física de partículas de Ginebra. Ingenieros y físicos rusos, sin embargo, han seguido colaborando en el ITER, para el que Rusia aporta imanes y sistemas de evacuación de gases.</p>
+
+
+
+<p class="wp-block-paragraph">El problema es que el proyecto se ha convertido en un pozo sin fondo. Su conclusión estaba prevista en 2016. Los costes, por su parte, han pasado de 18.000 a 32.400 millones en dólares de 2023, según el Congreso de EEUU.</p>
+
+
+
+<p class="wp-block-paragraph">Las empresas privadas, en cambio, avanzan a toda velocidad.</p>
+
+
+
+<p class="wp-block-paragraph">Si se le adelantan, el ITER podría convertirse en una reliquia multilateral. CFS espera alcanzar el punto Q&gt;1, en el que un reactor libera más energía de la que se suministra al plasma para calentarlo, a principios de la próxima década.</p>
+
+
+
+<h2 class="wp-block-heading">Asignaturas pendientes</h2>
+
+
+
+<p class="wp-block-paragraph">Con la tecnología actual, la reacción más viable es la que se produce entre los núcleos de dos isótopos del hidrógeno: el deuterio (D) y el tritio (T). El deuterio se encuentra en el agua de mar (30 gramos por metro cúbico), pero el tritio existe en cantidades ínfimas y es radiactivo.</p>
+
+
+
+<p class="wp-block-paragraph">En EEUU, el Polaris, el séptimo prototipo de Helion Energy, respaldada por Sam Altman, comenzó a funcionar en 2024. En febrero informó que había alcanzado una temperatura del plasma de 150 millones de grados. La compañía ha firmado además un acuerdo con Microsoft para suministrarle electricidad a partir de 2028, pese a que todavía no ha demostrado su viabilidad comercial. Helion captó otros 500 millones de dólares y alcanzó una valoración de unos 15.500 millones, una cifra extraordinaria para una empresa que aún no produce electricidad comercial.</p>
+
+
+
+<p class="wp-block-paragraph">En octubre de 2025, el gobierno alemán aprobó un plan para invertir más de 2.000 millones de euros en I+D de fusión hasta 2029. Pero hay todavía muchos problemas por resolver. La liberación de tritio al medio ambiente por los reactores de fusión sería difícil de contener porque puede penetrar el</p>
+
+
+
+<p class="wp-block-paragraph">hormigón y ciertos tipos de acero. Al ser un isótopo de hidrógeno, se incorpora fácilmente al agua, volviéndola radiactiva. El tritio puede inhalarse y absorberse a través de la piel.</p>
+
+
+
+<p class="wp-block-paragraph">Extraer deuterio del agua de mar es caro y el tritio debe fabricarse a partir de litio, irradiándolo con neutrones. Según <em>The Economist</em>, los experimentos del laboratorio de Livermore para replicar a pequeña escala lo que ocurre en una bomba de hidrógeno para producir helio no mencionan el enorme coste energético que supone generar 192 haces láser ultrapotentes, más de cien veces la energía de fusión producida.</p>
+
+
+
+<p class="wp-block-paragraph">Alain Bécoulet, científico jefe del ITER, cree que la fusión no se integrará al <em>mix </em>energético de modo significativo hasta la última década de este siglo. Ninguna planta ha sido expuesta de forma continua al calor y la radiación extremos producidos en una reacción de fusión.</p>
+
+
+
+<h2 class="wp-block-heading">El dragón entra en escena</h2>
+
+
+
+<p class="wp-block-paragraph">El problema para las compañías occidentales es que ahora tienen a China como principal rival. El gigante asiático está construyendo en Hefei un tokamak (BEST, <em>Burning Plasma Experimental Superconducting Tokamak</em>) que estará listo en 2030. En la mitología china, Kuafu es un gigante que persigue al astro rey. Su esfuerzo simboliza el valor de la persistencia. China ha bautizado con su nombre varios de sus avances científicos y tecnológicos, incluidas sondas solares, robots</p>
+
+
+
+<p class="wp-block-paragraph">humanoides y ahora reactores de fusión como el de Hefei.</p>
+
+
+
+<p class="wp-block-paragraph">Pekín está aplicando en la tarea la misma planificación meticulosa que ha impulsado sus innovaciones tecnológicas. Un programa estatal establece las prioridades para sus científicos e ingenieros, financia sus proyectos y articula la cadena de suministro de los componentes necesarios. En julio de 2025, Pekín creó China Fusion Energy (CFE), una empresa estatal para unificar sus esfuerzos. En marzo se incluyó la fusión en su 15º plan quinquenal. CFE canaliza capital privado hacia <em>start-ups </em>del sector. Ocho de ellas ya han captado 5.000 millones de dólares.</p>
+
+
+
+<p class="wp-block-paragraph">En enero, sus investigadores anunciaron que habían aumentado la densidad del plasma hasta niveles sin precedentes. La construcción de tokamaks requiere desde imanes superconductores hasta cámaras de vacío que por ahora solo existen en planos. En abril de 2025, NovaFusionX recaudó 70 millones, la mayor ronda de financiación inicial para una compañía privada de fusión. Startorus Fusion, de la Universidad de Tsinghua, recaudó el doble un mes después.</p>
+
+
+
+<p class="wp-block-paragraph">La ventaja china es que tiene ya una amplia experiencia en fabricar bobinas magnéticas y robots capaces de operar en temperaturas extremas. Según Yannick Marandet, director de investigación del CNRS francés, la mayor es su capacidad para planificar a largo plazo y aprender sobre la marcha.</p>
+
+
+
+<p class="wp-block-paragraph">En último término, la competencia, como la carrera espacial en la Guerra Fría, es entre dos sistemas políticos y de</p>
+
+
+
+<p class="wp-block-paragraph">organización social.</p>
+
+
+
+<h2 class="wp-block-heading">La apuesta privada de Estados Unidos</h2>
+
+
+
+<p class="wp-block-paragraph">El modelo estadounidense apuesta, en cambio, no por un proyecto como el que condujo a la bomba atómica en los años cuarenta, sino por el capital privado y los gigantes tecnológicos de Silicon Valley, aunque los laboratorios nacionales y las universidades siguen desempeñando un papel fundamental.</p>
+
+
+
+<p class="wp-block-paragraph">Jeff Bezos figura entre los inversores de General Fusion; Sam Altman respalda Helion Energy; y Eric Schmidt participa en Pacific Fusion. El interés de las grandes fortunas tecnológicas por la fusión responde, en parte, a las crecientes necesidades energéticas de la inteligencia artificial.</p>
+
+
+
+<p class="wp-block-paragraph">La competencia entre empresas permite explorar distintas tecnologías y movilizar grandes cantidades de capital. Pero también alimenta expectativas difíciles de cumplir. Sus valoraciones descansan sobre tecnologías que todavía no han demostrado su viabilidad comercial. Los retrasos podrían dificultar nuevas rondas de financiación y provocar fuertes correcciones.</p>
+
+
+
+<p class="wp-block-paragraph">La carrera por la fusión enfrenta así dos modelos de innovación: la planificación estatal china y la iniciativa privada estadounidense. Pero el desafío no consiste únicamente en demostrar que la tecnología funciona. También será necesario fabricar reactores a escala industrial y producir electricidad a precios competitivos. Europa, que alberga ITER y</p>
+
+
+
+<p class="wp-block-paragraph">cuenta con una larga tradición de investigación en este campo, deberá decidir cómo convertir sus capacidades científicas en una ventaja industrial. El país que primero consiga dominar la fusión no será necesariamente el que termine controlando su explotación comercial.</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img fetchpriority="high" decoding="async" width="720" height="90" data-id="397629" src="https://elbuho.pe/wp-content/uploads/2024/03/anuncio-buhocomunidad-pie-de-nota-68b5eab8d06dd.webp" alt="" class="wp-image-397629"/></figure>
+</figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo. También puedes apoyarnos uniéndote a nuestro <a href="https://www.youtube.com/@SemanarioElBuho">canal de YouTube</a>.</em></strong> </p>
+</div></div>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Humor: cosas del Papa</title>
+		<link>https://elbuho.pe/2026/11/humor-cosas-del-papa/</link>
+		
+		<dc:creator><![CDATA[El Búho]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 23:29:52 +0000</pubDate>
+				<category><![CDATA[Humor]]></category>
+		<category><![CDATA[humor]]></category>
+		<category><![CDATA[Papa León XIV]]></category>
+		<category><![CDATA[Por Rosario Cardeña]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443814</guid>
+
+					<description><![CDATA[Por Rosario Cardeña]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Por Rosario Cardeña</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-2 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img decoding="async" width="720" height="90" data-id="397629" src="https://elbuho.pe/wp-content/uploads/2024/03/anuncio-buhocomunidad-pie-de-nota-68b5eab8d06dd.webp" alt="" class="wp-image-397629"/></figure>
+</figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo. También puedes apoyarnos uniéndote a nuestro <a href="https://www.youtube.com/@SemanarioElBuho">canal de YouTube</a>.</em></strong> </p>
+</div></div>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Las lluvias e inundaciones en la Arequipa del siglo XVIII y la destrucción que dejaron a su paso</title>
+		<link>https://elbuho.pe/2026/11/las-lluvias-e-inundaciones-en-la-arequipa-del-siglo-xviii-y-la-destruccion-que-dejaron-a-su-paso/</link>
+		
+		<dc:creator><![CDATA[Martha Valencia]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 23:10:14 +0000</pubDate>
+				<category><![CDATA[Actualidad]]></category>
+		<category><![CDATA[El regreso]]></category>
+		<category><![CDATA[Arequipa]]></category>
+		<category><![CDATA[Destacada]]></category>
+		<category><![CDATA[fenómeno de El Niño]]></category>
+		<category><![CDATA[Inundaciones]]></category>
+		<category><![CDATA[lluvias en Arequipa]]></category>
+		<category><![CDATA[lluvias extremas]]></category>
+		<category><![CDATA[Torrentera]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443703</guid>
+
+					<description><![CDATA[Desde siempre la Ciudad Blanca ha tenido una relación de vulnerabilidad con las lluvias extremas y las inundaciones por su ubicación geográfica y la desordenada expansión urbana]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">La ciudad de Arequipa, por estar en la zona media de la cuenca del río Chili, ha mantenido una relación histórica de constante vulnerabilidad frente a las <a href="https://elbuho.pe/2026/08/arequipa-bajo-amenaza-climatica-mas-de-1-3-millones-de-personas-expuestas-a-lluvias-inundaciones-y-sequias/">lluvias extremas e inundaciones</a>. Según el trazado urbano original, la urbe se situó en la margen izquierda del río Chili, flanqueada por las torrenteras o llocllas de San Lázaro y Miraflores, configurando una geografía expuesta al discurrimiento de fuertes avenidas de agua y lodo.</p>
+
+
+
+<p class="wp-block-paragraph">Según las invetigaciones hechas, hay testimonios coloniales que detallan las tempranas emergencias causadas por las avenidas del río Chili, como la destrucción del primer puente colgante de Chilina en 1549. Posteriormente, la construcción del puente Real (hoy puente Bolognesi) a partir de 1577 sufrió severos daños debido a los desbordes del río durante las grandes crecidas registradas en los años 1605, 1606, 1644, 1714, 1747, 1769 y 1790.</p>
+
+
+
+<p class="wp-block-paragraph">A fines del periodo colonial, entre el 8 de diciembre de 1818 y mayo de 1819, precipitaciones continuas desataron avenidas extraordinarias que devastaron la ciudad. El río Chili inundó campos de cultivo, destruyó bocatomas y afectó el puente Uchumayo, mientras que las calles sin pavimentar y el colapso de acequias causaron graves destrozos en viviendas de adobe con techos de paja de puna.</p>
+
+
+
+<p class="wp-block-paragraph">En el siglo XIX, la tormenta del 9 de febrero de 1893 prolongó sus precipitaciones durante 16 horas continuas, activando las torrenteras de San Lázaro y El Chullo. El caudal inundó vecindarios como Antiquilla y Beaterio, obligando a las autoridades a romper el pasamano del puente Bolognesi para encauzar el agua al río Chili, evento que dañó el arco central del puente, anegó el Tambo El Matadero y dejó un saldo de dos muertos.</p>
+
+
+
+<h2 class="wp-block-heading">El fenómeno de El Niño llega en 1925 y desata un temporal</h2>
+
+
+
+<p class="wp-block-paragraph">La llegada del fenómeno de El Niño de 1925 desencadenó uno de los temporales más intensos del siglo XX entre enero y marzo. Hacia el 23 y 24 de enero, la crecida del río Chili anegó cultivos en Tingo, Sachaca, Tiabaya y Uchumayo, mientras que el 26 de enero la fuerza de la corriente socavó el machón izquierdo del puente Vítor y minó los cimientos del puente Sabandía.</p>
+
+
+
+<p class="wp-block-paragraph">Durante ese mismo evento de 1925, la torrentera San Lázaro anegó la Quinta Romaña, el lavadero Forga y el parque Grau, mientras que la torrentera Miraflores destruyó la tubería de agua potable de Yumina y cortó los servicios de luz y tranvía. La tragedia más grave ocurrió el 11 de febrero en el puente Sabandía, donde el colapso de un machón provocó la caída de 30 personas al río Socabaya, falleciendo cinco de ellas.</p>
+
+
+
+<p class="wp-block-paragraph">El temporal de enero de 1961 cobró estragos con lluvias de 22.20 mm en la estación La Pampilla que colapsaron estructuras de sillar y viviendas de barro. El agua dejó familias a la intemperie en La Pampilla y Tiabaya, generó hundimientos en calles céntricas como Muñoz Najar y Santo Domingo, anegó el patio del Templo Santo Domingo y destruyó casas en asentamientos como Alto Selva Alegre, Miraflores y Mariano Melgar.</p>
+
+
+
+<p class="wp-block-paragraph">Con el fenómeno de El Niño de 1972, la estación de Chiguata registró precipitaciones de hasta 39 mm que reactivaron cauces secos en toda la cuenca. El 3 de febrero, la torrentera Paucarpata destruyó un canal que servía de puente entre Jorge Chávez y Ciudad Blanca, arrastrando a una madre y sus dos hijos, mientras que el 6 de marzo la torrentera Mariano Melgar arrastró un automóvil en la avenida Carrión cobrando dos vidas.</p>
+
+
+
+<h2 class="wp-block-heading">Fallas mecánicas en compuertas de Aguada Blanca agravaron emergencias</h2>
+
+
+
+<p class="wp-block-paragraph">Entre 1972 y 1973, las emergencias se agravaron por fallas mecánicas en las compuertas de la represa Aguada Blanca, descargando volúmenes de agua que arrasaron cultivos en Chilina, Yanahuara, Sachaca y el valle de Quilca. Asimismo, el 10 de enero de 1973 los huaycos paralizaron la hidroeléctrica de Charcani dejando sin luz a la ciudad, y el 11 de febrero el río Chili arrastró un camión del Ejército cerca del puente Bolognesi.</p>
+
+
+
+<p class="wp-block-paragraph">El 8 de febrero de 1989, el represamiento del río Chili provocado por las obras del puente Bajo Grau desencadenó la inundación total del Barrio Obrero N°1. Las aguas invadieron la avenida La Marina y sepultaron viviendas y vehículos bajo una densa capa de lodo y arena, mientras que el desborde de las torrenteras San Lázaro y Paucarpata dejó un saldo de tres fallecidos.</p>
+
+
+
+<p class="wp-block-paragraph">La tormenta del 25 de febrero de 1997 trajo 58 mm de lluvia en Characato y descargas eléctricas que cortaron la energía de Charcani. El río Socabaya destruyó las estaciones hidrológicas de Tingo Grande y Puente del Diablo provocando seis muertes en la provincia, al tiempo que las torrenteras Independencia, Paucarpata y Miraflores anegaron poblados como Hoyos Rubio, la urbanización Santa Clara y la feria El Altiplano.</p>
+
+
+
+<p class="wp-block-paragraph">En el verano de 2001, violentas precipitaciones provocaron el colapso del sistema de drenaje en el centro histórico. El 19 de marzo, la torrentera Mariano Melgar destruyó el puente Jorge Chávez y arrastró un vehículo con una familia de tres integrantes en el badén de la avenida Los Incas, mientras la torrentera Paucarpata destruyó pasarelas peatonales y el río Chili sobrepasó el puente Tingo.</p>
+
+
+
+<h2 class="wp-block-heading">Las mayores pérdidas responden a la intensidad del clima pero también a la desordenada expansión urbana</h2>
+
+
+
+<p class="wp-block-paragraph">El desastre del 8 de febrero de 2013 es recordado como un evento extraordinario tras alcanzarse el récord histórico de 124.5 mm de agua por metro cuadrado en tres horas. La torrentera Miraflores destruyó tramos de las avenidas Venezuela y Virgen del Pilar, colapsó el mercado El Palomar y afectó los pabellones de la UNSA, dejando cinco personas muertas y más de 43 mil damnificados.</p>
+
+
+
+<p class="wp-block-paragraph">Durante El Niño Costero de 2017, la tarde del 26 de enero se activó un violento huayco en la quebrada La Gloria, cerca al peaje de Uchumayo en la Panamericana Sur. La masa de barro estrelló vehículos menores y buses contra tráileres, matando a tres personas y dejando aisladas a más de 500 personas, sumándose luego la muerte de dos pobladores por la torrentera Paucarpata.</p>
+
+
+
+<p class="wp-block-paragraph">En los eventos recientes de 2020 y 2023, la combinación de lluvias intensas y la descarga de Aguada Blanca volvió a vulnerar sectores críticos. En 2020, la torrentera El Chullo colapsó siete viviendas en Yanahuara y Pozo Negro afectó a 81 casas en Paucarpata; en tanto que en 2023, Pozo Negro volvió a desbordarse en Los Girasoles y la torrentera Mariano Melgar desvió su flujo por obras viales inundando la avenida Los Incas.</p>
+
+
+
+<p class="wp-block-paragraph">Frente a la constante amenaza del fenómeno de El Niño, la crónica histórica de Arequipa demuestra que las mayores pérdidas no responden únicamente a la intensidad del clima, sino a la desordenada expansión urbana sobre torrenteras y cauces secos. El estrechamiento de las vías hidráulicas, el colapso de bocatomas y la falta de mantenimiento continuo perpetúan un escenario donde el agua recupera recurrentemente sus antiguos dominios.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Fuentes: </strong>Análisis Histórico de Inundaciones en la Ciudad de Arequipa Zona Media y Baja de la Cuenca Quilca-Vitor-Chili (región Arequipa), Lisbeth Eliana Bejarano Pinto y Hernando Tavera, Instituto Geofísico del Perú 2024. </p>
+
+
+
+<p class="wp-block-paragraph">El Niño y Arequipa. Lluvias torrenciales y avenidas extraordinarias a fines de la Colonia, José Víctor Condori, Universidad Católica San Pablo (no indica año).</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-3 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img decoding="async" width="720" height="90" data-id="397629" src="https://elbuho.pe/wp-content/uploads/2024/03/anuncio-buhocomunidad-pie-de-nota-68b5eab8d06dd.webp" alt="" class="wp-image-397629"/></figure>
+</figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo. También puedes apoyarnos uniéndote a nuestro <a href="https://www.youtube.com/@SemanarioElBuho">canal de YouTube</a>.</em></strong> </p>
+</div></div>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Arequipa registra 21 casos de cáncer de piel y radiación solar alcanza nivel extremo</title>
+		<link>https://elbuho.pe/2026/11/arequipa-registra-21-casos-de-cancer-de-piel-y-radiacion-solar-alcanza-nivel-extremo/</link>
+		
+		<dc:creator><![CDATA[Redactor 03 El Búho]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 23:06:29 +0000</pubDate>
+				<category><![CDATA[Local]]></category>
+		<category><![CDATA[cáncer de piel]]></category>
+		<category><![CDATA[Cáncer de piel en Arequipa]]></category>
+		<category><![CDATA[Liga contra el cancer]]></category>
+		<category><![CDATA[radiación solar]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443710</guid>
+
+					<description><![CDATA[La Liga contra el Cáncer advierte sobre los efectos de la exposición solar y recomienda identificar cambios en lunares y lesiones en la piel.]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"><strong>Arequipa registra 21 casos de cáncer de piel detectados en lo que va del 2026, frente a los 27 reportados durante todo el año pasado, según informó Sandra García, gerente de la Liga contra el Cáncer.</strong> La especialista expresó su preocupación por estas cifras, en un contexto en el que la región soporta niveles extremos de radiación ultravioleta, uno de los principales factores de riesgo para desarrollar esta enfermedad. Ante ello, insistió en la importancia de reforzar las medidas de protección frente a la exposición solar.</p>
+
+
+
+<p class="wp-block-paragraph">Este escenario coincide con el incremento de los índices de radiación en la región. Yuri Isasi, director de Salud Ambiental de la Gerencia Regional de Salud (Geresa), alertó que estos valores han aumentado entre uno y dos puntos, hasta alcanzar el nivel 15, considerado extremo. Advirtió que esta intensidad representa un riesgo para la salud y hace necesario tomar precauciones para evitar la exposición directa a los rayos solares.</p>
+
+
+
+<p class="wp-block-paragraph">Si bien el aumento de las temperaturas es propio de esta temporada,<strong> Isasi señaló que los niveles alcanzados resultan especialmente preocupantes. Asimismo, atribuyó esta intensificación a diversos factores ambientales y climáticos que alteran los patrones del clima y advirtió que esta situación podría agravarse en los próximos meses</strong>.</p>
+
+
+
+<h2 class="wp-block-heading">Reconocer señales de alerta</h2>
+
+
+
+<p class="wp-block-paragraph">Sandra García explicó que la exposición prolongada a la radiación ultravioleta es uno de los principales factores de riesgo para desarrollar cáncer de piel. Por ello, indicó que las personas de piel clara, al ser más propensas a sufrir quemaduras solares, deben extremar las medidas de protección.</p>
+
+
+
+<p class="wp-block-paragraph">La especialista también recomendó prestar atención a los lunares que presenten cambios de tamaño, forma o coloración, especialmente si superan un centímetro o tienen bordes irregulares. Asimismo, advirtió sobre la aparición de estas lesiones en zonas poco habituales, como las palmas de las manos y las plantas de los pies. Ante cualquiera de estas señales, aconsejó acudir a un dermatólogo para una evaluación oportuna.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Finalmente, advirtió que la exposición prolongada a los rayos solares no solo afecta la piel, sino también los ojos, donde puede provocar lesiones por radiación ultravioleta.</strong></p>
+
+
+    <div class="related_feed">
+         <h3>También puedes leer</h3>
+    </div>
+    <div class="relacionada-shortcode mb-4">
+        <div class="image_feed">
+                   <a href="https://elbuho.pe/2026/11/temperaturas-de-verano-en-plena-primavera-arequipa-sufrira-una-ola-de-calor-extremo-y-cero-lluvias-por-15-dias/">
+             <img decoding="async" src="https://elbuho.pe/wp-content/uploads/2026/11/senamhi-arequipa-alerta-radiacion-extrema-calor-clima-fen.webp" class="card-img-top" alt="Temperaturas de verano en plena primavera: Arequipa sufrirá una ola de calor extremo y cero lluvias por 15 días">
+           </a>
+                </div>
+        <div class="image_body">
+            <h3 class="card-title">
+                <a href="https://elbuho.pe/2026/11/temperaturas-de-verano-en-plena-primavera-arequipa-sufrira-una-ola-de-calor-extremo-y-cero-lluvias-por-15-dias/" class="">
+                    Temperaturas de verano en plena primavera: Arequipa sufrirá una ola de calor extremo y cero lluvias por 15 días                </a>
+            </h3>
+        </div>
+    </div>
+    
+
+
+
+<h2 class="wp-block-heading">Recomiendan reforzar la protección solar</h2>
+
+
+
+<p class="wp-block-paragraph">Entre las principales medidas de prevención, García recomendó utilizar bloqueador solar con factor de protección (FPS) 50 o superior y reaplicarlo cada dos o tres horas. Asimismo, aconsejó complementar la protección con sombreros de ala ancha, gorros y prendas de manga larga, además de permanecer en espacios con sombra.</p>
+
+
+
+<p class="wp-block-paragraph">La especialista también sugirió evitar la exposición directa al sol entre las 9:00 a. m. y las 4:00 p. m., periodo en el que se debe extremar la protección.  De igual manera, recordó que la Liga contra el Cáncer realiza campañas preventivas y chequeos gratuitos durante todo el año a través de su unidad móvil, con el propósito de facilitar la detección temprana de lesiones sospechosas.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Arequipa: guagua de nueve metros protagoniza tradicional bautizo en homenaje a “La Benita”</title>
+		<link>https://elbuho.pe/2026/11/arequipa-guagua-de-nueve-metros-protagoniza-tradicional-bautizo-en-homenaje-a-la-benita/</link>
+		
+		<dc:creator><![CDATA[Redactor 03 El Búho]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 23:06:00 +0000</pubDate>
+				<category><![CDATA[Tradición]]></category>
+		<category><![CDATA[Arequipa]]></category>
+		<category><![CDATA[La Benita]]></category>
+		<category><![CDATA[Tradicional bautizo de la guagua]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443725</guid>
+
+					<description><![CDATA[La preparación estuvo a cargo de 40 estudiantes del Instituto Stendhal y permitió repartir gratuitamente más de 5 mil porciones.]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">La Plaza de Armas de Arequipa fue escenario del tradicional Bautizo de Guagua. Este año, el evento rindió homenaje a «La Benita», personaje que inspira la conocida pampeña del compositor arequipeño Benigno Ballón Farfán. La celebración se realizó el viernes 20 de noviembre y permitió distribuir gratuitamente más de 5 mil porciones de este pan tradicional entre los asistentes.</p>
+
+
+
+<p class="wp-block-paragraph">La actividad fue organizada por la Municipalidad Provincial de Arequipa (MPA), a través de la Subgerencia de Educación y Cultura, en coordinación con estudiantes y docentes del Instituto Superior Tecnológico Privado Stendhal. Para esta edición, se elaboró una guagua de aproximadamente nueve metros de largo y tres metros de ancho, que fue presentada durante la celebración.</p>
+
+
+
+<h2 class="wp-block-heading">Ceremonia y homenaje a «La Benita»</h2>
+
+
+
+<p class="wp-block-paragraph">Como parte de la actividad, el elenco Teatro Impulso realizó una representación simbólica del bautizo, con personajes que interpretaron al sacerdote, los padres, padrinos y testigos. <strong>La puesta en escena generó risas entre los asistentes y culminó con el bautizo simbólico de la tradicional guagua.</strong></p>
+
+
+
+<p class="wp-block-paragraph">La celebración también incluyó la presentación de una careta de “La Benita”, elaborada por la artista arequipeña Grecia Lazarte Sanga. </p>
+
+
+    <div class="related_feed">
+         <h3>También puedes leer</h3>
+    </div>
+    <div class="relacionada-shortcode mb-4">
+        <div class="image_feed">
+                   <a href="https://elbuho.pe/2026/11/arequipa-conoce-alternativa-para-evitar-via-de-atico-que-queda-constantemente-bloqueada-en-panamericana-sur/">
+             <img decoding="async" src="https://elbuho.pe/wp-content/uploads/2026/11/carretera-panamericana-sur-arequipa.webp" class="card-img-top" alt="Arequipa: conoce alternativa para evitar vía de Atico que queda constantemente bloqueada en Panamericana Sur">
+           </a>
+                </div>
+        <div class="image_body">
+            <h3 class="card-title">
+                <a href="https://elbuho.pe/2026/11/arequipa-conoce-alternativa-para-evitar-via-de-atico-que-queda-constantemente-bloqueada-en-panamericana-sur/" class="">
+                    Arequipa: conoce alternativa para evitar vía de Atico que queda constantemente bloqueada en Panamericana Sur                </a>
+            </h3>
+        </div>
+    </div>
+    
+
+
+
+<h2 class="wp-block-heading">Preparación estuvo a cargo de 40 estudiantes</h2>
+
+
+
+<p class="wp-block-paragraph">La chef del Instituto Gastronómico Stendhal, Giuliana Paredes, explicó que la preparación comenzó el lunes y contó con la participación de aproximadamente 40 estudiantes, quienes estuvieron a cargo de elaborar la guagua. Detalló que este año prepararon una variedad de canela rellena de manjar blanco. Asimismo, señaló que esta actividad se realiza desde hace varios años en coordinación con la Municipalidad Provincial de Arequipa.</p>
+
+
+
+<p class="wp-block-paragraph">Respecto a las dimensiones, Paredes indicó que la guagua superó en dos metros la longitud de la edición anterior. Mientras que el año pasado alcanzó los siete metros de largo, esta vez llegó a nueve metros, con tres metros de ancho. Según explicó, el objetivo es establecer nuevas metas en cada edición y continuar aumentando el tamaño de esta tradicional preparación.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">“El año pasado ha sido de siete, en este caso ha sido de nueve y con un ancho de tres. Hemos querido, junto con la MPA y el Instituto Stendhal, tener cada año una meta”, sostuvo.</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-4 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="720" height="90" data-id="397629" src="https://elbuho.pe/wp-content/uploads/2024/03/anuncio-buhocomunidad-pie-de-nota-68b5eab8d06dd.webp" alt="" class="wp-image-397629"/></figure>
+</figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo. También puedes apoyarnos uniéndote a nuestro <a href="https://www.youtube.com/@SemanarioElBuho">canal de YouTube</a>.</em></strong> </p>
+</div></div>
+</blockquote>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Arequipa: Verduras y tubérculos registran alzas en el mercado San Camilo</title>
+		<link>https://elbuho.pe/2026/11/arequipa-verduras-y-tuberculos-registran-alzas-en-el-mercado-san-camilo/</link>
+		
+		<dc:creator><![CDATA[Yeison Mamani]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 23:02:21 +0000</pubDate>
+				<category><![CDATA[Comercio]]></category>
+		<category><![CDATA[papa]]></category>
+		<category><![CDATA[PRECIOS DE ALIMENTOS]]></category>
+		<category><![CDATA[San Camilo]]></category>
+		<category><![CDATA[Verduras]]></category>
+		<category><![CDATA[Zanahoria]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443695</guid>
+
+					<description><![CDATA[Comerciantes atribuyen el incremento de algunos productos al aumento de los costos de transporte y a las variaciones climáticas que afectan las zonas de producción. 
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Los precios de diversos alimentos registraron variaciones durante los últimos días en el mercado San Camilo. Según los comerciantes, algunos productos agrícolas presentan incrementos debido al aumento del combustible utilizado para el transporte. Además, las lluvias y las altas temperaturas están afectando la producción y conservación de varios cultivos.</p>
+
+
+
+<p class="wp-block-paragraph">Entre los productos que muestran mayores variaciones figura la cebolla roja, que pasó de S/ 2.50 a S/ 4 por kilogramo. Del mismo modo, la zanahoria aumentó de S/ 3 a S/ 5, mientras que el choclo pasó de S/ 5 a S/ 8. Asimismo, la arveja registra actualmente un precio de S/ 8 por kilogramo, cuando anteriormente se comercializaba a S/ 6.50.</p>
+
+
+
+<p class="wp-block-paragraph">Por otro lado, el zapallo se vende entre S/ 5 y S/ 6 por kilogramo, superando los S/ 3.50 registrados anteriormente. Además, el pimiento pasó de S/ 8 a S/ 10 por kilo, mientras que la beterraga aumentó de S/ 3 a S/ 4. De igual manera, el camote registra actualmente un precio de S/ 4 por kilogramo, frente a los S/ 3.50 que costaba semanas atrás.</p>
+
+
+    <div class="related_feed">
+         <h3>También puedes leer</h3>
+    </div>
+    <div class="relacionada-shortcode mb-4">
+        <div class="image_feed">
+                   <a href="https://elbuho.pe/2026/11/el-balon-de-gas-roza-los-s-70-y-tuvieron-que-volver-a-la-lena-el-drama-de-las-ollas-comunes-en-arequipa/">
+             <img decoding="async" src="https://elbuho.pe/wp-content/uploads/2026/11/Ollas-comunes.jpg" class="card-img-top" alt="El balón de gas roza los S/ 70 y tuvieron que volver a la leña: el drama de las ollas comunes en Arequipa">
+           </a>
+                </div>
+        <div class="image_body">
+            <h3 class="card-title">
+                <a href="https://elbuho.pe/2026/11/el-balon-de-gas-roza-los-s-70-y-tuvieron-que-volver-a-la-lena-el-drama-de-las-ollas-comunes-en-arequipa/" class="">
+                    El balón de gas roza los S/ 70 y tuvieron que volver a la leña: el drama de las ollas comunes en Arequipa                </a>
+            </h3>
+        </div>
+    </div>
+    
+
+
+
+<h2 class="wp-block-heading"><strong>Papas registran nuevos incrementos</strong></h2>
+
+
+
+<p class="wp-block-paragraph">La papa canchán también registró un incremento en su precio de venta. Según los comerciantes, el kilogramo pasó de S/ 2.50 o S/ 3 a costar actualmente S/ 4. Asimismo, la papa peruana o yema de huevo aumentó de S/ 5 a S/ 7 por kilogramo.En contraste, algunos productos mantienen cierta estabilidad. El kilo de pollo se comercializa entre S/ 10.80 y S/ 11, mientras que el limón continúa vendiéndose entre S/ 4 y S/ 6 por kilogramo. Además, la carne de cordero mantiene un precio aproximado de S/ 28 por kilo.</p>
+
+
+
+<p class="wp-block-paragraph">Respecto a las frutas, los comerciantes señalaron que no se han registrado variaciones importantes. El plátano se vende a S/ 5 por kilogramo, la manzana a S/ 6 y la sandía a S/ 2. Asimismo, el melón verde mantiene un precio de S/ 2 por kilo, mientras que la papaya oscila entre S/ 5 y S/ 6.</p>
+
+
+
+<p class="wp-block-paragraph">Por otro lado, la piña continúa comercializándose a S/ 5 por kilogramo. Además, la mandarina registra un precio de S/ 7 por kilo, pese a encontrarse fuera de su temporada principal de producción. Finalmente, los vendedores reiteraron que las lluvias, el calor y el incremento del combustible son los principales factores que vienen influyendo en los precios de algunos alimentos.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>IQUITOS: Electro Oriente promete acabar con los apagones, pero ciudadanos expresan dudas (VIDEO)</title>
+		<link>https://elbuho.pe/2026/11/iquitos-electro-oriente-promete-acabar-con-los-apagones-pero-ciudadanos-expresan-dudas-video/</link>
+		
+		<dc:creator><![CDATA[Redacción El Búho]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:56:33 +0000</pubDate>
+				<category><![CDATA[Regional]]></category>
+		<category><![CDATA[cortes de servicio]]></category>
+		<category><![CDATA[electro oriente]]></category>
+		<category><![CDATA[Iquitos]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443647</guid>
+
+					<description><![CDATA[Se cuestiona la rapidez de la adjudicación de los equipos y se pide esclarecer si hubo estudio de mercado y participación de otros postores.
+
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">PASÓ EN EL <a href="https://elbuho.pe/tema/peru/">Perú</a> | Electro Oriente promete reducir los apagones en Iquitos con una potencia de 32 MW hasta diciembre de 2026, mediante recursos propios y equipos de generación. Sin embargo, los equipos alquilados aportarían nueve MW y estarían instalados entre la segunda y tercera semana de diciembre; los pagos empezarían en enero de 2027.</p>
+
+
+
+<p class="wp-block-paragraph">Un técnico consultado señala que conectarse al SEIN implicaría depender de energía de otras regiones y que se necesita generación local para justificar esa inversión. Además, se cuestiona la rapidez de la adjudicación de los equipos y se pide esclarecer si hubo estudio de mercado y participación de otros postores.</p>
+
+
+
+<p class="wp-block-paragraph"> Programa de la Red de Medios Regionales del Perú</p>
+
+
+
+<p class="wp-block-paragraph"> ¡Accede a contenido exclusivo y beneficios especiales!<br>
+Únete a #Buhocomunidad aquí  https://elbuho.pe/comunidad/<br>
+ Nuestra web: www.elbuho.pe<br>
+ Síguenos en nuestras redes sociales:<br>
+ Facebook: ElBuho.pe<br>
+ Instagram: @elbuho.pe<br>
+ Twitter/X: @elbuho_pe<br>
+ TikTok: @elbuho.pe</p>
+
+
+
+<p class="wp-block-paragraph">#noticiasperu #ultimasnoticias #peru #fyp #loultimo #peru #<a href="https://elbuho.pe/tema/congreso-de-la-republica/">Congreso</a> #NoticiasHoy #Noticiashoyperu #loultimonoticiasperu</p>
+
+
+
+<p class="wp-block-paragraph"><a href="https://www.youtube.com/watch?v=yMGZtEjiOyk">El video IQUITOS: Electro Oriente promete acabar con los apagones, pero surgen dudas se publicó en YouTube en este enlace</a></p>
+
+
+
+<figure class="wp-block-image wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex"><a href="https://elbuho.pe/comunidad/"><img loading="lazy" decoding="async" width="720" height="90" src="https://elbuho.pe/wp-content/uploads/2024/03/WhatsApp-Image-2025-07-24-at-17.16.05.jpeg" alt="banner buhocomunidad" class="wp-image-393329"/></a></figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo.</em></strong></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Seis comunidades machiguengas y ashánincas habitan el territorio ayacuchano del valle del Apurímac</title>
+		<link>https://elbuho.pe/2026/11/seis-comunidades-machiguengas-y-ashanincas-habitan-el-territorio-ayacuchano-del-valle-del-apurimac/</link>
+		
+		<dc:creator><![CDATA[Red de Medios Regionales del Perú]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:50:06 +0000</pubDate>
+				<category><![CDATA[La Red]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[Compañía de Jesús]]></category>
+		<category><![CDATA[comunidades ashánincas]]></category>
+		<category><![CDATA[comunidades machiguengas]]></category>
+		<category><![CDATA[comunidades originarias]]></category>
+		<category><![CDATA[Davinson Correa Jibaja]]></category>
+		<category><![CDATA[defensa de la naturaleza]]></category>
+		<category><![CDATA[Papa León XIV]]></category>
+		<category><![CDATA[Pucallpa]]></category>
+		<category><![CDATA[Pueblos indígenas]]></category>
+		<category><![CDATA[pueblos originarios]]></category>
+		<category><![CDATA[valle del río Apurímac]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/2026/11/seis-comunidades-machiguengas-y-ashanincas-habitan-el-territorio-ayacuchano-del-valle-del-apurimac/</guid>
+
+					<description><![CDATA[El territorio ayacuchano del valle del río Apurímac (Vraem) alberga seis comunidades originarias: tres machiguengas y tres ashánincas. Sin embargo, esta presencia y la realidad de sus pueblos todavía son poco conocidas en la región, una situación que fue puesta en discusión a partir del mensaje del papa León XIV durante su visita al Perú. [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>El territorio ayacuchano del valle del río Apurímac (<a href="https://jornada.com.pe/a-la-semana-al-menos-una-persona-es-asesinada-en-el-vraem/">Vraem</a>) alberga seis comunidades originarias: tres machiguengas y tres ashánincas. Sin embargo, esta presencia y la realidad de sus pueblos todavía son poco conocidas en la región, una situación que fue puesta en discusión a partir del mensaje del papa León XIV durante su visita al Perú.</p>
+<p>Davinson Correa Jibaja, integrante de la Compañía de Jesús y con trabajo pastoral y social en Ayacucho, señaló que uno de los aportes del recorrido papal fue visibilizar a los pueblos originarios y reconocer su papel en el cuidado de la naturaleza. El religioso participó en el encuentro realizado en Pucallpa junto a una delegación de representantes de estas comunidades. Durante su mensaje, el pontífice llamó a los pueblos indígenas “defensores de la Tierra” y “guardianes de la naturaleza”. También expresó su preocupación por los asesinatos de líderes nativos que han perdido la vida por proteger los bosques. Correa explicó que este reconocimiento responde a la relación que mantienen las comunidades con su entorno, basada en una visión de cuidado y respeto por la naturaleza. Consideró que esta forma de comprender la vida ofrece enseñanzas sobre la relación entre las personas y el territorio. El entrevistado también cuestionó las miradas que consideran ajenas al cristianismo las expresiones de espiritualidad andina y de los pueblos originarios. Recordó que, durante los siglos XVI y XVII, la traducción de textos religiosos al quechua permitió un encuentro entre la tradición católica y la cultura andina.</p>
+<p>Lea la nota original <a href="https://jornada.com.pe?p=106571">aquí</a> o visita el medio <a href="https://jornada.com.pe">Diario Jornada</a></p>
+<p>&nbsp;</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Diputado exige a Keiko Fujimori cumplir compromisos sobre Los Libertadores y transportistas anuncian paro</title>
+		<link>https://elbuho.pe/2026/11/diputado-exige-a-keiko-fujimori-cumplir-compromisos-sobre-los-libertadores-y-transportistas-anuncian-paro/</link>
+		
+		<dc:creator><![CDATA[Red de Medios Regionales del Perú]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:46:25 +0000</pubDate>
+				<category><![CDATA[Regional]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[Carretera Ayacucho Huancayo]]></category>
+		<category><![CDATA[Edwin Canales]]></category>
+		<category><![CDATA[Freshman Buitrón]]></category>
+		<category><![CDATA[Infraestructura Vial]]></category>
+		<category><![CDATA[Keiko Fujimori]]></category>
+		<category><![CDATA[Ministerio de Transportes y Comunicaciones]]></category>
+		<category><![CDATA[paro macrorregional]]></category>
+		<category><![CDATA[Provías nacional]]></category>
+		<category><![CDATA[transportistas de Ayacucho]]></category>
+		<category><![CDATA[Vía Los Libertadores]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/2026/11/diputado-exige-a-keiko-fujimori-cumplir-compromisos-sobre-los-libertadores-y-transportistas-anuncian-paro/</guid>
+
+					<description><![CDATA[El deterioro de la Vía Los Libertadores y la falta de soluciones para mejorar la carretera Ayacucho-Huancayo volvieron a generar cuestionamientos al Gobierno central. Durante una sesión del Pleno del Congreso, el diputado por Ayacucho, Freshman Buitrón Martínez, de la bancada de Ahora Nación, exigió a la presidenta Keiko Fujimori cumplir los compromisos que asumió [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>El deterioro de la <a href="https://jornada.com.pe/cuestionan-ejecucion-de-s-4-millones-en-trabajos-de-recuperacion-de-la-via-los-libertadores/">Vía Los Libertadores</a> y la falta de soluciones para mejorar la carretera Ayacucho-Huancayo volvieron a generar cuestionamientos al Gobierno central. Durante una sesión del Pleno del Congreso, el diputado por Ayacucho, Freshman Buitrón Martínez, de la bancada de Ahora Nación, exigió a la presidenta Keiko Fujimori cumplir los compromisos que asumió con la región y atender las demandas sobre estos corredores viales.</p>
+<p>Buitrón recordó que, durante su visita al centro poblado de Occollo, el 1 de mayo de 2026, Fujimori cuestionó las condiciones de la Vía Los Libertadores y anunció que su rehabilitación sería una prioridad si llegaba al Gobierno. En aquella ocasión, la entonces candidata también comentó que el viaje hasta Ayacucho le había tomado aproximadamente 11 horas. Posteriormente, el 28 de julio, durante su primer Mensaje a la Nación, la mandataria incluyó la carretera Los Libertadores entre los proyectos viales que impulsaría su administración. También mencionó la Longitudinal de la Sierra, corredor que comprende a Junín, Huancavelica, Ayacucho y Apurímac. Sin embargo, el parlamentario cuestionó que hasta ahora no existan avances suficientes para garantizar el cumplimiento de estos anuncios.&nbsp;</p>
+<p>El reclamo parlamentario coincide con el malestar de los transportistas de carga pesada. Edwin Canales, presidente de este gremio en Ayacucho, informó que su organización convocó a una asamblea para definir la fecha de un paro macrorregional multisectorial, ante la falta de acuerdos con representantes del Ministerio de Transportes y Comunicaciones (MTC) y Provías Nacional. Según el dirigente, la reunión técnica sostenida con ambas entidades no permitió alcanzar acuerdos satisfactorios sobre la situación de la carretera. La eventual protesta también incorporaría las demandas de otros sectores afectados por el incremento del precio de los combustibles.&nbsp;</p>
+<p>La preocupación por el estado de la vía tiene antecedentes. En marzo de 2026, el Gobierno declaró en emergencia el servicio de transporte terrestre en la ruta PE-28A, debido a problemas que comprometían las condiciones de tránsito. Además, la Defensoría del Pueblo registró en su reporte de octubre que el mantenimiento de la carretera no había concluido y que Provías Nacional gestionaba la resolución del convenio con el Gobierno Regional de Ayacucho para intervenir en la zona. Mientras Buitrón exige respuestas desde el Congreso, los transportistas mantienen su reclamo por la recuperación de esta carretera y la atención de otras vías regionales.&nbsp;</p>
+<p>La carretera Ayacucho-Huancayo, especialmente el corredor por Izcuchaca, también figura entre las rutas que requieren intervenciones.</p>
+<p>Lea la nota original <a href="https://jornada.com.pe?p=106582">aquí</a> o visita el medio <a href="https://jornada.com.pe">Diario Jornada</a></p>
+<p>&nbsp;</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Roban casa de Vladimir Cerrón en Huancayo: se llevan una computadora, pero dejan otros objetos de valor</title>
+		<link>https://elbuho.pe/2026/11/roban-casa-de-vladimir-cerron-en-huancayo-se-llevan-una-computadora-pero-dejan-otros-objetos-de-valor/</link>
+		
+		<dc:creator><![CDATA[Red de Medios Regionales del Perú]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:42:41 +0000</pubDate>
+				<category><![CDATA[Regional]]></category>
+		<category><![CDATA[Huancayo]]></category>
+		<category><![CDATA[Junín]]></category>
+		<category><![CDATA[Perú Libre]]></category>
+		<category><![CDATA[Valdimir Cerrón]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/2026/11/roban-casa-de-vladimir-cerron-en-huancayo-se-llevan-una-computadora-pero-dejan-otros-objetos-de-valor/</guid>
+
+					<description><![CDATA[La vivienda de Vladimir Cerrón, en Huancayo, fue escenario de un robo la noche del viernes 20 de noviembre. Desconocidos ingresaron al inmueble tras violentar la cerradura de la puerta y sustrajeron una computadora, aunque dejaron otros objetos de valor que permanecían en el interior. Fritz Cerrón, hermano del líder de Perú Libre, presentó la [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph"></p>
+
+
+
+<p class="wp-block-paragraph">La vivienda de <strong>Vladimir Cerrón</strong>, en Huancayo, fue escenario de un robo la noche del viernes 20 de noviembre. Desconocidos ingresaron al inmueble tras violentar la cerradura de la puerta y sustrajeron una computadora, aunque dejaron otros objetos de valor que permanecían en el interior.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Fritz Cerrón</strong>, hermano del líder de <strong>Perú Libre</strong>, presentó la denuncia ante la Policía. Los intrusos se llevaron una computadora, pero no tocaron libros, espadas y otros bienes que estaban en la vivienda.</p>
+
+
+
+<p class="wp-block-paragraph">Esta circunstancia llamó la atención de la familia, que considera sospechoso el robo.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Ingresaron en la noche</strong></h2>
+
+
+
+<p class="wp-block-paragraph">El hecho habría ocurrido entre las 10 y 11 de la noche del viernes. Vecinos de la zona advirtieron que había luz encendida en la vivienda a esa hora, pero no sospecharon del robo que estaba ocurriendo.</p>
+
+
+
+<p class="wp-block-paragraph">La familia llegó al inmueble al mediodía del sábado, como acostumbraba hacerlo para atender a Mambi, el perro de la casa, conocido también por aparecer en las redes sociales del médico.</p>
+
+
+
+<p class="wp-block-paragraph">El animal permaneció encerrado en el tercer piso y no bajó durante el robo. Se trata de un perro bravo que habitualmente permanece en la vivienda.</p>
+
+
+
+<p class="wp-block-paragraph">Agentes policiales acudieron al inmueble para realizar las diligencias para las investigaciones que están a cargo de la Divincri, y recogieron muestras que permitan esclarecer las circunstancias del hecho.</p>
+
+
+
+<p class="wp-block-paragraph"></p>
+<p>Lea la nota original <a href="https://hytimes.pe?p=77508">aquí</a> o visita el medio <a href="https://hytimes.pe">HYTIMES.PE</a><p>]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Cajamarca: presunta estafa piramidal «FAF» desaparece y deja cientos de afectados en Celendín y Cutervo</title>
+		<link>https://elbuho.pe/2026/11/cajamarca-presunta-estafa-piramidal-faf-desaparece-y-deja-cientos-de-afectados-en-celendin-y-cutervo-2/</link>
+		
+		<dc:creator><![CDATA[Red de Medios Regionales del Perú]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:38:22 +0000</pubDate>
+				<category><![CDATA[La Red]]></category>
+		<category><![CDATA[Cajamarca]]></category>
+		<category><![CDATA[estafa piramidal]]></category>
+		<category><![CDATA[FAF]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/2026/11/cajamarca-presunta-estafa-piramidal-faf-desaparece-y-deja-cientos-de-afectados-en-celendin-y-cutervo-2/</guid>
+
+					<description><![CDATA[«Centro de Apoyo y Capacitación – FAF», una plataforma digital que prometía ganancias fáciles por ver videos en internet, dejó de funcionar a nivel nacional. Tras bloquear los retiros de dinero, sus administradores desaparecieron y cerraron la oficina que tenían en Cutervo. La denuncia corresponde a una presunta estafa piramidal que habría afectado a cientos [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">«Centro de Apoyo y Capacitación – FAF», una plataforma digital que prometía ganancias fáciles por ver videos en internet, dejó de funcionar a nivel nacional. Tras bloquear los retiros de dinero, sus administradores desaparecieron y cerraron la oficina que tenían en Cutervo. La denuncia corresponde a una presunta estafa piramidal que habría afectado a cientos de personas en diversas provincias de Cajamarca, principalmente en Celendín y Cutervo.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Cómo captaba a sus víctimas</strong></p>
+
+
+
+<p class="wp-block-paragraph">Los promotores ofrecían ganancias rápidas a cambio de ver videos en línea o de completar tareas básicas dentro de la aplicación. Para habilitar la cuenta, cada usuario debía pagar una cuota inicial que solía empezar en S/ 240. Muchas víctimas depositaron S/ 500, S/ 700 o montos mayores.</p>
+
+
+
+<p class="wp-block-paragraph">Según personas que participaron en el sistema como invitadas y que fueron consultadas por Radio Marañón, pocos días después del primer depósito el dinero era devuelto, de modo que al comienzo no se generaba pérdida alguna. Luego los participantes empezaban a hacer el supuesto «trabajo» de ver videos de marcas, en formato de publicidad.</p>
+
+
+
+<p class="wp-block-paragraph">El ingreso diario dependía de los minutos acumulados, del monto del depósito inicial y de la cantidad de personas invitadas. Los testimonios indican que las ganancias podían llegar a cientos de soles por día. Según los consultados, todo parecía tener un solo fin: que más personas se sumaran al sistema.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Bloqueo de retiros y exigencia de más dinero</strong></p>
+
+
+
+<p class="wp-block-paragraph">La plataforma dejó de permitir los retiros, tanto de las supuestas ganancias como del capital depositado. Después, los administradores enviaron mensajes en los que exigían un pago adicional equivalente al 18 % del saldo acumulado para, supuestamente, desbloquear las cuentas. Además, según los afectados, amenazaban con denunciar a los usuarios por presunto lavado de activos si no depositaban ese dinero extra.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>La desaparición</strong></p>
+
+
+
+<p class="wp-block-paragraph">Ayer, la plataforma desapareció a nivel nacional. Hoy, la oficina ubicada en la avenida Salomón Vílchez Murga, en Cutervo, amaneció sin letrero y completamente cerrada. Los administradores dejaron de responder en los canales de atención.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Afectados y reclamos</strong></p>
+
+
+
+<p class="wp-block-paragraph">Solo en Celendín, según la plataforma Celendín Noticias, cerca de 200 madres de familia resultaron perjudicadas. En Cutervo, las pérdidas se estiman en cientos de miles de soles.</p>
+
+
+
+<p class="wp-block-paragraph">Ante la desaparición, los afectados acudieron a las rondas campesinas y urbanas, como en el sector El Porvenir, en Celendín, y a la Policía. Exigen explicaciones a los promotores locales que difundieron la aplicación.</p>
+
+
+
+<p class="wp-block-paragraph">Tras la publicación de los casos de Cutervo y Celendín, muchos internautas comentaron que habría situaciones similares en otras ciudades, incluida Lima. Esos comentarios no han sido verificados.</p>
+
+
+
+<p class="wp-block-paragraph">Medios locales de Chao y Virú en la región La Libertad, difundieron hoy también las denuncias de personas afectadas por el mismo esquema de estafa.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Recomendaciones</strong></p>
+
+
+
+<p class="wp-block-paragraph">Las autoridades y los propios afectados advierten que no se debe depositar ni un sol más para intentar «desbloquear» las cuentas, pues sería una táctica para sustraer más dinero.</p>
+
+
+
+<p class="wp-block-paragraph">Quienes hayan sido afectados, ellos o un familiar, deben guardar los comprobantes de transferencia (Yape, Plin o depósitos bancarios) y acudir a la comisaría más cercana o a las rondas de su jurisdicción.</p>
+<p>Lea la nota original <a href="https://radiomaranon.org.pe?p=37294">aquí</a> o visita el medio <a href="https://radiomaranon.org.pe">::Radio Marañón::</a><p>]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Padre de familia vive hace 25 años en precaria vivienda junto a sus hijos en Salcedo</title>
+		<link>https://elbuho.pe/2026/11/padre-de-familia-vive-hace-25-anos-en-precaria-vivienda-junto-a-sus-hijos-en-salcedo/</link>
+		
+		<dc:creator><![CDATA[Red de Medios Regionales del Perú]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:38:12 +0000</pubDate>
+				<category><![CDATA[La Red]]></category>
+		<category><![CDATA[ayuda solidaria]]></category>
+		<category><![CDATA[centro poblado]]></category>
+		<category><![CDATA[Familia vulnerable]]></category>
+		<category><![CDATA[Noticias Puno Perú]]></category>
+		<category><![CDATA[Salcedo Puno]]></category>
+		<category><![CDATA[Vivienda precaria]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/2026/11/padre-de-familia-vive-hace-25-anos-en-precaria-vivienda-junto-a-sus-hijos-en-salcedo/</guid>
+
+					<description><![CDATA[Un padre de familia que vive desde hace aproximadamente 25 años en una precaria vivienda del centro poblado de Salcedo, en la ciudad de Puno, pidió ayuda a las autoridades y a la población para conseguir mejores condiciones de vida junto a sus hijos, dos de los cuales presentan problemas de salud. Durante una visita [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p>Un padre de familia que vive desde hace aproximadamente 25 años en una precaria vivienda del centro poblado de Salcedo, en la ciudad de Puno, pidió ayuda a las autoridades y a la población para conseguir mejores condiciones de vida junto a sus hijos, dos de los cuales presentan problemas de salud.</p>
+<p>Durante una visita a su domicilio, el ciudadano, identificado como Pablo Chambilla Quenta, contó que tiene seis hijos, pero actualmente vive con dos de ellos, quienes necesitan cuidados especiales, mientras su vivienda es una pequeña construcción que no reúne las condiciones adecuadas para protegerlos del frío y otras inclemencias.</p>
+<p>La situación más preocupante es la de su hija Susana, quien presenta dificultades para caminar y permanece gran parte del tiempo recostada en una cama, según relató su padre, quien también indicó que otro de sus hijos, identificado como Álvaro Héctor Chambilla, presenta problemas de salud y necesita atención.</p>
+<h3>Familia solicita apoyo para mejorar su vivienda</h3>
+<p>Al mostrar las condiciones de su domicilio, se observó que la familia cuenta con una pequeña habitación, una cama y un espacio destinado a la cocina, mientras que la estructura de su vivienda está construida con materiales precarios y calaminas, situación que genera preocupación por la seguridad de sus ocupantes.</p>
+<p>«Yo necesito una casa, no tengo dónde vivir tranquilo», manifestó el padre de familia, quien pidió apoyo para conseguir materiales de construcción o un espacio donde pueda levantar una vivienda más segura, además de solicitar la intervención de las autoridades.</p>
+<p>La situación fue identificada por la maestra Jenny Ramos, quien contó que conoció al ciudadano cuando lo observó recogiendo botellas y cartones de la basura, por lo que decidió acercarse y conocer su realidad familiar, encontrando que tenía una hija que no podía valerse por sí misma; ante ello, promovió la difusión del caso para buscar apoyo solidario para esta familia de Salcedo.</p>
+<p>Lea la nota original <a href="https://pachamamaradio.org?p=198181">aquí</a> o visita el medio <a href="https://pachamamaradio.org">Pachamama Radio</a></p>
+<p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Análisis: La Libertad entre la extorsión y la amenaza de El Niño</title>
+		<link>https://elbuho.pe/2026/11/analisis-la-libertad-entre-la-extorsion-y-la-amenaza-de-el-nino/</link>
+		
+		<dc:creator><![CDATA[Red de Medios Regionales del Perú]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:35:26 +0000</pubDate>
+				<category><![CDATA[La Red]]></category>
+		<category><![CDATA[Política]]></category>
+		<category><![CDATA[#ElNiño]]></category>
+		<category><![CDATA[Extorsión]]></category>
+		<category><![CDATA[GobiernoRegional]]></category>
+		<category><![CDATA[Investiga]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/2026/11/analisis-la-libertad-entre-la-extorsion-y-la-amenaza-de-el-nino/</guid>
+
+					<description><![CDATA[La Libertad elegirá a su próximo gobernador regional en la segunda vuelta del 6 de diciembre. La actual gestión cierra su mandato con una baja aprobación ciudadana: en 2025, solo el 11.1% de los liberteños lo calificó como buena gestión, el tercer resultado más bajo del país. Así, la nueva administración deberá trabajar en el [&#8230;]]]></description>
+										<content:encoded><![CDATA[<p style="text-align: justify"><strong>La Libertad elegirá a su próximo gobernador regional en la segunda vuelta del 6 de diciembre. La actual gestión cierra su mandato con una baja aprobación ciudadana: en 2025, solo el 11.1% de los liberteños lo calificó como buena gestión, el tercer resultado más bajo del país. Así, la nueva administración deberá trabajar en el cierre de brechas de agua, seguridad, salud y aprendizajes, ámbitos en los que el gobierno regional (GORE) tiene un rol central.</strong></p>
+<p style="text-align: justify"><strong>Lo importante y urgente</strong></p>
+<p style="text-align: justify">El principal riesgo para la nueva gestión es el Fenómeno El Niño Costero. Según el Cenepred, más de 860 mil liberteños, el 49% de la población, vive en distritos con riesgo muy alto de inundación por lluvias asociadas a este fenómeno. Pese a ello, la preparación sigue siendo limitada. A octubre de 2026, 19 de los 22 proyectos de drenaje de los gobiernos subnacionales estaban abandonados o paralizados, lo que reduce la capacidad de evacuar las lluvias y evitar aniegos.</p>
+<p style="text-align: justify">A este riesgo se suma una de las brechas más urgentes de la región: un servicio de agua estancado y discontinuo. Según los datos de Enapres, el acceso a agua por red pública o pilón apenas pasó de 91.0% a 91.5% de los hogares entre 2016 y 2025, similar al promedio nacional (90.7%). Además, el servicio llega en promedio 11.8 horas al día, muy por debajo del promedio nacional (18.9) y de regiones vecinas como Cajamarca (19.8), lo que ubica a La Libertad en el puesto 21 de 25 en continuidad.</p>
+<p style="text-align: justify">Además, la falta de continuidad obliga a los hogares a almacenar agua en recipientes, lo que puede contribuir a la propagación del dengue. Al cierre de octubre, La Libertad registra 827 casos de dengue por cada 100 mil habitantes, la cuarta tasa más alta solo después de Madre de Dios (1,218), San Martín (1,005) y Lambayeque (964).</p>
+<p style="text-align: justify"><img loading="lazy" decoding="async" class=" aligncenter" src="https://investiga.pe/wp-content/uploads/2026/11/2-1.png" width="556" height="631" /></p>
+<p style="text-align: justify"><strong>Rezagos en aprendizajes y nutrición</strong></p>
+<p style="text-align: justify">A ello se suman brechas en educación: el aprendizaje de los estudiantes no se recupera desde la pandemia. Según el Minedu, la proporción de escolares de cuarto de primaria con nivel satisfactorio en matemática cayó de 30.8% en 2019 a 20.0% en 2022 y, aunque subió a 23.3% en 2025, sigue lejos de su nivel prepandemia y del promedio nacional (30.0%). En lectura, pasó de 28.7% a 27.1% en el mismo periodo, también por debajo del país (32.7%).</p>
+<p style="text-align: justify">La situación es similar en salud, donde la nutrición infantil retrocedió. Según la ENDES del INEI, la desnutrición crónica en menores de cinco años subió de 12.7% en 2019 a 16.9% en 2025, mientras que el promedio nacional se mantuvo en 12.1%. Así, La Libertad se encuentra entre las seis regiones con tasa de desnutrición más alta del país y es la tercera de la región norte, después de Amazonas (17.7%) y Cajamarca (17.4%).</p>
+<p style="text-align: justify"><img loading="lazy" decoding="async" class="aligncenter" src="https://investiga.pe/wp-content/uploads/2026/11/1.png" width="510" height="457" /></p>
+<p style="text-align: justify"><strong>La extorsión, el principal reto en seguridad</strong></p>
+<p style="text-align: justify">A estas brechas se suma la inseguridad. Según cálculos del IPE con datos del Ministerio Público, las denuncias por extorsión en La Libertad pasaron de 629 en 2020 a 4,234 en 2024, casi siete veces más. Aunque bajaron en 2025, la región aún registró 176 denuncias por cada 100 mil habitantes, el doble del promedio nacional (86) y la segunda tasa más alta del país, después de Tumbes.</p>
+<p style="text-align: justify">La nueva gestión, que asumirá en enero en plena temporada de lluvias, debe priorizar la limpieza de ríos y quebradas, destrabar las obras de drenaje y agua, y articular con la Policía, los municipios y los ministerios en la lucha contra la extorsión y el cierre de brechas. Para que los recursos se traduzcan en mejores servicios, el IPE propone además evaluar la asignación de competencias y recursos según resultados: crear un mecanismo independiente de evaluación del cierre de brechas, fortalecer la rectoría de la PCM y vincular parte de las transferencias a resultados verificables.</p>
+<p>Lea la nota original <a href="https://investiga.pe?p=20903">aquí</a> o visita el medio <a href="https://investiga.pe">Investiga</a></p>
+<p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Farid Kahhat advierte sobre protestas violentas: «Alimentan el voto de la extrema derecha» (VIDEO)</title>
+		<link>https://elbuho.pe/2026/11/farid-kahhat-advierte-sobre-protestas-violentas-alimentan-el-voto-de-la-extrema-derecha-video/</link>
+		
+		<dc:creator><![CDATA[Redacción El Búho]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 22:26:34 +0000</pubDate>
+				<category><![CDATA[Videos]]></category>
+		<category><![CDATA[Farid Kahhat]]></category>
+		<category><![CDATA[protstas contra el gobierno]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443734</guid>
+
+					<description><![CDATA[Desde Arequipa y en el marco de la última edición del Hay Festival, el internacionalista Farid Kahhat analiza las tensiones políticas, económicas e ideológicas que atraviesan el escenario internacional. ¿Por qué los jóvenes europeos sienten que vivirán peor que sus padres? Kahhat examina la crisis de vivienda, la especulación inmobiliaria y las contradicciones de los [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Desde <a href="https://elbuho.pe/tema/arequipa/">Arequipa</a> y en el marco de la última edición del Hay Festival, el internacionalista Farid Kahhat analiza las tensiones políticas, económicas e ideológicas que atraviesan el escenario internacional.</p>
+
+
+
+<p class="wp-block-paragraph">¿Por qué los jóvenes europeos sienten que vivirán peor que sus padres? Kahhat examina la crisis de vivienda, la especulación inmobiliaria y las contradicciones de los gobiernos que recortan recursos para servicios públicos mientras incrementan el gasto militar. También explica por qué las protestas pacíficas tienen mayores posibilidades de alcanzar sus objetivos.</p>
+
+
+
+<p class="wp-block-paragraph">Además conversamos  sobre la crisis financiera y política de Paraguay, el modelo económico defendido por sectores libertarios y los riesgos de una regulación estatal insuficiente. Kahhat analiza el sionismo, las teorías conspirativas sobre la presencia de ciudadanos israelíes en el Valle Sagrado de Cusco y la diferencia entre cuestionar las políticas del Estado de Israel y reproducir discursos antisemitas.</p>
+
+
+
+<p class="wp-block-paragraph">Una conversación sobre el poder, la economía, la religión y los desafíos de las democracias contemporáneas.</p>
+
+
+
+<p class="wp-block-paragraph"> ¡Gracias por ser parte de la #Buhocomunidad!<br>
+Eres parte de un grupo de personas valientes que defienden el periodismo independiente en tiempos difíciles.</p>
+
+
+
+<p class="wp-block-paragraph"> Seguiremos trabajando para ofrecerte contenido de calidad, análisis profundo y una mirada crítica desde el sur del <a href="https://elbuho.pe/tema/peru/">Perú</a>.</p>
+
+
+
+<p class="wp-block-paragraph">Tu suscripción es resistencia.<br>
+Gracias por caminar junto a nosotros. </p>
+
+
+
+<p class="wp-block-paragraph">#FaridKahhat #HayFestival #ElBúho #Arequipa #PolíticaInternacional #Paraguay #Sionismo #Israel #Gaza #Europa</p>
+
+
+
+<p class="wp-block-paragraph"><a href="https://www.youtube.com/watch?v=xQs8wMz_W84">El video Farid Kahhat advierte sobre protestas violentas: «Alimentan el voto de la extrema derecha» se publicó en YouTube en este enlace</a></p>
+
+
+
+<figure class="wp-block-image wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex"><a href="https://elbuho.pe/comunidad/"><img loading="lazy" decoding="async" width="720" height="90" src="https://elbuho.pe/wp-content/uploads/2024/03/WhatsApp-Image-2025-07-24-at-17.16.05.jpeg" alt="banner buhocomunidad" class="wp-image-393329"/></a></figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo.</em></strong></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Cómo Moscú y Pekín refuerzan la consolidación autoritaria en Nicaragua</title>
+		<link>https://elbuho.pe/2026/11/como-moscu-y-pekin-refuerzan-la-consolidacion-autoritaria-en-nicaragua/</link>
+		
+		<dc:creator><![CDATA[Redacción El Búho]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 14:35:34 +0000</pubDate>
+				<category><![CDATA[Mural]]></category>
+		<category><![CDATA[Moscú]]></category>
+		<category><![CDATA[Nicaragua]]></category>
+		<category><![CDATA[Pekín]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443516</guid>
+
+					<description><![CDATA[El 5 de octubre de 2026, el presidente Daniel Ortega anunció la retirada de Nicaragua del Parlamento Centroamericano (PARLACEN), después de que el país abandonara en 2023 la Organización de los Estados Americanos (OEA). Esta decisión pone de manifiesto el alejamiento de Nicaragua de las instituciones multilaterales regionales. A lo largo de 2025, Nicaragua reformó [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<div>
+<p class="wp-block-paragraph">El 5 de octubre de 2026, el presidente Daniel Ortega anunció la retirada de Nicaragua del Parlamento Centroamericano (PARLACEN), después de que el país abandonara en 2023 la Organización de los Estados Americanos (OEA). Esta decisión pone de manifiesto el alejamiento de Nicaragua de las instituciones multilaterales regionales. A lo largo de 2025, Nicaragua reformó más de cien artículos de su Constitución para abolir la separación de poderes y los mecanismos de control y contrapeso, y concentrar la autoridad en la copresidencia.</p>
+<p class="wp-block-paragraph">Sin embargo, el deterioro democrático de Nicaragua no se produce de manera aislada. El régimen de Ortega y Murillo ha recurrido cada vez más a Rusia y China para resistir las presiones internas e internacionales. Rusia ha reforzado principalmente las capacidades de seguridad e información del régimen, mientras que China ha emergido rápidamente como un socio económico y de infraestructuras. Ambos actores extrarregionales otorgan a Nicaragua una mayor autonomía frente a las presiones occidentales, aunque potencialmente a costa de su autonomía económica y de seguridad a largo plazo, en favor de Moscú y Pekín.</p>
+<figure class="wp-block-image size-large"><a target="_blank" href="https://dona.latinoamerica21.com/"><img loading="lazy" decoding="async" width="1024" height="190" src="https://elbuho.pe/wp-content/uploads/2026/11/L21-Banner-2-1-1024x190.png" alt="" class="wp-image-51423"></a></figure>
+<p class="wp-block-paragraph"><strong>La infraestructura de vigilancia rusa</strong></p>
+<p class="wp-block-paragraph">Para Rusia, Nicaragua se ha convertido en un bastión de seguridad en América Central, principalmente a través de su infraestructura de vigilancia. Según diversas informaciones, Cerro Mokorón, conocido como Unidad 502, constituye el principal centro de procesamiento de información y tiene acceso a ocho centros de escucha del Ejército nicaragüense. Según el medio Confidencial, Cerro Mokorón lleva a cabo labores de «espionaje interno», mediante la vigilancia del propio Ejército, la Policía y el aparato civil de Nicaragua.</p>
+<p class="wp-block-paragraph">Desde 2018, Nicaragua utiliza el sistema ruso de interceptación SORM-3, que ha incrementado la capacidad represiva del régimen para rastrear las comunicaciones digitales de la población y su actividad financiera. Asimismo, se sospecha que personal ruso desplegado en Nicaragua opera el sistema SORM desde centros de escucha como la Unidad 502. Además, la expansión de la vigilancia coincidió con el exilio de más de 220 periodistas, comunicadores y profesionales de los medios de comunicación nicaragüenses entre 2018 y 2023.</p>
+<p class="wp-block-paragraph">Para el régimen de Ortega y Murillo, la infraestructura de vigilancia refuerza el control interno, ya que, aunque aborda cuestiones legítimas de seguridad, también pone las comunicaciones y los servicios de inteligencia del país al alcance de una potencia extranjera. Rusia sigue siendo, por tanto, un pilar de la arquitectura de seguridad del régimen. Sin embargo, debido a la guerra contra Ucrania, China está contribuyendo a cubrir las limitaciones que Rusia ha dejado, especialmente en el ámbito económico.</p>
+<p class="wp-block-paragraph"><strong>Los recursos estratégicos y la huella de la deuda china</strong></p>
+<p class="wp-block-paragraph">Desde que Nicaragua rompió relaciones con Taiwán y restableció los vínculos diplomáticos con Pekín en 2021, China se ha convertido en un socio económico importante para el régimen de Ortega y Murillo a través de dos mecanismos interrelacionados: el acceso a los recursos naturales de Nicaragua y la financiación de infraestructuras estratégicas. China ofrece al régimen fuentes alternativas de capital y financiación para el desarrollo, pero, al mismo tiempo, aumenta la exposición económica de Nicaragua a Pekín.</p>
+<p class="wp-block-paragraph">Entre diciembre de 2021 y octubre de 2025, Nicaragua concedió 43 concesiones mineras a ocho empresas chinas, que abarcan aproximadamente el 5% del territorio nacional. Además, en 2026, Nicaragua otorgó otras dos concesiones mineras a la empresa china XinXin Linze. Sin embargo, la mayoría de estas compañías carecen de trayectoria empresarial en Nicaragua, aunque mantienen vínculos con entidades chinas. Más importante que la propia participación china es el entorno político y regulatorio creado por el Gobierno de Ortega y Murillo, que permite poner recursos estratégicos en manos de empresas chinas opacas, sin mecanismos de supervisión ni garantías de transparencia.</p>
+<p class="wp-block-paragraph">Entre 2023 y 2025, Nicaragua firmó once préstamos con empresas chinas por un valor superior a los 1.400 millones de dólares, con elevados tipos de interés y cuantiosas comisiones. Los préstamos establecen un plazo de amortización de 15 años y obligan a Nicaragua a devolver más de 2.000 millones de dólares. Asimismo, Nicaragua contrató a la empresa china CHINAICTC para construir un centro logístico de 126 millones de dólares en el puerto de Corinto.</p>
+<p class="wp-block-paragraph">En 2024, las exportaciones nicaragüenses a China alcanzaron los 82,1 millones de dólares, mientras que las exportaciones chinas a Nicaragua ascendieron a 1.650 millones. Dado este desequilibrio comercial, la modernización del puerto de Corinto facilita el flujo de mercancías chinas, lo que significa que Nicaragua asumirá el pago de una deuda por unas infraestructuras que benefician principalmente a las exportaciones de China. La creciente presencia china en Nicaragua tiene implicaciones que van mucho más allá de cualquier préstamo o inversión individual: las alternativas económicas permiten al régimen liberarse de los condicionamientos regionales, pero concentran sus relaciones económicas en actores extrarregionales.</p>
+<p class="wp-block-paragraph">En conjunto, la consolidación del poder del régimen de Ortega y Murillo constituye fundamentalmente un proyecto político interno, pero su continuidad se ve favorecida por actores extrarregionales. En particular, Moscú proporciona los equipos y los conocimientos técnicos necesarios para ampliar las capacidades de vigilancia y reforzar el control interno del régimen, mientras que Pekín ofrece alternativas comerciales que reducen la dependencia de los socios occidentales tradicionales.</p>
+<p class="wp-block-paragraph">Para las democracias de la región, especialmente para los países vecinos de Nicaragua en América Central, responder a esta situación exige una mayor vigilancia de la financiación extranjera opaca, las concesiones mineras, los acuerdos sobre infraestructuras estratégicas y las redes de vigilancia respaldadas desde el exterior. Si no se abordan las relaciones internacionales que proporcionan a Managua fuentes alternativas de apoyo económico y político, la presión regional será cada vez más fácil de resistir para el régimen de Ortega y Murillo, como ya parecen demostrar las retiradas de la OEA y del PARLACEN.</p>
+<p><!-- MOLONGUI AUTHORSHIP PLUGIN 5.3.2 --><br>
+<!-- https://www.molongui.com/wordpress-plugin-post-authors --></p>
+<div class="m-a-box authorbox" data-box-layout="slim" data-box-position="below" data-multiauthor="false" data-author-id="861" data-author-type="user" data-author-archived="">
+<div class="m-a-box-container">
+<div class="m-a-box-tab m-a-box-content m-a-box-profile" data-profile-layout="layout-1" data-author-ref="user-861" itemscope="" itemid="https://latinoamerica21.com/es/autor/martin-brown/" itemtype="https://schema.org/Person">
+<div class="m-a-box-content-middle">
+<figure><a target="_blank" class="m-a-box-avatar-url" href="https://latinoamerica21.com/es/autor/martin-brown/"><img loading="lazy" decoding="async" width="120" height="120" src="https://elbuho.pe/wp-content/uploads/2026/11/Martin-Brown-120x120.jpg" class="attachment-120x120 size-120x120" alt="" itemprop="image"></a></figure><div class="m-a-box-item m-a-box-avatar" data-source="local"></div>
+<div class="m-a-box-item m-a-box-data">
+<div class="m-a-box-bio" itemprop="description">
+<p><span style="font-weight:400">Licenciado en Relaciones Internacionales y Política y estudiante de posgrado del programa de Asuntos Globales de la Universidad Internacional de Florida, Estados Unidos. Analista de código abierto en el Instituto Jack D. Gordon.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<p class="wp-block-paragraph"><a href="https://latinoamerica21.com/es/borrador-automatico/">La nota de verificación «Cómo Moscú y Pekín refuerzan la consolidación autoritaria en Nicaragua», se publicó en la plataforma Latinoamérica21 en este enlace</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Arequipa: entre el mito turístico y la realidad, ¿existe realmente el «cementerio de trenes»?</title>
+		<link>https://elbuho.pe/2026/11/arequipa-entre-el-mito-turistico-y-la-realidad-existe-realmente-el-cementerio-de-trenes/</link>
+		
+		<dc:creator><![CDATA[Marco Zavalaga Flores]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 13:24:55 +0000</pubDate>
+				<category><![CDATA[El regreso]]></category>
+		<category><![CDATA[Local]]></category>
+		<category><![CDATA[Arequipa]]></category>
+		<category><![CDATA[trenes en Arequipa]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443653</guid>
+
+					<description><![CDATA[Una infraestructura de décadas que la modernidad ha opacado y prácticamente desaparecido los vestigios de su existencia.]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Los operadores turísticos que venden la idea de un cementerio de trenes en Arequipa suelen confundir geografías. Las grandes concentraciones de máquinas abandonadas que la prensa peruana ha documentado<strong> están en la costa norte, en Ascope y Puerto Eten. </strong>El célebre cementerio de locomotoras de Uyuni, en Bolivia, aparece en circuitos multidestino ofrecidos desde la ciudad. Y dentro del territorio arequipeño, <strong>el único punto consolidado bajo esa etiqueta es Sumbay, a 88 kilómetros de la Ciudad Blanca y a unos 4,127 metros sobre el nivel del mar, a espaldas del Misti.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Lo que el visitante encuentra en Sumbay no son locomotoras a vapor alineadas. Las fotografías de archivo y los relatos de guías coinciden: <strong>allí permanecen la antigua edificación de la estación, almacenes dañados, durmientes y vagones ferroviarios abandonados sobre vías auxiliares.</strong> El pueblo, en tanto, se vació lentamente por una emigración sostenida hacia la capital regional. La paradoja es que la línea principal que cruza Sumbay sigue operativa.</p>
+
+
+
+<h2 class="wp-block-heading">¿Y las locomotoras a vapor? Dispersas, fuera de uso y sin museo que las albergue</h2>
+
+
+
+<p class="wp-block-paragraph">La documentación especializada disponible no contiene un registro consolidado de máquinas abandonadas o desguazadas en Arequipa. Fuentes oficiales permiten rastrear ejemplares puntuales. <strong>La locomotora estadounidense «La Mollendina», de Baldwin, integrante del convoy inaugural de la ruta, figura catalogada en el inventario turístico de MINCETUR.</strong> </p>
+
+
+
+<p class="wp-block-paragraph">La Beyer-Peacock N.º 252, tipo 2-8-0, se encuentra fuera de uso en el patio de trenes de la Estación de Juliaca, en Puno, según documentos del Congreso y manuales del Ministerio de Cultura. A ello se suma el retiro sistemático de material rodante estatal obsoleto bajo el esquema de concesión: <strong>estadísticas oficiales consignan que Ferrocarril Transandino S.A. (Fetransa) devolvió al Estado 189 carros de carga, 12 locomotoras y un autocarril en junio de 2009, seguidos de otros 32 vagones en junio de 2010. Arequipa no cuenta con un museo ferroviario regional para exhibir estas piezas.</strong></p>
+
+
+
+<p class="wp-block-paragraph">El deterioro selectivo de la red responde a transformaciones técnicas y territoriales concretas. La dieselización de la flota, hoy representada por locomotoras de alta potencia como las ALCo DL560 y DL560D de PeruRail o las GT42AC que cruzan el puente de Sumbay, <strong>eliminó la dependencia operativa de las estacionaes de altura dedicadas al reabastecimiento de carbón, como ocurría en Pampa de Arrieros.</strong></p>
+
+
+
+<p class="wp-block-paragraph">La construcción estatal del tramo Matarani–La Joya entre 1947 y 1950, de 62 kilómetros en trocha de 1.435 metros, acortó la conexión entre el altiplano y la costa, <strong>desplazando el flujo portuario desde el antiguo eje de Mollendo y el Valle de Tambo hacia Matarani</strong>. Y la expansión de las carreteras regionales, junto con la suspensión del servicio ferroviario regular de pasajeros hace más de tres décadas, privaron a los poblados intermedios de su función comercial y logística.</p>
+
+
+
+<h2 class="wp-block-heading">Estación Central: cuatro patios, una declaratoria y tensiones urbanas</h2>
+
+
+
+<p class="wp-block-paragraph">Inaugurada en 1871 como nodo articulador entre la costa de Islay y el altiplano, la Estación del Ferrocarril de Arequipa es el complejo edilicio industrial más relevante de la ciudad,<strong> según investigaciones de la UCSM</strong>. Su declaratoria como Monumento Histórico mediante la Resolución N.º 0928-80-ED del 23 de julio de 1980 comprende la totalidad de su unidad inmobiliaria: Patio Arequipa, Patio Islay, Patio Cuzco y Patio Puno. Pese a ese resguardo, el complejo ha enfrentado tensiones de gestión urbana. </p>
+
+
+
+<p class="wp-block-paragraph">La presión municipal por habilitar equipamiento recreativo llevó a proyectar el «Parque Metropolitano en el Patio Puno», lo que generó un litigio administrativo con el Ministerio de Cultura. Mediante informes técnicos emitidos en 2012, la autoridad cultural ratificó que la eventual independización registral de un lote no extingue su condición de Monumento ni desvincula al Patio Puno de los Ambientes Urbano Monumentales de la <strong>avenida Tacna y Arica y del Parque Melgar.</strong> </p>
+
+
+
+<p class="wp-block-paragraph">En el perímetro monumental próximo a la antigua estación han surgido cuestionamientos ciudadanos sobre edificaciones contemporáneas incompatibles con la zona de reserva, <strong>como la denominada «Cúpula Verde», mientras las antiguas maestranzas y patios permanecen sin un proyecto integral de rehabilitación cultural.</strong></p>
+
+
+
+<h2 class="wp-block-heading">Puente de Fierro: ni Eiffel ni mantenimiento</h2>
+
+
+
+<p class="wp-block-paragraph">El viaducto metálico sobre el río Chili, conocido como Puente de Fierro o Puente Bolívar y reseñado en portales turísticos como Ambiente Urbano Monumental desde 2003, <strong>dejó de recibir tráfico ferroviario y cumple exclusivamente funciones de paso peatonal y ciclista. </strong></p>
+
+
+
+<p class="wp-block-paragraph">Numerosos textos de divulgación replican la versión de que fue diseñado por Gustave Eiffel en 1882. Investigaciones históricas y de ingeniería estructural dan también otra versión.<strong> El examen de sus patentes constructivas confirma que la estructura fue contratada por Henry Meiggs con la firma estadounidense Baltimore Bridge Company,</strong> la misma que ejecutó el viaducto original de Verrugas en el Ferrocarril Central. </p>
+
+
+
+<p class="wp-block-paragraph">Su subestructura emplea la «Columna Phoenix», pieza tubular de hierro forjado patentada en 1862 por Samuel Reeves, mientras que su superestructura corresponde a una «Armadura Fink»<strong>, patentada en 1854 por Albert Fink</strong>. Pese a su singularidad tecnológica en Sudamérica, la evaluación técnica difundida en 2017 advirtió un deterioro estructural considerable agravado por daños y robos de piezas metálicas ante la falta de mantenimiento sostenido.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="955" height="611" src="https://elbuho.pe/wp-content/uploads/2023/08/ESTACION-AREQUIPA-3.jpg" alt="" class="wp-image-307580" srcset="https://elbuho.pe/wp-content/uploads/2023/08/ESTACION-AREQUIPA-3.jpg 955w, https://elbuho.pe/wp-content/uploads/2023/08/ESTACION-AREQUIPA-3-150x96.jpg 150w, https://elbuho.pe/wp-content/uploads/2023/08/ESTACION-AREQUIPA-3-300x192.jpg 300w, https://elbuho.pe/wp-content/uploads/2023/08/ESTACION-AREQUIPA-3-696x445.jpg 696w" sizes="auto, (max-width: 955px) 100vw, 955px" /><figcaption class="wp-element-caption">Estación de ferrocarril de Arequipa en los años 20. Foto archivo de la compañía ENAFER</figcaption></figure>
+</div>
+
+
+<h2 class="wp-block-heading">Pampa de Arrieros: ni fantasma ni abandonada del todo</h2>
+
+
+
+<p class="wp-block-paragraph">En la ruta hacia el altiplano, Pampa de Arrieros (Yura)<strong> ilustra la transformación económica de los antiguos enclaves ferroviarios. Situada entre 57 y 70 kilómetros de la ciudad de Arequipa y por encima de los 3,700 metros sobre el nivel del mar, funcionó desde fines del siglo XIX como estación ganadera, parada de abastecimiento de carbón y puerta de transbordo hacia Caylloma</strong>. </p>
+
+
+
+<p class="wp-block-paragraph">Tras el fin del tren de pasajeros hace más de tres décadas, notas periodísticas de 2024 y 2025 la retrataron como un «pueblo fantasma» habitado por una sola persona. Sin embargo,<strong> fotorreportajes regionales y la operación turística vigente matizan esa imagen al documentar una comunidad campesina activa que conserva su iglesia, celebra cada 2 de junio la fiesta de San Antonio de Padua y recibe visitantes en ruta hacia la catarata de Pillones y el Bosque de Piedras de Imata.</strong></p>
+
+
+
+<p class="wp-block-paragraph">En la vertiente litoral, el desplazamiento portuario hacia Matarani dejó una estela desigual. La Estación de Mollendo representa un caso excepcional de rescate arquitectónico: su edificación republicana de madera de pino de Oregón, enclavada en un entorno con declaratorias monumentales del INC entre 1987 y 2007, fue remozada mediante un convenio entre Fetransa y la municipalidad local. Por el contrario, la vecina Estación La Ensenada<strong> fue reportada en estado de abandono ya en 1990 en publicaciones locales del Valle de Tambo, y registros fotográficos documentan que extensos segmentos del antiguo trazo férreo hacia Mollendo fueron convertidos en carretera. </strong></p>
+
+
+
+<p class="wp-block-paragraph">Aún menos visible es la red privada de trocha angosta que conectaba las haciendas azucareras con La Ensenada: <strong>el ferrocarril Hacienda Pampa Blanca–La Ensenada operó entre 1905 y 1950 con 14 kilómetros y trocha de 0.750 metros, mientras que la Hacienda Chucarapi construyó desde 1915</strong> y consolidó hacia 1924 una línea paralela de 20 kilómetros con trocha de 0.600 metros. Ambos ramales desaparecieron por completo de la actividad productiva, sin inventarios públicos recientes que registren el estado de sus restos materiales.</p>
+
+
+
+<h2 class="wp-block-heading">La brecha patrimonial: Tacna tiene museo, Arequipa no</h2>
+
+
+
+<p class="wp-block-paragraph">El contraste regional evidencia una asimetría marcada en la política pública sobre patrimonio ferroviario. Tacna consolidó el Museo Ferroviario del Perú en la estación del Ferrocarril Tacna–Arica,<strong> respaldado por proyectos de puesta en valor del Plan COPESCO Nacional y operación turística regulada. </strong>Arequipa carece de un museo ferroviario operativo capaz de albergar la historia de la maestranza central y resguardar los bienes rodantes devueltos bajo la concesión. </p>
+
+
+
+<p class="wp-block-paragraph">Esta carencia expone al patrimonio ferroviario arequipeño a tres vulnerabilidades concretas: la infravaloración persistente de la arquitectura industrial metálica frente al protagonismo del patrimonio colonial de sillar, la ausencia de vigilancia e inventarios abiertos en estaciones rurales y viaductos, que favorece el robo de componentes y la corrosión acelerada, y<strong> un turismo hacia Sumbay y Pampa de Arrieros que ya ocurre de manera cotidiana, pero sin guion interpretativo ni estabilización física para los vagones y estructuras históricas.</strong></p>
+
+
+
+<p class="wp-block-paragraph">Revertir este abandono gradual exige traducir las declaratorias legales vigentes en intervenciones técnicas coordinadas: levantar un catálogo público actualizado de todas las locomotoras y vagones en desuso dispersos en el corredor sur, ejecutar un plan de conservación estructural especializado para las columnas Phoenix y armaduras Fink del Puente de Fierro, y articular las propuestas académicas de recuperación integral de la Estación Central con circuitos de turismo industrial formalizados que beneficien directamente a las comunidades altoandinas y costeras que aún custodian la ruta.</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-5 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="720" height="90" data-id="397629" src="https://elbuho.pe/wp-content/uploads/2024/03/anuncio-buhocomunidad-pie-de-nota-68b5eab8d06dd.webp" alt="" class="wp-image-397629"/></figure>
+</figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo. También puedes apoyarnos uniéndote a nuestro <a href="https://www.youtube.com/@SemanarioElBuho">canal de YouTube</a>.</em></strong> </p>
+</div></div>
+
+
+
+<p class="wp-block-paragraph"></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Anthony Valdivia Valencia: «La literatura también permite conocer la historia y los problemas de una sociedad»</title>
+		<link>https://elbuho.pe/2026/11/anthony-valdivia-valencia-la-literatura-tambien-permite-conocer-la-historia-y-los-problemas-de-una-sociedad/</link>
+		
+		<dc:creator><![CDATA[Dioselin Neira]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 12:32:12 +0000</pubDate>
+				<category><![CDATA[Letras]]></category>
+		<category><![CDATA[El hacedor]]></category>
+		<category><![CDATA[entrevista]]></category>
+		<category><![CDATA[Literatura]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443651</guid>
+
+					<description><![CDATA[El escritor y gestor cultural arequipeño reflexiona sobre los desafíos que enfrentan los escritores fuera de Lima y las brechas que persisten en el circuito editorial peruano.]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">La memoria histórica y la literatura regional atraviesan esta conversación con Anthony Valdivia Valencia. El escritor arequipeño, autor de <em>En junio llega el dictador</em>, reflexiona sobre la influencia que tuvo la Revolución de 1950 en su obra y sobre las dificultades que enfrentan los autores de regiones para publicar y alcanzar mayor visibilidad.</p>
+
+
+
+<p class="wp-block-paragraph">Además, comparte su experiencia como promotor cultural al frente de <em>El Hacedor. Crítica de Literatura Regional</em>, una plataforma que reúne entrevistas, reseñas, investigaciones y otros contenidos dedicados a difundir y analizar la obra de autores peruanos. La iniciativa fue reconocida por el Ministerio de Cultura en el Concurso para la Difusión de Libros y Autores Peruanos de los Estímulos Económicos para la Cultura 2025.</p>
+
+
+
+<h2 class="wp-block-heading">¿Cómo ha construido su camino y cuáles han sido las principales motivaciones que han marcado su desarrollo en el ámbito literario?</h2>
+
+
+
+<p class="wp-block-paragraph">Desde muy pequeño, es parte de la vocación, pero desde que tengo uso de razón leo y me gusta mucho leer, desde el colegio y demás. Es algo que hago continuamente, cada cierto tiempo. Con el paso de los años, cuando ya estás en quinto año del colegio, tratas de encontrar una profesión a la que dedicarte después en tu vida profesional. Como me gustaban mucho las letras, decidí dedicarme al derecho, no tanto por convicción, sino porque mis familiares me decían que era la carrera más idónea si te gustaban las letras y la lectura. Lamentablemente, a los pocos años descubrí que no era así: no me gustaba el derecho para nada, es más, dejé la carrera en cuarto de año y me dediqué íntegramente a la literatura.</p>
+
+
+
+<p class="wp-block-paragraph">Descubrí que había la carrera de literatura en la UNSA, decidí postular, estudiarla, a la par que escribía, y dentro de la carrera de literatura, pues vi estos problemas, subí algunos espacios donde podías desarrollarte, que es la gestión cultural, la promoción, la escritura o la docencia también.</p>
+
+
+
+<h2 class="wp-block-heading">Además de su formación en Literatura, también estudió Derecho. ¿Cómo se complementan ambas disciplinas y de qué manera su formación jurídica ha influido en su visión como escritor y en la construcción de sus historias?</h2>
+
+
+
+<p class="wp-block-paragraph">En realidad, cuando uno descubre muchas biografías de escritores, se va dando cuenta de que hay bastantes que siguieron la abogacía junto con la literatura, como Julio Ramón Ribeyro, Vargas Llosa, García Márquez. El mismo León Tolstói. Entonces, el derecho está de cierta manera prácticamente ligado a la literatura porque es como que la carrera más segura para alguien que le gusta las letras. Después descubres que no, o tal vez sí, porque hay algunos escritores que fueron abogados; en mi caso no, pero me ayudó mucho como para darle una especie de orden a todas mis ideas, porque el derecho es muy mecánico, el derecho está lleno de, digamos, contratos, lleno de un mundo que es muy exacto. Que funciona de esa manera, que tiene que estar muy de acuerdo con los plazos y demás, no muy frío también.</p>
+
+
+
+<p class="wp-block-paragraph">Y creo que le dio un poco de disciplina a mi vida, en ese sentido. Pero lamentablemente no había mucha creatividad ahí, me aburría bastante en mis clases universitarias. Siempre entraba a clases y sacaba un libro de lectura, sobre ficción, casi nunca atendía a las clases. Pero me ayudó bastante para darle un poco de orden y también para poder proyectarme en un futuro qué quería hacer con la literatura, porque la plena ficción, no solo escribir la creatividad, me gusta, pero no solo quiero quedarme allí, me gustaría ingresar a otros planos.</p>
+
+
+
+<h2 class="wp-block-heading">«En junio llega el dictador» aborda la vocación literaria y un episodio clave de la historia arequipeña, la Revolución de 1950. ¿De qué manera surgió la idea de incorporar estos temas en su obra?</h2>
+
+
+
+<p class="wp-block-paragraph">A mí me gustan mucho los libros que retratan aspectos de la sociedad en la que se escribieron. Conocer la vida de una sociedad entera, de un país latinoamericano, europeo, africano, a partir de sus libros. Algo que me parece interesante, por ejemplo, es que dentro de las categorías de los premios Nobel se premia un libro de literatura al costado de otras artes o ciencias importantes como la medicina y demás, porque a partir de un libro de literatura uno puede conocer mucho la sociedad de un lugar y poder conocer más sobre su vida, sus problemas, cuestiones que, por ejemplo, uno no tendría acceso porque vive tan lejos, pero con un libro puedes hacer eso. Entonces, me interesan mucho las obras que retratan socialmente a alguien.</p>
+
+
+
+<p class="wp-block-paragraph">Cuando yo descubrí que había aspectos históricos arequipeños que no habían sido relatados en literatura, como la revolución de 1950, decidí hacerlo para que más jóvenes o lectores también pudieran conocer sobre esta época, y es cíclico: esta violencia, este descontento político es a lo que se va repitiendo. Y además, también, porque mi abuelo fue parte de esa revolución; él era muy joven, era muy niño, pero dentro de las comidas familiares o encuentros siempre mencionaba esto. Yo, bueno, como estaba ahí espectador escuchando las historias, pues me motivó, me inspiró para poder hacer este libro.</p>
+
+
+
+<h2 class="wp-block-heading">«El Hacedor» es un espacio de difusión y crítica literaria. ¿Cómo surgió la iniciativa de crear esta plataforma y qué necesidades buscaba atender dentro del panorama literario peruano?</h2>
+
+
+
+<p class="wp-block-paragraph">Este proyecto surge de dos experiencias. Cuando yo estudio literatura en la UNSA, logro acceder a una beca de intercambio en Argentina. Yo ya sabía de antemano que era un país donde la literatura estaba mucho más apreciada, mucho más investigada, con muchos más proyectos, con mucho más movimiento, y me termino de confirmar cuando voy. Y ahí descubro muchos proyectos, pero sobre todo proyectos ligados a lo audiovisual. Es algo que la literatura aquí se ha dejado de lado. Mayormente aquí los proyectos están hechos en las mismas aulas de universidad, en un auditorio, pero no hay ese contacto con la comunidad o población, porque no hay esa relación con el medio audiovisual, con Instagram, Twitter, Facebook, o las mismas redes.</p>
+
+
+
+<p class="wp-block-paragraph">Cuando yo regreso, quiero hacer un proyecto así, pero me pongo a pensar de qué podría ser. Ahí surge la idea, porque como yo estudio literatura en la UNSA, llevamos cursos como literatura regional y macroregional. Son cursos que te ayudan a reflexionar qué es lo que ocurre fuera de Lima, por qué los autores que publican fuera de Lima no tienen la misma importancia o no pueden integrarse al circuito literario como los otros que sí están en Lima. Muchas veces por una falta de gestión, de política, pero sobre todo de difusión. Decido implementar este proyecto, porque voy a poder de esta manera hacer que otras personas, y los escritores, pero también lectores, investigadores tengan un espacio, tengan un lugar donde puedan conocer esto, que de otra manera no se podría, es más difícil.</p>
+
+
+
+<h2 class="wp-block-heading">¿Cuáles considera usted que son las principales dificultades que enfrenta la literatura regional para conseguir mayor visibilidad y posicionarse en el circuito editorial y cultural del país?</h2>
+
+
+
+<p class="wp-block-paragraph">Siempre ha habido un problema con las redes editoriales. Las grandes cadenas editoriales, como Alfaguara y Planeta, que son transnacionales, cuando llegaron al Perú e hicieron todo este cambio de mirada, se asentaron en Lima y no en las regiones, y desde ahí ya se generó un desbalance. ¿Por qué? Porque los autores de la capital tenían más acceso a ellas, podían publicar con ellas y tenían una mayor visibilidad, debido a que estos mercados editoriales tienen mucho más dinero que una editorial independiente de región.</p>
+
+
+
+<p class="wp-block-paragraph">Luego están los canales de difusión. Como hay poco periodismo cultural, es tan escaso y, además, no tiene muchos recursos ni hay muchos espacios, también es difícil mover los libros, y ese es otro gran problema. Uno, como escritor, por ejemplo, cuando publiqué mi libro ya estaba todo en la edición, el libro bien bonito, pero ahora la parte de difundirlo era lo más complicado, y eso era porque no había espacios en Arequipa. ¿Dónde hay un espacio crítico que haga mediación lectora? Es muy complicado. </p>
+
+
+
+<p class="wp-block-paragraph">Otro de los grandes problemas que descubrí son las políticas culturales: en otros países, por ejemplo, cuando uno es escritor puede acceder a becas o a incentivos, y lo que hace el gobierno es comprar una gran cantidad de libros y encargarse de moverlos en planes de lectura, en clubes de lectura o en las mismas librerías del país. Pero aquí no existe algo parecido, y eso es algo que se puede solucionar con una buena política cultural.</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-6 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="720" height="90" data-id="397629" src="https://elbuho.pe/wp-content/uploads/2024/03/anuncio-buhocomunidad-pie-de-nota-68b5eab8d06dd.webp" alt="" class="wp-image-397629"/></figure>
+</figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo. También puedes apoyarnos uniéndote a nuestro <a href="https://www.youtube.com/@SemanarioElBuho">canal de YouTube</a>.</em></strong> </p>
+</div></div>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Yanahuara: obras en torrentera Chullo iniciarían finalmente la próxima semana</title>
+		<link>https://elbuho.pe/2026/11/yanahuara-obras-en-torrentera-chullo-iniciarian-finalmente-la-proxima-semana/</link>
+		
+		<dc:creator><![CDATA[Yeison Mamani]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 12:12:24 +0000</pubDate>
+				<category><![CDATA[Local]]></category>
+		<category><![CDATA[Chullo]]></category>
+		<category><![CDATA[obras]]></category>
+		<category><![CDATA[Sergio Bolliger]]></category>
+		<category><![CDATA[Torrentera]]></category>
+		<category><![CDATA[Yanahuara]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443686</guid>
+
+					<description><![CDATA[La intervención demandará una inversión cercana a los S/ 5 millones y contempla nuevos puentes, reforzamiento de muros y trabajos de protección ante la temporada de lluvias.
+]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Las obras de prevención en la torrentera Chullo, el avance de las intervenciones ante la temporada de lluvias y el proceso de transferencia municipal, marcaron los principales temas abordados por la Municipalidad Distrital de Yanahuara. La comuna informó que el proyecto hidráulico ya cuenta con financiamiento asegurado y los expedientes técnicos necesarios para su ejecución. Finalmente, las autoridades esperan concluir los trabajos antes de finalizar el presente año.</p>
+
+
+
+<p class="wp-block-paragraph">El alcalde de Yanahuara, Sergio Bolliger Marroquín, informó que las obras de prevención en la torrentera Chullo comenzarían entre el jueves y viernes de la próxima semana. Asimismo, indicó que los trabajos se ejecutarán en cuatro frentes de manera simultánea para acelerar los plazos establecidos. Además, aseguró que el proceso de adjudicación se encuentra en su etapa final y que la empresa ganadora iniciará labores en los próximos días.</p>
+
+
+
+<p class="wp-block-paragraph">Por otro lado, explicó que los retrasos estuvieron vinculados a la falta de recursos para financiar el proyecto. En ese sentido, precisó que fue necesario gestionar una ampliación mediante obras por impuestos y la extensión del estado de emergencia. Finalmente, señaló que la intervención requirió expedientes hidráulicos especializados y diversas autorizaciones técnicas antes de su ejecución.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Intervención alcanzará más de un kilómetro de la torrentera</strong></h2>
+
+
+
+<p class="wp-block-paragraph">Por otra parte, el burgomaestre detalló que la intervención demandará una inversión aproximada de S/ 4,9 millones. Asimismo, indicó que los trabajos abarcarán cerca de 1.350 metros de la torrentera Chullo. En consecuencia, gran parte del cauce será reforzado para reducir riesgos durante la próxima temporada de lluvias.</p>
+
+
+
+<p class="wp-block-paragraph">Además, anunció la construcción de un nuevo puente en la avenida Independencia Americana y otro en la calle Chullo. Del mismo modo, informó que se ejecutará la elevación de muros de protección y la demolición de estructuras que actualmente presentan problemas de seguridad. No obstante, precisó que algunos tramos específicos no serán intervenidos porque los estudios técnicos determinaron que cuentan con capacidad suficiente para soportar el flujo de agua.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Municipalidad espera culminar trabajos antes de fin de año</strong></h2>
+
+
+
+<p class="wp-block-paragraph">Respecto a los plazos de ejecución, Bolliger indicó que las obras demandarán entre cuatro y cinco semanas de trabajo. Del mismo modo, detalló que la empresa laborará hasta 16 horas diarias para acelerar el cronograma. Por ello, estimó que la intervención podría quedar concluida antes de finalizar diciembre.</p>
+
+
+
+<p class="wp-block-paragraph">En relación con los cuestionamientos por otras obras ejecutadas en el distrito, el alcalde defendió el mejoramiento de pistas y veredas en la calle Chullo. Asimismo, recordó que esos trabajos fueron solicitados previamente por los propios vecinos del sector. Finalmente, remarcó que dichos recursos ya tenían una finalidad definida y no podían ser redireccionados a obras de prevención.</p>
+
+
+    <div class="related_feed">
+         <h3>También puedes leer</h3>
+    </div>
+    <div class="relacionada-shortcode mb-4">
+        <div class="image_feed">
+                   <a href="https://elbuho.pe/2026/11/arequipa-alcaldesa-provincial-rechaza-aumento-del-pasaje-a-s-1-50-y-transportistas-insisten-en-reajuste-antes-de-fin-de-ano/">
+             <img decoding="async" src="https://elbuho.pe/wp-content/uploads/2026/11/FOTOS-NOTAS-39.jpg" class="card-img-top" alt="Alcaldesa provincial rechaza aumento del pasaje a S/ 1.50 y transportistas insisten en reajuste antes de fin de año">
+           </a>
+                </div>
+        <div class="image_body">
+            <h3 class="card-title">
+                <a href="https://elbuho.pe/2026/11/arequipa-alcaldesa-provincial-rechaza-aumento-del-pasaje-a-s-1-50-y-transportistas-insisten-en-reajuste-antes-de-fin-de-ano/" class="">
+                    Alcaldesa provincial rechaza aumento del pasaje a S/ 1.50 y transportistas insisten en reajuste antes de fin de año                </a>
+            </h3>
+        </div>
+    </div>
+    
+
+
+
+<h2 class="wp-block-heading"><strong>Transferencia se realiza de manera coordinada</strong></h2>
+
+
+
+<p class="wp-block-paragraph">Finalmente, el alcalde informó que la comisión de transferencia municipal ya fue instalada junto al equipo de la gestión entrante. Del mismo modo, indicó que las reuniones se desarrollan en un clima de entendimiento y coordinación entre ambas partes. En ese contexto, aseguró que toda la información será entregada de manera transparente y completa.</p>
+
+
+
+<p class="wp-block-paragraph">Por otro lado, señaló que el proceso continuará durante las próximas semanas conforme a los plazos establecidos por la normativa. Posteriormente, explicó que la transferencia concluirá con la suscripción de las actas correspondientes al inicio de la nueva gestión. Por último, precisó que este procedimiento culminará durante los primeros días de enero de 2027.</p>
+
+
+
+<p class="wp-block-paragraph"></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Perú busca financiamiento para proteger sus bosques amazónicos &#124; PASÓ EN EL PERÚ (VIDEO)</title>
+		<link>https://elbuho.pe/2026/11/peru-busca-financiamiento-para-proteger-sus-bosques-amazonicos-paso-en-el-peru-video/</link>
+		
+		<dc:creator><![CDATA[Redacción El Búho]]></dc:creator>
+		<pubDate>Sat, 21 Nov 2026 14:00:00 +0000</pubDate>
+				<category><![CDATA[Pasó en el Perú]]></category>
+		<category><![CDATA[Junín]]></category>
+		<category><![CDATA[Puno]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443715</guid>
+
+					<description><![CDATA[En Junín, los debates entre Fernando Orihuela y Arnoldo Mallma priorizaron obras, presupuestos y agricultura; violencia contra mujeres y cultura quedaron relegadas en campaña regional]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">PASÓ EN EL <a href="https://elbuho.pe/tema/peru/">Perú</a> | Información desde las regiones:</p>
+
+
+
+<p class="wp-block-paragraph">1. Perú busca financiamiento para proteger sus bosques amazónicos<br>
+2. Camión de cerveza provoca múltiple accidente en Puno<br>
+3. Conductor de camioneta de APP huye tras accidente que dejó herido a policía</p>
+
+
+
+<p class="wp-block-paragraph">REPORTAJES:</p>
+
+
+
+<p class="wp-block-paragraph">En Junín, los debates entre Fernando Orihuela y Arnoldo Mallma priorizaron obras, presupuestos y agricultura; violencia contra mujeres y cultura quedaron relegadas en campaña regional. La región registró 18 feminicidios entre 2025 y noviembre de 2026, además de miles de casos de violencia atendidos por los CEM en esos periodos.</p>
+
+
+
+<p class="wp-block-paragraph">Aunque ambos candidatos enfrentan cuestionamientos, la prevención de la violencia, protección de víctimas y atención a mujeres tuvieron escaso desarrollo en sus propuestas electorales regionales. La cultura tampoco recibió propuestas concretas sobre patrimonio, artistas y organizaciones culturales, mientras las mujeres rurales e indígenas esperan compromisos con presupuesto y mecanismos claros.</p>
+
+
+
+<p class="wp-block-paragraph"> Programa de la Red de Medios Regionales del Perú</p>
+
+
+
+<p class="wp-block-paragraph"><a href="https://www.youtube.com/watch?v=F7HXtg6s7ks">El video Perú busca financiamiento para proteger sus bosques amazónicos | PASÓ EN EL PERÚ se publicó en YouTube en este enlace</a></p>
+
+
+
+<figure class="wp-block-image wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex"><a href="https://elbuho.pe/comunidad/"><img loading="lazy" decoding="async" width="720" height="90" src="https://elbuho.pe/wp-content/uploads/2024/03/WhatsApp-Image-2025-07-24-at-17.16.05.jpeg" alt="banner buhocomunidad" class="wp-image-393329"/></a></figure>
+
+
+
+<p class="has-text-align-center wp-block-paragraph"><strong><em>Si valoras nuestro contenido, <a href="https://elbuho.pe/comunidad/">hazte miembro</a> de la #BúhoComunidad. Así podremos seguir haciendo periodismo.</em></strong></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Los 400 mayores centros de datos de EE.UU. emiten más gases de efecto invernadero que toda Dinamarca</title>
+		<link>https://elbuho.pe/2026/11/los-400-mayores-centros-de-datos-de-ee-uu-emiten-mas-gases-de-efecto-invernadero-que-toda-dinamarca/</link>
+		
+		<dc:creator><![CDATA[Redacción El Búho]]></dc:creator>
+		<pubDate>Sat, 21 Nov 2026 12:32:25 +0000</pubDate>
+				<category><![CDATA[Internacional]]></category>
+		<category><![CDATA[Medio Ambiente]]></category>
+		<category><![CDATA[contaminación]]></category>
+		<category><![CDATA[gas invernadero]]></category>
+		<guid isPermaLink="false">https://elbuho.pe/?p=443548</guid>
+
+					<description><![CDATA[Elige a Mongabay Latam como fuente preferida en Google Un estudio de la Universidad de Harvard publicado el lunes concluye que los 400 centros de datos más grandes de Estados Unidos emitieron en un solo año más gases de efecto invernadero que toda Dinamarca, y eso fue antes de que el auge de la inteligencia [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<div><a target="_blank" href="https://www.google.com/preferences/source?q=es.mongabay.com" rel="noopener external noreferrer" data-wpel-link="external"><p></p>
+<div class="dropshadowboxes-container " style="">
+<p>
+                            Elige a Mongabay Latam como fuente preferida en Google
+                            </p>
+</div>
+</a><p><a target="_blank" href="https://www.google.com/preferences/source?q=es.mongabay.com" rel="noopener external noreferrer" data-wpel-link="external"></a></p>
+<p>Un estudio de la Universidad de Harvard publicado el lunes concluye que los 400 centros de datos más grandes de Estados Unidos <strong>emitieron en un solo año más gases de efecto invernadero que toda Dinamarca,</strong> y eso fue antes de que el auge de la inteligencia artificial despegara de verdad.</p>
+<p>Mientras tanto, los negociadores de la COP31, en las conversaciones climáticas de la ONU que se celebran en Antalya, Turquía, lanzaron ese mismo día un compromiso voluntario <strong>para que empresas y países alimenten con energía limpia los centros de datos del mundo</strong> y sean más transparentes sobre su consumo de electricidad y agua, y sobre sus emisiones.</p>
+<p><strong>Leer más |</strong> <a target="_blank" href="https://es.mongabay.com/2026/11/licencia-ambiental-gorgona-armada-colombia-construir-parque-nacional-alertas-ciencia/" data-wpel-link="internal"><strong>Licencia ambiental a la medida en Gorgona: el aval que permite a la Armada de Colombia construir en un parque nacional pese a las alertas de la ciencia</strong></a></p>
+<figure id="attachment_282508" class="wp-caption alignnone"><img fetchpriority="high" decoding="async" class="wp-image-282508 size-full" src="https://elbuho.pe/wp-content/uploads/2026/11/AP26317837488620-scaled.jpg" alt="Se puede ver un centro de datos de Core Scientific el 4 de septiembre de 2026 en Dalton, Georgia. (Foto AP/Mike Stewart, Archivo)" width="2560" height="1440"><figcaption class="wp-caption-text">Un centro de datos de Core Scientific, el 4 de septiembre de 2026, en Dalton, Georgia, Estados Unidos. Foto: AP/Mike Stewart/ archivo</figcaption></figure>
+<p>“No podemos pedirle a la gente que acepte hoy facturas más altas, <strong>más contaminación que calienta el planeta y una desigualdad más profunda</strong> a cambio de promesas de un mañana mejor”, dijo Simon Stiell, jefe de clima de las Naciones Unidas, durante la presentación del compromiso. “Las afirmaciones sobre ahorros futuros de emisiones no pueden excusar el aumento de la contaminación actual, que agrava aún más los desastres climáticos”.</p>
+<p>El compromiso también propone aprovechar <strong>la capacidad de la inteligencia artificial para resolver el problema, hasta ahora irresoluble, del cambio climático,</strong> y refleja la creciente preocupación por la huella ambiental cada vez mayor de la IA. La reacción política se ha dejado sentir en las elecciones de Estados Unidos y en las fuertes objeciones locales a la instalación de nuevos centros.</p>
+<p>La explosión de centros de datos nuevos y proyectados ha impulsado además la búsqueda de nuevas fuentes de generación eléctrica y ha llevado a las mayores tecnológicas a incumplir sus metas climáticas: <strong>su consumo de electricidad aumentó un 240 % entre 2022 y 2025,</strong> según un nuevo informe del grupo de defensa Climate Action Against Disinformation.</p>
+<h2>Un estudio cuantifica cuánto contaminan los grandes centros de datos</h2>
+<p>Los investigadores de Harvard analizaron 403 de los mayores centros de datos de Estados Unidos, entre mayo de 2024 y abril de 2025, y <strong>recurrieron a datos disponibles y a modelos para estimar su consumo eléctrico y sus emisiones.</strong> Según el estudio, publicado el lunes en <a target="_blank" href="https://www.nature.com/articles/s41893-026-01985-7" data-wpel-link="external" rel="external noopener noreferrer">Nature Sustainability</a>, el uso de electricidad de estos centros generó alrededor de 28.3 millones de toneladas (25.7 millones de toneladas métricas) de dióxido de carbono (CO2).</p>
+<p>Más de la mitad de los 82 teravatios hora de electricidad que consumen —suficientes para abastecer a casi 7 millones de hogares durante un año— <strong>procedió de combustibles fósiles, la principal causa del calentamiento global</strong>, encontraron los investigadores.</p>
+<figure id="attachment_282509" class="wp-caption alignnone"><img loading="lazy" decoding="async" class="wp-image-282509 size-full" src="https://elbuho.pe/wp-content/uploads/2026/11/AP26317837496308-scaled.jpg" alt="Terreno destinado a un centro de datos propuesto es visible cerca de paneles solares el viernes 2 de octubre de 2026, cerca de Boulder City, Nevada, Estados Unidos. Foto: AP/John Locher" width="2560" height="1707"><p></p>
+<figcaption class="wp-caption-text">Terreno destinado a un centro de datos propuesto es visible cerca de paneles solares el viernes 2 de octubre de 2026, cerca de Boulder City, Nevada, Estados Unidos. Foto: AP/John Locher</figcaption>
+</figure>
+<p>Esta estimación de <strong>emisiones es de dos a tres veces superior a lo que mostraban estudios anteriores</strong>, dijo Francesca Dominici, autora principal del estudio y profesora de bioestadística de Harvard.</p>
+<p>“Es equivale a las emisiones de CO2 de un estado entero como Míchigan o de un país pequeño de Europa”, afirmó Dominici, <strong>para quien los planes de construir 2000 centros de datos más hacen que esa cifra</strong> resulte aún más preocupante de cara al futuro. “Estamos retrocediendo en el objetivo de controlar las emisiones de CO2”.</p>
+<p>Varios expertos externos en clima, energía e inteligencia artificial calificaron de coherente el estudio del lunes y de realistas sus conclusiones. <strong>También consideraron razonable el uso de modelos, dado que las empresas no son transparentes</strong> sobre su consumo eléctrico y su contaminación.</p>
+<p>“No podemos gestionar los impactos ambientales de manera eficaz sin mediciones fiables y sin divulgación de la información”, señaló Fengqi You, científico de sistemas energéticos de la Universidad Cornell que no participó en el estudio. <strong>“En última instancia, la huella ambiental de la IA no es fija.</strong> Depende de dónde construyamos los centros de datos, de cuán eficientemente funcionen y de cómo les suministremos la electricidad”.</p>
+<div class="dropshadowboxes-container " style="width:auto;">
+<p>
+                            Recibe los contenidos de Mongabay Latam en tu WhatsApp
+                            </p>
+</div>
+<h2>Un compromiso voluntario propuesto en las negociaciones climáticas</h2>
+<p>El “Compromiso de Antalya sobre Inteligencia Artificial”, presentado por Turquía, en el marco de la COP31 -cumbre de las conversaciones climáticas de la ONU- y por la Unión Internacional de Telecomunicaciones, <strong>establece que los centros de datos deben usar energía limpia y sistemas eficientes de energía y agua.</strong></p>
+<p>Además, el compromiso pide que los sistemas de IA se diseñen y gestionen de forma responsable, con estándares ambientales y con reutilización o reciclaje de infraestructura y equipos. <strong>También plantea que se evalúen y se den a conocer los impactos ambientales de los centros de datos</strong>&nbsp;y que los firmantes respalden el uso de la inteligencia artificial como solución climática.</p>
+<p><strong>Leer más | <a target="_blank" href="https://es.mongabay.com/2026/11/el-nino-lago-guija-crisis-alimentaria-el-salvador-guatemala/" data-wpel-link="internal">Una crisis alimentaria por El Niño en el lago Güija alerta a comunidades de El Salvador y Guatemala</a></strong></p>
+<figure id="attachment_282506" class="wp-caption alignnone"><img loading="lazy" decoding="async" class="size-full wp-image-282506" src="https://elbuho.pe/wp-content/uploads/2026/11/AP26317837462983.jpg" alt="" width="7826" height="5218"><p></p>
+<figcaption class="wp-caption-text">Un trabajador prepara un terreno para un centro de datos de inteligencia artificial, mientras a lo lejos se alza una antigua central eléctrica —actualmente en proceso de renovación— destinada a suministrar electricidad a dichas instalaciones. Foto: Charlie Riedel/AP</figcaption>
+</figure>
+<p>Murat Kurum, presidente de la COP31, ha dicho que<strong> los líderes mundiales presentes en las negociaciones deben debatir abiertamente</strong> el creciente consumo energético de la IA y empezar a fijar las condiciones.</p>
+<h2>La IA contamina, pero también ofrece esperanza</h2>
+<p>Al Gore, ex vicepresidente de Estados Unidos y uno de los grandes defensores de la lucha contra el cambio climático, dijo que, si bien es esencial que los centros de datos funcionen con energía libre de carbono,<strong> a él le preocupan menos las emisiones de la IA que a otros.</strong> Confía, además, en que su capacidad de cómputo permita encontrar formas novedosas de combatir el cambio climático.</p>
+<p>En una entrevista con Associated Press, Gore citó un estudio de Nicholas Stern, destacado economista británico y defensor del clima, <strong>que predijo que para 2030 “veremos una reducción de entre el 6 % y el 9 % de las emisiones de gases de efecto invernadero</strong> gracias al uso de IA avanzada para encontrar nuevas formas de ser mucho más eficientes en el uso de materiales y energía”.</p>
+<p>Caleb Max, presidente de la National Artificial Intelligence Association, dijo: “La IA no solo resolverá los problemas de consumo de energía de los centros de datos, sino que abrirá numerosos <strong>avances científicos y tecnológicos hoy desconocidos que abordarán</strong> el cambio climático y mejorarán la vida de la humanidad. Respeto las preocupaciones por el consumo de energía y agua de los centros de datos, pero los temores pueden estar exagerados”.</p>
+<p>Philip Newell, <strong>portavoz de Climate Action Against Disinformation</strong>, se mostró escéptico.</p>
+<p>“<strong>Tenemos la esperanza en una mano y los daños en la otra</strong>”, dijo Newell. “Nos venden esperanza mientras nos ocultan los daños”.</p>
+<h2>Aprovechar el calor de los centros de datos</h2>
+<p>Los equipos informáticos de los <strong>centros de datos generan mucho calor residual, que se libera a la atmósfera.</strong> Una forma de reducir su impacto ambiental es capturar ese calor y usarlo en viviendas y negocios cercanos.</p>
+<p>La empresa danesa de ingeniería y manufactura Danfoss afirma que el calor residual <strong>es “la mayor fuente de energía sin explotar del mundo” y que reutilizarlo puede sustituir al gas natural como fuente de calor.</strong> La compañía señala que los centros de datos son una importante fuente de calor constante, sobre todo a medida que crece su consumo eléctrico.</p>
+<p>La Agencia Internacional de la Energía calcula que, de aquí a 2030, los centros de datos <strong>podrían suministrar calor a alrededor del 10 % de los hogares europeos,</strong> siempre que ese calor se integre por completo en las redes de calefacción urbana que abastecen de calor y agua caliente a los residentes.</p>
+<p><strong>Leer más | <a target="_blank" href="https://es.mongabay.com/2026/11/honduras-campamento-comunitario-exige-cierre-cantera-danos-ambientales-salud/" data-wpel-link="internal">Honduras: el campamento comunitario que lleva casi dos años exigiendo el cierre de una cantera por daños ambientales y a la salud</a></strong></p>
+<figure id="attachment_282510" class="wp-caption alignnone"><img loading="lazy" decoding="async" class="wp-image-282510 size-full" src="https://elbuho.pe/wp-content/uploads/2026/11/AP26317837483329_optimized_4000-scaled.jpg" alt="FILE - An Amazon data center is under construction in New Florence, Mo., Nov. 9, 2026. (AP Photo/Jeff Roberson, File)" width="2560" height="1920"><p></p>
+<figcaption class="wp-caption-text">Un centro de datos de Amazon en construcción en New Florence, Missouri, Estados Unidos, 9 de noviembre de 2026. Foto: AP/Jeff Roberson/archivo</figcaption>
+</figure>
+<p>En un mensaje difundido durante la COP31, Dan Jørgensen, comisario europeo de Energía y Vivienda, <strong>dijo que Europa debe sustituir los combustibles fósiles importados aprovechando el calor</strong> que se desperdicia y recurriendo a la geotermia.</p>
+<p>Otro ejemplo de este enfoque es BaRupOn, firma de desarrollo industrial que construye un campus de manufactura avanzada en Texas, donde <strong>planea usar calor recuperado para generar electricidad adicional en el propio lugar, explicó su director ejecutivo,</strong> Balaji Tammabattula. En Dakota del Norte, la empresa proyecta un centro de datos que podría suministrar calor a la comunidad.</p>
+<p>Gregor Henze, profesor de la Universidad de Colorado en Boulder, dijo que <strong>es un matrimonio perfecto porque los centros de datos modernos, que se refrigeran con líquido en lugar de aire</strong>, son una fuente de calor bastante constante y a la temperatura adecuada para las redes de energía térmica.</p>
+<p><em><strong>*Imagen principal: </strong>una&nbsp;manifestante sostiene un cartel con el lema «Fight Data Centers» («Combatamos los centros de datos»), el 12 de octubre de 2026 en Mason, Michigan. <strong>Foto:</strong> Paul Sancya/AP</em></p>
+<div id="single-article-footer">
+<div class="container in-column about-editor-translator gap--40 pv--80">
+<div class="container grid--3 repeat gap--40">
+<div class="in-row gap--16">
+<figure><img alt="" src="https://elbuho.pe/wp-content/uploads/2026/11/87f550522b795c51c1bb4a2a04aaaf7a7c5ac05708aa93a7d149022505f753f1" class="avatar avatar-32 photo" height="32" width="32" loading="lazy" decoding="async"></figure><div class="author-avatar">
+                            </div>
+<p></p></div>
+<div class="in-row gap--16">
+<figure><img decoding="async" src="https://elbuho.pe/wp-content/uploads/2026/11/signal-2026-01-16-110414_002.jpeg"></figure><div class="author-avatar">
+                          
+                      </div>
+<p></p></div>
+<p></p></div>
+<p></p></div>
+<p></p></div>
+<p>                            <span class="article-comments"><a target="_blank" href="" data-wpel-link="internal"></a></span></p></div>
+
+
+
+<p class="wp-block-paragraph"><a target="_blank" href="" data-wpel-link="internal">
+</a></p>
+
+
+
+<p class="wp-block-paragraph"><a data-wpel-link="internal" href="" target="_blank"></a><a href="https://es.mongabay.com/2026/11/centros-datos-ee-uu-emiten-mas-gases-efecto-invernadero-que-toda-dinamarca/">La nota de verificación «Los 400 mayores centros de datos de EE.UU. emiten más gases de efecto invernadero que toda Dinamarca», se publicó en la plataforma Mongabay en este enlac</a>E.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>

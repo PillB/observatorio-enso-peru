@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Mon, 23 Nov 2026 02:12:22 GMT</lastBuildDate>
+    <pubDate>Sun, 22 Nov 2026 18:20:08 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Incendio en el Rímac afecta seis predios cerca de la Plaza de Acho</title>
+    <link>https://ahora.com.pe/regional/incendio-rimac-jiron-maranon-seis-predios</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/incendio-rimac-jiron-maranon-seis-predios</guid>
+    <pubDate>Sun, 22 Nov 2026 18:20:08 GMT</pubDate>
+    <description><![CDATA[Un incendio de gran magnitud se registra este domingo en el jirón Marañón, en el Rímac, y afecta seis predios. Bomberos y cisternas trabajan en la zona para controlar la emergencia.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[incendio Rímac]]></category>
+    <category><![CDATA[jirón Marañón]]></category>
+    <category><![CDATA[Plaza de Acho]]></category>
+    <category><![CDATA[Cuerpo General de Bomberos]]></category>
+    <category><![CDATA[seis predios]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/be58874d0852.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/be58874d0852.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/be58874d0852.webp"/>
+    <media:description type="plain"><![CDATA[Al menos 13 unidades del Cuerpo General de Bomberos Voluntarios del Perú combaten un incendio que se registra esta mañana en un inmueble ubicado en la cuadra 5 del jirón Marañón, al costado de la histórica Plaza de Toros de Acho, en el distrito del Rímac. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Sebastián Osorio asiste en triunfo de Sporting CP U21 ante Fulham</title>
+    <link>https://ahora.com.pe/deportes/sebastian-osorio-asistencia-sporting-cp-u21-fulham</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sebastian-osorio-asistencia-sporting-cp-u21-fulham</guid>
+    <pubDate>Mon, 23 Nov 2026 02:00:11 GMT</pubDate>
+    <description><![CDATA[Sebastián Osorio fue titular y dio una asistencia en la victoria de Sporting CP U21 sobre Fulham por la Premier League International Cup; Víctor Guzmán ingresó desde el banco y tuvo un remate al arco.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sebastián Osorio]]></category>
+    <category><![CDATA[Sporting CP U21]]></category>
+    <category><![CDATA[Premier League International Cup]]></category>
+    <category><![CDATA[Víctor Guzmán]]></category>
+    <category><![CDATA[peruanos en el exterior]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a00a8764888a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a00a8764888a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a00a8764888a.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Bustos asume la culpa tras la goleada 4-1 de Sport Huancayo sobre Universitario</title>
+    <link>https://ahora.com.pe/deportes/bustos-asume-culpa-goleada-sport-huancayo-universitario</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/bustos-asume-culpa-goleada-sport-huancayo-universitario</guid>
+    <pubDate>Mon, 23 Nov 2026 01:10:07 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo goleó 4-1 a Universitario en el IPD de Huancayo por la última fecha del Torneo Clausura 2026. Fabián Bustos asumió la responsabilidad y actualizó el parte médico de cara a la semifinal.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Fabián Bustos]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[semifinal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9eec5a37d4d3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9eec5a37d4d3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9eec5a37d4d3.jpg"/>
+    <media:description type="plain"><![CDATA[Fabián Bustos salió al frente para revelar el verdadero motivo de la derrota de Universitario de Deportes ante Sport Huancayo en el vital partido por el Torneo Clausura de la Liga 1 2026. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Verstappen gana un caótico GP de Las Vegas; Colapinto sexto</title>
+    <link>https://ahora.com.pe/deportes/verstappen-gana-gp-las-vegas-colapinto-sexto</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/verstappen-gana-gp-las-vegas-colapinto-sexto</guid>
+    <pubDate>Mon, 23 Nov 2026 00:20:09 GMT</pubDate>
+    <description><![CDATA[Max Verstappen ganó el Gran Premio de Las Vegas, la victoria 75 de su carrera, en una prueba con 35 cambios de liderato y el choque de George Russell a dos vueltas del final. Franco Colapinto terminó sexto e igualó su mejor resultado en la Fórmula 1.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Max Verstappen]]></category>
+    <category><![CDATA[Gran Premio de Las Vegas]]></category>
+    <category><![CDATA[Fórmula 1]]></category>
+    <category><![CDATA[Franco Colapinto]]></category>
+    <category><![CDATA[George Russell]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b3983fe71f0b.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b3983fe71f0b.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b3983fe71f0b.webp"/>
+    <media:description type="plain"><![CDATA[El neerlandés Max Verstappen (Red Bull) se impuso la noche del sábado en un trepidante Gran Premio de Las Vegas y consolidó su segunda posición en la clasificación del Mundial de Fórmula 1, mientras el argentino Franco Colapinto brilló con un sexto lugar. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Sport Huancayo venció 4-1 a Universitario y clasificó a la Libertadores 2027</title>
+    <link>https://ahora.com.pe/deportes/sport-huancayo-clasifico-libertadores-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-huancayo-clasifico-libertadores-2027</guid>
+    <pubDate>Sun, 22 Nov 2026 23:30:11 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo venció 4-1 a Universitario en el estadio IPD de Huancayo, ganó el Torneo Clausura 2026 y clasificó a la Copa Libertadores 2027. Alianza Lima, Universitario y Melgar completan los cupos peruanos, mientras Deportivo Garcilaso, Sporting Cristal, Cusco FC y Cienciano disputarán la Sudamericana.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Copa Libertadores 2027]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1d73c3f84feb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1d73c3f84feb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1d73c3f84feb.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Seis comunidades machiguengas y ashánincas habitan el Vraem ayacuchano</title>
+    <link>https://ahora.com.pe/policiales/comunidades-machiguengas-ashanincas-vraem-ayacucho</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/comunidades-machiguengas-ashanincas-vraem-ayacucho</guid>
+    <pubDate>Sun, 22 Nov 2026 23:20:07 GMT</pubDate>
+    <description><![CDATA[El Vraem ayacuchano alberga tres comunidades machiguengas y tres ashánincas. Un integrante de la Compañía de Jesús destacó que el mensaje papal visibilizó a los pueblos originarios y su rol en el cuidado de la naturaleza.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Vraem]]></category>
+    <category><![CDATA[comunidades machiguengas]]></category>
+    <category><![CDATA[ashánincas]]></category>
+    <category><![CDATA[papa León XIV]]></category>
+    <category><![CDATA[pueblos originarios]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/225cd7cb4ede.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/225cd7cb4ede.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/225cd7cb4ede.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Portavoces de PETRA reclaman políticas públicas para la primera infancia</title>
+    <link>https://ahora.com.pe/politica/petra-maternidades-feministas-politicas-publicas-primera-infancia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/petra-maternidades-feministas-politicas-publicas-primera-infancia</guid>
+    <pubDate>Sun, 22 Nov 2026 23:00:14 GMT</pubDate>
+    <description><![CDATA[Un artículo de opinión firmado por Alicia Pastor y Camarasa, María José Burgos González y Paula Aguilà, portavoces de PETRA Maternidades Feministas, aborda la situación de la primera infancia (0-3 años) y reclama políticas públicas que garanticen sus derechos. Recuerdan que la Convención sobre los Derechos del Niño se aprobó el 20 de noviembre de 1989, hace 37 años, y que ha sido ratificada por todos los países menos Estados Unidos. Denuncian violencia obstétrica, falta de apoyo a la lactancia y]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <category><![CDATA[derechos del niño]]></category>
+    <category><![CDATA[PETRA Maternidades Feministas]]></category>
+    <category><![CDATA[permisos por nacimiento]]></category>
+    <category><![CDATA[permiso preparto]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/32d8963d5a59.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/32d8963d5a59.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/32d8963d5a59.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Girona vence 2-1 al Eibar y encadena su segunda victoria consecutiva</title>
+    <link>https://ahora.com.pe/deportes/girona-vence-2-1-eibar-montilivi</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/girona-vence-2-1-eibar-montilivi</guid>
+    <pubDate>Sun, 22 Nov 2026 22:40:09 GMT</pubDate>
+    <description><![CDATA[El Girona derrotó 2-1 al Eibar en Montilivi, sumó su segunda victoria seguida y alcanzó la tercera posición de la tabla con 27 puntos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Girona]]></category>
+    <category><![CDATA[Eibar]]></category>
+    <category><![CDATA[Montilivi]]></category>
+    <category><![CDATA[Vanat]]></category>
+    <category><![CDATA[Quique Álvarez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6b6849950873.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6b6849950873.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6b6849950873.webp"/>
+    <media:description type="plain"><![CDATA[Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Luis Iberico anotó al ángulo en Sporting Cristal vs Cienciano por el Clausura</title>
+    <link>https://ahora.com.pe/deportes/luis-iberico-gol-angulo-cristal-cienciano-clausura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/luis-iberico-gol-angulo-cristal-cienciano-clausura-2026</guid>
+    <pubDate>Sun, 22 Nov 2026 21:50:06 GMT</pubDate>
+    <description><![CDATA[Luis Iberico abrió el marcador con un gol al ángulo en el duelo entre Sporting Cristal y Cienciano por la última fecha del Torneo Clausura 2026, según RPP Noticias.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Luis Iberico]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Cienciano]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[gol al ángulo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/44053f1f8827.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/44053f1f8827.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/44053f1f8827.jpg"/>
+    <media:description type="plain"><![CDATA[Luis Iberico abrió la cuenta en el choque de Sporting Cristal en la última fecha del Torneo Clausura 2026. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Alemany: &quot;No hay que marcar tiempos&quot; en la renovación de Simeone con el Atlético</title>
+    <link>https://ahora.com.pe/deportes/alemany-simeone-renovacion-atletico-getafe</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alemany-simeone-renovacion-atletico-getafe</guid>
+    <pubDate>Sun, 22 Nov 2026 21:00:13 GMT</pubDate>
+    <description><![CDATA[Mateu Alemany, director de fútbol profesional del Atlético de Madrid, evitó fijar plazos para la renovación de Diego Simeone y destacó la confianza del club en el plantel antes del partido ante el Getafe.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[Diego Simeone]]></category>
+    <category><![CDATA[Mateu Alemany]]></category>
+    <category><![CDATA[Getafe]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/63f4cccee167.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/63f4cccee167.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/63f4cccee167.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Universitario goleó 4-1 a Alianza Lima y es campeón nacional del fútbol femenino</title>
+    <link>https://ahora.com.pe/deportes/universitario-campeon-futbol-femenino-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-campeon-futbol-femenino-2026</guid>
+    <pubDate>Sun, 22 Nov 2026 20:10:09 GMT</pubDate>
+    <description><![CDATA[Universitario venció 4-1 a Alianza Lima en la final de vuelta y se consagró campeón nacional del fútbol femenino peruano con un global de 7-2.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[fútbol femenino]]></category>
+    <category><![CDATA[Liga Femenina 2026]]></category>
+    <category><![CDATA[Matute]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3cd614f2cb77.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3cd614f2cb77.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3cd614f2cb77.webp"/>
+    <media:description type="plain"><![CDATA[Universitario de Deportes goleó  este domingo 4-1 a Alianza Lima en la final de vuelta disputado en el Estadio Alejandro Villanueva y se convirtió en ganador del Torneo Clausura con un resultado global de 7-2 que le permite coronarse campeón nacional de la Liga Femenina 2026. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Cuestionan pruebas que vinculan a Pedro Mo y Brenda Jah con el MRTA</title>
+    <link>https://ahora.com.pe/policiales/cuestionan-pruebas-pedro-mo-brenda-jah-mrta</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/cuestionan-pruebas-pedro-mo-brenda-jah-mrta</guid>
+    <pubDate>Sun, 22 Nov 2026 19:20:07 GMT</pubDate>
+    <description><![CDATA[La operación Centinela 2026 detuvo a Pedro Mo, Brenda Jah y otras tres personas por presunta afiliación terrorista. Las pruebas incluyen videos de personas encapuchadas y una denuncia anónima, lo que genera dudas sobre la identificación de los investigados.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Pedro Mo]]></category>
+    <category><![CDATA[Brenda Jah]]></category>
+    <category><![CDATA[MRTA]]></category>
+    <category><![CDATA[afiliación terrorista]]></category>
+    <category><![CDATA[Centinela 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/969aeca4e9e8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/969aeca4e9e8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/969aeca4e9e8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Lamine Yamal falla un penalti ante el Villarreal con el Barcelona dos goles abajo</title>
+    <link>https://ahora.com.pe/deportes/lamine-yamal-falla-penalti-villarreal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/lamine-yamal-falla-penalti-villarreal</guid>
+    <pubDate>Sun, 22 Nov 2026 17:40:08 GMT</pubDate>
+    <description><![CDATA[El Barcelona encajó dos goles al inicio ante el Villarreal y Lamine Yamal falló un penalti en el minuto 23 de la primera parte.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Lamine Yamal]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Villarreal]]></category>
+    <category><![CDATA[penalti fallado]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ecdaa6baff22.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ecdaa6baff22.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ecdaa6baff22.webp"/>
+    <media:description type="plain"><![CDATA[Malas sensaciones las que tuvo el <b>FC Barcelona</b> en la primera parte contra el <b>Villarreal</b>. El equipo de Hansi Flick encajó dos goles al poco del pitido inicial, con tantos de <b>Buchanam </b>y <b>Oluwayesi </b>y <b>Lamine Yamal</b>, que fue de los futbolistas más activos en la primera pa — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Universitario evalúa el retorno de Gustavo Dulanto, cuyo contrato vence el 31 de diciembre</title>
+    <link>https://ahora.com.pe/deportes/universitario-gustavo-dulanto-contrato-vence-diciembre</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-gustavo-dulanto-contrato-vence-diciembre</guid>
+    <pubDate>Sun, 22 Nov 2026 16:50:07 GMT</pubDate>
+    <description><![CDATA[Gustavo Dulanto debería volver a Universitario tras su préstamo en Sport Boys, aunque su contrato con el club crema vence el 31 de diciembre de 2026 y aún no se conoce si habrá renovación.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gustavo Dulanto]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Sport Boys]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[fichajes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9727ae103e07.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9727ae103e07.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9727ae103e07.jpg"/>
+    <media:description type="plain"><![CDATA[Universitario puede incorporar pronto a un futbolista de nacionalidad italiana que se encuentra en otro club, pero existe un detalle que puede complicarlo. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Inversión privada creció 13,6 % en el tercer trimestre de 2026, impulsada por minería</title>
+    <link>https://ahora.com.pe/regional/inversion-privada-13-6-tercer-trimestre-2026-bcr</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/inversion-privada-13-6-tercer-trimestre-2026-bcr</guid>
+    <pubDate>Sun, 22 Nov 2026 14:50:08 GMT</pubDate>
+    <description><![CDATA[La inversión privada creció 13,6 % en el tercer trimestre de 2026 según el BCR, con la minería como principal motor y un PBI que avanzó 3,1 %. El consumo privado sumó doce trimestres en expansión.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[inversión privada]]></category>
+    <category><![CDATA[BCR]]></category>
+    <category><![CDATA[minería]]></category>
+    <category><![CDATA[PBI]]></category>
+    <category><![CDATA[consumo privado]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ad36d24dd792.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ad36d24dd792.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ad36d24dd792.webp"/>
+    <media:description type="plain"><![CDATA[La inversión privada creció 13.6% interanual en el tercer trimestre de 2026, con lo que mantuvo tasas expansión de dos dígitos por quinto trimestre consecutivo, informó el Banco Central de Reserva (BCR). — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>MEF activa S/ 2000 millones en garantías y reprogramación de deudas para mype por El Niño</title>
+    <link>https://ahora.com.pe/regional/mef-garantias-reprogramacion-mype-el-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/mef-garantias-reprogramacion-mype-el-nino</guid>
+    <pubDate>Sun, 22 Nov 2026 14:30:10 GMT</pubDate>
+    <description><![CDATA[El MEF publicó las resoluciones 525 y 526-2026-EF/15 que activan garantías del Fondo CRECER por hasta S/ 2000 millones y la reprogramación de Impulso Myperú para mype en zonas declaradas en emergencia por El Niño.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[mype]]></category>
+    <category><![CDATA[El Niño]]></category>
+    <category><![CDATA[Fondo CRECER]]></category>
+    <category><![CDATA[Impulso Myperú]]></category>
+    <category><![CDATA[MEF]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/933cbead4904.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/933cbead4904.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/933cbead4904.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Rímac: 13 unidades de bomberos combaten incendio en inmueble junto a la Plaza de Acho</title>
+    <link>https://ahora.com.pe/regional/incendio-rimac-jiron-maranon-plaza-acho</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/incendio-rimac-jiron-maranon-plaza-acho</guid>
+    <pubDate>Sun, 22 Nov 2026 14:20:08 GMT</pubDate>
+    <description><![CDATA[Un incendio se registra la mañana de este domingo en la cuadra 5 del jirón Marañón, en el Rímac, a pocos metros de la Plaza de Toros de Acho. Al menos 13 unidades de bomberos combaten las llamas y aún no se confirma si hay personas al interior.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[incendio Rímac]]></category>
+    <category><![CDATA[jirón Marañón]]></category>
+    <category><![CDATA[Plaza de Acho]]></category>
+    <category><![CDATA[bomberos]]></category>
+    <category><![CDATA[cuadra 5]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/32de1e806b59.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/32de1e806b59.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/32de1e806b59.webp"/>
+    <media:description type="plain"><![CDATA[Al menos 13 unidades del Cuerpo General de Bomberos Voluntarios del Perú combaten un incendio que se registra esta mañana en un inmueble ubicado en la cuadra 5 del jirón Marañón, al costado de la histórica Plaza de Toros de Acho, en el distrito del Rímac. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Universitario cae 3-0 ante Circolo y suma segunda derrota al hilo en la Liga de Vóley</title>
+    <link>https://ahora.com.pe/deportes/universitario-derrota-circolo-liga-voley</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-derrota-circolo-liga-voley</guid>
+    <pubDate>Sun, 22 Nov 2026 13:30:12 GMT</pubDate>
+    <description><![CDATA[Universitario perdió 3-0 ante Circolo Sportivo Italiano (25/18, 25/22, 25/20) en la sexta jornada de la Liga Peruana de Vóley 2026-2027 y quedó con 12 puntos, por debajo de San Martín (15) y Alianza Lima (14).]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[Universitario de Deportes]]></category>
+    <category><![CDATA[Circolo Sportivo Italiano]]></category>
+    <category><![CDATA[Natalia Alves]]></category>
+    <category><![CDATA[sexta jornada]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/44e389c60d8d.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/44e389c60d8d.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/44e389c60d8d.webp"/>
+    <media:description type="plain"><![CDATA[Universitario de Deportes comenzó a perder aire en la Liga Peruana de Vóley 2026-2027 porque sumó su segunda derrota  consecutiva al caer 3 set a 0 ante el Circolo Sportivo Italiano, resultado que le hace alejarse más del líder Universidad San Martín y ser superado por Alianza Lima. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Moody&apos;s: empresas peruanas llegarían a 2027 con apalancamiento de 2,4 veces</title>
+    <link>https://ahora.com.pe/economia/moodys-empresas-peruanas-2027-apalancamiento-petroperu</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/moodys-empresas-peruanas-2027-apalancamiento-petroperu</guid>
+    <pubDate>Sun, 22 Nov 2026 13:20:07 GMT</pubDate>
+    <description><![CDATA[Moody&apos;s proyecta apalancamiento de 2,4 veces y cobertura de intereses de 6 veces para las empresas peruanas en 2027, aunque alerta sobre liquidez débil en el 40% de los emisores y la situación de Petroperú.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[Moody's]]></category>
+    <category><![CDATA[empresas peruanas]]></category>
+    <category><![CDATA[apalancamiento]]></category>
+    <category><![CDATA[Petroperú]]></category>
+    <category><![CDATA[minería]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2bce3d4a4c12.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2bce3d4a4c12.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2bce3d4a4c12.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Sismo de 6,7 en Huánuco: conductor murió al caerle rocas sobre su cisterna</title>
+    <link>https://ahora.com.pe/regional/sismo-huanuco-conductor-muerto-rocas-ambo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-huanuco-conductor-muerto-rocas-ambo</guid>
+    <pubDate>Sun, 22 Nov 2026 12:50:07 GMT</pubDate>
+    <description><![CDATA[Un conductor murió tras el sismo de magnitud 6,7 en Huánuco cuando rocas cayeron sobre su cisterna en el sector de Matichico, Ambo. INDECI reportó 17 viviendas afectadas, 36 inhabitables y daños en la iglesia de Ambo y un centro de salud de Panao.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo Huánuco]]></category>
+    <category><![CDATA[Ambo]]></category>
+    <category><![CDATA[INDECI]]></category>
+    <category><![CDATA[Carretera Central]]></category>
+    <category><![CDATA[Jorge Luis Paitán Cayahua]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8c2d5a7acd3b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8c2d5a7acd3b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8c2d5a7acd3b.jpg"/>
+    <media:description type="plain"><![CDATA[Terremoto / Earthquake 15/08/07 — Foto: Miguel Vera (openverse-by)]]></media:description>
+  </item>
+  <item>
+    <title>Boca gana su tercera Sudamericana y el Obelisco se tiñe de azul y oro</title>
+    <link>https://ahora.com.pe/deportes/boca-juniors-tercera-copa-sudamericana-fiesta-obelisco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/boca-juniors-tercera-copa-sudamericana-fiesta-obelisco</guid>
+    <pubDate>Sun, 22 Nov 2026 12:40:07 GMT</pubDate>
+    <description><![CDATA[Boca Juniors conquistó su tercera Copa Sudamericana tras vencer 0-2 al Atlético Mineiro en Barranquilla. Miles de aficionados celebraron en el Obelisco de Buenos Aires y en otros puntos del país.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Boca Juniors]]></category>
+    <category><![CDATA[Copa Sudamericana]]></category>
+    <category><![CDATA[Obelisco]]></category>
+    <category><![CDATA[Atlético Mineiro]]></category>
+    <category><![CDATA[fútbol argentino]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b274c1804f28.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b274c1804f28.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b274c1804f28.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Sport Huancayo define el Clausura ante Universitario en la última fecha</title>
+    <link>https://ahora.com.pe/deportes/sport-huancayo-clausura-2026-ultima-fecha</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-huancayo-clausura-2026-ultima-fecha</guid>
+    <pubDate>Sun, 22 Nov 2026 11:50:06 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo, Universitario y Sporting Cristal definen este domingo el Torneo Clausura 2026 de la Liga 1 en dos partidos simultáneos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Torneo Clausura 2026]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Sporting Cristal]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e03ed8d8c8a1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e03ed8d8c8a1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e03ed8d8c8a1.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El Sevilla se libra inicialmente de multa por botella lanzada a Antony en el derbi</title>
+    <link>https://ahora.com.pe/deportes/sevilla-libra-multa-botella-antony-derbi</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sevilla-libra-multa-botella-antony-derbi</guid>
+    <pubDate>Sun, 22 Nov 2026 11:00:12 GMT</pubDate>
+    <description><![CDATA[El Sevilla evita por ahora una multa económica porque el lanzamiento de una botella a Antony durante el derbi ante el Betis no fue recogido en el acta arbitral, aunque el informe del delegado observador podría cambiar la situación.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sevilla]]></category>
+    <category><![CDATA[Betis]]></category>
+    <category><![CDATA[Antony]]></category>
+    <category><![CDATA[derbi]]></category>
+    <category><![CDATA[multa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a6a13b2dbabb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a6a13b2dbabb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a6a13b2dbabb.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>PETRA reclama permisos universales para la primera infancia y las madres</title>
+    <link>https://ahora.com.pe/sociedad/petra-permisos-universales-primera-infancia-madres</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/petra-permisos-universales-primera-infancia-madres</guid>
+    <pubDate>Sun, 22 Nov 2026 10:30:09 GMT</pubDate>
+    <description><![CDATA[La asociación PETRA Maternidades Feministas publica una columna de opinión con motivo del 37 aniversario de la Convención sobre los Derechos del Niño, aprobada el 20 de noviembre de 1989. Las autoras sostienen que la primera infancia, en especial la franja de 0 a 3 años, carece de protección efectiva y reclaman permisos universales vinculados a la crianza, no al contrato laboral, así como un permiso preparto y otro puerperal.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[primera infancia]]></category>
+    <category><![CDATA[PETRA Maternidades Feministas]]></category>
+    <category><![CDATA[permisos por nacimiento]]></category>
+    <category><![CDATA[permiso preparto]]></category>
+    <category><![CDATA[permiso puerperal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/061b7a971eb1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/061b7a971eb1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/061b7a971eb1.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Boca campeón de la Sudamericana 2026: Advíncula celebró el título xeneize</title>
+    <link>https://ahora.com.pe/deportes/boca-campeon-sudamericana-2026-advincula</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/boca-campeon-sudamericana-2026-advincula</guid>
+    <pubDate>Sun, 22 Nov 2026 10:10:06 GMT</pubDate>
+    <description><![CDATA[Boca Juniors venció 2-0 a Atlético Mineiro y ganó la Copa Sudamericana 2026. Luis Advíncula celebró el título en redes sociales con un mensaje para el club y su hinchada.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Boca Juniors]]></category>
+    <category><![CDATA[Copa Sudamericana 2026]]></category>
+    <category><![CDATA[Luis Advíncula]]></category>
+    <category><![CDATA[Atlético Mineiro]]></category>
+    <category><![CDATA[final Barranquilla]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f0f5588a016e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f0f5588a016e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f0f5588a016e.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>La Real Sociedad abre su maratón en El Sardinero ante el Racing</title>
+    <link>https://ahora.com.pe/deportes/real-sociedad-maraton-sardinero-racing</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-sociedad-maraton-sardinero-racing</guid>
+    <pubDate>Sun, 22 Nov 2026 09:20:07 GMT</pubDate>
+    <description><![CDATA[La Real Sociedad visita al Racing de Santander en El Sardinero para abrir un exigente calendario de nueve partidos en 28 días, con el objetivo de afianzarse en la pelea por la Champions.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Sociedad]]></category>
+    <category><![CDATA[Racing de Santander]]></category>
+    <category><![CDATA[LaLiga]]></category>
+    <category><![CDATA[El Sardinero]]></category>
+    <category><![CDATA[Matarazzo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4929a22cd2ea.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4929a22cd2ea.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4929a22cd2ea.webp"/>
+    <media:description type="plain"><![CDATA[Después de un parón, esta vez más corto que el anterior, regresa la <b>Real Sociedad</b> a LaLiga. Y lo hace con un envite con tintes clásicos, en el regreso del <b>Racing de Santander</b> -uno de esos equipos a los que les tocó pisar el fondo para resurgir- que ahora, 14 años después, vuelve a la m — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Melgar asegura a Juan David Lucumí como primer refuerzo para 2027</title>
+    <link>https://ahora.com.pe/deportes/melgar-fichaje-juan-david-lucumi-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/melgar-fichaje-juan-david-lucumi-2027</guid>
+    <pubDate>Sun, 22 Nov 2026 08:30:12 GMT</pubDate>
+    <description><![CDATA[FBC Melgar cerró de palabra el fichaje del colombiano Juan David Lucumí, procedente de ADT de Tarma, como primer refuerzo para la temporada 2027 en la que afrontará la Copa Libertadores.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Melgar]]></category>
+    <category><![CDATA[Juan David Lucumí]]></category>
+    <category><![CDATA[ADT de Tarma]]></category>
+    <category><![CDATA[Copa Libertadores 2027]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b09a201d828f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b09a201d828f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b09a201d828f.jpg"/>
+    <media:description type="plain"><![CDATA[El cuadro arequipeño, que tiene asegurada su presencia en la Copa Libertadores 2027, tiene cerrada la incorporación de su primer refuerzo para la próxima temporada. — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El ajo español pierde terreno en Marruecos, Reino Unido y EEUU: el 85% de sus exportaciones extracomunitarias, en riesgo</title>
+    <link>https://ahora.com.pe/mundo/ajo-espanol-exportaciones-marruecos-reino-unido-eeuu</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/ajo-espanol-exportaciones-marruecos-reino-unido-eeuu</guid>
+    <pubDate>Sun, 22 Nov 2026 08:20:07 GMT</pubDate>
+    <description><![CDATA[El sector español del ajo afronta un nuevo sistema de licencias en Marruecos, la suspensión de aranceles en Reino Unido y los aranceles de EEUU, sus tres principales mercados extracomunitarios.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[ajo español]]></category>
+    <category><![CDATA[exportaciones]]></category>
+    <category><![CDATA[ANPCA]]></category>
+    <category><![CDATA[Marruecos]]></category>
+    <category><![CDATA[aranceles]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6006d63be72e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6006d63be72e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6006d63be72e.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Los Borbones y el primer café de Madrid: así llegó el café a España</title>
+    <link>https://ahora.com.pe/cultura/historia-cafe-espana-borbones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/cultura/historia-cafe-espana-borbones</guid>
+    <pubDate>Sun, 22 Nov 2026 07:40:08 GMT</pubDate>
+    <description><![CDATA[La historia del café en España está ligada a la llegada de los Borbones y a los comerciantes italianos que abrieron el primer café de Madrid en el siglo XVIII, según las crónicas cafeteras.]]></description>
+    <dc:creator><![CDATA[Ahora Cultura]]></dc:creator>
+    <category><![CDATA[Cultura]]></category>
+    <category><![CDATA[café]]></category>
+    <category><![CDATA[historia]]></category>
+    <category><![CDATA[España]]></category>
+    <category><![CDATA[Borbones]]></category>
+    <category><![CDATA[Madrid]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c89c4d7e1ff6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c89c4d7e1ff6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c89c4d7e1ff6.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima goleó 5-0 a FC Cajamarca y cerró el Clausura con miras a las finales</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-5-0-fc-cajamarca-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-5-0-fc-cajamarca-clausura</guid>
+    <pubDate>Sun, 22 Nov 2026 06:50:06 GMT</pubDate>
+    <description><![CDATA[Alianza Lima venció 5-0 a FC Cajamarca en la fecha 17 del Clausura, con doblete de Eryc Castillo y regreso goleador de Paolo Guerrero. El resultado confirmó el descenso del equipo cajamarquino.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[FC Cajamarca]]></category>
+    <category><![CDATA[Eryc Castillo]]></category>
+    <category><![CDATA[Paolo Guerrero]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/696dd97b910c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/696dd97b910c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/696dd97b910c.jpg"/>
+    <media:description type="plain"><![CDATA[𝕄𝕦𝕣𝕚𝕔𝕒'. 👉👌 𝕐𝕒.
+
+👇😎🥃. — Foto: iStrfry , Marcus (unsplash-free)]]></media:description>
+  </item>
+  <item>
+    <title>Reino Unido y la UE acuerdan facilitar el comercio agroalimentario y ampliar la movilidad juvenil</title>
+    <link>https://ahora.com.pe/mundo/reino-unido-ue-acuerdo-comercio-movilidad-juvenil-brexit</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/reino-unido-ue-acuerdo-comercio-movilidad-juvenil-brexit</guid>
+    <pubDate>Sun, 22 Nov 2026 06:30:10 GMT</pubDate>
+    <description><![CDATA[Reino Unido y la Unión Europea firmaron en Bruselas un paquete para reducir controles agroalimentarios y crear un programa de movilidad juvenil de hasta tres años. El primer ministro británico, Andy Burnham, defendió el acercamiento. Quedan pendientes las tasas universitarias y el estatus comercial especial.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Reino Unido]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[Brexit]]></category>
+    <category><![CDATA[comercio agroalimentario]]></category>
+    <category><![CDATA[movilidad juvenil]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7c99114c0cad.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7c99114c0cad.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7c99114c0cad.jpg"/>
+    <media:description type="plain"><![CDATA[Banderas de dominio público · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Real Madrid remonta al Celta con gol de Espí y presiona al Barça en LaLiga</title>
+    <link>https://ahora.com.pe/deportes/real-madrid-remonta-celta-espir-presiona-barca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-madrid-remonta-celta-espir-presiona-barca</guid>
+    <pubDate>Sun, 22 Nov 2026 06:00:11 GMT</pubDate>
+    <description><![CDATA[El Real Madrid remontó al Celta de Vigo con un gol de Carlos Espí en el 85&apos; y alcanzó los 33 puntos, igualando al Barcelona en la cima de LaLiga EA Sports.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Celta de Vigo]]></category>
+    <category><![CDATA[LaLiga EA Sports]]></category>
+    <category><![CDATA[Carlos Espí]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6206bd975546.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6206bd975546.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6206bd975546.webp"/>
+    <media:description type="plain"><![CDATA[El <b>Real Madrid</b> no jugó su mejor partido pero aun así logró una remontada ante el <b>Celta de Vigo</b> 'in extremis' y gracias de nuevo a Carlos Espí, que anotó otro tanto que valió <a href="https://www.mundodeportivo.com/resultados/futbol/laliga/clasificacion">tres puntos para continuar con l — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Pamela Franco revela la hora límite que Christian Cueva debe cumplir al salir</title>
+    <link>https://ahora.com.pe/entretenimiento/pamela-franco-horario-christian-cueva-salidas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/pamela-franco-horario-christian-cueva-salidas</guid>
+    <pubDate>Sun, 22 Nov 2026 05:10:10 GMT</pubDate>
+    <description><![CDATA[Pamela Franco contó en &apos;Mande quien mande&apos; que Christian Cueva tiene un horario límite de regreso a casa cuando sale. El futbolista dijo que ahora prefiere quedarse en su vivienda.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Pamela Franco]]></category>
+    <category><![CDATA[Christian Cueva]]></category>
+    <category><![CDATA[Mande quien mande]]></category>
+    <category><![CDATA[Laura Huarcayo]]></category>
+    <category><![CDATA[farándula peruana]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8d96523c26d3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8d96523c26d3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8d96523c26d3.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Avi Loeb sugiere que el asteroide 1998 KY26 podría ser la sonda soviética Phobos 1</title>
+    <link>https://ahora.com.pe/tecnologia/avi-loeb-asteroide-1998-ky26-sonda-phobos-1</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/avi-loeb-asteroide-1998-ky26-sonda-phobos-1</guid>
+    <pubDate>Sun, 22 Nov 2026 05:10:09 GMT</pubDate>
+    <description><![CDATA[El astrofísico Avi Loeb propuso que el asteroide 1998 KY26 sea en realidad la sonda soviética Phobos 1, perdida en 1988 camino a Marte. La hipótesis busca explicar la aceleración anómala del objeto de 11 metros, tras la cancelación de la misión de Hayabusa 2 por una avería.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Avi Loeb]]></category>
+    <category><![CDATA[1998 KY26]]></category>
+    <category><![CDATA[Phobos 1]]></category>
+    <category><![CDATA[Hayabusa 2]]></category>
+    <category><![CDATA[asteroide]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8eec9bb323e1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8eec9bb323e1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8eec9bb323e1.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>UE aplaza a 2029 la ley de emisiones de metano por la crisis energética</title>
+    <link>https://ahora.com.pe/mundo/ue-aplaza-ley-metano-2029-crisis-energetica</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/ue-aplaza-ley-metano-2029-crisis-energetica</guid>
+    <pubDate>Sun, 22 Nov 2026 05:10:08 GMT</pubDate>
+    <description><![CDATA[La Unión Europea y el Parlamento Europeo acordaron aplazar la ley de emisiones de metano hasta 2029 por la tensión en los mercados energéticos. La norma obligaba a los importadores de hidrocarburos a informar sobre sus emisiones.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[metano]]></category>
+    <category><![CDATA[crisis energética]]></category>
+    <category><![CDATA[emisiones]]></category>
+    <category><![CDATA[Parlamento Europeo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d8f76b8f7aa9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d8f76b8f7aa9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d8f76b8f7aa9.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>México captura al &apos;Chapo Isidro&apos;, uno de los 10 más buscados por el FBI</title>
+    <link>https://ahora.com.pe/mundo/captura-chapo-isidro-sinaloa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/captura-chapo-isidro-sinaloa</guid>
+    <pubDate>Sun, 22 Nov 2026 05:10:07 GMT</pubDate>
+    <description><![CDATA[Militares mexicanos detuvieron a Fausto Isidro Meza Flores, alias &apos;Chapo Isidro&apos;, uno de los 10 fugitivos más buscados por el FBI, en Guasave, Sinaloa. El operativo, realizado el viernes 20 de noviembre, desató bloqueos y enfrentamientos en varios municipios.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Chapo Isidro]]></category>
+    <category><![CDATA[Sinaloa]]></category>
+    <category><![CDATA[captura]]></category>
+    <category><![CDATA[FBI]]></category>
+    <category><![CDATA[narcotráfico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d9784c960a43.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d9784c960a43.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d9784c960a43.jpg"/>
+    <media:description type="plain"><![CDATA[El secretario de Seguridad de México confirmó la captura de Fausto Isidro, alias 'Chapo Isidro', en Sinaloa, uno de los fugitivos más buscados por EE.UU., en un operativo conjunto. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>FC Cajamarca descendió a la Liga 2 y Santiago Acasiete asumió la culpa</title>
+    <link>https://ahora.com.pe/deportes/fc-cajamarca-descenso-liga-2-acasiete</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fc-cajamarca-descenso-liga-2-acasiete</guid>
+    <pubDate>Sun, 22 Nov 2026 05:10:06 GMT</pubDate>
+    <description><![CDATA[FC Cajamarca jugará la Liga 2 la próxima temporada tras no lograr la permanencia en la Liga 1 2026; su entrenador Santiago Acasiete reconoció la responsabilidad y pidió disculpas.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[FC Cajamarca]]></category>
+    <category><![CDATA[Santiago Acasiete]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[Liga 2]]></category>
+    <category><![CDATA[descenso]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3b780ee0659d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3b780ee0659d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3b780ee0659d.jpg"/>
+    <media:description type="plain"><![CDATA[FC Cajamarca descenderá a la Liga 2 tras no lograr la permanencia en la Liga 1 2026. Santiago Acasiete, entrenador del equipo, expresó su pesar por no alcanzar los objetivos deseados. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Flick atiende a la prensa antes del Barça-Villarreal de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/flick-rueda-prensa-previa-barca-villarreal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/flick-rueda-prensa-previa-barca-villarreal</guid>
+    <pubDate>Sun, 22 Nov 2026 04:20:06 GMT</pubDate>
+    <description><![CDATA[Hansi Flick comparece en rueda de prensa antes del FC Barcelona-Villarreal de la jornada 13 de LaLiga EA Sports en el Spotify Camp Nou.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Villarreal]]></category>
+    <category><![CDATA[LaLiga EA Sports]]></category>
+    <category><![CDATA[Spotify Camp Nou]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6ec73c0eed56.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6ec73c0eed56.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6ec73c0eed56.webp"/>
+    <media:description type="plain"><![CDATA[Sigue aquí en <b>streaming </b>la rueda de prensa de <b>Hansi Flick</b> en la previa del partido de <b>LALIGA EA SPORTS</b> contra el Villareal que se disputará en el <b>Spotify Camp Nou</b>. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Paredes se desmaya tras ganar la Sudamericana con Boca en Barranquilla</title>
+    <link>https://ahora.com.pe/deportes/paredes-desmaya-tras-ganar-sudamericana-boca</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/paredes-desmaya-tras-ganar-sudamericana-boca</guid>
+    <pubDate>Sun, 22 Nov 2026 03:30:10 GMT</pubDate>
+    <description><![CDATA[Leandro Paredes se desmayó durante una entrevista tras la final en Barranquilla, por un golpe de calor. Boca cortó una sequía de 18 años sin títulos internacionales.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Leandro Paredes]]></category>
+    <category><![CDATA[Boca Juniors]]></category>
+    <category><![CDATA[Copa Sudamericana]]></category>
+    <category><![CDATA[Atlético Mineiro]]></category>
+    <category><![CDATA[Barranquilla]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4cb752a24666.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4cb752a24666.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4cb752a24666.jpg"/>
+    <media:description type="plain"><![CDATA[El capitán de Boca Juniors sufrió un golpe de calor en Barranquilla mientras daba declaraciones. El jugador argentino recibió una rápida asistencia médica. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Barça entrena sin Christensen ni Hamza y con Mika Baza y Noah Garcia, de 16 años</title>
+    <link>https://ahora.com.pe/deportes/barca-entrena-sin-christensen-mika-noah</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/barca-entrena-sin-christensen-mika-noah</guid>
+    <pubDate>Sun, 22 Nov 2026 02:40:07 GMT</pubDate>
+    <description><![CDATA[El Barcelona entrenó este sábado con las novedades de Mika Baza y Noah Garcia, ambos de 16 años, y sin Andreas Christensen por molestias musculares, de cara al partido ante el Villarreal por la jornada 13 de LaLiga.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Christensen]]></category>
+    <category><![CDATA[Mika Baza]]></category>
+    <category><![CDATA[Noah Garcia]]></category>
+    <category><![CDATA[Villarreal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2129da0fb4bc.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2129da0fb4bc.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2129da0fb4bc.webp"/>
+    <media:description type="plain"><![CDATA[El <b>Barcelona </b>se entrena este sábado desde las 11.00 horas para preparar el partido ante el <b>Villarreal </b>de este sábado a las 14.00 horas en el<b> Spotify Camp Nou</b>, correspondiente a la 13ª jornada de LaLiga EA Sports 2026-27.&nbsp;Dos caras nuevas, inéditas hasta ahora por su precoci — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Boca Juniors campeón de la Copa Sudamericana 2026: su tercer título desata memes en redes</title>
+    <link>https://ahora.com.pe/deportes/boca-juniors-campeon-sudamericana-2026-memes</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/boca-juniors-campeon-sudamericana-2026-memes</guid>
+    <pubDate>Sun, 22 Nov 2026 01:50:06 GMT</pubDate>
+    <description><![CDATA[Boca Juniors se consagró campeón de la Copa Sudamericana 2026 y logró su tercer título en el certamen, según Líbero. La consagración desató una ola de memes en redes sociales, incluidos los dirigidos a hinchas de River Plate.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Boca Juniors]]></category>
+    <category><![CDATA[Copa Sudamericana 2026]]></category>
+    <category><![CDATA[campeón]]></category>
+    <category><![CDATA[memes]]></category>
+    <category><![CDATA[River Plate]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6e384382c60b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6e384382c60b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6e384382c60b.jpg"/>
+    <media:description type="plain"><![CDATA[Boca desató la euforia de sus hinchas tras conquistar la Sudamericana. El título provocó una ola de reacciones en redes, donde los memes se robaron miradas. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Alianza Lima goleó 5-0 a FC Cajamarca y cerró el Clausura entre memes</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-goleo-fc-cajamarca-memes-clausura</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-goleo-fc-cajamarca-memes-clausura</guid>
+    <pubDate>Sun, 22 Nov 2026 00:10:06 GMT</pubDate>
+    <description><![CDATA[Alianza Lima venció 5-0 a FC Cajamarca en la jornada 17 del Torneo Clausura y el resultado generó una ola de memes en redes sociales.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[FC Cajamarca]]></category>
+    <category><![CDATA[Torneo Clausura]]></category>
+    <category><![CDATA[goleada]]></category>
+    <category><![CDATA[memes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/31d87d887030.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/31d87d887030.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/31d87d887030.jpg"/>
+    <media:description type="plain"><![CDATA[La goleada de 5-0 de Alianza Lima vs FC Cajamarca en la jornada 17 del Torneo Clausura desató una ola de reacciones en redes sociales. Mira los singulares memes. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Diez años del acuerdo de paz en Colombia: UE califica de éxito labor de la Comisión de la Verdad</title>
+    <link>https://ahora.com.pe/mundo/diez-anos-acuerdo-paz-colombia-ue-comision-verdad</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/diez-anos-acuerdo-paz-colombia-ue-comision-verdad</guid>
+    <pubDate>Sat, 21 Nov 2026 23:20:09 GMT</pubDate>
+    <description><![CDATA[Colombia conmemora diez años del acuerdo de paz con las FARC. La UE calificó de éxito el trabajo de la Comisión de la Verdad, mientras la JEP reporta 386 casos de reclutamiento de menores en 2025 y 533 firmantes asesinados desde 2016.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[acuerdo de paz Colombia]]></category>
+    <category><![CDATA[FARC]]></category>
+    <category><![CDATA[Unión Europea]]></category>
+    <category><![CDATA[Comisión de la Verdad]]></category>
+    <category><![CDATA[JEP]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/46b9b4fd4fcf.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/46b9b4fd4fcf.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/46b9b4fd4fcf.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Sismo de 6,7 deja un muerto en Huánuco y 853 damnificados en el centro del país</title>
+    <link>https://ahora.com.pe/regional/sismo-67-huanuco-fallecido-damnificados-indeci</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/sismo-67-huanuco-fallecido-damnificados-indeci</guid>
+    <pubDate>Sat, 21 Nov 2026 23:20:08 GMT</pubDate>
+    <description><![CDATA[Un sismo de magnitud 6,7 con epicentro en Junín dejó un fallecido en el Hospital Regional de Huánuco, 16 lesionados y 853 damnificados. Indeci reporta daños en viviendas, colegios, establecimientos de salud y vías en Huánuco, Pasco y Junín.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[sismo Huánuco]]></category>
+    <category><![CDATA[Indeci]]></category>
+    <category><![CDATA[damnificados]]></category>
+    <category><![CDATA[Hospital Hermilio Valdizán]]></category>
+    <category><![CDATA[Junín]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a955d99fa5a9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a955d99fa5a9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a955d99fa5a9.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>MTC recuerda que pedidos de combustible para emergencias viales se tramitan por el SAEV</title>
+    <link>https://ahora.com.pe/nacional/mtc-combustible-emergencias-viales-saev</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/mtc-combustible-emergencias-viales-saev</guid>
+    <pubDate>Sat, 21 Nov 2026 22:20:07 GMT</pubDate>
+    <description><![CDATA[El Ministerio de Transportes y Comunicaciones recordó que los pedidos de combustible para emergencias viales se canalizan por la plataforma SAEV. Desde mayo, Provías Descentralizado entregó 291,013 galones y atendió 605 emergencias con una inversión de S/ 6.4 millones.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[SAEV]]></category>
+    <category><![CDATA[MTC]]></category>
+    <category><![CDATA[Provías Descentralizado]]></category>
+    <category><![CDATA[emergencias viales]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/218911021a5f.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/218911021a5f.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/218911021a5f.webp"/>
+    <media:description type="plain"><![CDATA[La atención a las municipalidades y gobiernos regionales que solicitan combustible para liberar carreteras a su cargo bloqueadas por huaicos, derrumbes, lluvias, desborde de ríos u otros eventos de la naturaleza se realiza mediante el Sistema de Atención de Emergencias Viales (SAEV), recordó el Mini — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Malen firma un póquer y la Roma frena al Parma para seguir a dos puntos del liderato</title>
+    <link>https://ahora.com.pe/deportes/malen-poker-roma-parma-serie-a</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/malen-poker-roma-parma-serie-a</guid>
+    <pubDate>Sat, 21 Nov 2026 21:40:07 GMT</pubDate>
+    <description><![CDATA[Donyell Malen anotó un póquer y Rodrigo Mora otro gol en la victoria de la Roma sobre el Parma en la duodécima jornada de la Serie A, resultado que deja al equipo de Gasperini invicto y a dos puntos del liderato del Lazio.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Donyell Malen]]></category>
+    <category><![CDATA[Roma]]></category>
+    <category><![CDATA[Parma]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[Rodrigo Mora]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d13288d8d8b3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d13288d8d8b3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d13288d8d8b3.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Barcelona vs. Villarreal: horarios y canales de la fecha 13 de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/barcelona-villarreal-horarios-canales-laliga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/barcelona-villarreal-horarios-canales-laliga</guid>
+    <pubDate>Sat, 21 Nov 2026 20:50:06 GMT</pubDate>
+    <description><![CDATA[Barcelona, líder de LaLiga con 33 puntos, recibe al Villarreal este domingo 22 de noviembre en el Spotify Camp Nou por la fecha 13; en Perú el partido se verá a las 8:00 a. m. por DirecTV Sports y DGO.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcelona vs Villarreal]]></category>
+    <category><![CDATA[LaLiga fecha 13]]></category>
+    <category><![CDATA[Spotify Camp Nou]]></category>
+    <category><![CDATA[DirecTV Sports]]></category>
+    <category><![CDATA[Lamine Yamal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6a55355d3d8d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6a55355d3d8d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6a55355d3d8d.jpg"/>
+    <media:description type="plain"><![CDATA[Barcelona volverá a las canchas cuando juegue de local en el Spotify Camp Nou por LaLiga. — Foto: RPP Noticias]]></media:description>
+  </item>
+  <item>
+    <title>Real Madrid y Adidas: el plantel lució la camiseta negra retro ante el Celta</title>
+    <link>https://ahora.com.pe/deportes/real-madrid-camiseta-negra-retro-celta</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-madrid-camiseta-negra-retro-celta</guid>
+    <pubDate>Sat, 21 Nov 2026 20:00:12 GMT</pubDate>
+    <description><![CDATA[El Real Madrid llegó al Bernabéu con la camiseta negra retro de Adidas, reedición del uniforme 2014-15 diseñado por Yohji Yamamoto, antes del partido ante el Celta.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Adidas]]></category>
+    <category><![CDATA[camiseta negra]]></category>
+    <category><![CDATA[Celta]]></category>
+    <category><![CDATA[Bernabéu]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/77a5243dc4e1.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/77a5243dc4e1.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/77a5243dc4e1.webp"/>
+    <media:description type="plain"><![CDATA[En los tiempos que corren, donde cada paso que da un jugador de fútbol es filmado a tiempo real, cada oportunidad es buena para la promoción.&nbsp; — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Pochettino debuta en el United y suena Osimhen como refuerzo de invierno</title>
+    <link>https://ahora.com.pe/deportes/pochettino-united-osimhen-refuerzo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/pochettino-united-osimhen-refuerzo</guid>
+    <pubDate>Sat, 21 Nov 2026 18:20:07 GMT</pubDate>
+    <description><![CDATA[Mauricio Pochettino debuta como técnico del Manchester United ante el Liverpool y, según The Sun, el club inglés apunta a Victor Osimhen para el mercado de invierno.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Manchester United]]></category>
+    <category><![CDATA[Mauricio Pochettino]]></category>
+    <category><![CDATA[Victor Osimhen]]></category>
+    <category><![CDATA[Galatasaray]]></category>
+    <category><![CDATA[mercado de fichajes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8b494b8d5090.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8b494b8d5090.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8b494b8d5090.webp"/>
+    <media:description type="plain"><![CDATA[La llegada al <b>Manchester United de Mauricio Pochettino</b>, que debutará como nuevo técnico de los 'red devils' este domingo ante el Liverpool en Anfield, ha hecho disparar los primeros rumores sobre posibles refuerzos en el mercado de fichajes de invierno y uno de los primeros nombres en aparece — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Boca y Mineiro disputan la final de la Sudamericana en Barranquilla</title>
+    <link>https://ahora.com.pe/deportes/boca-juniors-atletico-mineiro-final-copa-sudamericana-barranquilla</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/boca-juniors-atletico-mineiro-final-copa-sudamericana-barranquilla</guid>
+    <pubDate>Sat, 21 Nov 2026 17:30:15 GMT</pubDate>
+    <description><![CDATA[Boca Juniors y Atlético Mineiro definen este sábado 21 de noviembre la Copa Sudamericana 2026 en Barranquilla, con transmisión de ESPN, DSports, Disney+ y DGO en Perú.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Sudamericana 2026]]></category>
+    <category><![CDATA[Boca Juniors]]></category>
+    <category><![CDATA[Atlético Mineiro]]></category>
+    <category><![CDATA[final]]></category>
+    <category><![CDATA[Barranquilla]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/008867500eee.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/008867500eee.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/008867500eee.jpg"/>
+    <media:description type="plain"><![CDATA[Canales de transmisión para ver Boca Juniors vs. Atlético Mineiro EN VIVO, este sábado 21 de noviembre, desde el Metropolitano de Barranquilla, por la final de la Copa Sudamericana 2026. — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  </channel>
+</rss>
