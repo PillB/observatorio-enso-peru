@@ -26,7 +26,7 @@ const PHASE = {
 };
 export const FASES = [['', 'Todas'], ['ahora', 'Vigentes ahora'], ['proxima', 'Próximas'], ['pasado', 'Reportes y pasadas']];
 const FASE_OF = { vigente: 'ahora', 'en-curso': 'ahora', proxima: 'proxima', reciente: 'pasado', ocurrido: 'pasado', vencida: 'pasado' };
-export const NIVELES = [['', 'Todos'], ['3', 'Rojo'], ['2', 'Naranja'], ['1', 'Amarillo'], ['sin', 'Sin nivel']];
+export const NIVELES = [['', 'Todos'], ['3', 'Rojo'], ['2', 'Naranja'], ['1', 'Amarillo'], ['0', 'Verde'], ['sin', 'Sin nivel']];
 export const EDADES = [['', '7 días'], ['72', '72 h'], ['24', '24 h'], ['6', '6 h']];
 const RANK_NAME = { 1: 'amarillo', 2: 'naranja', 3: 'rojo' };
 const ACTIVE = new Set(['vigente', 'en-curso', 'proxima']);
@@ -52,13 +52,19 @@ export function phaseOf(it, now = Date.now()) {
 /** Lugar aproximado (confianza < 0,8 y sin revisar): la misma regla que las etiquetas «≈» de las noticias. */
 const isApprox = (p) => p.confidence !== undefined && p.confidence !== null && p.confidence < 0.8 && p.method !== 'correccion';
 const rankOf = (a) => (a.sev && a.sev.rank > 0 ? a.sev.rank : 0);
+/** El nivel para filtrar: «0» es verde (la fuente dice que no hay peligro), «sin» es que no tiene nivel. Hasta
+ * noviembre de 2026 los dos contaban como «sin nivel». */
+export const nivelKey = (a) => (a.sev ? String(Math.max(0, a.sev.rank || 0)) : 'sin');
+
+/** El nivel de un aviso, por qué no lo tiene (``levelStatus``) y si otra fuente da otro (``levelConflict``). */
+const levelOf = (it) => ({ sev: it.severity || null, status: it.levelStatus || null, conflict: it.levelConflict || null });
 
 function toAlert(it, now) {
   const places = (it.geo?.places || []).filter((p) => p.code && DEP_NAMES[p.code.slice(0, 2)]);
   const deps = [...new Set(places.map((p) => p.code.slice(0, 2)))];
   return {
     // url: el informe (PDF) que ofrece la página de la publicación, si lo hay; es lo que se abre desde el mapa.
-    id: it.id, it, title: it.title, inst: it.institution, url: it.document || it.url, date: it.date, sev: it.severity || null,
+    id: it.id, it, title: it.title, inst: it.institution, url: it.document || it.url, date: it.date, ...levelOf(it),
     kind: it.kind || null, valid: it.valid || null, occurred: it.occurred || null, phase: phaseOf(it, now), places, deps,
     hazards: it.hazards || [], detail: it.detail || null,
   };
@@ -88,7 +94,7 @@ export function readFilter(p) {
 export function matches(a, f, { ignore = [] } = {}) {
   if (f.dep && !ignore.includes('dep') && !a.deps.includes(f.dep)) return false;
   if (f.fase && !ignore.includes('fase') && FASE_OF[a.phase] !== f.fase) return false;
-  if (f.nivel && !ignore.includes('nivel') && (f.nivel === 'sin' ? rankOf(a) !== 0 : String(rankOf(a)) !== f.nivel)) return false;
+  if (f.nivel && !ignore.includes('nivel') && nivelKey(a) !== f.nivel) return false;
   if (f.edad && !ignore.includes('edad') && Date.now() - Date.parse(a.date) > Number(f.edad) * H) return false;
   return true;
 }
@@ -143,11 +149,19 @@ function phaseText(a) {
   return `${PHASE[a.phase][0].toLowerCase()} · ${ago(a.date)}`;
 }
 
-/** Etiqueta del nivel de la institución, o «sin nivel» (nunca uno inventado). */
+/** Etiqueta del nivel de la institución o, sin nivel, por qué (nunca uno inventado): «Reporte, sin nivel», «Varios
+ * niveles», «En evaluación», «Nivel no leído» (un problema del observatorio, con borde de aviso)… */
+function reasonChip(st, s) {
+  if (!st) return html`<span class="lvl lvl-un${s}" title="La fuente no asigna nivel a este aviso">Sin nivel</span>`;
+  return html`<span class="lvl ${st.loud ? 'lvl-err' : 'lvl-un'}${s}" title="${st.why}">${st.label}</span>`;
+}
+
 function levelChip(a, { small = false } = {}) {
   const r = rankOf(a);
-  if (!a.sev) return html`<span class="lvl lvl-un${small ? ' lvl-s' : ''}" title="La fuente no asigna nivel a este aviso">Sin nivel</span>`;
-  return html`<span class="lvl lvl-r${r}${small ? ' lvl-s' : ''}" title="${a.sev.scaleLabel}">${r === 3 ? raw(ICON.octagon) : r ? raw(ICON.triangle) : ''}${a.sev.label}</span>`;
+  const s = small ? ' lvl-s' : '';
+  if (!a.sev) return reasonChip(a.status, s);
+  const differs = a.conflict ? ` · otra fuente: ${a.conflict.label} (${a.conflict.basis})` : '';
+  return html`<span class="lvl lvl-r${r}${s}${a.conflict ? ' lvl-conflict' : ''}" title="${a.sev.scaleLabel}${differs}">${r === 3 ? raw(ICON.octagon) : r ? raw(ICON.triangle) : ''}${a.sev.label}${a.conflict ? ' ≠' : ''}</span>`;
 }
 
 // La copia de la tabla de avisos del SENAMHI que publica el sitio (data/archive/…): esa página solo
@@ -401,12 +415,12 @@ function legend(kind) {
   const extra = kind === 'B' ? html`<li><span class="sw sw-soon"></span>Punteado: próximo</li><li><span class="sw sw-approx"></span>Más claro: ≈ lugar aproximado</li>`
     : kind === 'D' ? html`<li><span class="sw sw-fade"></span>Estado actual</li>`
       : html`<li><span class="sw sw-r2 sw-striped"></span>Rayado: próximo</li>${kind === 'A' ? html`<li><span class="sw sw-badge">3</span>Avisos activos</li>` : ''}`;
-  return html`<div class="amap-legend-box"><ul class="amap-legend">${sw('r3', 'Rojo')}${sw('r2', 'Naranja')}${sw('r1', 'Amarillo')}${sw('un', 'Sin nivel en la fuente')}${sw('rep', 'Solo reportes o pasados')}${extra}</ul>
+  return html`<div class="amap-legend-box"><ul class="amap-legend">${sw('r3', 'Rojo')}${sw('r2', 'Naranja')}${sw('r1', 'Amarillo')}${sw('un', 'Sin nivel de aviso (verde, reporte, sin escala o varios niveles)')}${sw('rep', 'Solo reportes o pasados')}${extra}</ul>
     <p class="muted small">${LEGEND_NOTE[kind]}</p></div>`;
 }
 
 function matrix(alerts, f) {
-  const rows = [['3', 'Rojo'], ['2', 'Naranja'], ['1', 'Amarillo'], ['sin', 'Sin nivel']];
+  const rows = [['3', 'Rojo'], ['2', 'Naranja'], ['1', 'Amarillo'], ['0', 'Verde'], ['sin', 'Sin nivel']];
   const cols = FASES.slice(1);
   const base = alerts.filter((a) => matches(a, f, { ignore: ['fase', 'nivel'] }));
   const cnt = (r, c) => base.filter((a) => matches(a, { fase: c, nivel: r })).length;
@@ -415,7 +429,7 @@ function matrix(alerts, f) {
     <tbody>${rows.map(([r, l]) => html`<tr><th scope="row"><span class="sw sw-${r === 'sin' ? 'un' : `r${r}`}"></span>${l}</th>${cols.map(([c, cl]) => {
       const n = cnt(r, c);
       const on = f.fase === c && f.nivel === r;
-      return html`<td><button type="button" class="cell c-${r === 'sin' ? 'un' : `r${r}`}${on ? ' on' : ''}" data-fase="${c}" data-nivel="${r}" aria-pressed="${String(on)}" style="--a:${n ? (r === 'sin' ? 0.45 : r === '1' ? 0.75 : 0.9) : 0}" aria-label="${l}, ${cl.toLowerCase()}: ${n}" ${raw(n ? '' : 'disabled')}>${n}</button></td>`;
+      return html`<td><button type="button" class="cell c-${r === 'sin' ? 'un' : `r${r}`}${on ? ' on' : ''}" data-fase="${c}" data-nivel="${r}" aria-pressed="${String(on)}" style="--a:${n ? (r === 'sin' || r === '0' ? 0.45 : r === '1' ? 0.75 : 0.9) : 0}" aria-label="${l}, ${cl.toLowerCase()}: ${n}" ${raw(n ? '' : 'disabled')}>${n}</button></td>`;
     })}</tr>`)}</tbody></table></div>`;
 }
 

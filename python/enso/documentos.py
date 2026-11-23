@@ -46,6 +46,9 @@ KEEP_DAYS = 21
 MAX_PDF_BYTES = 15 * 2**20
 #: Más lugares que estos se publican por departamento (el resumen sigue nombrando las provincias).
 MAX_PLACES = 25
+#: Versión de lo que ``read`` saca de un PDF. Una lectura guardada con una versión anterior se repite una vez (lo
+#: nuevo de la 2: el umbral de la estación de los avisos hidrológicos), en vez de dejar esos avisos sin nivel.
+READ_VERSION = 2
 
 _PDF_RE = re.compile(r'href="(https?://portal\.indeci\.gob\.pe/wp-content/uploads/[^"]+?\.pdf)"', re.I)
 _PAGE_RE = re.compile(r"^https?://portal\.indeci\.gob\.pe/emergencias/[^?#]+", re.I)
@@ -401,6 +404,27 @@ _RIVER_RE = re.compile(r"comportamiento\s+hidrol[óo]gico\s+del\s+r[íi]o\s.{0,6
 _STATION_RE = re.compile(r"^(?P<row>.*?[A-Za-zÁÉÍÓÚÑáéíóúñ].*?)\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?\s*$", re.M)
 
 
+#: El umbral en que está la estación, en la descripción del boletín de aviso hidrológico («…registró un nivel de
+#: 200.37 m s. n. m., ubicándose en el umbral amarillo.»). Pide un verbo antes de «umbral» para no tomar la cabecera
+#: de la tabla («Umbral Rojo (m s. n. m.)») ni la leyenda de niveles.
+_UMBRAL_RE = re.compile(r"\b(?:ubic[áa]ndose|ubica|se\s+encuentra|encontr[áa]ndose|super[óa]ndo|super[óa]|alcanz[óa]ndo"
+                        r"|alcanz[óa])\s+(?:en\s+)?(?:el\s+)?umbral\s+(amarillo|naranja|rojo)\b", re.I)
+
+
+def station_threshold(text: str) -> Optional[str]:
+    """Umbral (amarillo, naranja, rojo) de la estación en un boletín de aviso hidrológico, o ``None``."""
+    found = {m.group(1).lower() for m in _UMBRAL_RE.finditer(_flat(text))}
+    return found.pop() if len(found) == 1 else None  # dos umbrales distintos: ambiguo, no se elige
+
+
+def _threshold(text: str, title: str) -> dict:
+    """``{"umbral": …}`` de un boletín de aviso hidrológico (por su titular o su texto), o ``{}``."""
+    if "HIDROL" not in _fold(f"{title} {text[:4000]}").upper():
+        return {}
+    umbral = station_threshold(text)
+    return {"umbral": umbral} if umbral else {}
+
+
 def river_place(text: str) -> list[str]:
     """Aviso hidrológico: el distrito de la estación («Río Estación Distrito … / Amazonas Puerto Alegría Yavari
     59.54 58.78») en el departamento que nombra («…en el departamento de LORETO (Prov. Mariscal Ramón
@@ -451,6 +475,7 @@ def read(text: str, title: str = "") -> dict:
         out.update(codes=codes, basis="ubicación del reporte del COEN")
     elif (codes := described_place(text)):
         out.update(codes=codes, basis="descripción del reporte del COEN")
+    out.update(_threshold(text, title))
     if out.get("basis", "").endswith("reporte del COEN"):
         # La página enlaza el PDF de otra publicación: «…Ccapi (Cusco)» con el reporte de Huancabamba (Piura),
         # el boletín de corto plazo N° 193 con el reporte de Mariscal Gamarra.
@@ -497,14 +522,21 @@ def summary(doc: dict, kind: str = "meteorológico") -> str:
         parts.append(f"VIGENCIA: {when}." if re.match(r"\d", when) else f"Vigencia: {when.lower()}.")
     if doc.get("body"):
         parts.append(doc["body"])
-    if doc.get("source") and not doc.get("what"):
-        parts.append(f"{doc['source']}.")
+    parts += _extra_parts(doc)
     codes = doc.get("codes") or []
     if codes:
         names = [gz.label(c)["name"] for c in codes if gz.valid(c)]
         shown = ", ".join(names[:12]) + (f" y {len(names) - 12} más" if len(names) > 12 else "")
         parts.append(f"Según el PDF del COEN ({doc.get('basis') or 'lugares'}): {shown}.")
     return _flat(" ".join(parts))
+
+
+def _extra_parts(doc: dict) -> list[str]:
+    """La fuente del aviso (si no hay tema) y el umbral de la estación (lo lee ``severity``)."""
+    out = [f"{doc['source']}."] if doc.get("source") and not doc.get("what") else []
+    if doc.get("umbral"):
+        out.append(f"Umbral de la estación según el PDF del COEN: {doc['umbral']}.")
+    return out
 
 
 def geo_texts(codes: list[str]) -> list[str]:
@@ -579,8 +611,7 @@ def follow(items: list[dict], fetch: Callable[[str], tuple], cache: dict, feeds:
     más nuevo primero). ``fetch(url)`` → (estado, cuerpo, tipo, error). Devuelve cuántas se leyeron, cuántas
     fallaron y cuántas quedaron para la corrida siguiente."""
     todo = [i for i in items if wanted(i, feeds, now)]
-    todo = [i for i in todo if (cache.get(i["link"]) or {}).get("status") not in ("ok", "sin-pdf", "sin-datos")
-            and int((cache.get(i["link"]) or {}).get("tries") or 0) < MAX_TRIES]
+    todo = [i for i in todo if _needs_read(i, cache.get(i["link"]) or {})]
     # Los avisos primero, luego los reportes sin distrito; lo más nuevo primero.
     todo.sort(key=lambda i: (not is_bulletin(i), _placed(i), _neg(i.get("published") or i.get("first_seen") or "")))
     seen: set[str] = set()
@@ -595,7 +626,7 @@ def follow(items: list[dict], fetch: Callable[[str], tuple], cache: dict, feeds:
             stats["pending"] += 1
             continue
         prev = cache.get(link) or {}
-        entry = {"at": now.isoformat(timespec="seconds"), "tries": int(prev.get("tries") or 0) + 1}
+        entry = {"at": now.isoformat(timespec="seconds"), "tries": int(prev.get("tries") or 0) + 1, "v": READ_VERSION}
         try:
             entry.update(_read_one(link, it.get("title") or "", fetch))
         except Exception as exc:  # noqa: BLE001 — un PDF raro no detiene a los demás
@@ -603,6 +634,14 @@ def follow(items: list[dict], fetch: Callable[[str], tuple], cache: dict, feeds:
         cache[link] = entry
         stats["read" if entry["status"] in ("ok", "sin-datos") else "failed"] += 1
     return stats
+
+
+def _needs_read(item: dict, prev: dict) -> bool:
+    """Sin leer, con error y aún con intentos, o un aviso hidrológico leído antes de que se sacara su umbral."""
+    if prev.get("status") in ("ok", "sin-pdf", "sin-datos"):
+        stale = int(prev.get("v") or 1) < READ_VERSION and (item.get("title") or "").lower().startswith("aviso hidrol")
+        return stale and prev.get("status") == "ok" and not prev.get("umbral")
+    return int(prev.get("tries") or 0) < MAX_TRIES
 
 
 def _neg(s: str) -> str:

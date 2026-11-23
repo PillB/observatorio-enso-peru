@@ -741,6 +741,38 @@ mutation("json-error-200", {"json"}, False, "error de ArcGIS con HTTP 200 ({\"er
     lambda b, c: json.dumps({"error": {"code": 500, "message": "Error performing query operation", "details": []}}).encode())
 
 
+#: Vocabulario del nivel que una capa podría pasar a usar sin aviso (números romanos, otro género, inglés). Lo correcto
+#: no es leer «sin nivel»: es avisar (``alert-level-unread``), porque esas fuentes asignan un nivel a cada aviso.
+LEVEL_VOCAB = {"NIVEL 1": "Nivel I", "NIVEL 2": "Nivel II", "NIVEL 3": "Nivel III", "NIVEL 4": "Nivel IV",
+               "BAJO": "BAJA", "MODERADO": "MODERADA", "ALTO": "ALTA", "MUY ALTO": "MUY ALTA", "EXTREMO": "EXTREMA",
+               "AMARILLO": "YELLOW", "NARANJA": "ORANGE", "ROJO": "RED"}
+LEVEL_KEYS = {"NIVEL", "INTENSIDAD", "COLOR_TEXT"}
+
+
+def _level_vocab(d):
+    if isinstance(d, dict):
+        return {k: (LEVEL_VOCAB.get(v.strip().upper(), v) if k.upper() in LEVEL_KEYS and isinstance(v, str)
+                    else _level_vocab(v)) for k, v in d.items()}
+    if isinstance(d, list):
+        return [_level_vocab(v) for v in d]
+    return d
+
+
+mutation("level-vocab", {"json"}, False, "el campo del nivel con otro vocabulario (Nivel IV, EXTREMA, ORANGE)")(
+    _json_op(_level_vocab))
+
+
+def _dhn_wording(body, ctx):
+    """La DHN escribe el estado del boletín con otras palabras («se informa que…», «no se espera tsunami»)."""
+    t = _text(body)
+    new = re.sub(r"se comunica que", "se informa que", t, flags=re.I)
+    new = re.sub(r"no genera tsunami", "no se espera tsunami", new, flags=re.I)
+    return _same_or_none(new.encode("utf-8"), body)
+
+
+mutation("status-wording", {"html"}, False, "el estado del boletín de tsunami con otras palabras")(_dhn_wording)
+
+
 def _layer_id(url: str) -> Optional[int]:
     m = re.search(r"/MapServer/(\d+)", url or "")
     return int(m.group(1)) if m else None
@@ -958,6 +990,7 @@ def feed_target(f, body: Optional[bytes] = None) -> Target:
         # en un feed oficial de avisos, ``alert-source-format`` el mismo día si cambió de forma.
         state, _ = P.feed_state(st, f, {}, now, P.rules())
         sig = [f"degraded:{state}"] if state else []
+        sig += _level_signals(f.id, found)
         if st.get("formatError"):
             sig.append("format-error")
         entries = sorted(canon(_norm_entry(e)) for e in (seen[0].items if seen and st.get("ok") else []))
@@ -973,6 +1006,22 @@ def feed_target(f, body: Optional[bytes] = None) -> Target:
     if latest:
         ctx["now"] = datetime.fromisoformat(latest.replace("Z", "+00:00")) + timedelta(hours=1)
     return Target(f.id, "feed", ctx["family"], body, run, ctx)
+
+
+def _level_signals(feed_id: str, found: list) -> list[str]:
+    """Lo que ``sourcefeed.audit_levels`` registraría con estas entradas: ``alert-level-unread`` si alguna, de una
+    fuente que asigna niveles, queda sin nivel leído (un vocabulario nuevo en el campo del nivel)."""
+    from enso import severity as SV
+
+    if feed_id not in SV.LEVELED:
+        return []
+    for i in found:
+        title, summary = i.get("title") or "", i.get("summary") or ""
+        sev = SV.severity(feed_id, title, summary)
+        st = SV.level_status(feed_id, SV.kind_of(feed_id, title), title, summary, sev)
+        if st and st["loud"]:
+            return ["warning:alert-level-unread"]
+    return []
 
 
 def _date_style(body: bytes) -> str:

@@ -123,7 +123,12 @@ _DHN_BLOCK_RE = re.compile(
 _DHN_WHEN_RE = re.compile(r"El d[ií]a (\d{1,2}) (\w+) (\d{4}), a (\d{1,2}:\d{2}(?::\d{2})?) hora local", re.I)
 _DHN_EVENT_RE = re.compile(r"localizado\s+(?P<where>.+?),\s*con una magnitud de\s*(?P<mag>\d+(?:[.,]\d+)?)\s*(?P<type>\w+)?"
                            r"(?:,\s*a una profundidad de\s*(?P<depth>\d+(?:[.,]\d+)?)\s*km)?", re.I | re.S)
-_DHN_STATUS_RE = re.compile(r"se comunica que este evento\s+(?P<status>.+?)(?:\.\s|\.$|$)", re.I | re.S)
+# «…se comunica que este evento no genera tsunami en el litoral peruano.» y, cuando aún evalúa (el sismo de
+# Panamá del 9 de octubre de 2026), «…se emite BOLETIN DE INFORMACIÓN - SE INTENSIFICA VIGILANCIA.»: sin esta
+# segunda forma el boletín quedaba sin estado y el mapa decía «sin nivel» (docs/niveles-de-aviso.md).
+# 2025 también escribió «…se comunica que se ha emitido el boletín de INFORMACIÓN y se intensificará la vigilancia».
+_DHN_STATUS_RE = re.compile(r"(?:se comunica que(?:\s+este evento)?|se emite(?:\s+el)?)\s+(?P<status>.+?)(?:\.\s|\.$|$)",
+                            re.I | re.S)
 _ES_MONTHS = {m: i for i, m in enumerate(["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
                                           "septiembre", "octubre", "noviembre", "diciembre"], 1)} | {"setiembre": 9}
 
@@ -907,8 +912,11 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
         for f in feats:
             r = (f or {}).get("properties") or (f or {}).get("attributes") or {}
             nivel = str(r.get("NIVEL") or "").strip()
-            if not re.match(r"(?i)^nivel\s+[2-4]$", nivel):
+            if re.match(r"(?i)^nivel\s+1$", nivel):
                 continue  # el nivel 1 (verde) no es un aviso
+            # Cualquier otro valor se publica tal cual: si no es «Nivel 2» a «Nivel 4», ``severity`` no lo lee y la
+            # publicación avisa (``alert-level-unread``). Antes se descartaba como si fuera el nivel 1: con «Nivel IV»
+            # la capa entera desaparecía sin aviso (``tools.drift_sim``, mutación level-vocab).
             g = groups.setdefault((r.get("FECHA"), nivel), {})
             shapes.setdefault((r.get("FECHA"), nivel), []).extend(shape_rings((f or {}).get("geometry") or {}))
             # Un polígono cubre a veces varios departamentos: su área se reparte con una grilla.

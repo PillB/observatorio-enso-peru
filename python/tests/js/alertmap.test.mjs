@@ -247,3 +247,36 @@ it('#/variantes: los cinco experimentos con su tasa de uso, su intervalo y la de
   assert.match(out, /\(no con el periodo elegido\)/);
   assert.match(String(statsHtml(null)), /No se pudo leer la analítica/);
 });
+
+// Noviembre de 2026: los avisos verdes (PAGER verde, «no genera tsunami») contaban como «sin nivel», y todo aviso sin
+// nivel decía lo mismo («La fuente no asigna nivel»), fuera un reporte, un boletín de varios niveles o un nivel que el
+// observatorio no pudo leer.
+const { matches, nivelKey } = await import('../../../public/assets/js/alertmap.js');
+const GREEN = { ...AVISO, kind: 'reporte', title: 'Sismo', severity: { scale: 'usgs-pager', rank: 0, label: 'PAGER verde', scaleLabel: 'USGS' } };
+const NONE = { ...AVISO, kind: 'reporte', title: 'Vientos fuertes', severity: null,
+  levelStatus: { code: 'no-aplica', label: 'Reporte, sin nivel', why: 'es un reporte de un hecho ocurrido', loud: false } };
+const UNREAD = { ...AVISO, title: 'SENAMHI · peligro extrema', severity: null,
+  levelStatus: { code: 'no-leido', label: 'Nivel no leído', why: 'la fuente asigna niveles', loud: true } };
+
+it('verde no es «sin nivel»: cada uno tiene su filtro', () => {
+  const [r, g, n] = prepare({ groups: [{ id: 'alertas', items: [GREEN, NONE, RATED] }] }, NOW).alerts
+    .sort((a, b) => a.title.localeCompare(b.title));
+  assert.deepEqual([nivelKey(r), nivelKey(g), nivelKey(n)], ['3', '0', 'sin']);
+  assert.equal(matches(g, { nivel: 'sin' }), false);
+  assert.equal(matches(g, { nivel: '0' }), true);
+  assert.equal(matches(n, { nivel: 'sin' }), true);
+});
+
+it('un aviso sin nivel dice por qué, y un nivel no leído se distingue', () => {
+  const none = String(itemBadges(NONE, NOW));
+  assert.match(none, /class="lvl lvl-un lvl-s" title="es un reporte de un hecho ocurrido">Reporte, sin nivel</);
+  const unread = String(itemBadges(UNREAD, NOW));
+  assert.match(unread, /class="lvl lvl-err lvl-s"[^>]*>Nivel no leído</);
+  // Una publicación anterior, sin levelStatus, sigue mostrando «Sin nivel».
+  assert.match(String(itemBadges({ ...NONE, levelStatus: undefined }, NOW)), />Sin nivel</);
+});
+
+it('dos fuentes con otro nivel para el mismo aviso: se ve el del PDF y se marca la diferencia', () => {
+  const out = String(itemBadges({ ...RATED, levelConflict: { label: 'Umbral amarillo', basis: 'capa del SENAMHI' } }, NOW));
+  assert.match(out, /lvl-conflict[^>]*title="SENAMHI · otra fuente: Umbral amarillo \(capa del SENAMHI\)">.*Rojo ≠/);
+});

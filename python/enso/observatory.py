@@ -1997,13 +1997,13 @@ def run(out: Path, previous: Optional[str], fixtures: Optional[Path] = None, off
     if news is None and not only:
         news_items, feed_status = _previous_alerts(fetcher, fixtures, offline, prev, log)
     levels = sourcefeed.levels_table(relay, log, started)  # el nivel de los avisos del SENAMHI
-    feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=news_items,
-                            now=started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
+    feed_now = started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc)
+    feed = sourcefeed.build(official, b.series, weekly, meta, relay, news_items=news_items, now=feed_now,
                             feed_status=feed_status, avisos=levels)
+    # Un aviso sin nivel de una fuente que sí los asigna es un cambio de formato, no «sin nivel» (docs/niveles-de-aviso.md).
+    sourcefeed.audit_feed_levels(feed, log, feed_now)
     from . import freshness
-    fresh = freshness.build(b.series, weekly, official, meta, feed, feed_status, today,
-                            started if fixtures is None else datetime.combine(today, datetime.min.time(), timezone.utc),
-                            escenario=escenario)
+    fresh = freshness.build(b.series, weekly, official, meta, feed, feed_status, today, feed_now, escenario=escenario)
     freshness.log_late(fresh, log)
     for s in SOURCES:
         a = acquired.get(s.id)

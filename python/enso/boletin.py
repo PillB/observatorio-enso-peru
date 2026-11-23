@@ -177,6 +177,11 @@ def is_fen(it: dict) -> bool:
     return not hz and bool(FEN_TITLE_RE.search(it.get("title") or ""))
 
 
+def level_label(it: dict) -> Optional[str]:
+    """La etiqueta del nivel de la institución o, sin nivel, la de por qué no lo tiene («Varios niveles»…)."""
+    return (it.get("severity") or {}).get("label") or (it.get("levelStatus") or {}).get("label") or None
+
+
 def rank_of(it: dict) -> int:
     r = (it.get("severity") or {}).get("rank")
     return r if isinstance(r, int) and r > 0 else 0
@@ -260,7 +265,7 @@ def events(feed: Optional[dict], now: datetime) -> tuple[list[dict], list[dict],
             "title": short(it.get("title") or ""), "hazards": [h for h in it.get("hazards") or [] if h in FEN_HAZARDS],
             "what": hazard_text(it.get("hazards") or [], it.get("title") or ""),
             "whatList": hazard_words(it.get("hazards") or [], it.get("title") or ""),
-            "rank": rank_of(it), "level": sev.get("label") or None, "scale": sev.get("scaleLabel") or None,
+            "rank": rank_of(it), "level": level_label(it), "scale": sev.get("scaleLabel") or None,
             "kind": it.get("kind"), "phase": ph, "from": iso((it.get("valid") or {}).get("from")),
             "until": iso((it.get("valid") or {}).get("until")), "date": iso(it.get("date")), "deps": deps,
             "places": fine[:8], "approx": approx, "url": safe_url(it.get("document")) or safe_url(it.get("url")),

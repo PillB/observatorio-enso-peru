@@ -15,13 +15,23 @@ Escalas de las instituciones (``SCALES``):
 * SENAMHI, avisos meteorológicos que llegan por Telegram o por el COEN: el nivel del aviso en la tabla de
   ``?p=aviso-meteorologico`` (AMARILLO, NARANJA o ROJO), que el recolector del Perú guarda cada noche
   (``enso.senamhi_avisos``; ver ``assess``).
-* SENAMHI, avisos hidrológicos: umbral amarillo, naranja o rojo de cada estación (``COLOR_TEXT``).
+* SENAMHI, avisos hidrológicos: umbral amarillo, naranja o rojo de cada estación (``COLOR_TEXT``). Los que difunde
+  el COEN: el umbral que dice su PDF («…ubicándose en el umbral amarillo», ``documentos``) o, si no se leyó, el
+  del mismo aviso en la capa del SENAMHI (``sourcefeed.alerts``).
+* SENAMHI, peligro de incendios forestales (capa ``SENAMHI_AvisoFWI24H`` de GEOSINPAD, campo ``INTENSIDAD``): bajo,
+  moderado, alto, muy alto y extremo, con los colores que la capa misma declara en su ``drawingInfo`` (bajo
+  transparente, moderado amarillo, alto naranja, muy alto rojo, extremo morado).
 * IGP / CENVUL: alerta volcánica verde, amarilla, naranja o roja.
 * USGS: alerta PAGER verde, amarilla, naranja o roja (impacto estimado), solo si USGS la calculó.
   La magnitud de un sismo es una medida, no un nivel de alerta.
 * DHN, boletines de sismo y tsunami: «no genera tsunami» (informativo), alerta o alarma de tsunami.
 * PTWC: sin amenaza de tsunami o con amenaza.
 * Avisos que citan un color del SENAMHI en su texto («aviso naranja», «nivel rojo»).
+
+Un aviso sin nivel nunca queda como un genérico «sin nivel»: ``level_status`` dice por qué (es un reporte, la
+institución no usa niveles, el boletín reúne varios, USGS no calculó PAGER, la DHN sigue evaluando…) y, si la
+fuente sí asigna niveles y no se pudo leer, lo marca ``no-leido``, que la publicación convierte en una incidencia
+(``audit``). Así un cambio de formato en el campo del nivel no se confunde con «la fuente no trae nivel».
 
 ``rank`` ordena dentro de la escala de cada institución: 0 sin peligro (verde, informativo),
 1 el nivel más bajo de aviso (amarillo), 2 intermedio (naranja), 3 el más alto (rojo, alarma). Es
@@ -66,8 +76,15 @@ SCALES = {
                    "levels": {"green": (0, "PAGER verde", "verde"), "yellow": (1, "PAGER amarilla", "amarillo"),
                               "orange": (2, "PAGER naranja", "naranja"), "red": (3, "PAGER roja", "rojo")}},
     "dhn-tsunami": {"label": "DHN, boletín de sismo y tsunami",
-                    "levels": {"info": (0, "No genera tsunami", "verde"), "alerta": (2, "Alerta de tsunami", "naranja"),
+                    "levels": {"info": (0, "No genera tsunami", "verde"),
+                               "cancelacion": (0, "Cancelación de la alerta de tsunami", "verde"), "alerta": (2, "Alerta de tsunami", "naranja"),
                                "alarma": (3, "Alarma de tsunami", "rojo")}},
+    "senamhi-fwi": {"label": "SENAMHI, peligro de incendios forestales (índice FWI)",
+                    # El orden y los colores, los de la capa (``drawingInfo``): muy alto y extremo comparten el
+                    # rango más alto de la escala común del mapa (rojo); la etiqueta los distingue.
+                    "levels": {"bajo": (0, "Peligro bajo", "verde"), "moderado": (1, "Peligro moderado", "amarillo"),
+                               "alto": (2, "Peligro alto", "naranja"), "muy alto": (3, "Peligro muy alto", "rojo"),
+                               "extremo": (3, "Peligro extremo", "morado")}},
     "ptwc": {"label": "PTWC, amenaza de tsunami",
              "levels": {"none": (0, "Sin amenaza de tsunami", "verde"), "threat": (3, "Amenaza de tsunami", "rojo")}},
 }
@@ -82,6 +99,11 @@ _NIVEL_RE = re.compile(r"\bnivel\s+([1-4])\b", re.I)
 _HIDRO_RE = re.compile(r"\(nivel\s+(amarillo|naranja|rojo)\)", re.I)
 _VOLCAN_RE = re.compile(r"\balerta\s+(verde|amarill[ao]|naranja|roj[ao])\b", re.I)
 _PAGER_RE = re.compile(r"\balerta PAGER (green|yellow|orange|red)\b", re.I)
+#: Titular que arma ``hazardparse`` con el campo INTENSIDAD de la capa FWI: «SENAMHI · peligro extremo de incendios…».
+_FWI_RE = re.compile(r"\bpeligro\s+(bajo|moderado|alto|muy\s+alto|extremo)\s+de\s+incendios\b", re.I)
+#: Umbral de la estación en el PDF del COEN de un aviso hidrológico («ubicándose en el umbral amarillo»), como lo
+#: deja ``documentos.summary``: «Umbral de la estación según el PDF del COEN: amarillo.»
+_UMBRAL_RE = re.compile(r"\bumbral de la estaci[óo]n según el PDF del COEN:\s+(amarillo|naranja|rojo)\b", re.I)
 #: Un color del SENAMHI citado en el texto de un aviso («aviso naranja», «nivel rojo», «alerta amarilla»).
 _TEXT_COLOR_RE = re.compile(r"\b(?:aviso|nivel|alerta)\s+(?:de\s+(?:color\s+)?)?(amarill[ao]|naranja|roj[ao])\b", re.I)
 
@@ -163,47 +185,164 @@ def _range(text: str, ref: datetime) -> Optional[tuple[datetime, datetime]]:
     return a, b + timedelta(days=1) - timedelta(minutes=1)
 
 
-def severity(feed_id: str, title: str, summary: str) -> Optional[dict]:
-    """El nivel que la institución asignó al aviso, o ``None`` si su fuente no trae uno."""
-    text = f"{title} {summary}"
-    if feed_id in ("senamhi-quebradas", "senamhi-lluvias"):
-        m = _NIVEL_RE.search(title)
-        layer = "de precipitaciones " if feed_id == "senamhi-lluvias" else ""
-        return _level("senamhi-niveles", m.group(1), f"campo NIVEL de la capa {layer}del SENAMHI en GEOSINPAD") if m else None
-    if feed_id == "senamhi-hidrologicos":
-        m = _HIDRO_RE.search(title)
-        return _level("senamhi-umbral", m.group(1).lower(), "campo COLOR_TEXT del aviso hidrológico") if m else None
-    if feed_id == "senamhi-incendios":
-        m = _NIVEL_RE.search(text) or _TEXT_COLOR_RE.search(text)
-        if m and m.group(1).isdigit():
-            return _level("senamhi-niveles", m.group(1), "campo INTENSIDAD de la capa del SENAMHI en GEOSINPAD")
-        return _level("senamhi-colores", _COLOR[m.group(1).lower()], "campo INTENSIDAD de la capa del SENAMHI") if m else None
-    if feed_id.startswith("igp-cenvul"):
-        m = _VOLCAN_RE.search(text)
-        return _level("igp-volcan", _COLOR[m.group(1).lower()], "nivel de alerta del boletín del CENVUL") if m else None
-    if feed_id == "usgs-sismos":
-        m = _PAGER_RE.search(summary)
-        return _level("usgs-pager", m.group(1).lower(), "alerta PAGER publicada por USGS") if m else None
-    if feed_id == "dhn-tsunamis":
-        low = text.lower()
-        if re.search(r"\balarma de tsunami\b", low):
-            return _level("dhn-tsunami", "alarma", "estado del boletín de la DHN")
-        if re.search(r"\balerta de tsunami\b", low) and not re.search(r"no (?:genera|representa)", low):
-            return _level("dhn-tsunami", "alerta", "estado del boletín de la DHN")
-        if re.search(r"no (?:genera|generar[ií]a|representa)\w*\s+(?:\w+\s+){0,3}tsunami", low):
-            return _level("dhn-tsunami", "info", "estado del boletín de la DHN")
-        return None
-    if feed_id.startswith("ptwc"):
-        up = text.upper()
-        if "NO TSUNAMI THREAT" in up or "THERE IS NO TSUNAMI THREAT" in up:
-            return _level("ptwc", "none", "mensaje del PTWC")
-        if "HAZARDOUS TSUNAMI WAVES" in up or "TSUNAMI THREAT" in up:
-            return _level("ptwc", "threat", "mensaje del PTWC")
-        return None
-    if feed_id == "senamhi-telegram" or is_coen(feed_id):
-        m = _TEXT_COLOR_RE.search(text)
-        return _level("senamhi-colores", _COLOR[m.group(1).lower()], "color del aviso citado en su texto") if m else None
+def _sev_layer(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    m = _NIVEL_RE.search(title)
+    layer = "de precipitaciones " if feed_id == "senamhi-lluvias" else ""
+    return _level("senamhi-niveles", m.group(1), f"campo NIVEL de la capa {layer}del SENAMHI en GEOSINPAD") if m else None
+
+
+def _sev_hidro(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    m = _HIDRO_RE.search(title)
+    return _level("senamhi-umbral", m.group(1).lower(), "campo COLOR_TEXT del aviso hidrológico") if m else None
+
+
+def _sev_fwi(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    # La capa da palabras (BAJO … EXTREMO), no «Nivel N» ni colores: hasta noviembre de 2026 se buscaban esos y
+    # los 9 avisos de peligro extremo de los 60 días anteriores quedaron «sin nivel» (docs/niveles-de-aviso.md).
+    m = _FWI_RE.search(title)
+    return _level("senamhi-fwi", " ".join(m.group(1).lower().split()),
+                  "campo INTENSIDAD de la capa FWI del SENAMHI en GEOSINPAD") if m else None
+
+
+def _sev_volcan(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    m = _VOLCAN_RE.search(f"{title} {summary}")
+    return _level("igp-volcan", _COLOR[m.group(1).lower()], "nivel de alerta del boletín del CENVUL") if m else None
+
+
+def _sev_usgs(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    m = _PAGER_RE.search(summary)
+    return _level("usgs-pager", m.group(1).lower(), "alerta PAGER publicada por USGS") if m else None
+
+
+def _sev_dhn_tsunami(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    low = f"{title} {summary}".lower()
+    # Antes que «alerta»: «Cancelación de alerta de tsunami en el litoral peruano» se mostraba como una alerta
+    # vigente (naranja) hasta noviembre de 2026.
+    # «…hasta la cancelación de ALERTA de tsunamis» es parte de una alerta vigente, no su cancelación.
+    if re.search(r"(?<!hasta la )\bcancelaci[óo]n de (?:la )?(?:alerta|alarma) de tsunami\b", low):
+        return _level("dhn-tsunami", "cancelacion", "estado del boletín de la DHN")
+    if re.search(r"\balarma de tsunami\b", low):
+        return _level("dhn-tsunami", "alarma", "estado del boletín de la DHN")
+    if re.search(r"\balerta de tsunami\b", low) and not re.search(r"no (?:genera|representa)", low):
+        return _level("dhn-tsunami", "alerta", "estado del boletín de la DHN")
+    if re.search(r"no (?:genera|generar[ií]a|representa)\w*\s+(?:\w+\s+){0,3}tsunami", low):
+        return _level("dhn-tsunami", "info", "estado del boletín de la DHN")
     return None
+
+
+def _sev_ptwc(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    up = f"{title} {summary}".upper()
+    if "NO TSUNAMI THREAT" in up:
+        return _level("ptwc", "none", "mensaje del PTWC")
+    if "HAZARDOUS TSUNAMI WAVES" in up or "TSUNAMI THREAT" in up:
+        return _level("ptwc", "threat", "mensaje del PTWC")
+    return None
+
+
+def _sev_text_color(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    if is_coen(feed_id) and title.lower().startswith("aviso hidrol"):
+        m = _UMBRAL_RE.search(summary)
+        if m:
+            return _level("senamhi-umbral", m.group(1).lower(), "umbral de la estación en el PDF del boletín del COEN")
+    m = _TEXT_COLOR_RE.search(f"{title} {summary}")
+    return _level("senamhi-colores", _COLOR[m.group(1).lower()], "color del aviso citado en su texto") if m else None
+
+
+#: Lector del nivel de cada feed (por id exacto o por prefijo, en ese orden).
+_SEVERITY_BY_FEED = {"senamhi-quebradas": _sev_layer, "senamhi-lluvias": _sev_layer,
+                     "senamhi-hidrologicos": _sev_hidro, "senamhi-incendios": _sev_fwi, "usgs-sismos": _sev_usgs,
+                     "dhn-tsunamis": _sev_dhn_tsunami, "senamhi-telegram": _sev_text_color,
+                     "indeci-coen": _sev_text_color, "indeci-coen-boletines": _sev_text_color}
+_SEVERITY_BY_PREFIX = (("igp-cenvul", _sev_volcan), ("ptwc", _sev_ptwc))
+
+
+def _reader(feed_id: str):
+    return _SEVERITY_BY_FEED.get(feed_id) or next((fn for pre, fn in _SEVERITY_BY_PREFIX if feed_id.startswith(pre)), None)
+
+
+def severity(feed_id: str, title: str, summary: str) -> Optional[dict]:
+    """El nivel que la institución asignó al aviso, o ``None`` si no se encontró (``level_status`` dice por qué)."""
+    fn = _reader(feed_id)
+    return fn(feed_id, title, summary) if fn else None
+
+
+# ---------------------------------------------------------------------------
+# Por qué un aviso no tiene nivel
+# ---------------------------------------------------------------------------
+#: Feeds cuya institución asigna un nivel a todo lo que publica: si no se lee, es un problema del observatorio
+#: (el campo cambió de nombre o de vocabulario), nunca «la fuente no trae nivel».
+LEVELED = frozenset({"senamhi-quebradas", "senamhi-lluvias", "senamhi-hidrologicos", "senamhi-incendios",
+                     "igp-cenvul-boletines", "igp-cenvul-alertas", "ptwc-mensajes", "ptwc-wepa40", "dhn-tsunamis"})
+
+#: Cada razón: etiqueta corta (la del mapa), explicación y si es un problema que abre una incidencia (``loud``).
+STATUS = {
+    "no-aplica": ("Reporte, sin nivel", "es un reporte de un hecho ocurrido o una detección: la institución no le "
+                  "asigna nivel de aviso", False),
+    "sin-escala": ("Sin escala de niveles", "la institución no asigna niveles a este tipo de aviso", False),
+    "multinivel": ("Varios niveles", "el boletín reúne zonas de distintos niveles en un mapa; cada zona se ve con su "
+                   "nivel en la capa del SENAMHI del mismo aviso", False),
+    "no-calculado": ("Sin alerta PAGER", "USGS no publicó una alerta PAGER para este sismo; la magnitud es una medida, "
+                     "no un nivel de alerta", False),
+    "en-evaluacion": ("En evaluación", "la DHN informó que intensifica la vigilancia y aún no dice si el sismo genera "
+                      "tsunami en el litoral peruano; el boletín siguiente lo dirá", False),
+    "pendiente": ("Nivel pendiente", "el nivel está en un documento que el observatorio aún no leyó (el PDF del COEN "
+                  "o la copia de la tabla de avisos del SENAMHI)", False),
+    "no-leido": ("Nivel no leído", "la fuente asigna niveles pero el observatorio no pudo leer este: se abrió una "
+                 "incidencia", True),
+    "sin-regla": ("Nivel no revisado", "fuente de peligros sin regla de niveles: alguien debe decidir si los trae",
+                  True),
+}
+
+#: La DHN aún evalúa: «se intensifica vigilancia», «se intensificará la vigilancia», «se mantendrá en constante vigilancia».
+_VIGILANCIA_RE = re.compile(r"intensific\w*\s+(?:la\s+)?vigilancia|constante\s+vigilancia", re.I)
+_COEN_RULES = (  # (comienzo del titular en minúsculas, razón) para lo que el COEN difunde sin nivel
+    ("aviso de corto plazo", "multinivel"), ("boletín informativo de aviso de corto plazo", "multinivel"),
+    ("aviso especial de oleaje", "sin-escala"), ("boletín informativo de aviso especial de oleaje", "sin-escala"),
+    ("aviso hidrol", "pendiente"), ("aviso meteorol", "pendiente"))
+_BY_FEED = {"dhn-avisos": "sin-escala", "usgs-sismos": "no-calculado", "firms-focos": "no-aplica"}
+
+
+def _status(code: str, why: str = "", label: str = "") -> dict:
+    default, text, loud = STATUS[code]
+    return {"code": code, "label": label or default, "why": why or text, "loud": loud}
+
+
+def _coen_reason(title: str, summary: str, kind: str) -> str:
+    low = title.lower()
+    code = next((c for pre, c in _COEN_RULES if low.startswith(pre)), None)
+    if code == "pendiente" and "según el pdf del coen" in summary.lower():
+        return "no-leido"  # el PDF se leyó y no dice el umbral (o lo dice de otra forma)
+    if code:
+        return code
+    # Un boletín del COEN de un tipo que ninguna regla conoce: alguien debe decidir si trae nivel.
+    return "no-aplica" if kind == "reporte" else "sin-regla"
+
+
+def _telegram_reason(kind: str, cites_aviso: bool) -> str:
+    if kind == "en-curso":
+        return "sin-escala"  # «SENAMHI, en este momento…»: lo que ocurre, sin nivel propio
+    return "pendiente" if cites_aviso else "sin-escala"
+
+
+def level_status(feed_id: str, kind: str, title: str, summary: str, sev: Optional[dict],
+                 cites_aviso: bool = False) -> Optional[dict]:
+    """Por qué un aviso no tiene nivel (``None`` si lo tiene). ``loud``: la fuente sí asigna niveles y no se
+    leyó (``no-leido``) o la fuente no tiene regla (``sin-regla``): la publicación abre una incidencia."""
+    if sev is not None:
+        return None
+    if feed_id == "dhn-tsunamis" and _VIGILANCIA_RE.search(f"{title} {summary}"):
+        return _status("en-evaluacion")
+    if feed_id in LEVELED:
+        return _status("no-leido", "la fuente asigna un nivel a cada aviso y no se encontró en el titular ni en "
+                                   "el resumen: el campo del nivel pudo cambiar de nombre o de vocabulario")
+    if is_coen(feed_id):
+        return _status(_coen_reason(title, summary, kind))
+    if feed_id == "senamhi-telegram":
+        return _status(_telegram_reason(kind, cites_aviso))
+    code = _BY_FEED.get(feed_id)
+    if code:
+        return _status(code, label="Detección, sin nivel" if kind == "deteccion" else "")
+    return _status("sin-regla")
 
 
 def kind_of(feed_id: str, title: str) -> str:
@@ -304,6 +443,14 @@ def _table_validity(aviso) -> Optional[dict]:
             "basis": f"inicio y fin del aviso N° {aviso.num} en la tabla de avisos del SENAMHI", "source": "tabla"}
 
 
+def _status_field(feed_id: str, kind: str, title: str, summary: str, sev: Optional[dict]) -> dict:
+    """``{"levelStatus": …}`` si el aviso no tiene nivel. Un aviso de Telegram que empieza «Aviso del SENAMHI» es
+    uno de la tabla de avisos: sin nivel, está pendiente de ella."""
+    st = level_status(feed_id, kind, title, summary, sev,
+                      cites_aviso=feed_id == "senamhi-telegram" and title.startswith("Aviso del SENAMHI"))
+    return {"levelStatus": st} if st else {}
+
+
 def assess(feed_id: str, title: str, summary: str, published: Optional[str], now: datetime,
            avisos=None) -> dict:
     """Todo lo que el mapa necesita de un aviso, leído de su fuente.
@@ -317,9 +464,9 @@ def assess(feed_id: str, title: str, summary: str, published: Optional[str], now
     aviso = avisos.find(feed_id, title, summary, published, valid) if avisos is not None else None
     if aviso is not None and valid is None and kind == "pronostico":
         valid = _table_validity(aviso)
-    out = {"kind": kind,
-           "severity": _table_level(aviso, kind) if aviso is not None else severity(feed_id, title, summary),
-           "valid": valid, "phaseAtPublication": phase(kind, valid, published, now, feed_id)}
+    sev = _table_level(aviso, kind) if aviso is not None else severity(feed_id, title, summary)
+    out = {"kind": kind, "severity": sev, "valid": valid, "phaseAtPublication": phase(kind, valid, published, now, feed_id)}
+    out.update(_status_field(feed_id, kind, title, summary, sev))
     if aviso is not None:
         out["aviso"] = {"num": aviso.num, "year": aviso.year, "url": aviso.url, "cancelled": aviso.cancelled}
     occ = occurred(feed_id, summary)
