@@ -6,7 +6,7 @@
   <description><![CDATA[ RPP Noticias tiene las &uacute;ltimas noticias sobre pol&iacute;tica, futbol y far&aacute;ndula nacional e internacional. Ediciones regionales y de todo el Peru ]]></description>
   <language>es</language>
   <copyright>RPP NOTICIAS</copyright>
-  <lastBuildDate>Tue, 20 Oct 2026 20:30:27 -0500</lastBuildDate>
+  <lastBuildDate>Mon, 23 Nov 2026 09:40:52 -0500</lastBuildDate>
   <ttl>15</ttl>
 
     <image>
@@ -15,6 +15,28 @@
   		<link>https://rpp.pe</link>
     </image>
 
+           <item>
+        <title><![CDATA[Un sismo de magnitud 5.1 sacudió Pasco esta madrugada]]></title>
+        <description><![CDATA[El foco del <strong>sismo</strong> se localizó a 25 kilómetros al sureste de<strong> Cerro de Pasco</strong>, con una profundidad de 132 kilómetros.]]></description>
+        <pubDate>Sun, 22 Nov 2026 01:15:07 -0500</pubDate>
+        <link>https://rpp.pe/peru/actualidad/un-sismo-de-magnitud-51-sacudio-pasco-esta-madrugada-noticia-1719106</link>
+        <guid>1719106</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/11/22/105410_1931816.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Sismo, Pasco, IGP, Cerro de Pasco, Noticias Última Hora]]></media:keywords>
+      </item>
+           <item>
+        <title><![CDATA[Un sismo de magnitud 4.6 remeció la región Pasco esta mañana]]></title>
+        <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 32 kilómetros al sureste de Puerto Bermúdez, en la provincia de <strong>Oxapampa</strong>; reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
+        <pubDate>Fri, 13 Nov 2026 08:00:23 -0500</pubDate>
+        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-46-remecio-la-region-esta-manana-noticia-1717617</link>
+        <guid>1717617</guid>
+        <dc:type>Artículo</dc:type>
+        <media:content url="https://f.rpp-noticias.io/2026/11/13/550655_1928729.jpg?imgdimension=look" type="image/jpeg">
+        <media:description/></media:content>
+        <media:keywords><![CDATA[ Pasco, Instituto Geofísico del Perú, Sismo, IGP, Noticias Última Hora]]></media:keywords>
+      </item>
            <item>
         <title><![CDATA[Un sismo de magnitud 3.5 se sintió esta mañana en la región Pasco]]></title>
         <description><![CDATA[El epicentro del <strong>sismo </strong>se ubicó a 7 kilómetros al noreste de <strong>Oxapampa</strong>, reportó el <a data-mce-href="https://rpp.pe/noticias/igp" href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú</a>.]]></description>
@@ -542,28 +564,6 @@
         <media:content url="https://f.rpp-noticias.io/2024/01/05/whatsapp-video-2024-01-05-at-93251-am-1521367mp4_1521368.jpg?imgdimension=look" type="image/jpeg">
         <media:description/></media:content>
         <media:keywords><![CDATA[ Pasco, lluvias, Fenómeno El Niño, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Un sismo de magnitud 3.7 remeció la región Pasco esta madrugada]]></title>
-        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (<strong>IGP</strong>)</a>, el <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 18 kilómetros al suroeste de Pozuzo, en la provincia Oxapampa, región<a data-mce-href="https://rpp.pe/peru/pasco" href="https://rpp.pe/peru/pasco"> Pasco</a>.]]></description>
-        <pubDate>Tue, 24 Oct 2023 05:00:33 -0500</pubDate>
-        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-37-remecio-oxapampa-esta-madrugada-noticia-1512162</link>
-        <guid>1512162</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2023/10/24/111311_1490964.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ Pasco, sismo, IGP, Noticias Última Hora]]></media:keywords>
-      </item>
-           <item>
-        <title><![CDATA[Un sismo de magnitud 4.0 remeció la región Pasco esta tarde]]></title>
-        <description><![CDATA[De acuerdo con información del <a href="https://rpp.pe/noticias/igp" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/igp">Instituto Geofísico del Perú (<strong>IGP</strong>)</a>, el <a href="https://rpp.pe/noticias/sismo" target="_blank" rel="noopener" data-mce-href="https://rpp.pe/noticias/sismo">sismo</a> se localizó<strong> </strong>a 62 kilómetros al noroeste de Puerto Bermúdez, en la provincia de Oxapampa, región <a data-mce-href="https://rpp.pe/peru/pasco" href="https://rpp.pe/peru/pasco">Pasco</a>.]]></description>
-        <pubDate>Fri, 20 Oct 2023 14:27:52 -0500</pubDate>
-        <link>https://rpp.pe/peru/pasco/pasco-sismo-de-magnitud-40-remecio-la-region-esta-tarde-noticia-1511737</link>
-        <guid>1511737</guid>
-        <dc:type>Artículo</dc:type>
-        <media:content url="https://f.rpp-noticias.io/2023/10/20/252225_1489986.jpg?imgdimension=look" type="image/jpeg">
-        <media:description/></media:content>
-        <media:keywords><![CDATA[ IGP, sismo, Pasco, Noticias Última Hora]]></media:keywords>
       </item>
      </channel>
 </rss>
