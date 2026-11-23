@@ -235,13 +235,39 @@ una línea que empieza con `boletin:`:
 
 | Lo que dice | Qué hacer |
 | --- | --- |
+| Diagnóstico: «falta BOLETIN_MAIL_WEBHOOK_SECRET» o «no empieza con https://» | Son dos secretos distintos, los dos en el entorno **Producción**: `BOLETIN_MAIL_WEBHOOK` es la **dirección** del flujo (`https://…/webhook/enso-boletin-confirmar`) y `BOLETIN_MAIL_WEBHOOK_SECRET` es la **clave**, igual al valor de la credencial «Boletín: secreto del sitio» de n8n (sin «Bearer»). Volver a desplegar después de cambiarlos |
+| El panel de Cloudflare muestra el secreto pero el sitio dice que falta | Cada despliegue escribe en el registro de GitHub Actions (paso *Make sure the Cloudflare Pages project exists*) un aviso «Boletín» con lo que falta en **Production** según la API de Cloudflare (o si solo está en Preview), y el paso *Check the newsletter subscription is on* avisa si quedó apagada. Alternativa al panel: crear los secretos `BOLETIN_SECRET`, `BOLETIN_LIST_TOKEN`, `BOLETIN_MAIL_WEBHOOK` y `BOLETIN_MAIL_WEBHOOK_SECRET` como secretos del repositorio en GitHub (Settings → Secrets and variables → Actions): el despliegue los copia a Production de Cloudflare (sin espacios de más) antes de subir el sitio |
 | `HTTP 404` | El flujo «correo de confirmación» de n8n no está publicado (activo). Publicarlo. Revisar que `BOLETIN_MAIL_WEBHOOK` termine en `/webhook/enso-boletin-confirmar` |
 | `webhook-test` | `BOLETIN_MAIL_WEBHOOK` tiene la *Test URL*: cambiarla por la *Production URL* y volver a desplegar |
-| `HTTP 401` o `403` | El valor de `BOLETIN_MAIL_WEBHOOK_SECRET` no es el de la credencial `X-Enso-Secret` del disparador |
+| `HTTP 403` con una página HTML («403 Forbidden», de nginx) | Un servidor delante de n8n corta el pedido antes de que llegue a n8n (reglas contra robots, por país o por IP). Por eso cada pedido lleva `User-Agent: EnsoPeru-Boletin/1`: un fetch de Cloudflare no lo manda y ese nginx corta los pedidos sin él. Ese mismo cortafuegos corta los cuerpos con HTML (`<!doctype>`, `<meta>`, `<style>`), y los de más de 8 KB, así que el sitio manda solo asunto y HTML, en base64 (`subject_b64`, `html_b64`, con `enc: "base64"`; unos 3,6 KB) y «Armar correo» los decodifica. Si el diagnóstico pasa pero el correo de prueba da este 403, el flujo de n8n importado es anterior a ese cambio: volver a importar `enso-n8n-boletin-confirmar.json` |
+| `HTTP 401` o `403` («Authorization data is wrong!», de n8n) | El valor de `BOLETIN_MAIL_WEBHOOK_SECRET` no es el de la credencial `X-Enso-Secret` del disparador |
+| «Leer suscripciones» (n8n) da `HTTP 401: No autorizado.` | El nodo no usa la credencial «Lista del boletín ENSO», o su valor no es `Bearer ` + `BOLETIN_LIST_TOKEN` (exacto, sin espacios ni saltos de línea de más). «Boletín: secreto del sitio» va solo en «Pedido del sitio» del flujo de confirmación |
+| `HTTP 503`: «La suscripción está apagada en este despliegue: falta …» (en «Leer suscripciones» o en el diagnóstico) | Falta o es corto el secreto que nombra, en el entorno **Producción** de Cloudflare. Un secreto nuevo o cambiado vale desde el despliegue siguiente: volver a desplegar (Actions → workflow principal → *Run workflow* en `main`). La página `/api/boletin/estado` responde `"enabled": false` mientras tanto |
 | `HTTP 500` | El flujo corrió y falló: ver la ejecución en n8n (casi siempre la credencial de Gmail en **Enviar por Gmail**) |
 | Sin `HTTP` | La dirección no responde: n8n no es accesible desde internet o la URL está mal escrita |
 
 Cambiar un secreto en Cloudflare pide volver a desplegar (correr el flujo `observatory` a mano).
+
+### Diagnóstico (`#/boletin?diagnostico`)
+
+Abrir `https://enso-peru.pages.dev/#/boletin?diagnostico`, poner como clave el valor de `BOLETIN_LIST_TOKEN` y pulsar
+**Probar** (`POST /api/boletin/diagnostico`). Muestra, sin mostrar ningún valor:
+
+- el largo y la huella (SHA-256, 12 caracteres) de cada secreto de Cloudflare, y avisa si tiene espacios, saltos de
+  línea o comillas de más o si es más corto de lo debido;
+- la huella de `Bearer <BOLETIN_LIST_TOKEN>`, que debe ser igual a la del valor de la credencial «Lista del boletín
+  ENSO» en n8n;
+- qué contesta el webhook de n8n sin secreto, con uno falso y con el de Cloudflare, y qué quiere decir (sin publicar,
+  secreto distinto, disparador sin credencial o todo bien);
+- con una dirección en «Mandar un correo de prueba», un correo de verdad por la misma vía que la confirmación.
+
+Para sacar la huella de un valor de n8n: `printf %s 'VALOR' | shasum -a 256 | cut -c1-12`.
+
+**«Node … does not have access to the credential» en n8n.** El flujo importado trae el *id* de la credencial con que se
+armó, que en otro n8n no existe, aunque el nodo muestre el mismo nombre. En cada nodo con credencial (**Enviar por
+Gmail**, **Leer suscripciones**, **Pedido del sitio**) hay que abrir el desplegable y elegirla de nuevo (si ya parece
+elegida, elegir otra y volver a la buena), guardar y publicar. Con `N8N_GMAIL_CRED_ID`, `N8N_LIST_CRED_ID` y
+`N8N_BOL_HOOK_CRED_ID` al correr `node n8n/build.mjs`, el flujo sale con los *id* de ese n8n.
 
 ## Correo: formato y pruebas
 

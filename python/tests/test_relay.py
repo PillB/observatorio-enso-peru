@@ -834,7 +834,8 @@ def test_dhn_challenge_is_not_read_and_the_last_informe_is_kept(monkeypatch):
     latest = {"id": "18-2026", "number": 18, "year": 2026, "issued": "2026-10-16", "informe_url": INFORME18}
     res = reports.acquire_informe(latest, f, prev, log, datetime(2026, 10, 21).date())
     assert read == [] and res["carried"] and res["icenProvisional"]["icen"] == 3.97
-    assert [(e[0], e[3]) for e in log.events] == [("warning", "informe-unread"), ("warning", "repository-unreachable")]
+    assert [(e[0], e[3]) for e in log.events] == [("warning", "informe-unread"), ("warning", "repository-unreachable"),
+                                                  ("warning", "gobpe-unreachable")]
     # Sin informe anterior (primera corrida): no hay dato, solo la advertencia.
     assert reports.acquire_informe(latest, f, None, _Log(), datetime(2026, 10, 21).date()) is None
 

@@ -114,3 +114,163 @@ describe('versiones en el navegador (ab.js Session)', () => {
     assert.ok(['A', 'B', 'C', 'D'].includes(s.variant));
   });
 });
+
+const settle = () => new Promise((r) => setTimeout(r, 5));
+/** Los eventos mandados, por versión: {v: [eventos…]} (cada aviso por separado). */
+const beacons = () => sent.map((b) => `${b.v}:${[...b.e].sort().join(',')}`);
+const count = (e) => sent.reduce((a, b) => a + b.e.filter((x) => x === e).length, 0);
+
+describe('ab.js: qué visita entra en la decisión y cuántas veces cuenta cada evento', () => {
+  beforeEach(() => env());
+
+  it('un evento cuenta una vez por visita aunque la página se oculte y vuelva (antes «use» se mandaba otra vez)', async () => {
+    store.set('enso-vista-memoria', JSON.stringify({ v: 'cuencas', chosen: false, at: today() }));
+    const { ab } = await fresh();
+    const s = ab('memoria');
+    s.mark('view');
+    s.mark('select');
+    s.flush();                    // visibilitychange → hidden
+    s.mark('select');             // vuelve a la pestaña y filtra otra vez
+    s.mark('detail');
+    s.flush();
+    await settle();
+    assert.equal(count('use'), 1);
+    assert.equal(count('select'), 1);
+    assert.equal(count('view'), 1);
+    assert.equal(count('detail'), 1, 'lo nuevo de la visita sí se manda');
+  });
+
+  it('la primera visita sorteada manda rview y ruse a su versión; la vuelta del mismo navegador ya no', async () => {
+    let mod = await fresh();
+    let s = mod.ab('mapa');
+    const v = s.own;
+    s.mark('hover');              // pasar el cursor no es uso
+    s.flush();
+    s.mark('view');
+    s.mark('hover');
+    s.flush();
+    s.mark('select');
+    s.flush();
+    await settle();
+    assert.deepEqual(beacons(), [`${v}:hover`, `${v}:rview,view`, `${v}:ruse,select,use`]);
+    // Otro día, la misma persona: su versión sigue, pero esa visita no es una muestra nueva.
+    sent = [];
+    mod = await fresh();
+    s = mod.ab('mapa');
+    s.mark('view');
+    s.mark('select');
+    s.flush();
+    await settle();
+    assert.equal(count('rview') + count('ruse'), 0);
+    assert.equal(count('view'), 1);
+  });
+
+  for (const [what, loc] of [['?version=… con la misma letra o no', { hash: '#/noticias?version=A' }],
+    ['?nivel=… de la memoria', { hash: '#/memoria?nivel=distrito&area=200401' }], ['?sitio=B', { search: '?sitio=B' }]]) {
+    it(`una primera visita que llega con un enlace (${what}) no entra en la decisión`, async () => {
+      env(loc);
+      const { ab } = await fresh();
+      for (const x of ['mapa', 'memoria', 'sitio']) { const s = ab(x); s.mark('view'); s.mark('select'); s.flush(); }
+      await settle();
+      assert.equal(count('rview'), 0, beacons().join(' '));
+    });
+  }
+
+  it('un uso antes de que la versión se vea no cuenta como uso de la visita sorteada', async () => {
+    const { ab } = await fresh();
+    const s = ab('sitio');
+    s.mark('use');
+    s.flush();
+    s.mark('view');
+    s.flush();
+    await settle();
+    assert.equal(count('ruse'), 0);
+    assert.equal(count('rview'), 1);
+  });
+
+  it('intención de tratar: si elige otra en su primera visita, lo de esa visita sigue siendo de la sorteada', async () => {
+    const { ab } = await fresh();
+    const s = ab('memoria');
+    const a = s.own;
+    const b = ['resumen', 'cuencas'].find((x) => x !== a);
+    s.mark('view');
+    s.choose(b);
+    s.mark('detail');
+    s.flush();
+    await settle();
+    const r = sent.filter((x) => x.e.includes('rview') || x.e.includes('ruse'));
+    assert.deepEqual(r.map((x) => [x.v, x.e.filter((e) => e[0] === 'r').sort()]), [[a, ['rview']], [a, ['ruse']]]);
+    assert.ok(sent.some((x) => x.v === b && x.e.includes('use')), 'el uso de la elegida se cuenta en sus totales');
+    assert.ok(sent.some((x) => x.v === b && x.e.includes('view') && x.e.includes('choose')), 'la elegida cuenta su propia vista');
+  });
+
+  it('uso en la primera visita con una vista previa (un fallo de carga, el tutorial) cuenta para la sorteada', async () => {
+    const { ab } = await fresh();
+    const s = ab('memoria');
+    const a = s.own;
+    s.mark('view');
+    s.show(a === 'resumen' ? 'cuencas' : 'resumen');
+    s.mark('select');
+    document.documentElement.dataset.tourDemo = '1';
+    s.mark('detail');             // lo pulsa el tutorial: no es de la persona
+    delete document.documentElement.dataset.tourDemo;
+    s.flush();
+    await settle();
+    assert.deepEqual(beacons(), [`${a}:ruse,rview,view`]);
+  });
+
+  it('la ganadora puesta a propósito (4 de cada 5) no entra en la decisión; el resto, sorteado, sí', async () => {
+    const real = Math.random;
+    try {
+      for (const [rnd, n] of [[0.1, 0], [0.95, 1]]) {
+        env();
+        store.set('enso-ab-ganadoras', JSON.stringify({ at: today(), d: { boletin: 'ficha' } }));
+        Math.random = () => rnd;
+        const { ab } = await fresh();
+        const s = ab('boletin');
+        s.mark('view');
+        s.flush();
+        await settle();
+        assert.equal(count('rview'), n, `azar ${rnd}: ${beacons()}`);
+        if (!n) assert.equal(s.own, 'ficha');
+      }
+    } finally { Math.random = real; }
+  });
+
+  it('sitio: «use» (abrió una segunda pestaña) es uso de la visita sorteada', async () => {
+    const { ab } = await fresh();
+    const s = ab('sitio');
+    s.mark('view');
+    s.mark('use');
+    s.flush();
+    await settle();
+    assert.deepEqual(beacons(), [`${s.own}:ruse,rview,use,view`]);
+  });
+
+  it('un clic del tutorial no es uso de la visita sorteada, aunque sea el único', async () => {
+    const { ab } = await fresh();
+    const s = ab('memoria');
+    s.mark('view');
+    document.documentElement.dataset.tourDemo = '1';
+    s.mark('detail');
+    s.mark('view');
+    delete document.documentElement.dataset.tourDemo;
+    s.flush();
+    await settle();
+    assert.deepEqual(beacons(), [`${s.own}:rview,view`]);
+  });
+
+  it('sin almacenamiento cada carga sortea de nuevo: esas visitas no entran en la decisión', async () => {
+    globalThis.localStorage = { getItem: () => null, setItem: () => { throw new Error('bloqueado'); }, removeItem: () => {} };
+    for (let i = 0; i < 2; i++) {
+      const { ab } = await fresh();
+      const s = ab('memoria');
+      s.mark('view');
+      s.mark('select');
+      s.flush();
+    }
+    await settle();
+    assert.equal(count('view'), 2);
+    assert.equal(count('rview') + count('ruse'), 0, beacons().join(' '));
+  });
+});

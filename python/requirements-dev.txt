@@ -2,3 +2,6 @@
 pytest>=9.2.0
 playwright>=1.64.1
 axe-playwright-python>=0.1.8
+hypothesis==6.170.17  # tests/test_drift_sim.py: invariancia del cambio de base de PSL (propiedades)
+# Oráculo independiente de tests/test_complexity.py (no lo usa la revisión): versión fija, su conteo no debe moverse.
+radon==6.0.1

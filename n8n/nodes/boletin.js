@@ -22,7 +22,13 @@ if (cfg.use_list === true || cfg.use_list === 'true') {
   const l = $('Leer suscripciones').first().json;
   if (l.error || l.statusCode !== 200) {
     // Sin la lista no se manda a nadie de ella, pero tampoco se da la edición por enviada: falla y se reintenta.
-    const why = l.error ? (l.error.message || JSON.stringify(l.error)).slice(0, 200) : `HTTP ${l.statusCode}`;
+    const raw = l.data !== undefined ? l.data : l.body;
+    let said = '';
+    try { said = (typeof raw === 'string' ? JSON.parse(raw) : raw || {}).error || ''; } catch { said = String(raw || '').slice(0, 200); }
+    const hint = l.statusCode === 401 ? ' La credencial de «Leer suscripciones» debe ser «Lista del boletín ENSO» (Header Auth: Name «Authorization», Value «Bearer » + BOLETIN_LIST_TOKEN de Cloudflare, sin espacios ni saltos de línea de más).'
+      : l.statusCode === 503 ? ' Al sitio le falta configuración (el mensaje dice qué); después de cambiar un secreto en Cloudflare hay que volver a desplegar.'
+        : l.statusCode === 403 ? ' Algo delante del sitio corta el pedido.' : '';
+    const why = l.error ? (l.error.message || JSON.stringify(l.error)).slice(0, 200) : `HTTP ${l.statusCode}${said ? `: ${String(said).slice(0, 400)}` : ''}.${hint}`;
     throw new Error(`No se pudo leer la lista de suscripciones (${cfg.list_url || 'api/boletin/lista'}): ${why}`);
   }
   const body = l.data !== undefined ? l.data : l.body;

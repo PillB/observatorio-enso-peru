@@ -31,6 +31,7 @@ def _pages(name: str) -> tuple[list[str], str]:
 
 N18 = "informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026.pages.json.gz"
 N17 = "informe-tecnico-enfen-ano-12-n17-al-25-de-setiembre-de-2026.pages.json.gz"
+N20 = "informe-tecnico-enfen-ano-12-n20-al-11-noviembre-2026.pages.json.gz"
 
 # Valores leídos a mano de cada PDF: (número, fecha, último ICEN oficial, ICEN temporal, columnas).
 EXPECTED = {
@@ -42,6 +43,8 @@ EXPECTED = {
         (14, "2025-12-16", ("2025-10", -0.42), ("2025-11", -0.55), ["icen", "oni"]),
     N17: (17, "2026-09-25", ("2026-07", 3.38), ("2026-08", 3.97), ["icen", "roni", "oni"]),
     N18: (18, "2026-10-13", ("2026-08", 3.98), ("2026-09", 4.15), ["icen", "roni", "oni"]),
+    # Tabla 3 del N° 20 trae Set-26 +4,98 (el IGP publica +4,50): se lee lo que dice el PDF y la corrida lo contrasta.
+    N20: (20, "2026-11-11", ("2026-09", 4.98), ("2026-10", 4.69), ["icen", "roni", "oni"]),
 }
 
 
@@ -71,10 +74,13 @@ def test_informe_probability_tables_sum_to_100(name):
     probs = ext.data["probabilities"]
     assert sorted(t["region"] for t in probs) == ["nino12", "nino34"]
     for t in probs:
-        assert len(t["months"]) == 9 and not t.get("invalid")
+        # Nueve meses hasta el N° 18; diez desde el N° 20 (noviembre de 2026 → agosto de 2027): el lector toma los
+        # meses del título y la cabecera, no un número fijo.
+        assert len(t["months"]) in (9, 10) and not t.get("invalid")
         assert len(t["categories"]) == 8  # cuatro frías/neutro y cuatro cálidas por región
         assert "calida_extraordinaria" in t["categories"] if t["region"] == "nino12" else "calida_muy_fuerte" in t["categories"]
-        for i in range(9):
+        assert all(len(v) == len(t["months"]) for v in t["categories"].values())
+        for i in range(len(t["months"])):
             assert 98 <= sum(v[i] for v in t["categories"].values()) <= 102
 
 
@@ -310,7 +316,8 @@ def test_acquire_keeps_last_good_value_when_download_fails():
     assert f.asked[:2] == [U18, DHN18]  # portal y réplica de la DHN
     # Un documento auxiliar que no responde no marca la publicación como degradada. El repositorio del IMARPE
     # tampoco respondió (este fetcher no lo simula): queda su propia advertencia.
-    assert [(s, c) for s, c, _ in log.events] == [("warning", "informe-unread"), ("warning", "repository-unreachable")]
+    assert [(s, c) for s, c, _ in log.events] == [("warning", "informe-unread"), ("warning", "repository-unreachable"),
+                                                  ("warning", "gobpe-unreachable")]
 
 
 def test_acquire_uses_the_dhn_mirror(monkeypatch):
@@ -577,7 +584,8 @@ def test_undated_dhn_pick_is_downloaded_and_validated_not_reused(monkeypatch):
     res = R.acquire_informe(latest, _Fetcher({R.DHN_INFORMES_PAGE: listing17, dhn17: b"%PDF-1.7 17"}), prev, log,
                             date(2026, 10, 21))
     assert res["carried"] and res["communique"] == "17-2026"  # no se presenta como el del comunicado 18
-    assert [c for s, c, _ in log.events if s == "warning"] == ["informe-unread", "repository-unreachable"]
+    assert [c for s, c, _ in log.events if s == "warning"] == ["informe-unread", "repository-unreachable",
+                                                                "gobpe-unreachable"]
     assert {s for s, _, _ in log.events} == {"warning"}
     p18, _ = _pages(N18)
     monkeypatch.setattr(R, "pdf_pages", lambda b: p18)

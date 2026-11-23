@@ -63,6 +63,12 @@ junio). El cambio de base se hace restando, para cada mes del año, la
 media de 1991–2020; frente a ERSSTv5 la diferencia media es de 0,2 °C en
 Niño 1+2 y 0,14 °C en Niño 3.4.
 
+**Color de las tarjetas.** Niño 1+2 (OISST y ERSSTv6, mensual y semanal) se colorea
+con el rango neutro del ENFEN y de la tabla GRD, [−0,7; +0,5] °C
+(`signals.coastal_tone`): una anomalía de −0,6 °C es neutra en la costa. Niño
+3, 3.4 y 4 y el contenido de calor usan el ±0,5 °C simétrico de NOAA. Es solo
+el color: una anomalía mensual o semanal no es el ICEN y no recibe categoría.
+
 **Por qué no hay un «ICEN estimado»:** una media de tres meses de
 ERSSTv6 difiere del ICEN oficial hasta 0,7 °C (en agosto de 2026, 3,28
 frente a 3,98) y coincide en la categoría solo el 71 % de los meses desde
@@ -75,6 +81,15 @@ publica el ICEN oficial.
   desde el 1 de febrero de 2026. Es la anomalía de Niño 3.4 menos la
   anomalía media de los trópicos, reescalada; corrige la tendencia del
   calentamiento global.
+- **Base:** el RONI usa una base fija 1991–2020 (página del RONI de CPC); el
+  ONI, bases de 30 años centradas que se renuevan cada 5 años, así que su
+  valor de 1950 no es una anomalía frente a 1991–2020. En 2026 CPC agregó la
+  base 1996–2025: en `oni.ascii.txt` la climatología implícita (TOTAL − ANOM)
+  de 2011 en adelante es la media 1996–2025 (JFM 26,78 °C; con 1991–2020 sería
+  26,90). El ICEN del IGP sigue cuadrando con ERSSTv5 y 1991–2020 (diferencias
+  ≤ 0,08 °C en 2021–2026). Cada serie publica su
+  base en `climatology`. CPC advierte que los dos últimos meses del RONI pueden
+  revisarse (filtro de alta frecuencia sobre ERSSTv6); la tarjeta lo dice.
 - **ONI:** índice tradicional, se muestra solo como referencia.
 - Umbral de condición El Niño o La Niña: ±0,5 °C en la media trimestral.
   NOAA declara un episodio cuando la condición persiste y la atmósfera

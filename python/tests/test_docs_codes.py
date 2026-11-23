@@ -83,6 +83,10 @@ def logged_codes(relevant_only: bool = True) -> dict[str, list[str]]:
                       and len(node.args) == 1 and isinstance(node.args[0], ast.Tuple) and len(node.args[0].elts) == 3):
                     # (etapa, código, mensaje) de un lector: acquire() lo registra como advertencia.
                     sev, code = ast.Constant("warning"), node.args[0].elts[1]
+                elif (rel == "enso/drift.py" and isinstance(node.func, ast.Attribute) and node.func.attr == "append"
+                      and len(node.args) == 1 and isinstance(node.args[0], ast.Tuple) and len(node.args[0].elts) == 2):
+                    # (código, mensaje) de la guardia de regresión: acquire() lo registra como advertencia.
+                    sev, code = ast.Constant("warning"), node.args[0].elts[0]
                 else:
                     continue
                 sevs = _severities(sev)

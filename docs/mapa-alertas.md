@@ -173,32 +173,84 @@ otra en «Versión del mapa» o en el selector de vistas la deja como predetermi
 
 ### Analítica anónima y decisión
 
-Hay cuatro experimentos, cada uno con su clave en el navegador (`public/assets/js/ab.js`):
+Hay cinco experimentos, cada uno con su clave en el navegador (`public/assets/js/ab.js`):
 
-| Experimento | Qué se sortea | Versiones |
-|---|---|---|
-| `mapa` | La versión del mapa de alertas en el resumen | A, B, C, D |
-| `noticias` | La vista con que abre el mapa de Noticias | resumen, cuencas, distritos |
-| `memoria` | La vista con que abre el mapa de la memoria de desastres | resumen, cuencas, puntos, riesgo |
-| `boletin` | La forma del boletín ([boletin.md](boletin.md#tres-formas-experimento-abc)) | mapa, mosaico, ficha |
+| Experimento | Qué se sortea | Versiones | Qué es «uso» |
+|---|---|---|---|
+| `mapa` | La versión del mapa de alertas en el resumen | A, B, C, D | filtró, eligió un área o abrió algo desde el mapa |
+| `noticias` | La vista con que abre el mapa de Noticias | resumen, cuencas, distritos | ídem |
+| `memoria` | La vista con que abre el mapa de la memoria de desastres | resumen, cuencas, puntos, riesgo | ídem |
+| `boletin` | La forma del boletín ([boletin.md](boletin.md#tres-formas-experimento-abc)) | mapa, mosaico, ficha | ídem |
+| `sitio` | La versión de todo el sitio ([analitica-uso.md](analitica-uso.md)) | A, B | abrió una segunda pestaña |
 
 `functions/_lib/ab.js` (ruta `/api/ab/*`) suma contadores por **día, experimento, versión y evento** en la tabla
 `ab_exp` de la base D1 `GEO_DB` (la de la consola; la tabla `ab_daily` de antes, solo del mapa A–D, se sigue leyendo).
-No guarda IP, identificadores ni cookies. Cada visita manda, al salir, un aviso por experimento con lo que hizo:
-`view`, `chosen` (la vio siendo su versión elegida), `hover`, `select` (filtró o eligió un área desde el mapa),
-`detail` (abrió un aviso, una ficha o un registro), `use` (hizo `select` o `detail`), `choose`, `leave` y `keep`
-(volvió otro día con la versión elegida). Con «No rastrear» o Global Privacy Control no se manda nada. Hay un tope
-de 20 000 sumas por día para no gastar las escrituras de la consola.
+No guarda IP, identificadores ni cookies. Cada visita manda, al ocultarse o cerrarse la página, un aviso por
+experimento con lo que hizo: `view`, `chosen` (la vio siendo su versión elegida), `hover`, `select` (filtró o eligió un
+área desde el mapa), `detail` (abrió un aviso, una ficha o un registro), `use` (hizo `select` o `detail`), `choose`,
+`leave` y `keep` (volvió otro día con la versión elegida). Cada evento cuenta **una vez por visita**, aunque la página
+se oculte y vuelva. Con «No rastrear» o Global Privacy Control no se manda nada. Hay un tope de 20 000 sumas por día
+para no gastar las escrituras de la consola.
 
-**Decisión** (`decide`): la tasa de uso de cada versión (visitas con `use` sobre visitas con `view`, en los últimos
-60 días) con su intervalo de Wilson al 95 %. Gana una versión solo si todas tienen al menos 200 visitas medidas y el
-límite inferior de su intervalo supera el límite superior de todas las demás; así una diferencia que puede ser azar no
-cambia lo que ve la gente. `GET /api/ab/defaults` devuelve la ganadora de cada experimento (o `null`) y se guarda una
-hora en el borde; el navegador la pide una vez al día y nunca espera más de 1,2 s antes de dibujar el mapa. Las
-visitas del mapa A–D anteriores a este cambio no traen `use`: cuentan en los totales, no en la decisión.
+**Qué visitas deciden.** La unidad que se sortea es el navegador (la versión queda en `localStorage`), así que la
+decisión usa **una observación por navegador**: su primera visita, si su versión salió del sorteo parejo y el enlace
+no traía parámetros (`?version=`, `?vista=`, `?sitio=`, `?nivel=`…, que pueden fijar lo que se ve) y la versión quedó
+guardada (sin `localStorage` cada carga sortea de nuevo y el mismo navegador contaría muchas veces). Esa visita manda
+además `rview` (la vio) y `ruse` (la usó) a la **versión sorteada**, aunque en esa misma visita la persona elija otra
+o vea una vista previa: es el análisis por intención de tratar, que mide justo lo que se decide (qué versión dar por
+defecto a quien llega). No deciden: las visitas de quien ya eligió (se eligieron a sí mismas: quien elige una versión
+y vuelve a diario la «usa» más, sin que la versión sea mejor), las que llegan con un enlace (si se excluyeran solo
+cuando la versión del enlace no es la sorteada, la exclusión dependería de la versión), las de quien vuelve (no son
+independientes: el intervalo de Wilson supone una observación independiente por intento) y las de la ganadora puesta a
+propósito (ver abajo). Esas visitas siguen en los totales de `#/variantes`.
+
+**Decisión** (`decide`): la tasa `ruse / rview` de cada versión en los últimos 60 días, con su intervalo de Wilson al
+95 %. Gana una versión solo si todas tienen al menos 200 primeras visitas sorteadas, **el reparto de esas visitas es el
+que da el sorteo** y el límite inferior de su intervalo supera el límite superior de todas las demás. El control de
+reparto (SRM, *sample ratio mismatch*; Kohavi, Tang y Xu, *Trustworthy Online Controlled Experiments*, cap. 21) es un
+χ² de bondad de ajuste a partes iguales con umbral p < 0,0005 (Fabijan et al., *Diagnosing Sample Ratio Mismatch in
+Online Controlled Experiments*, KDD 2019); solo se prueba con 5 o más visitas esperadas por versión. Un desajuste quiere
+decir que algo pierde visitas de una versión (avisos que no llegan, una versión que falla al dibujarse, robots), y
+entonces ninguna tasa es de fiar: no hay ganadora y `#/variantes` lo dice con su χ² y su p.
+
+`GET /api/ab/defaults` devuelve la ganadora de cada experimento (o `null`) y se guarda una hora en el borde; el navegador
+la pide una vez al día y nunca espera más de 1,2 s antes de dibujar el mapa (`sitio.js` no la espera). Con ganadora,
+4 de cada 5 primeras visitas la reciben (sin entrar en la decisión) y el resto sale del **sorteo parejo entre todas,
+la ganadora incluida**, que sí entra: así la muestra que sigue midiendo es pareja, se puede comparar con la ganadora y
+el control de reparto sigue valiendo. Antes el resto recibía una de las *otras*, y la ganadora solo sumaba visitas
+puestas a propósito, de otra época y en otra proporción.
+
+Las visitas anteriores a este cambio no traen `rview`/`ruse`: cuentan en los totales, no en la decisión (ninguna
+versión había ganado: con el tráfico de noviembre de 2026, 3 a 29 visitas por versión en 60 días, casi todas de quienes
+ya habían elegido, no había decisión que perder).
+
+**Límites que quedan, medidos** (simulación A/A y A/B de la regla con uso de 20 %, 20 visitas por versión y día, comprobada con una
+reimplementación independiente de 5 000 a 40 000 repeticiones; la prueba A/A de una sola mirada está en
+`python/tests/js/ab.test.mjs`):
+
+| Límite | Qué pasa | Alternativa recomendada | Costo |
+|---|---|---|---|
+| Mirar todos los días con ventana móvil de 60 días | Dos versiones iguales, 20 visitas por versión y día, un año: alguna «gana» en el 20 % de los casos (0,55 % con una sola mirada a los 60 días; con tres versiones, 3,5 %; con cuatro, 1,2 %). La ventana móvil renueva la muestra cada 60 días: son varias pruebas, no una | Prueba secuencial siempre válida (secuencia de confianza de mezcla normal, Howard et al. 2021; mSPRT, Johari et al. 2017) sobre la muestra acumulada desde el inicio, con Bonferroni entre pares | Tarda ~1,4 veces más en declarar una diferencia real (0,30 frente a 0,20, dos versiones: mediana de 19 días en vez de 14); con la ventana móvil, la misma prueba baja el 20 % a ~10 %, no a 5 %; sobre la muestra acumulada, a ~3 % |
+| 200 visitas por versión no es un tamaño calculado | Con 200 y uso de 20 %, la regla solo da ganadora 8 de cada 10 veces con ~16 puntos de diferencia (20 % → 36 %, 80 % relativo; cálculo exacto con la binomial); una prueba z al 5 % necesitaría ~12 | Fijar antes el efecto mínimo que importa: para 5 puntos (20 % → 25 %) con 80 % de potencia y α = 0,05 hacen falta ~1 090 primeras visitas por versión | Con el tráfico actual, años |
+| Novedad | La primera visita mide la primera impresión, no el uso de quien se acostumbró | Mirar `keep`/`leave` como métricas de guarda | — |
+| «Uso» depende de la versión | Una versión con más cosas que tocar suma más `select`/`detail` sin ser mejor (boletín: la ficha casi no tiene mapa) | Una métrica común a todas (volver otra semana, tiempo hasta encontrar un aviso) | Pide más datos o un identificador |
+| Avisos al salir | `sendBeacon` en `pagehide`/`visibilitychange` se pierde a veces en móviles (pestaña matada, bfcache); si una versión hace salir distinto, se pierde distinto | Lo detecta el control de reparto; mandar `rview` al dibujar, no al salir | Una escritura más por visita |
+| «No rastrear» y GPC | Quien los usa no entra en la muestra: la comparación vale para quien no los usa | Ninguna sin rastrear a quien pidió que no | Validez externa, no interna |
+| Robots | El mismo origen se falsifica con un `curl`; el tope diario limita, no filtra. Un navegador automático con almacenamiento nuevo en cada corrida (y una ventana privada del equipo) cuenta como primera visita cada vez: con la métrica nueva pesa más que antes, aunque reparte por igual entre versiones | El control de reparto los delata si cargan una versión más que otra | Sin identificador no hay deduplicación |
+
+La deduplicación por persona con una sal anónima que rota cada día (como Plausible) daría visitantes únicos por día,
+pero guarda un hash derivado de la IP: se descartó para mantener «ni IP, ni identificadores, ni cookies».
 
 Resultados: `https://<sitio>/#/variantes` (no está en el menú: los experimentos con su tasa de uso, su intervalo
 y la decisión) o `GET /api/ab/stats?days=30`.
+
+Informe reproducible: `cd python && python -m tools.ab_report [--file copia.json] [--merges-from-git]` (salida 0
+informe, 2 no se pudo leer la estadística). Además de las tasas, separa las visitas del sorteo de las de una versión
+elegida (`chosen`), prueba el desbalance de la muestra (SRM) frente al reparto de `assign()`, comprueba la coherencia
+de los contadores (`leave` ≤ `choose`; `max(select, detail)` ≤ `use` ≤ `select + detail`), calcula a qué ritmo se
+llegaría a 200 visitas por versión dentro de la ventana de 60 días y la potencia de la regla (sus falsos positivos
+exactos y la diferencia mínima que detecta). Prueba: `tests/test_ab_report.py`, contra la copia real del 2026-11-21
+en `tests/fixtures/ab/`. Lo que la regla y los datos pueden y no pueden decir hoy está explicado en ese informe.
 
 ## Mantenimiento
 

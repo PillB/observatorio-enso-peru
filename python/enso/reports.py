@@ -34,7 +34,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, Optional
 
-from .feeds import MONTHS_ES, FormatChanged, imarpe_repo
+from .feeds import MONTHS_ES, FormatChanged, gobpe_enfen, imarpe_repo
 from .feeds.peru import DATE_ES, _date_es, download_button
 
 # ---------------------------------------------------------------------------
@@ -870,16 +870,20 @@ def informe_summary(ext: Extraction) -> dict:
 # ---------------------------------------------------------------------------
 # Adquisición dentro de la corrida diaria
 # ---------------------------------------------------------------------------
-def _informe_pdf(fetcher, url: str, FetchError, archive_prefix, problems: Optional[list] = None):
+def _informe_pdf(fetcher, url: str, FetchError, archive_prefix, problems: Optional[list] = None,
+                 gob_problems: Optional[list] = None):
     """El PDF del informe o ``None``. Solo vale un cuerpo que empiece con ``%PDF-``: una página de verificación
     humana (la DHN la sirve a GitHub Actions y a n8n) o de error no se lee y no corta la búsqueda.
 
-    Orden (el documentado): el portal y la réplica de la DHN con las copias de los recolectores; el repositorio
-    del IMARPE (oficial; desde Actions, por la copia del Perú); y solo al final el Internet Archive. ``problems`` recibe la
-    causa si el repositorio falla."""
+    Orden (el documentado): el portal y la réplica de la DHN con las copias de los recolectores; gob.pe (el SENAMHI
+    publica el mismo PDF en un CDN público que Actions alcanza: ``feeds.gobpe_enfen``); el repositorio del IMARPE
+    (oficial; desde Actions, por la copia del Perú); y solo al final el Internet Archive. ``problems`` recibe la causa si
+    el repositorio falla y ``gob_problems``, si falla gob.pe."""
     from .observatory import archived_copy
 
     def pdf(r):
+        if r is not None and r.channel == "direct" and gobpe_enfen.is_gobpe(r.url):
+            r.channel = "mirror"  # elegido del listado de gob.pe: otra dirección oficial, no el portal
         return r if r is not None and r.body[:5] == b"%PDF-" else None
 
     accept = ("pdf", "octet-stream")
@@ -902,6 +906,12 @@ def _informe_pdf(fetcher, url: str, FetchError, archive_prefix, problems: Option
         except FetchError:
             pass
     ref = informe_ref(url) or _dhn_ref(url)
+    if ref:
+        # El mismo informe (número y año) publicado en gob.pe: la ruta directa que queda cuando la DHN pide
+        # verificación humana y el recolector del Perú no subió la copia.
+        got = pdf(gobpe_enfen.informe_pdf(fetcher, ref["year"], ref["n"], gob_problems))
+        if got:
+            return got
     if ref and "repositorio.imarpe.gob.pe" not in url:
         # El mismo informe (número y año) en el repositorio del IMARPE (desde Actions, por la copia del Perú).
         got = pdf(imarpe_repo.informe_pdf(fetcher, ref["year"], ref["n"], problems))
@@ -934,11 +944,13 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
       leerlo de nuevo: lo que no se publica sigue sin publicarse, así que su issue sigue abierto;
     - anota si el repositorio del IMARPE falló en esta corrida."""
     repo_problems: list = []
+    gob_problems: list = []
     try:
         out = _acquire_informe(latest, fetcher, previous_informe, log, today, icen_points, documents, needs,
-                               repo_problems)
+                               repo_problems, gob_problems)
     finally:
         imarpe_repo.log_problems(log, repo_problems, "los informes técnicos del ENFEN")
+        gobpe_enfen.log_problems(log, gob_problems, "los informes técnicos del ENFEN")
     reused = bool(out and previous_informe and out.get("issues") and out.get("issues") is previous_informe.get("issues"))
     if reused:  # sin lectura nueva: las incidencias del informe publicado siguen vigentes
         for i in out["issues"]:
@@ -949,11 +961,12 @@ def acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[
 
 def _acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional[dict], log, today: date,
                      icen_points: Optional[list[dict]], documents: Optional[list], needs,
-                     repo_problems: list) -> Optional[dict]:
+                     repo_problems: list, gob_problems: Optional[list] = None) -> Optional[dict]:
     """Informe técnico del comunicado vigente: se baja una vez por comunicado (pesa 10–20 MB) y se lee.
 
     Rutas, en orden: el portal del ENFEN (no responde desde GitHub Actions ni desde n8n), la réplica de la DHN,
-    las copias del recolector del Perú y el Internet Archive. Devuelve el resumen publicable
+    las copias del recolector del Perú, gob.pe (``feeds.gobpe_enfen``), el repositorio del IMARPE y el Internet
+    Archive. Devuelve el resumen publicable
     (``informe_summary``) con ``retrievedAt``, ``channel`` y ``archive`` (la copia del PDF, que se agrega a
     ``documents``). Si no se puede bajar o leer, o nada de lo leído pasa las reglas, se conserva el resumen
     anterior marcado ``carried`` y queda la incidencia. Si solo falla una parte (una región, el ICEN
@@ -1019,11 +1032,18 @@ def _acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional
             except Exception:  # noqa: BLE001 — una ruta más nunca detiene la corrida
                 hit = None
         if hit is None:
+            # Sin fecha de corte (réplica de la DHN y gob.pe): el de número más alto del año entre los dos listados,
+            # así uno que se atrasó (la DHN, o el SENAMHI al subirlo a gob.pe) no elige el informe anterior. Para un
+            # mismo número gana la DHN; su PDF, si la DHN pide verificación humana, sale igual de gob.pe
+            # (``_informe_pdf``). La validación descarta después uno de otro periodo.
+            undated: list = []
             try:
                 r = fetcher.get([DHN_INFORMES_PAGE], archive=False, accept=("html",))
-                hit = pick_informe(dhn_entries(r.text), latest)
+                undated += dhn_entries(r.text)
             except FetchError:
-                hit = None
+                pass
+            undated += gobpe_enfen.informes(fetcher, problems=gob_problems)
+            hit = pick_informe(undated, latest)
         if hit is None:
             # Sin la URL del informe solo sirve una copia subida a mano con la clave del comunicado.
             r = fetcher.copy(manual.key("enfen-informe", cid), ("pdf",)) if hasattr(fetcher, "copy") else None
@@ -1043,7 +1063,7 @@ def _acquire_informe(latest: Optional[dict], fetcher, previous_informe: Optional
     if trusted and previous_informe and previous_informe.get("url") == url and not previous_informe.get("carried"):
         return {**previous_informe, "communique": cid}
     try:
-        r = (hit or {}).get("copy") or _informe_pdf(fetcher, url, FetchError, archive_prefix, repo_problems)
+        r = (hit or {}).get("copy") or _informe_pdf(fetcher, url, FetchError, archive_prefix, repo_problems, gob_problems)
         if r is None:
             need(mirrors(url) + [url], "La réplica de la DHN pide verificación humana a los servidores automáticos "
                  "y las demás rutas no dieron el PDF." if any("dhn.mil.pe" in m for m in mirrors(url))

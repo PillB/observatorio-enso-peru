@@ -1,0 +1,63 @@
+# Auditoría semanal de deriva (docs/auditoria-deriva-fuentes.md): relee con los lectores y las firmas de bloqueo
+# actuales las copias crudas que la corrida diaria guardó en data-archive la última semana y las compara de a pares
+# (python/enso/drift.py). La corrida diaria ya avisa cada día al leer; esta repasa la semana entera con el código de
+# hoy: un lector cambiado que ya no lee una copia reciente, una página de verificación que se archivó como fuente o
+# una serie reescrita entre dos versiones. Si encuentra algo nuevo (lo ya revisado está en
+# python/tools/drift_audit_known.json), la corrida falla, abre o comenta un issue «incidente-datos» y deja la lista como
+# artefacto. No pide nada a la red de las fuentes. --days 7 con ">=" cubre 8 días: el lunes anterior entra en las dos
+# corridas, porque sus copias de la tarde se archivan después de la corrida de las 10:43.
+name: drift-audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 10 * * 1'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Fetch the raw-source archive
+        # Con la historia de la ventana: las copias del mismo día se ordenan por la hora del commit que las agregó
+        # (python/tools/drift_audit.py). Sin historia (--depth=1) se ordenan por nombre, y el hash no dice cuál llegó
+        # primero.
+        run: |
+          git fetch --no-tags --shallow-since="$(date -u -d '12 days ago' +%F)" origin data-archive \
+            || git fetch --no-tags --depth=1 origin data-archive
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -q -r python/requirements.txt
+      - name: Replay last week's archived responses
+        working-directory: python
+        run: python -m tools.drift_audit --ref FETCH_HEAD --days 7 --json "$RUNNER_TEMP/deriva.json"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: deriva
+          path: ${{ runner.temp }}/deriva.json
+          if-no-files-found: ignore
+      - name: Open or update the drift-audit issue
+        if: failure() && github.ref == 'refs/heads/main'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require('fs');
+            const file = `${process.env.RUNNER_TEMP}/deriva.json`;
+            let found = [];
+            try { found = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { /* la auditoría no llegó a escribirla */ }
+            const url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const lines = found.slice(0, 30).map(f => `- \`${f.kind}\` ${f.file} ${(f.message || f.block || f.error || '').slice(0, 200)}`);
+            const detail = found.length ? `${found.length} hallazgos nuevos:\n\n${lines.join('\n')}` : 'La auditoría no pudo correr (ver la corrida).';
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: 'open', labels: 'incidente-datos', per_page: 100 });
+            const prev = open.find(i => (i.body || '').includes('enso-fp:drift-audit'));
+            const body = `La auditoría semanal de deriva (${url}) encontró copias archivadas que los lectores o las firmas de hoy no aceptan. ${detail}\n\nRevisar cada una (docs/auditoria-deriva-fuentes.md); lo revisado se agrega a python/tools/drift_audit_known.json.\n\n<!-- enso-fp:drift-audit -->`;
+            if (prev) await github.rest.issues.createComment({ ...context.repo, issue_number: prev.number, body: `Volvió a encontrar algo: ${url}\n\n${detail}` });
+            else await github.rest.issues.create({ ...context.repo, title: '[datos] La auditoría semanal de deriva encontró algo', body, labels: ['incidente-datos'] });

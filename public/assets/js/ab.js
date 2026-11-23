@@ -6,12 +6,17 @@
 //   boletin   la forma del Boletín: hoja con el mapa del Perú, hoja con el mosaico (el del correo) o ficha de impacto
 //
 // La primera visita recibe una versión de cada uno: al azar mientras no haya una ganadora; si ya la hay
-// (/api/ab/defaults: la que más se usa, con su intervalo), la ganadora a 4 de cada 5 personas y otra al azar al
-// resto, para seguir midiendo. Si la persona elige otra, esa queda como su versión de siempre (localStorage, en su
+// (/api/ab/defaults: la que más se usa, con su intervalo), la ganadora a 4 de cada 5 personas y al resto una al azar
+// entre todas (la ganadora incluida), para seguir midiendo con una muestra equilibrada. Si la persona elige otra, esa queda como su versión de siempre (localStorage, en su
 // navegador). Al salir de la página se manda un solo aviso por experimento a /api/ab/e con la versión y lo que hizo
 // en esta visita (la vio, pasó el cursor, filtró, abrió algo). No se manda ni se guarda nada que identifique a la
 // persona: el servidor solo suma contadores por día. Con «No rastrear» o Global Privacy Control activados no se
 // manda nada.
+//
+// La decisión no usa todas las visitas: usa solo la primera visita de cada navegador cuya versión salió del sorteo
+// parejo (rview / ruse, por intención de tratar: cuenta para la versión sorteada aunque la persona cambie de versión
+// en esa misma visita). Las visitas de quien ya eligió, las que llegan con un enlace que fija la vista y las de quien
+// vuelve no entran: no son una muestra al azar ni independiente (docs/mapa-alertas.md, «Analítica anónima»).
 
 import { storage } from './lib/dom.js';
 
@@ -107,13 +112,33 @@ export function abReady(ms = 1200) {
   return READY;
 }
 
-/** La versión de una primera visita: la ganadora con probabilidad EXPLOIT, si la hay; si no, una al azar. */
-export function assign(exp, winner = null, rnd = Math.random) {
+/**
+ * La versión de una primera visita: la ganadora con probabilidad EXPLOIT, si la hay; si no, o en el resto, una al
+ * azar entre todas. ``r``: salió del sorteo parejo, y por eso puede entrar en la decisión (la ganadora puesta a
+ * propósito no: compararla con las demás sería comparar grupos de tamaño y época distintos).
+ */
+export function assignment(exp, winner = null, rnd = Math.random) {
   const all = ids(exp);
-  if (!winner || !all.includes(winner)) return all[Math.floor(rnd() * all.length)];
-  if (rnd() < EXPLOIT) return winner;
-  const rest = all.filter((v) => v !== winner);
-  return rest[Math.floor(rnd() * rest.length)];
+  if (winner && all.includes(winner) && rnd() < EXPLOIT) return { v: winner, r: false };
+  return { v: all[Math.floor(rnd() * all.length)], r: true };
+}
+export const assign = (exp, winner = null, rnd = Math.random) => assignment(exp, winner, rnd).v;
+
+/** El enlace trae parámetros (?vista=, ?version=, ?nivel=…) que pueden fijar lo que se ve: se sabe antes del sorteo. */
+const linkHasQuery = () => Boolean(location.search && location.search.length > 1) || /\?./.test(location.hash || '');
+/** Eventos de una visita que cuentan como uso para la decisión. */
+const USE = new Set(['select', 'detail', 'use']);
+
+/** La versión de la primera visita, guardada, y si esa visita entra en la decisión (sorteo parejo, sin enlace). */
+function firstVisit(exp) {
+  const local = EXPERIMENTS[exp].local && !hasBackend();
+  const a = local ? { v: EXPERIMENTS[exp].local, r: false } : assignment(exp, cachedWinners()?.[exp]);
+  const s = { v: a.v, chosen: false, at: day() };
+  write(exp, s);
+  // Sin almacenamiento (bloqueado, o una ventana que no lo guarda) cada carga sería «primera visita» con un sorteo
+  // nuevo: el mismo navegador contaría muchas veces. Solo entra si la versión quedó guardada.
+  const kept = read(exp)?.v === a.v;
+  return { s, itt: a.r && kept && !linkHasQuery() ? { v: a.v, flags: new Set(), seen: new Set() } : null };
 }
 
 class Session {
@@ -122,17 +147,17 @@ class Session {
     const param = exp === 'mapa' ? 'version' : EXPERIMENTS[exp].param;
     const q = (src) => new URLSearchParams(src || '');
     const forced = param ? q(location.hash.split('?')[1]).get(param) || q(location.search).get(param) : null;
+    // La primera exposición sorteada de este navegador: la única visita que entra en la decisión (this.itt).
+    this.itt = null;
     let s = read(exp);
-    if (!s) {
-      const local = EXPERIMENTS[exp].local;
-      s = { v: local && !hasBackend() ? local : assign(exp, cachedWinners()?.[exp]), chosen: false, at: day() };
-      write(exp, s);
-    }
+    if (!s) ({ s, itt: this.itt } = firstVisit(exp));
     this.state = s;
     // ?version=B en el enlace muestra esa versión sin cambiar la elegida (para enseñarla a alguien).
     this.preview = null;
     if (forced) this.show(forced.toUpperCase());
     this.flags = new Set();
+    // Lo ya mandado en esta visita: un evento cuenta una vez por visita aunque la página se oculte y vuelva.
+    this.sent = new Set();
     this.viewed = false;
     if (s.chosen && s.at !== day() && s.lastKeep !== day() && !this.preview) {
       this.flags.add('keep');
@@ -156,7 +181,9 @@ class Session {
 
   /** Marca un evento de esta visita (cada uno cuenta una vez por visita). */
   mark(e) {
-    if (this.preview || byTour()) return;
+    if (byTour()) return;
+    this.markItt(e);
+    if (this.preview) return;
     if (e === 'view') {
       if (this.viewed) return;
       this.viewed = true;
@@ -164,6 +191,15 @@ class Session {
     }
     this.flags.add(e);
     if (e === 'select' || e === 'detail') this.flags.add('use');
+  }
+
+  /** La primera visita sorteada: vio (rview) y usó (ruse), con la versión que se vea, para la versión sorteada. */
+  markItt(e) {
+    const t = this.itt;
+    const r = e === 'view' ? 'rview' : USE.has(e) && t?.seen.has('rview') ? 'ruse' : null;
+    if (!t || !r || t.seen.has(r)) return;
+    t.seen.add(r);
+    t.flags.add(r);
   }
 
   choose(v) {
@@ -181,14 +217,21 @@ class Session {
     this.state = { v, chosen: true, at: day() };
     write(this.exp, this.state);
     this.viewed = false;
+    this.sent.clear();
     this.mark('choose');
     this.mark('view');
   }
 
   flush() {
-    if (!this.flags.size) return;
-    send(this.exp, this.state.v, [...this.flags]);
+    const own = [...this.flags].filter((e) => !this.sent.has(e));
+    own.forEach((e) => this.sent.add(e));
     this.flags.clear();
+    const itt = this.itt ? [...this.itt.flags] : [];
+    this.itt?.flags.clear();
+    // Lo de la visita sorteada va a la versión sorteada: en el mismo aviso si es la de ahora, si no en otro.
+    if (itt.length && this.itt.v !== this.state.v) send(this.exp, this.itt.v, itt);
+    else own.push(...itt);
+    send(this.exp, this.state.v, own);
   }
 }
 

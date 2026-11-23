@@ -20,6 +20,49 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # chore(lint): techo de complejidad ciclomática (10, NIST SP 500-235) de todo el Python y el JavaScript, con la
+  # lista de excepciones que solo puede bajar (docs/complejidad.md). Rápido y aparte, para que su error se vea solo.
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Dos commits: HEAD^1 es la punta de la rama base en un PR (el commit de fusión) o el commit anterior en un
+      # push, y --base-ref compara la lista con la de ahí (sin esto, subir una línea a mano pasaba).
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: scripts/lint/package-lock.json
+      # El recolector del Perú se instala con Python 3.11 o más (collector/instalar.sh, docs/servidor-peru.md):
+      # una sintaxis de 3.12 (comillas iguales dentro de un f-string) rompió hazardparse.py en 3.11 desde el
+      # 26-10-2026 sin que nada lo notara. Se compila todo con 3.11 para que lo declarado se compruebe.
+      - uses: actions/setup-python@v7
+        id: py311
+        with:
+          python-version: '3.11'
+          update-environment: false
+      - name: The pipeline still compiles on Python 3.11 (the collector's declared minimum)
+        run: ${{ steps.py311.outputs.python-path }} -m compileall -q -x 'tests/fixtures' python/enso python/tools python/tests
+      - name: ESLint and pytest (versions pinned in scripts/lint/package-lock.json and requirements-dev.txt)
+        run: |
+          npm ci --prefix scripts/lint --ignore-scripts --no-audit --no-fund
+          grep -E '^(pytest|radon)\b' python/requirements-dev.txt > "$RUNNER_TEMP/lint-req.txt"
+          pip install -r "$RUNNER_TEMP/lint-req.txt"
+      - name: Cyclomatic complexity ceiling (ratchet)
+        working-directory: python
+        run: python -m tools.complexity --report 15 --base-ref HEAD^1
+      - name: The complexity check itself (hand-counted CFGs, radon cross-check, ratchet mutations)
+        working-directory: python
+        env:
+          COMPLEXITY_REQUIRE_JS: '1'
+        run: python -m pytest -q tests/test_complexity.py
+
   test:
     runs-on: ubuntu-latest
     # Pruebas ~7 min + navegador en tres motores ~18 min desde los recorridos guiados (#70); 25 ya no alcanzaba.

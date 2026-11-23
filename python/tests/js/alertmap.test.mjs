@@ -221,11 +221,11 @@ it('el detalle por cuenca y por distrito: color del aviso, memoria y enlace a la
 it('#/variantes: los cinco experimentos con su tasa de uso, su intervalo y la decisión', async () => {
   const { statsHtml } = await import('../../../public/assets/js/alertmap.js');
   const { decide, EXPERIMENTS } = await import('../../../functions/_lib/ab.js');
-  const t = (view, use) => ({ view, use, hover: 0, select: use, detail: 0, choose: 0, leave: 0, keep: 0, chosen: 0 });
+  const t = (view, use) => ({ view, use, rview: view, ruse: use, hover: 0, select: use, detail: 0, choose: 0, leave: 0, keep: 0, chosen: 0 });
   const totals = {
     mapa: { A: t(10, 1), B: t(10, 2), C: t(10, 3), D: t(10, 4) },
     memoria: { resumen: t(300, 60), cuencas: t(300, 180), puntos: t(300, 70), riesgo: t(300, 65) },
-    noticias: { resumen: t(50, 10), cuencas: t(250, 50), distritos: t(250, 60) },
+    noticias: { resumen: t(50, 10), cuencas: t(60, 50), distritos: t(60, 6) },
     boletin: { mapa: t(40, 10), mosaico: t(40, 12) },
     sitio: { A: t(20, 8), B: t(20, 9) },
   };
@@ -238,7 +238,12 @@ it('#/variantes: los cinco experimentos con su tasa de uso, su intervalo y la de
   assert.match(out, /Detalle: cuencas <span class="chip chip-ok">Ganadora<\/span>/);
   assert.match(out, /60 %<div class="muted small">54–65 %<\/div>/);  // 180 de 300, con su intervalo de Wilson
   assert.match(out, /faltan en «A», 10; «B», 10; «C», 10; «D», 10/);
-  assert.match(out, /faltan en «resumen», 50\)/);
+  assert.match(out, /faltan en «resumen», 50; «cuencas», 60; «distritos», 60\)/);
+  // Un reparto desparejo (SRM) se dice, y no deja ganar: χ² = (3·50² + 150²) / 950 = 31,58.
+  const skew = { mapa: { totals: totals.mapa, decision: decide(EXPERIMENTS.mapa, { A: t(1000, 600), B: t(800, 100), C: t(1000, 100), D: t(1000, 100) }) } };
+  const sk = String(statsHtml({ available: true, days: 60, decideDays: 60, since: '2026-09-29', experiments: skew }));
+  assert.match(sk, /no se reparten como el sorteo parejo \(χ² = 31\.6/);
+  assert.doesNotMatch(sk, /Gana «A»/);
   assert.match(out, /\(no con el periodo elegido\)/);
   assert.match(String(statsHtml(null)), /No se pudo leer la analítica/);
 });

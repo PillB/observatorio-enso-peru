@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { libSource, nodeCode, WORKFLOWS } from '../build.mjs';
 
-const L = new Function(`${libSource('boletin')}\nreturn { parseRecipients, limaClock, pendingChanges, consolidate, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };`)();
+const L = new Function(`${libSource('boletin')}\nreturn { toB64, fromB64, parseRecipients, limaClock, pendingChanges, consolidate, changesHtml, relevantChanges, mime, encHeader, cleanSubs, decide, nextState };`)();
 const H = 3600000;
 const NOW = Date.parse('2026-11-11T15:00:00Z'); // 10:00 en Lima
 
@@ -158,10 +158,51 @@ test('el estado guarda la edición enviada y el día del resumen', () => {
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 function runNode(name, { cfg, input, prior = {}, decided, list }) {
   const st = { ...prior };
-  const $ = (n) => ({ first: () => ({ json: n === 'Configuración' ? cfg : n === 'Leer boletín' ? input : n === 'Leer suscripciones' ? list : decided }) });
+  const $ = (n) => ({ first: () => ({ json: n === 'Configuración' ? cfg : n === 'Leer boletín' || n === 'Pedido del sitio' ? input : n === 'Leer suscripciones' ? list : decided }) });
   const fn = new AsyncFunction('$', '$input', '$getWorkflowStaticData', nodeCode(name, { VERSION: 'test' }));
-  return fn($, { first: () => ({ json: input }) }, () => st).then((out) => ({ out, st }));
+  // Como en el flujo: «Armar correo» va después de «Configuración» (un Set que no deja pasar el pedido), así que su
+  // entrada no trae el cuerpo; el pedido se lee del disparador.
+  const inp = name === 'boletin-confirmar' ? cfg : input;
+  return fn($, { first: () => ({ json: inp }) }, () => st).then((out) => ({ out, st }));
 }
+
+test('base64 hecho a mano: igual que Buffer, con tildes, emoji, «url-safe» y sin relleno', () => {
+  for (const t of ['', 'a', 'ab', 'abc', 'Perú · ñandú', '🌊 El Niño 🌡️', '<!doctype html><p>añadir</p>'.repeat(50)]) {
+    assert.equal(L.toB64(t), Buffer.from(t, 'utf8').toString('base64'));
+    assert.equal(L.fromB64(L.toB64(t)), t);
+    assert.equal(L.fromB64(Buffer.from(t, 'utf8').toString('base64url')), t);
+  }
+  assert.equal(L.fromB64('UGVyw7o=\n'), 'Perú');
+  assert.equal(L.fromB64('<b>'), null);
+  assert.equal(L.fromB64('abcde'), null);
+  assert.equal(L.fromB64(42), null);
+  // UTF-8 inválido no rompe el nodo: se cambia por U+FFFD (como TextDecoder).
+  for (const bad of ['9JCAgA==', '7aCA', 'wIA=', '4ICA', '8ICAgA==', '/w==']) {
+    assert.equal(L.fromB64(bad), new TextDecoder().decode(Buffer.from(bad, 'base64')), bad);
+  }
+  // Un medio par sustituto suelto se codifica como U+FFFD, igual que Buffer.
+  assert.equal(L.toB64('a\ud800b'), Buffer.from('a\ud800b', 'utf8').toString('base64'));
+});
+
+test('cabecera con acentos: palabras de 75 caracteres o menos, sin partir emoji ni tildes', () => {
+  const subj = 'Boletín El Niño N° 12 · 🌊🌊🌊 alerta en Piura, Tumbes y Lambayeque — ñandú 🌡️ y más texto con acentos áéíóú';
+  const h = L.encHeader(subj);
+  const words = h.split('\r\n ');
+  assert.ok(words.length > 1);
+  for (const w of words) assert.ok(w.length <= 75, w);
+  assert.equal(words.map((w) => Buffer.from(w.slice(10, -2), 'base64').toString('utf8')).join(''), subj);
+});
+
+test('«Decidir envío» explica por qué no pudo leer la lista de suscripciones', async () => {
+  const body = JSON.stringify(doc(2, [{ edition: 2, changes: [imm('Piura sube a rojo.')] }], { cutoff: new Date(Date.now() - H).toISOString() }));
+  const cfg = { ...CFG, site: 'https://ejemplo/', use_list: true };
+  const input = { statusCode: 200, data: body };
+  await assert.rejects(runNode('boletin', { cfg, input, list: { statusCode: 401, data: '{"ok":false,"error":"No autorizado."}' } }), /HTTP 401: No autorizado\..*Lista del boletín ENSO.*Bearer/);
+  await assert.rejects(runNode('boletin', { cfg, input, list: { statusCode: 503, data: '{"ok":false,"error":"La suscripción está apagada en este despliegue: falta BOLETIN_MAIL_WEBHOOK_SECRET."}' } }), /falta BOLETIN_MAIL_WEBHOOK_SECRET.*volver a desplegar/);
+  await assert.rejects(runNode('boletin', { cfg, input, list: { statusCode: 403, data: '<html>403 Forbidden</html>' } }), /HTTP 403: <html>.*corta el pedido/);
+  const ok = await runNode('boletin', { cfg, input, list: { statusCode: 200, data: '{"subs":[]}' } });
+  assert.ok(ok.out[0].json);
+});
 
 test('los nodos «Decidir envío» y «Guardar estado» usan los datos estáticos del flujo', async () => {
   const body = JSON.stringify(doc(2, [{ edition: 2, changes: [imm('Piura sube a rojo.')] }], { cutoff: new Date(Date.now() - H).toISOString() }));
@@ -347,4 +388,16 @@ test('el nodo de confirmación arma un correo para una sola dirección válida',
   const ok = await runNode('boletin-confirmar', { cfg, input: { body: { to: 'ANA@x.pe', subject: 'Confirme\r\nBcc: x@y.pe', html: '<p>hola</p>', text: 'hola' } } });
   assert.deepEqual(ok.out[0].json, { to: 'ana@x.pe', bcc: '', subject: 'Confirme Bcc: x@y.pe', html: '<p>hola</p>', senderName: 'Observatorio' });
   await assert.rejects(runNode('boletin-confirmar', { cfg, input: { body: { to: 'a@x.pe, b@x.pe', subject: 's', html: 'h' } } }), /inválido/);
+  // Como lo manda el sitio: asunto y HTML en base64 (el cortafuegos delante de n8n corta el HTML en claro).
+  const b64 = (s) => Buffer.from(s, 'utf8').toString('base64');
+  const enc = await runNode('boletin-confirmar', { cfg, input: { body: { to: 'ana@x.pe', enc: 'base64', subject_b64: b64('Confirme · Perú'), html_b64: b64('<!doctype html><p>añadir</p>'), text_b64: b64('hola') } } });
+  assert.deepEqual(enc.out[0].json, { to: 'ana@x.pe', bcc: '', subject: 'Confirme · Perú', html: '<!doctype html><p>añadir</p>', senderName: 'Observatorio' });
+  await assert.rejects(runNode('boletin-confirmar', { cfg, input: { body: { to: 'ana@x.pe', subject_b64: '<b>', html_b64: b64('h') } } }), /inválido/);
+  // Sin Buffer (por si una versión de n8n no lo trae), con atob y tildes.
+  // Como en el n8n de producción (Code en «task runner»): sin Buffer, atob, escape ni TextDecoder.
+  const noBuffer = new AsyncFunction('$', '$input', `const Buffer = undefined, atob = undefined, btoa = undefined, escape = undefined, unescape = undefined, TextDecoder = undefined, TextEncoder = undefined;\n${nodeCode('boletin-confirmar', { VERSION: 'test' })}`);
+  const hook = { body: { to: 'ana@x.pe', subject_b64: b64('Perú ñ'), html_b64: b64('<p>á</p>') } };
+  const nb = await noBuffer((n) => ({ first: () => ({ json: n === 'Pedido del sitio' ? hook : cfg }) }), { first: () => ({ json: cfg }) });
+  assert.equal(nb[0].json.subject, 'Perú ñ');
+  assert.equal(nb[0].json.html, '<p>á</p>');
 });

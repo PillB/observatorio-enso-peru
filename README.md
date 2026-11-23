@@ -40,6 +40,8 @@ Detalle en [memoria-desastres](docs/memoria-desastres.md#tabla-de-registros-y-de
 | `python/tests/fixtures/` | Respuestas reales capturadas de las fuentes, actuales e históricas |
 | `python/tools/` | Captura de fuentes, verificación del sitio en vivo, sincronización de incidencias |
 | `public/` | Sitio estático (HTML, CSS y JavaScript sin dependencias) |
+| `config/complexity-baseline.json` | Funciones que ya pasaban el techo de complejidad ciclomática (10), con su número: solo puede bajar ([complejidad](docs/complejidad.md)) |
+| `scripts/lint/` | ESLint con versión fija para medir la complejidad del JavaScript |
 | `config/threshold-policies/` | Umbrales ICEN 2024 y la tabla del equipo GRD, con su imagen original |
 | `collector/` | Recolector desde el Perú: instaladores para Windows, macOS y Linux, lanzadores de doble clic, Docker y systemd |
 | `.github/workflows/` | Actualización diaria, vigilante, CI y captura de fuentes |
@@ -71,6 +73,9 @@ cd python
 pytest -q                                   # unitarias y backtesting
 python -m playwright install chromium
 pytest -q -m browser --site-dir=../public   # recorridos de navegador
+
+npm ci --prefix ../scripts/lint             # una vez: ESLint para medir el JavaScript
+python -m tools.complexity                  # techo de complejidad (--update al bajarla)
 ```
 
 ## Documentación
@@ -79,6 +84,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Versiones A y B del sitio, selector y analítica de uso](docs/analitica-uso.md)
 - [Metodología e indicadores](docs/metodologia.md)
 - [Catálogo de fuentes](docs/catalogo-fuentes.md)
+- [Auditoría de deriva de las fuentes (noviembre de 2026)](docs/auditoria-deriva-fuentes.md): cada fuente leída en vivo contra su lector, qué había cambiado sin avisar y qué guardias lo detectan ahora
 - [Informes en texto libre y vigencia de los datos](docs/informes-texto.md): comunicado e informe técnico del ENFEN leídos del PDF, con su validación y procedencia
 - [Operación diaria, incidencias y recuperación](docs/operaciones.md)
 - [Recolector desde el Perú (mini servidor)](docs/servidor-peru.md): kit descargable, instalación en Windows y macOS, verificación y alarmas
@@ -95,6 +101,7 @@ pytest -q -m browser --site-dir=../public   # recorridos de navegador
 - [Tutorial guiado](docs/tutorial-guiado.md): un recorrido interactivo por pestaña, que nunca tapa lo que muestra, y sus pruebas
 - [Máquinas de estado implícitas](docs/maquinas-de-estado.md): cada estado que guarda el sitio (ruta, versiones, tutorial, mapas, consola), sus diagramas, los estados errados que se encontraron y su corrección
 - [Fiabilidad de las escrituras y de la red](docs/fiabilidad-datos.md): qué pasa si una escritura se repite, choca con otra o se corta a la mitad (bloqueo optimista, idempotencia, bandeja de salida, reintentos) y qué patrones no aplican
+- [Techo de complejidad ciclomática](docs/complejidad.md): por qué 10, cómo se mide en Python y JavaScript, el trinquete de la lista de excepciones y qué hacer cuando falla
 - [Aportes voluntarios](docs/apoyo.md): cómo activar Ko-fi, Yape y GitHub Sponsors, y dónde aparecen
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)

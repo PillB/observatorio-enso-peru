@@ -10,7 +10,7 @@ código). Por cada huella:
   corridas) sin añadir comentarios, para no generar ruido;
 * los issues abiertos cuya huella ya no aparece se cierran con un
   comentario que indica la corrida en que dejó de ocurrir;
-* salvo los de ``STICKY`` (un cambio de formato): que ya no aparezca no
+* salvo los de ``STICKY`` (un cambio de formato o una historia reescrita): que ya no aparezca no
   dice que los valores estén bien, así que se comentan una sola vez (marca
   oculta ``enso-gone`` en el cuerpo) y los cierra una persona. Si vuelve a
   aparecer con el issue aún abierto, se comenta (editar el cuerpo no le
@@ -39,7 +39,13 @@ LABEL = "incidente-datos"
 #: Incidencias esperadas que no requieren seguimiento.
 IGNORE = {"archive-channel", "carried-forward", "probe-found"}
 #: Incidencias que no se cierran solas: alguien tiene que revisar los valores publicados.
-STICKY = {"format-drift"}
+STICKY = {"format-drift", "history-rewritten", "series-shrunk", "series-regressed", "series-missing"}
+#: Cómo se nombra cada una en el issue. Las de ``enso.drift`` comparan con la publicación anterior: aparecen solo el
+#: día del cambio y al día siguiente la base ya es el dato nuevo, así que «ya no se detectó» no dice nada.
+NOUN = {"format-drift": "El cambio de formato", "history-rewritten": "La reescritura del histórico",
+        "series-shrunk": "El recorte de la serie", "series-regressed": "El retroceso del último dato",
+        "series-missing": "La serie que faltaba"}
+ONE_SHOT = {"history-rewritten", "series-shrunk", "series-regressed", "series-missing"}
 FP_RE = re.compile(r"<!-- enso-fp:([0-9a-f]+) -->")
 COUNT_RE = re.compile(r"<!-- enso-count:(\d+) -->")
 CODE_RE = re.compile(r"\*\*Código:\*\* `([^`]+)`")
@@ -71,8 +77,8 @@ def body_for(fp: str, evs: list[dict], pub: str, run_url: str, count: int, first
         f"- Corridas con esta incidencia: {count}",
         f"- Corrida: {run_url}" if run_url else "",
         "",
-        ("Este issue lo abre automáticamente el flujo diario. Un cambio de formato no se cierra solo: ciérrelo después "
-         "de revisar que los valores publicados sean coherentes." if e["code"] in STICKY else
+        (f"Este issue lo abre automáticamente el flujo diario. {NOUN.get(e['code'], 'Esta incidencia')} no se cierra "
+         "solo: ciérrelo después de revisar que los valores publicados sean coherentes." if e["code"] in STICKY else
          "Este issue lo abre y cierra automáticamente el flujo diario. Se cierra solo cuando la incidencia deja de aparecer."),
         f"<!-- enso-fp:{fp} -->",
         f"<!-- enso-count:{count} -->",
@@ -144,7 +150,8 @@ def sync(gh: GitHub, report: dict, run_url: str, dry: bool = False) -> dict:
                 plan(f"comentar #{n} {title} (volvió a aparecer)")
                 if not dry:
                     gh.req("POST", f"/issues/{n}/comments", json={"body": "\n".join([
-                        f"El cambio de formato volvió a detectarse en la publicación `{pub}`:", "",
+                        f"{NOUN.get(code_of(existing[fp]), 'La incidencia')} volvió a detectarse en la publicación "
+                        f"`{pub}`:", "",
                         *[f"> {x['message']}" for x in evs[:5]], "", run_url]).strip()})
                 again += 1
             plan(f"actualizar #{n} {title}")
@@ -167,10 +174,13 @@ def sync(gh: GitHub, report: dict, run_url: str, dry: bool = False) -> dict:
                 continue
             plan(f"comentar #{n} {issue.get('title')} (ya no aparece; queda abierto)")
             if not dry:
+                code = code_of(issue)
                 gh.req("POST", f"/issues/{n}/comments", json={"body": (
-                    f"El cambio de formato ya no se detectó en la publicación `{pub}`, pero este issue no se cierra "
-                    "solo: revise que los valores publicados de la fuente sean coherentes y ciérrelo a mano.\n\n"
-                    f"{run_url}")})
+                    (f"Este aviso compara con la publicación anterior y solo aparece el día del cambio (la publicación "
+                     f"`{pub}` ya compara contra el dato nuevo). " if code in ONE_SHOT else
+                     f"{NOUN.get(code, 'La incidencia')} ya no se detectó en la publicación `{pub}`. ") +
+                    "Este issue no se cierra solo: revise que los valores publicados de la fuente sean coherentes y "
+                    f"ciérrelo a mano.\n\n{run_url}")})
                 gh.req("PATCH", f"/issues/{n}", json={"body": f"{AGAIN_RE.sub('', body0)}\n{GONE}"})
             noted += 1
             continue
