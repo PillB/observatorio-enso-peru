@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Mon, 23 Nov 2026 17:44:50 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Frente a la ineptitud, volverán las vírgenes que lloran y los demonios chupagrasa de los 90&#8242;</title>
+		<link>https://www.cutivalu.pe/frente-a-la-ineptitud-volveran-las-virgenes-que-lloran-y-los-demonios-chupagrasa-de-los-90/</link>
+		
+		<dc:creator><![CDATA[Gabriela Campos]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 17:44:49 +0000</pubDate>
+				<category><![CDATA[Featured]]></category>
+		<category><![CDATA[Nacional]]></category>
+		<category><![CDATA[Perú]]></category>
+		<category><![CDATA[Comentario]]></category>
+		<category><![CDATA[Cutivalú]]></category>
+		<category><![CDATA[Fujimorismo]]></category>
+		<category><![CDATA[Lima]]></category>
+		<category><![CDATA[LOS 90']]></category>
+		<category><![CDATA[Piura]]></category>
+		<category><![CDATA[SUPUESTOS DEL FUJIMOPRISMO]]></category>
+		<category><![CDATA[Terrorismo]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=195205</guid>
+
+					<description><![CDATA[<p>El fin de semana, de pronto, empezamos a hablar de terrorismo y, ¡zas!, desaparecieron en los medios de comunicación nacionales las noticias de extorsión y de los seis muertos diarios por la delincuencia y criminalidad que ocurren en el país. Hemos tenido a la policía hablando, de manera inusual, de grupos terroristas y no de [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/frente-a-la-ineptitud-volveran-las-virgenes-que-lloran-y-los-demonios-chupagrasa-de-los-90/">Frente a la ineptitud, volverán las vírgenes que lloran y los demonios chupagrasa de los 90&#8242;</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>

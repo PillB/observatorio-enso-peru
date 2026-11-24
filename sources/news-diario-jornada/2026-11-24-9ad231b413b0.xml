@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:media="http://search.yahoo.com/mrss/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Diario Jornada</title>
+	<atom:link href="https://jornada.com.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://jornada.com.pe</link>
+	<description>iÚnete a nuestra comunidad de lectores y mantente informado con Diario Jornada! • EI diario judicial de la región de Ayacucho • Contáctenos: +51 944 233 745</description>
+	<lastBuildDate>Tue, 24 Nov 2026 00:51:10 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.1.5</generator>
+
+<image>
+	<url>https://jornada.com.pe/wp-content/uploads/2024/06/cropped-logoRedondeadoJORNADA-150x150.webp</url>
+	<title>Diario Jornada</title>
+	<link>https://jornada.com.pe</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Mincetur establece nuevas reglas técnicas para las apuestas deportivas y juegos online</title>
+		<link>https://jornada.com.pe/mincetur-establece-nuevas-reglas-tecnicas-para-las-apuestas-deportivas-y-juegos-online/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Tue, 24 Nov 2026 00:51:10 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[apuestas deportivas online]]></category>
+		<category><![CDATA[impuesto selectivo al consumo]]></category>
+		<category><![CDATA[ISC]]></category>
+		<category><![CDATA[juegos a distancia]]></category>
+		<category><![CDATA[juegos online]]></category>
+		<category><![CDATA[MINCETUR]]></category>
+		<category><![CDATA[Perú]]></category>
+		<category><![CDATA[plataformas digitales]]></category>
+		<category><![CDATA[regulación de apuestas]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106710</guid>
+
+					<description><![CDATA[<p>Mincetur aprobó nuevas reglas técnicas para las plataformas de apuestas deportivas y juegos online en Perú, en relación con el pago del ISC</p>
+<p>The post <a href="https://jornada.com.pe/mincetur-establece-nuevas-reglas-tecnicas-para-las-apuestas-deportivas-y-juegos-online/">Mincetur establece nuevas reglas técnicas para las apuestas deportivas y juegos online</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El Ministerio de Comercio Exterior y Turismo (<a href="https://jornada.com.pe/mincetur-lanza-plataforma-digital-para-promover-experiencias-de-turismo-comunitario-en-el-peru/">Mincetur</a>) aprobó nuevas disposiciones técnicas que deberán cumplir las plataformas de apuestas deportivas y juegos online que operan en el Perú. La medida establece condiciones para el funcionamiento de sus aplicaciones, servicios y componentes informáticos en relación con el pago del Impuesto Selectivo al Consumo (ISC).</p>
+<p>La disposición fue oficializada mediante la Resolución Directoral N.° 8855-2026-MINCETUR/VMT/DGJCMT, publicada el 11 de noviembre de 2026, que aprobó la Directiva N.° 001-2026. Esta norma regula los sistemas tecnológicos utilizados por las empresas que ofrecen juegos a distancia y apuestas deportivas por internet.</p>
+<p>Las nuevas reglas no se limitan a los permisos para operar en el mercado peruano, sino que también alcanzan a las herramientas informáticas que utilizan estas compañías. El objetivo es establecer requisitos técnicos para que sus plataformas funcionen de acuerdo con las disposiciones tributarias vigentes.</p>
+<p>La regulación se relaciona con el Decreto Legislativo N.° 1644, que incorporó los juegos a distancia y las apuestas deportivas a distancia dentro de las actividades gravadas con el ISC. Posteriormente, el Decreto Supremo N.° 254-2024-EF aprobó el reglamento que establece las disposiciones para aplicar este impuesto al sector.</p>
+<p>En ese marco, la Dirección General de Juegos de Casino y Máquinas Tragamonedas, órgano dependiente del Viceministerio de Turismo, tiene a su cargo la regulación, autorización, fiscalización y sanción de las actividades de juegos de casino, máquinas tragamonedas, juegos a distancia y apuestas deportivas a distancia, según sus competencias.</p>
+<p>El documento aprobado comprende ocho artículos distribuidos en tres capítulos, además de dos disposiciones transitorias y complementarias y un anexo. La directiva desarrolla los requisitos técnicos que deberán observar las plataformas comprendidas en la regulación, como parte de los mecanismos de control vinculados a la aplicación del ISC.</p>
+<p>Con esta disposición, el Mincetur amplía las reglas de supervisión sobre el sector de apuestas por internet, al incorporar exigencias relacionadas con la tecnología que utilizan las empresas para ofrecer sus servicios en el país.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/mincetur-establece-nuevas-reglas-tecnicas-para-las-apuestas-deportivas-y-juegos-online/">Mincetur establece nuevas reglas técnicas para las apuestas deportivas y juegos online</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Mincetur-establece-nuevas-reglas-tecnicas-para-las-apuestas-deportivas-y-juegos-online.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Solicitar varias tarjetas de crédito a la vez: qué efecto tiene</title>
+		<link>https://jornada.com.pe/solicitar-varias-tarjetas-de-credito-a-la-vez-que-efecto-tiene/</link>
+		
+		<dc:creator><![CDATA[Diario Jornada]]></dc:creator>
+		<pubDate>Tue, 24 Nov 2026 00:49:07 +0000</pubDate>
+				<category><![CDATA[NOTICIA]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106711</guid>
+
+					<description><![CDATA[<p>Comparar ofertas es normal, pero enviar varias solicitudes en pocos días puede tener efectos en la evaluación. Conviene saber cómo funciona el proceso para decidir con calma y evitar pedidos que no necesitas. Antes de ordenar los trámites y decidir cuándo conviene solicitar tarjeta de crédito, es útil entender cómo revisan los bancos tu situación [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/solicitar-varias-tarjetas-de-credito-a-la-vez-que-efecto-tiene/">Solicitar varias tarjetas de crédito a la vez: qué efecto tiene</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Comparar ofertas es normal, pero enviar varias solicitudes en pocos días puede tener efectos en la evaluación. Conviene saber cómo funciona el proceso para decidir con calma y evitar pedidos que no necesitas.</p>
+<p>Antes de ordenar los trámites y decidir cuándo conviene <a href="https://www.bancofalabella.pe/tarjetas-credito-cmr">solicitar tarjeta de crédito</a>, es útil entender cómo revisan los bancos tu situación y qué señales pueden generar muchas solicitudes seguidas.</p>
+<p><img fetchpriority="high" decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=75&resize=75&ssl=1 75w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=100&resize=100&ssl=1 100w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=150&resize=150&ssl=1 150w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=240&resize=240&ssl=1 240w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=320&resize=320&ssl=1 320w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=500&resize=500&ssl=1 500w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=640&resize=640&ssl=1 640w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=800&resize=800&ssl=1 800w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=1024&resize=1024&ssl=1 1024w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=1280&resize=1280&ssl=1 1280w, https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1&w=1600&resize=1600&ssl=1 1600w" class="size-full wp-image-106712 alignleft" fifu-data-src="https://i0.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen1-1.jpg?ssl=1" alt="" width="601" height="401" /></p>
+<p><em>Fuente: Pexels</em></p>
+<h2><strong>Cómo consultan los bancos el reporte de deuda</strong></h2>
+<p>Al evaluar una solicitud, las entidades suelen revisar tu historial en las centrales de riesgo, que muestran tus deudas vigentes, tus pagos y los atrasos. Cada entidad aplica sus propios criterios y no todas valoran los datos de la misma forma.</p>
+<ul>
+<li>Revisan si estás al día en tus obligaciones</li>
+<li>Consideran tu nivel de endeudamiento actual</li>
+<li>Analizan tu capacidad de pago frente a tu ingreso</li>
+</ul>
+<h2><strong>Efecto de muchas solicitudes seguidas</strong></h2>
+<p>Enviar varias solicitudes en poco tiempo puede dar la impresión de que necesitas financiamiento con urgencia. Algunas entidades pueden tomarlo en cuenta al evaluar, aunque no existe una regla única que valga para todas.</p>
+<table width="593">
+<tbody>
+<tr>
+<td width="235"><strong>Situación</strong></td>
+<td width="358"><strong>Lectura posible de la entidad</strong></td>
+</tr>
+<tr>
+<td width="235">Una solicitud bien sustentada</td>
+<td width="358">Proceso habitual</td>
+</tr>
+<tr>
+<td width="235">Varias solicitudes en pocos días</td>
+<td width="358">Puede interpretarse como necesidad urgente de crédito</td>
+</tr>
+<tr>
+<td width="235">Solicitudes espaciadas en el tiempo</td>
+<td width="358">Menor señal de urgencia</td>
+</tr>
+</tbody>
+</table>
+<p>Esta tabla es orientativa: la decisión final depende de las políticas de cada entidad.</p>
+<h2><strong>Cuánto conviene esperar entre una solicitud y otra</strong></h2>
+<p>No hay un plazo fijo que garantice resultados. Una práctica prudente es esperar la respuesta de una solicitud antes de enviar otra, y no pedir varias tarjetas por impulso. Si te rechazan, revisa el motivo antes de volver a intentar.</p>
+<h2><strong>Alternativas: pedir un aumento de línea antes que otra tarjeta</strong></h2>
+<p>Si ya tienes una tarjeta y buscas más cupo, una alternativa es consultar si puedes pedir un aumento de línea. Eso evita abrir una nueva cuenta y mantiene tus pagos concentrados.</p>
+<ul>
+<li>Revisa tu historial de pagos con la tarjeta actual</li>
+<li>Consulta en la entidad si te ofrecen una ampliación</li>
+<li>Compara costos y comisiones antes de aceptar</li>
+</ul>
+<h2><strong>Cómo llevar un registro de tus solicitudes</strong></h2>
+<p>Anota cada solicitud en una hoja con estos datos:</p>
+<ul>
+<li>Fecha de envío y entidad</li>
+<li>Tipo de tarjeta solicitada</li>
+<li>Resultado y fecha de respuesta</li>
+<li>Motivo informado, si hubo rechazo</li>
+</ul>
+<p>Ese registro te ayuda a no repetir pedidos y a ordenar tu estrategia de financiamiento.</p>
+<p><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=75&resize=75&ssl=1 75w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=100&resize=100&ssl=1 100w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=150&resize=150&ssl=1 150w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=240&resize=240&ssl=1 240w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=320&resize=320&ssl=1 320w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=500&resize=500&ssl=1 500w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=640&resize=640&ssl=1 640w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=800&resize=800&ssl=1 800w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=1024&resize=1024&ssl=1 1024w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=1280&resize=1280&ssl=1 1280w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1&w=1600&resize=1600&ssl=1 1600w" class="size-full wp-image-106713 alignleft" fifu-data-src="https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen2-1.jpg?ssl=1" alt="" width="601" height="401" /></p>
+<p><em>Fuente: Pexels</em></p>
+<h2><strong>Cómo prepararte antes de solicitar una nueva tarjeta</strong></h2>
+<p>Si ya decidiste que necesitas otra tarjeta, puedes ordenar tu proceso con una lista simple:</p>
+<ul>
+<li>Revisa tu reporte de deuda y confirma que los datos sean correctos</li>
+<li>Comprueba que estés al día con tus obligaciones actuales</li>
+<li>Calcula cuánto de tu ingreso ya está comprometido en cuotas</li>
+<li>Compara costos, comisiones y TCEA entre las opciones</li>
+<li>Elige una sola solicitud y espera la respuesta antes de enviar otra</li>
+</ul>
+<p>Este orden evita solicitudes innecesarias y te permite aprovechar mejor cada trámite.</p>
+<h2><strong>Errores frecuentes al comparar ofertas</strong></h2>
+<ul>
+<li>Enviar solicitudes a varias entidades el mismo día por miedo a que te rechacen</li>
+<li>Pedir una tarjeta solo por el beneficio de bienvenida</li>
+<li>Ignorar la TCEA y las comisiones al comparar</li>
+<li>No revisar si ya tienes una tarjeta con condiciones similares</li>
+<li>Dar tus datos en páginas que no son oficiales</li>
+</ul>
+<p>Cada solicitud implica compartir información personal y dejar un registro, por lo que conviene que sea una decisión pensada y no un impulso.</p>
+<h2><strong>Cómo comparar sin solicitar</strong></h2>
+<p>Antes de enviar una solicitud puedes comparar productos revisando las condiciones publicadas por cada entidad y los simuladores que ofrece la SBS. Fíjate en estos puntos:</p>
+<table width="463">
+<tbody>
+<tr>
+<td width="89"><strong>Aspecto</strong></td>
+<td width="374"><strong>Qué comparar</strong></td>
+</tr>
+<tr>
+<td width="89">Costo</td>
+<td width="374">TCEA, comisiones, membresía y seguros</td>
+</tr>
+<tr>
+<td width="89">Condiciones</td>
+<td width="374">Límite estimado, fechas de pago y requisitos</td>
+</tr>
+<tr>
+<td width="89">Beneficios</td>
+<td width="374">Descuentos, programas de puntos o cuotas, según el caso</td>
+</tr>
+<tr>
+<td width="89">Atención</td>
+<td width="374">Canales para consultas, bloqueo y reclamos</td>
+</tr>
+</tbody>
+</table>
+<p>Con esa información elegirás una sola opción que se ajuste a tu necesidad y evitarás enviar solicitudes que no vas a utilizar.</p>
+<h2><strong>Cómo organizar la información de cada entidad antes de decidir</strong></h2>
+<p>Una tabla sencilla puede ayudarte a ordenar lo que cada entidad te ofrece: costos, requisitos y plazos de respuesta. Tenerla a la vista evita confusiones y reduce la tentación de solicitar varias tarjetas a la vez.</p>
+<p>Si después de comparar dudas entre dos opciones, elige la que mejor se ajuste a tus gastos reales y espera la respuesta antes de evaluar otra.</p>
+<p>Guarda además las comunicaciones que recibas de cada entidad. Si necesitas aclarar algo más adelante, tendrás a la mano la información exacta que te dieron.</p>
+<p>Así evitarás decisiones apresuradas y mantendrás el control de cada trámite.</p>
+<p><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=75&resize=75&ssl=1 75w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=100&resize=100&ssl=1 100w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=150&resize=150&ssl=1 150w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=240&resize=240&ssl=1 240w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=320&resize=320&ssl=1 320w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=500&resize=500&ssl=1 500w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=640&resize=640&ssl=1 640w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=800&resize=800&ssl=1 800w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=1024&resize=1024&ssl=1 1024w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=1280&resize=1280&ssl=1 1280w, https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1&w=1600&resize=1600&ssl=1 1600w" class="size-full wp-image-106714 alignleft" fifu-data-src="https://i1.wp.com/jornada.com.pe/wp-content/uploads/2026/11/Imagen3-1.jpg?ssl=1" alt="" width="601" height="401" /></p>
+<p><em>Fuente: Pexels</em></p>
+<h2><strong>Preguntas frecuentes</strong></h2>
+<h3><strong>¿Pedir varias tarjetas daña mi historial?</strong></h3>
+<p>No necesariamente, pero muchas solicitudes seguidas pueden influir en la evaluación según la entidad. Evita pedir sin necesidad.</p>
+<h3><strong>¿Cuánto debo esperar para solicitar otra tarjeta?</strong></h3>
+<p>No hay un plazo universal. Lo prudente es esperar la respuesta de la primera y revisar si realmente necesitas otra.</p>
+<h3><strong>¿Puedo comparar sin solicitar?</strong></h3>
+<p>Sí. Revisa condiciones, TCEA y comisiones en los sitios oficiales antes de enviar cualquier solicitud.</p>
+<h3><strong>¿Dónde veo mi reporte de deuda?</strong></h3>
+<p>En los canales oficiales que informa la SBS, donde puedes revisar tus deudas y pagos registrados.</p>
+<h2><strong>Menos solicitudes, mejores decisiones</strong></h2>
+<p>Pedir varias tarjetas de crédito a la vez no suele ser la mejor estrategia. Compara primero, solicita con criterio, espera cada respuesta y mantén un registro para decidir con información.</p>
+<p>&nbsp;</p><p>The post <a href="https://jornada.com.pe/solicitar-varias-tarjetas-de-credito-a-la-vez-que-efecto-tiene/">Solicitar varias tarjetas de crédito a la vez: qué efecto tiene</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>López Aliaga anuncia que negociará votos en el Congreso para reformar el sistema de justicia</title>
+		<link>https://jornada.com.pe/lopez-aliaga-anuncia-que-negociara-votos-en-el-congreso-para-reformar-el-sistema-de-justicia/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Tue, 24 Nov 2026 00:18:55 +0000</pubDate>
+				<category><![CDATA[NACIONAL]]></category>
+		<category><![CDATA[#Ministerio Público]]></category>
+		<category><![CDATA[#Poder Judicial]]></category>
+		<category><![CDATA[Congreso]]></category>
+		<category><![CDATA[Fiscalía]]></category>
+		<category><![CDATA[JNE]]></category>
+		<category><![CDATA[Mirtha Vásquez]]></category>
+		<category><![CDATA[Procuraduría General del Estado]]></category>
+		<category><![CDATA[Rafael López Aliaga]]></category>
+		<category><![CDATA[reforma judicial]]></category>
+		<category><![CDATA[Renovación Popular]]></category>
+		<category><![CDATA[roberto burneo]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106707</guid>
+
+					<description><![CDATA[<p>Rafael López Aliaga buscará votos en el Congreso para reformar el Poder Judicial, la Fiscalía y la Procuraduría, pese a no integrar el Parlamento</p>
+<p>The post <a href="https://jornada.com.pe/lopez-aliaga-anuncia-que-negociara-votos-en-el-congreso-para-reformar-el-sistema-de-justicia/">López Aliaga anuncia que negociará votos en el Congreso para reformar el sistema de justicia</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El líder de Renovación Popular, Rafael <a href="https://jornada.com.pe/el-mecanismo-de-lopez-aliaga-tambien-en-junin-dos-alcaldes-van-por-la-reeleccion-encubierta/">López Aliaga</a>, anunció que buscará negociar votos con las bancadas del Congreso para impulsar una reforma del Poder Judicial, el Ministerio Público y la Procuraduría General del Estado, pese a que actualmente no ocupa un escaño en el Parlamento.</p>
+<p>El anuncio lo realizó durante un mitin en Villa María del Triunfo, donde cuestionó duramente a las instituciones del sistema de justicia y sostuvo que su siguiente objetivo político será promover cambios desde el Legislativo.</p>
+<p>«Este país está podrido, la Fiscalía está podrida, el Poder Judicial podrido, Procuraduría General del Estado podrida. Eso es lo que hay que destrozar desde el Congreso, este Congreso. Ahí me voy a dedicar ahora», manifestó ante sus simpatizantes.</p>
+<p>López Aliaga también confirmó que asumirá las gestiones políticas para conseguir respaldo parlamentario. «Voy a meterme a negociar los votos para la reforma judicial, fiscal y Procuraduría de la República», declaró, luego de señalar que había concluido una etapa de su actividad política.</p>
+<p>Sus declaraciones llaman la atención porque renunció a su escaño en el Senado y no integra actualmente el Poder Legislativo. Sin embargo, pretende intervenir directamente en las negociaciones con las bancadas para conseguir los votos que permitan aprobar las reformas que plantea.</p>
+<p>Durante el mismo mitin, el dirigente también arremetió contra el presidente del Jurado Nacional de Elecciones (JNE), Roberto Burneo, a quien cuestionó por su trayectoria profesional antes de asumir como juez supremo y titular del organismo electoral. López Aliaga afirmó que al magistrado «le falta calle, le falta vida, le falta haber trabajado» y cuestionó su actuación frente a las normas electorales.</p>
+<p>Sus críticas se producen después de que el JNE determinara que los exalcaldes elegidos como primeros regidores no pueden asumir las alcaldías por sucesión, decisión que impidió que López Aliaga asumiera la Municipalidad Metropolitana de Lima.</p>
+<p>El líder de Renovación Popular también dio por desaparecidas a varias organizaciones políticas tras los comicios municipales y regionales. Afirmó que Fuerza Popular y Juntos por el Perú «están muertos» por no superar la valla electoral, mientras que sostuvo que Alianza para el Progreso, Podemos Perú y Avanza País «ya desaparecieron».</p>
+<p><strong>Renovación Popular respalda la reforma</strong></p>
+<p>La vocera de Renovación Popular en la Cámara de Diputados, Roxana Rocha, respaldó el anuncio y señaló que su bancada ya impulsa iniciativas legislativas relacionadas con la reforma del sistema de justicia.</p>
+<p>Mencionó el Proyecto de Ley N.º 00209, sobre la reforma constitucional del sistema de justicia, y el Proyecto de Ley N.º 00831, orientado a fortalecer la justicia de paz. Además, pidió a la Comisión de Constitución priorizar el debate de estas propuestas.</p>
+<p>Rocha también confirmó que su bancada presentó el 17 de noviembre una denuncia constitucional contra el presidente del JNE, Roberto Burneo, por la resolución que impidió a López Aliaga asumir la Alcaldía de Lima.</p>
+<p>Consultada sobre cómo conseguirán los votos parlamentarios para aprobar las reformas, considerando que el propio López Aliaga descalificó a varias agrupaciones políticas, la legisladora evitó responder por las declaraciones de su dirigente y señaló que buscarán los consensos necesarios.</p>
+<p><strong>Mirtha Vásquez advierte sobre posible intromisión política</strong></p>
+<p>Desde otra posición, la senadora de Ahora Nación, Mirtha Vásquez, cuestionó que López Aliaga pretenda conducir negociaciones parlamentarias después de renunciar voluntariamente a su escaño. También advirtió sobre el riesgo de que las reformas terminen sometiendo a las instituciones de justicia a intereses partidarios.</p>
+<p>Vásquez recordó que, durante el anterior periodo parlamentario, la bancada de Renovación Popular impulsó acciones contra la Junta Nacional de Justicia (JNJ), incluidas iniciativas que terminaron con la destitución de algunos de sus integrantes.</p>
+<p>Asimismo, calificó la denuncia constitucional contra Burneo como una posible represalia política por la decisión electoral que perjudicó las aspiraciones de López Aliaga de asumir la Alcaldía de Lima.</p>
+<p>La legisladora también cuestionó que se pretenda presionar a los magistrados por resoluciones que no favorecen a determinadas organizaciones políticas. Añadió que, pese a los enfrentamientos públicos entre Renovación Popular y Fuerza Popular, ambas agrupaciones suelen coincidir en votaciones dentro del Congreso.</p>
+<p>De esta manera, el anuncio de López Aliaga abre un nuevo escenario de confrontación política en torno a la reforma del sistema de justicia, mientras su partido busca respaldo parlamentario para modificar las instituciones encargadas de administrar justicia y defender los intereses del Estado.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/lopez-aliaga-anuncia-que-negociara-votos-en-el-congreso-para-reformar-el-sistema-de-justicia/">López Aliaga anuncia que negociará votos en el Congreso para reformar el sistema de justicia</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Lopez-Aliaga-anuncia-que-negociara-votos-en-el-Congreso-para-reformar-el-sistema-de-justicia-1.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Ayacucho enciende las alertas tras fuerte sismo registrado en Junín</title>
+		<link>https://jornada.com.pe/ayacucho-enciende-las-alertas-tras-fuerte-sismo-registrado-en-junin/</link>
+		
+		<dc:creator><![CDATA[Frank Tacuri Yupanki]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 22:54:35 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[TEMA DEL DÍA]]></category>
+		<category><![CDATA[#Junín]]></category>
+		<category><![CDATA[alertas]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[sismo]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106704</guid>
+
+					<description><![CDATA[<p>El sismo de magnitud 6.7 registrado en Junín el pasado 20 de noviembre volvió a poner en evidencia la necesidad de fortalecer la prevención ante desastres en Ayacucho. La antigüedad de algunas edificaciones, la autoconstrucción y las dificultades para evacuar en determinadas zonas son factores que generan preocupación frente a una eventual emergencia sísmica. El [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/ayacucho-enciende-las-alertas-tras-fuerte-sismo-registrado-en-junin/">Ayacucho enciende las alertas tras fuerte sismo registrado en Junín</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>El sismo de magnitud 6.7 registrado en Junín el pasado 20 de noviembre volvió a poner en evidencia la necesidad de fortalecer la prevención ante desastres en Ayacucho. La antigüedad de algunas edificaciones, la autoconstrucción y las dificultades para evacuar en determinadas zonas son factores que generan preocupación frente a una eventual emergencia sísmica.</p>
+<p>El movimiento ocurrió a las 19:09 horas, a 30 kilómetros al noroeste de Junín y a una profundidad de 129 kilómetros. Horas después, a las 00:12 del 21 de noviembre, se registró otro sismo de magnitud 5.0 en la misma referencia geográfica, a 127 kilómetros de profundidad, según los reportes del Instituto Geofísico del Perú (IGP).</p>
+<p>Ayacucho también registra antecedentes de actividad sísmica importante. El 20 de agosto de 2026, un movimiento de magnitud 7.2 tuvo su epicentro a 35 kilómetros al norte de Coracora, en la provincia de Parinacochas, con una profundidad de 108 kilómetros. Ese día también se reportaron dos movimientos de magnitudes 4.2 y 4.0. &lt;Cite refs={[«turn321928search0&#8243;,»turn321928search1&#8243;,»turn321928search2»]}/&gt;</p>
+<p>En la ciudad de Ayacucho, uno de los puntos de preocupación es el estado de las edificaciones del centro histórico. De acuerdo con información atribuida a la Subgerencia de Defensa Civil del Gobierno Regional, más del 60 % de las viviendas de esta zona podrían resultar afectadas ante un sismo de moderada magnitud, debido a su antigüedad y condiciones estructurales.</p>
+<p>A esta situación se suman las viviendas construidas sin asistencia técnica en sectores como La Picota y las zonas periféricas de Huamanga. La expansión de la autoconstrucción, sin supervisión profesional, incrementa la preocupación sobre las condiciones de seguridad de estas edificaciones.</p>
+<p>El <em><strong>secretario técnico de la Plataforma Regional de Defensa Civil, Wilber Martínez Huamán</strong></em>, también ha advertido sobre las dificultades que tendría la ciudad para evacuar ante una emergencia. Las calles estrechas del centro histórico, la congestión vehicular y la limitada disponibilidad de espacios seguros podrían obstaculizar una respuesta rápida.</p>
+<p>Otro desafío es la conservación de las casonas antiguas, muchas de ellas consideradas patrimonio arquitectónico. La necesidad de garantizar la seguridad de sus ocupantes debe compatibilizarse con las normas de protección patrimonial y las intervenciones técnicas que estos inmuebles requieren.</p>
+<p>Frente a este escenario, especialistas y autoridades insisten en fortalecer la cultura de prevención. Contar con una mochila de emergencia, identificar zonas seguras, establecer rutas de evacuación y participar en simulacros son medidas que las familias deben incorporar para reducir los riesgos ante un eventual sismo.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada</em></a></strong></li>
+</ul>
+<table class="lt-social">
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/ayacucho-enciende-las-alertas-tras-fuerte-sismo-registrado-en-junin/">Ayacucho enciende las alertas tras fuerte sismo registrado en Junín</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Ayacucho-enciende-las-alertas-tras-fuerte-sismo-registrado-en-Junin.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>San Juan Bautista: Delincuentes a bordo de moto lineal arranchan cartera a adulta mayor</title>
+		<link>https://jornada.com.pe/san-juan-bautista-delincuentes-a-bordo-de-moto-lineal-arranchan-cartera-a-adulta-mayor/</link>
+		
+		<dc:creator><![CDATA[Frank Tacuri Yupanki]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 22:48:41 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[SAN JUAN BAUTISTA]]></category>
+		<category><![CDATA[#San Juan Bautista]]></category>
+		<category><![CDATA[adulta mayor]]></category>
+		<category><![CDATA[Delincuentes]]></category>
+		<category><![CDATA[moto lineal]]></category>
+		<category><![CDATA[robo]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106697</guid>
+
+					<description><![CDATA[<p>Una adulta mayor fue víctima de un violento arrebato cometido por dos sujetos que se desplazaban en una motocicleta lineal, cerca del local de la Municipalidad Distrital de San Juan Bautista, en Huamanga. La mujer cayó al pavimento tras forcejear con los delincuentes, quienes escaparon con sus pertenencias. El asalto ocurrió en la intersección de [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/san-juan-bautista-delincuentes-a-bordo-de-moto-lineal-arranchan-cartera-a-adulta-mayor/">San Juan Bautista: Delincuentes a bordo de moto lineal arranchan cartera a adulta mayor</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Una adulta mayor fue víctima de un violento arrebato cometido por dos sujetos que se desplazaban en una motocicleta lineal, cerca del local de la Municipalidad Distrital de San Juan Bautista, en Huamanga. L<strong>a mujer cayó al pavimento tras forcejear con los delincuentes, quienes escaparon con sus pertenencias.</strong></p>
+<p>El asalto ocurrió en la intersección de los jirones Huancayo y España. Las cámaras de seguridad de la zona registraron el momento en que los sujetos, que llevaban cascos para cubrir sus rostros, se acercaron a la víctima y le arrebataron la cartera antes de huir.</p>
+<p>De acuerdo con la información proporcionada, la mujer llevaba dinero en efectivo, un teléfono celular y otros objetos de valor. Tras el ataque, quedó tendida y buscó ayuda.</p>
+<p>Ante lo ocurrido, vecinos solicitaron a la Policía Nacional y a las autoridades municipales revisar las imágenes de videovigilancia para identificar a los responsables y ubicar la motocicleta utilizada en el asalto.</p>
+<p>El hecho vuelve a generar preocupación entre los residentes de San Juan Bautista, quienes demandan mayor vigilancia y acciones para prevenir nuevos robos en la zona.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada<br />
+</em></a></strong></li>
+</ul>
+<table class="lt-social">
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/san-juan-bautista-delincuentes-a-bordo-de-moto-lineal-arranchan-cartera-a-adulta-mayor/">San Juan Bautista: Delincuentes a bordo de moto lineal arranchan cartera a adulta mayor</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Delincuentes-a-bordo-de-moto-lineal-arranchan-cartera-a-adulta-mayor.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Roban tablets y equipos de colegio en Mollepata: pérdidas superarían los 10 mil soles</title>
+		<link>https://jornada.com.pe/roban-tablets-y-equipos-de-colegio-en-mollepata-perdidas-superarian-los-10-mil-soles/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 22:48:12 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[#Inseguridad Ciudadana]]></category>
+		<category><![CDATA[#Instituciones Educativas]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[Jornada Ayacucho]]></category>
+		<category><![CDATA[mollepata]]></category>
+		<category><![CDATA[Policarpo Mesa Machaca]]></category>
+		<category><![CDATA[robo en colegio]]></category>
+		<category><![CDATA[tablets]]></category>
+		<category><![CDATA[UGEL Huamanga]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106691</guid>
+
+					<description><![CDATA[<p>Delincuentes ingresaron a la institución educativa Juan Mendoza Quispe de Mollepata y sustrajeron tablets y otros bienes. El robo afectó a 175 estudiantes</p>
+<p>The post <a href="https://jornada.com.pe/roban-tablets-y-equipos-de-colegio-en-mollepata-perdidas-superarian-los-10-mil-soles/">Roban tablets y equipos de colegio en Mollepata: pérdidas superarían los 10 mil soles</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>La institución educativa Juan Mendoza Quispe de <a href="https://jornada.com.pe/solo-vienen-a-tomarse-fotos-pobladores-de-mollepata-acusan-a-la-municipalidad-de-incumplir-promesas/">Mollepata</a> 2 fue blanco de un robo que dejó aulas y oficinas desordenadas y ocasionó la pérdida de equipos tecnológicos destinados al aprendizaje de los estudiantes. Los delincuentes ingresaron tras retirar una ventana con todo y marco de la dirección y salieron por la puerta principal, que también fue violentada.</p>
+<p>El hecho fue advertido por los docentes cuando llegaron a trabajar el viernes. Según informó Policarpo Meza Machaca, integrante del comité de condiciones operativas del colegio, los responsables habrían ingresado durante la noche del jueves y sustrajeron varias tablets entregadas por el Ministerio de Educación para uso de los escolares.</p>
+<p>El robo también afectó al cafetín escolar. De acuerdo con el docente, los responsables se llevaron golosinas y otros productos que pertenecían a las mujeres que atienden el quiosco. La institución estima que las pérdidas alcanzarían entre 10 mil y 12 mil soles, aunque todavía realiza la valorización de los bienes sustraídos con base en el inventario.</p>
+<p>La denuncia fue presentada ante la División de Investigación Criminal (Divincri), mientras que la Unidad de Gestión Educativa Local (UGEL) Huamanga y la Policía Nacional también tomaron conocimiento del caso. Según Mesa Machaca, personal especializado acudió al plantel para recoger huellas y realizar las diligencias correspondientes. Hasta el momento de sus declaraciones, la investigación continuaba.</p>
+<p>El docente señaló que la institución ya había sufrido robos en años anteriores, cuando también sustrajeron computadoras y otros equipos utilizados por los escolares. Sin embargo, pese a los pedidos realizados durante varios años a la UGEL Huamanga, el colegio no cuenta con un vigilante nocturno. Actualmente, solo dispone de un trabajador de mantenimiento que cumple funciones durante el turno de mañana.</p>
+<p>Las condiciones de seguridad del plantel también fueron expuestas por el profesor. Indicó que una parte de la infraestructura está construida con adobe, que el colegio no tiene cerco perimétrico en toda su extensión y que existen terrenos abandonados en los alrededores. A ello se suma la escasa iluminación en uno de los sectores que colinda con el huaico, por donde presuntamente ingresaron los responsables.</p>
+<p>El caso ocurre en un contexto nacional en el que las denuncias por delitos contra el patrimonio siguen registrando cifras elevadas. Según información del Ministerio del Interior, entre el 1 de enero y el 14 de mayo de 2026 se registraron 56 694 denuncias por hurto y 16 715 por robo a nivel nacional. Estas cifras corresponden al conjunto de denuncias policiales y no exclusivamente a instituciones educativas.</p>
+<p>El robo afecta directamente a una comunidad educativa de 175 estudiantes de secundaria, que utilizaban los recursos tecnológicos sustraídos para sus actividades escolares. Mesa Machaca pidió a las autoridades educativas que gestionen la reposición de las tablets y demás bienes, además de atender la necesidad de contar con personal de guardianía. También solicitó mayor presencia policial y de serenazgo durante las noches.</p>
+<p>La institución espera recuperar los equipos y que las investigaciones permitan identificar a los responsables. Mientras tanto, el pedido de los docentes apunta a evitar que el colegio vuelva a convertirse en blanco de nuevos robos.</p>
+<style>
+  .lt-social {<br />
+    width: 100%;<br />
+    max-width: 400px;<br />
+    margin: 30px auto;<br />
+    border-collapse: collapse;<br />
+    text-align: left;<br />
+    font-family: "Helvetica", Arial, sans-serif;<br />
+    background-color: #fff;<br />
+    border-radius: 8px;<br />
+    overflow: hidden;<br />
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);<br />
+  }</p>
+<p>  .lt-social caption {<br />
+    caption-side: top;<br />
+    font-weight: bold;<br />
+    font-size: 1.1rem;<br />
+    padding: 12px 10px;<br />
+    text-align: left;<br />
+    color: #fff;<br />
+    background: #334b8c;<br />
+  }</p>
+<p>  .lt-social td {<br />
+    padding: 8px 6px;<br />
+    vertical-align: middle;<br />
+    border-top: 1px solid #ddd;<br />
+    color: #000;<br />
+  }</p>
+<p>  /* CELDA DEL ÍCONO */<br />
+  .lt-social td.icon {<br />
+    width: 42px;<br />
+    text-align: center;<br />
+    background-color: #334b8c; /* azul estándar */<br />
+  }</p>
+<p>  /* ÍCONO */<br />
+  .lt-social td.icon img {<br />
+    width: 20px;<br />
+    height: 20px;<br />
+    filter: invert(1); /* blanco puro */<br />
+  }</p>
+<p>  .lt-social a {<br />
+    color: #000;<br />
+    text-decoration: none;<br />
+  }</p>
+<p>  .lt-social a:hover {<br />
+    text-decoration: underline;<br />
+  }</p>
+<p>  @media (max-width: 600px) {<br />
+    .lt-social {<br />
+      font-size: 0.95rem;<br />
+    }<br />
+  }<br />
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/roban-tablets-y-equipos-de-colegio-en-mollepata-perdidas-superarian-los-10-mil-soles/">Roban tablets y equipos de colegio en Mollepata: pérdidas superarían los 10 mil soles</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11--Roban-tablets-y-equipos-de-colegio-en-Mollepata-perdidas-superarian-los-10-mil-soles-1.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Gimnasia artística crece en Ayacucho, pero falta infraestructura limita su desarrollo</title>
+		<link>https://jornada.com.pe/gimnasia-artistica-crece-en-ayacucho-pero-falta-infraestructura-limita-su-desarrollo/</link>
+		
+		<dc:creator><![CDATA[Sharay Anaya]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 22:38:12 +0000</pubDate>
+				<category><![CDATA[DEPORTES]]></category>
+		<category><![CDATA[#Infraestructura]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[Desarrollo]]></category>
+		<category><![CDATA[Gimnasia Artística]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106694</guid>
+
+					<description><![CDATA[<p>La gimnasia artística gana cada vez más espacio en Ayacucho, pero la falta de infraestructura y de profesionales especializados limita su desarrollo. La situación preocupa especialmente por los deportistas que comienzan a destacar en competencias nacionales y necesitan mejores condiciones para continuar su formación. Rosana Martínez, entrenadora de la academia RZGym, recordó que esta disciplina [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/gimnasia-artistica-crece-en-ayacucho-pero-falta-infraestructura-limita-su-desarrollo/">Gimnasia artística crece en Ayacucho, pero falta infraestructura limita su desarrollo</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>La gimnasia artística gana cada vez más espacio en Ayacucho, pero la falta de infraestructura y de profesionales especializados limita su desarrollo. La situación preocupa especialmente por los deportistas que comienzan a destacar en competencias nacionales y necesitan mejores condiciones para continuar su formación.</p>
+<p><strong>Rosana Martínez, entrenadora de la academia </strong><strong>RZGym</strong>, recordó que esta disciplina comenzó prácticamente desde cero en la región, cuando pocas personas conocían su práctica. Actualmente, la academia trabaja con niñas en los niveles básico, 1, 2 y 3, y busca fortalecer su preparación mediante la participación de docentes internacionales. Además, anunció la próxima llegada de un entrenador y juez internacional.</p>
+<p>La formación también incorpora a varones. Según Martínez, cinco niños ya entrenan en la academia y se espera que puedan participar en competencias durante el próximo año.</p>
+<p>Uno de los resultados más destacados es el de Juan Enrique Martínez Colmenares, quien se consagró campeón nacional de gimnasia artística 2026 en la categoría Sub-9, nivel 4, durante el campeonato organizado por la Federación Deportiva Peruana de Gimnasia.</p>
+<p>Representando a Ayacucho, obtuvo el primer lugar en salto, hongo, suelo, anillas y paralelas, además del segundo puesto en barra, frente a deportistas de clubes de Lima y Trujillo.</p>
+<p>Sin embargo, su continuidad y crecimiento deportivo enfrentan una dificultad: la academia no cuenta con todos los aparatos necesarios para desarrollar entrenamientos de mayor exigencia. La entrenadora señaló que buscará alternativas para que el menor pueda seguir preparándose y no vea limitado su progreso.</p>
+<p>Martínez sostuvo que el caso demuestra el potencial de los niños y niñas de Ayacucho, pero remarcó que se necesita mejorar la infraestructura y formar a más entrenadores especializados para consolidar esta disciplina en la región.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada</em></a></strong></li>
+</ul>
+<table class="lt-social">
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/gimnasia-artistica-crece-en-ayacucho-pero-falta-infraestructura-limita-su-desarrollo/">Gimnasia artística crece en Ayacucho, pero falta infraestructura limita su desarrollo</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Gimnasia-artistica-crece-en-Ayacucho-pero-falta-infraestructura-limita-su-desarrollo.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Ya están definidas las semifinales de la Copa Perú 2026</title>
+		<link>https://jornada.com.pe/ya-estan-definidas-las-semifinales-de-la-copa-peru-2026/</link>
+		
+		<dc:creator><![CDATA[Sharay Anaya]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 22:32:59 +0000</pubDate>
+				<category><![CDATA[DEPORTES]]></category>
+		<category><![CDATA[Copa Perú]]></category>
+		<category><![CDATA[Copa Perú 2026]]></category>
+		<category><![CDATA[semifinales]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106676</guid>
+
+					<description><![CDATA[<p>La Etapa Nacional de la Copa Perú 2026 ya tiene a sus cuatro semifinalistas. Unión Minas de Pamputa, ADA Cajabamba, Viargoca FC y Sociedad Tiro 28 superaron los cuartos de final y continúan en carrera por el título del tradicional torneo del fútbol peruano. Unión Minas de Pamputa, representante de Apurímac, clasificó tras vencer por [&#8230;]</p>
+<p>The post <a href="https://jornada.com.pe/ya-estan-definidas-las-semifinales-de-la-copa-peru-2026/">Ya están definidas las semifinales de la Copa Perú 2026</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>La Etapa Nacional de la Copa Perú 2026 ya tiene a sus cuatro semifinalistas. <strong>Unión Minas de Pamputa, ADA Cajabamba, Viargoca FC y Sociedad Tiro 28</strong> superaron los cuartos de final y continúan en carrera por el título del tradicional torneo del fútbol peruano.</p>
+<p>Unión Minas de Pamputa, representante de Apurímac, clasificó tras vencer por 2-0 a Atlético Nacional Iquitos. Por su parte, ADA Cajabamba, de Cajamarca, empató sin goles con Bella Esperanza, de Lima, pero consiguió su pase al imponerse por 4-3 en la tanda de penales.</p>
+<p>En los encuentros disputados el domingo 22 de noviembre, Viargoca FC derrotó por 2-0 a Leones de Anccaca, con goles de Bill Pérez y Fabricio Cancapa. Mientras tanto, Sociedad Tiro 28 venció por 2-1 a Sport Machete, con un doblete de Renny Luque. José Hilario anotó para el equipo rival.</p>
+<p>Con estos resultados, las semifinales quedaron conformadas de la siguiente manera: Unión Minas de Pamputa enfrentará a ADA Cajabamba, mientras que Viargoca FC se medirá ante Sociedad Tiro 28.</p>
+<p>Los cuatro clubes buscarán superar esta instancia para alcanzar la final y acercarse al título de la Copa Perú 2026.</p>
+<ul>
+<li><strong>Versión resumida, lee la información completa en la edición impresa y la edición digital de <a href="https://pro.jornada.com.pe/"><em>Jornada</em></a></strong></li>
+</ul>
+<table class="lt-social">
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" class="td-animation-stack-type0-2" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" sizes="328px" srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/ya-estan-definidas-las-semifinales-de-la-copa-peru-2026/">Ya están definidas las semifinales de la Copa Perú 2026</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Ya-estan-definidas-las-semifinales-de-la-Copa-Peru-2026.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>«Solo vienen a tomarse fotos»: pobladores de Mollepata acusan a la Municipalidad de incumplir promesas</title>
+		<link>https://jornada.com.pe/solo-vienen-a-tomarse-fotos-pobladores-de-mollepata-acusan-a-la-municipalidad-de-incumplir-promesas/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 22:24:36 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<category><![CDATA[#Huamanga]]></category>
+		<category><![CDATA[#Municipalidad Provincial de Huamanga]]></category>
+		<category><![CDATA[Ayacucho]]></category>
+		<category><![CDATA[falta de agua]]></category>
+		<category><![CDATA[mollepata]]></category>
+		<category><![CDATA[obras inconclusas]]></category>
+		<category><![CDATA[protesta]]></category>
+		<category><![CDATA[SEDA Ayacucho]]></category>
+		<category><![CDATA[Servicios Básicos]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106688</guid>
+
+					<description><![CDATA[<p>Pobladores de 36 asociaciones denuncian obras inconclusas, falta de agua y cuestionan que funcionarios municipales solo aparezcan para tomarse fotos</p>
+<p>The post <a href="https://jornada.com.pe/solo-vienen-a-tomarse-fotos-pobladores-de-mollepata-acusan-a-la-municipalidad-de-incumplir-promesas/">«Solo vienen a tomarse fotos»: pobladores de Mollepata acusan a la Municipalidad de incumplir promesas</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p>Los pobladores de <a href="https://jornada.com.pe/mollepata-recibe-agua-solo-una-o-dos-horas-al-dia-y-dirigentes-evaluan-medidas-de-protesta/">Mollepata</a> llegaron hasta la Plaza Mayor de Huamanga para protestar contra la Municipalidad Provincial de Huamanga, el Gobierno Regional de Ayacucho y la empresa prestadora de servicios de saneamiento (SEDA). Los manifestantes denunciaron que las tres instituciones incumplieron compromisos relacionados con el acceso al agua potable, alcantarillado, pistas, veredas y formalización de sus terrenos.</p>
+<p>Edgar, representante de los manifestantes, señaló que las 36 asociaciones del sector decidieron movilizarse porque las autoridades no concretaron los compromisos asumidos con la población. Entre las principales demandas mencionó la culminación de las obras de alcantarillado, pistas, veredas y avenidas, además de la habilitación legal de los predios y la entrega de títulos de propiedad. El dirigente sostuvo que la municipalidad les hizo promesas que, hasta el momento de la protesta, continuaban pendientes.</p>
+<p>Uno de los cuestionamientos más directos estuvo dirigido a los funcionarios municipales. El representante afirmó que estos aparecen en Mollepata cuando los vecinos anuncian movilizaciones, pero no mantienen una comunicación permanente con las asociaciones. Según su denuncia, algunas calles permanecieron con trabajos paralizados durante más de 20 días y los funcionarios recién acudieron a la zona poco antes de la protesta. «Recién los funcionarios concurrieron al lugar a hacerse presente», manifestó. Los pobladores cuestionaron que estas visitas sirvan para tomarse fotografías, sin que exista información concreta sobre la solución de sus problemas.</p>
+<p>La protesta también puso en evidencia el reclamo por una obra que, según Edgar, debía estar terminada meses atrás y que permitiría iniciar posteriormente el expediente técnico para el asfaltado de la vía. El dirigente indicó que los trabajos permanecen inconclusos y que algunas avenidas todavía tienen zanjas abiertas. Añadió que la municipalidad no les informó cuándo terminará la intervención ni si garantizará el presupuesto para continuarla el próximo año.</p>
+<p>A esta situación se suma el desabastecimiento de agua potable. El representante denunció que las familias llevaban tres días sin recibir el servicio y que debían comprar agua mediante tanques a precios de entre 45 y 50 soles. Aseguró que la problemática perjudica a las 36 asociaciones de Mollepata y cuestionó que Seda todavía no asuma la operación de la planta de Ccasapato, cuya recepción, según indicó, permanece pendiente desde hace más de 11 meses.</p>
+<p>Otro punto de conflicto involucra a los sectores de San Viñaca y San Martín de Paraíso. Edgar responsabilizó a Seda, la municipalidad y el Gobierno Regional de generar tensiones entre estas poblaciones por la distribución del agua. Según su versión, las instituciones estarían trasladando el problema de abastecimiento al disponer de la poca cantidad de recurso hídrico que llega a Mollepata para atender a otros sectores, en lugar de impulsar proyectos que garanticen el suministro para todos.</p>
+<p>Los reclamos se producen en un contexto nacional de dificultades en la continuidad de los servicios de saneamiento. La Superintendencia Nacional de Servicios de Saneamiento (Sunass) reportó que las interrupciones del servicio de agua potable y alcantarillado aumentaron 95.5 % entre 2020 y 2024. En los dos últimos años de ese periodo, los cortes afectaron anualmente a más de tres millones de personas en el ámbito urbano del país.</p>
+<p>Finalmente, los manifestantes advirtieron que podrían adoptar medidas de protesta más radicales, incluida la toma de la Vía Los Libertadores, si no reciben respuestas. Edgar señaló que esta movilización constituye una última exhortación a las autoridades de la actual gestión municipal y regional. De persistir la falta de atención, las asociaciones evaluarán solicitar la intervención de autoridades nacionales mediante una comisión de alto nivel.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/solo-vienen-a-tomarse-fotos-pobladores-de-mollepata-acusan-a-la-municipalidad-de-incumplir-promesas/">«Solo vienen a tomarse fotos»: pobladores de Mollepata acusan a la Municipalidad de incumplir promesas</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Solo-vienen-a-tomarse-fotos-pobladores-de-Mollepata-acusan-a-la-Municipalidad-de-incumplir-promesas.webp" medium="image"></media:content>
+	</item>
+		<item>
+		<title>Manifestantes cuestionan gestión de Oscorima y advierten riesgo para presupuesto 2027</title>
+		<link>https://jornada.com.pe/manifestantes-cuestionan-gestion-de-oscorima-y-advierten-riesgo-para-presupuesto-2027/</link>
+		
+		<dc:creator><![CDATA[Iyari Gomez Castro]]></dc:creator>
+		<pubDate>Mon, 23 Nov 2026 22:01:50 +0000</pubDate>
+				<category><![CDATA[LOCAL]]></category>
+		<guid isPermaLink="false">https://jornada.com.pe/?p=106685</guid>
+
+					<description><![CDATA[<p>Ciudadanos y organizaciones sociales protestaron en Huamanga contra la gestión de Wilfredo Oscorima y reclamaron atención a los problemas de Mollepata</p>
+<p>The post <a href="https://jornada.com.pe/manifestantes-cuestionan-gestion-de-oscorima-y-advierten-riesgo-para-presupuesto-2027/">Manifestantes cuestionan gestión de Oscorima y advierten riesgo para presupuesto 2027</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></description>
+										<content:encoded><![CDATA[<p data-pm-slice="1 1 []">Un colectivo de ciudadanos y representantes de organizaciones sociales recorrió las calles de Huamanga para cuestionar la gestión del gobernador regional de Ayacucho, Wilfredo <a href="https://jornada.com.pe/manifestantes-marchan-en-huamanga-y-lanzan-consignas-contra-el-gobernador-oscorima/">Oscorima</a> Núñez, y reclamar atención a diversos problemas que, según sus integrantes, continúan sin respuesta. Entre sus principales preocupaciones señalaron el manejo de los recursos destinados al 2027 y las deficiencias en el servicio de agua potable en el sector de Mollepata.</p>
+<p>Lucho Antonio Cuba Mendoza, uno de los participantes de la movilización, indicó que la protesta fue convocada por un colectivo ciudadano y que también reunió a organizaciones sociales de base. Durante sus declaraciones, cuestionó las decisiones de la actual administración regional y sostuvo que existe preocupación por la contratación de presupuestos para el próximo año, aunque no presentó documentos que acrediten un presunto riesgo para esos recursos.</p>
+<p>El manifestante también incluyó entre sus reclamos al alcalde de la provincia de Huamanga y a SEDA Ayacucho. Sobre esta última entidad, señaló que los pobladores de Mollepata afrontan problemas con el servicio de agua potable y anunció que los participantes de la movilización se unirían a los vecinos de ese sector para continuar con sus demandas.</p>
+<p>Cuba Mendoza afirmó que las organizaciones sociales solicitaron previamente reuniones con el gobernador y sus funcionarios, pero que no consiguieron ser atendidas. Por ese motivo, según explicó, decidieron trasladar sus reclamos a las calles. Sin embargo, durante la entrevista no precisó qué organizaciones participaron ni presentó cargos documentados o solicitudes que permitan verificar los pedidos de reunión.</p>
+<p>El reclamo por el presupuesto del próximo año se produce en un contexto en el que el Congreso aprobó la Ley de Presupuesto del Sector Público para el Año Fiscal 2027, que asciende a 266 506 millones de soles. De ese total, 58 832 millones de soles corresponden a los gobiernos regionales de todo el país. Estos recursos financian gastos e inversiones de los gobiernos subnacionales, de acuerdo con la distribución establecida en la norma.</p>
+<p>En el ámbito regional, el Consejo Regional tiene entre sus funciones fiscalizar la gestión del gobernador y supervisar el cumplimiento de los planes y la ejecución presupuestal, conforme a la Ley Orgánica de Gobiernos Regionales. Este marco establece responsabilidades de control que también fueron objeto de cuestionamiento durante la movilización, pues Cuba Mendoza criticó la actuación de los consejeros regionales salientes.</p>
+<p>La protesta puso en agenda los cuestionamientos de un sector de ciudadanos contra las autoridades regionales y locales, así como los reclamos por el servicio de agua en Mollepata. Las afirmaciones sobre presuntas irregularidades en el manejo presupuestal y la falta de atención de las autoridades corresponden a los manifestantes y requieren documentación y versiones de las entidades señaladas para establecer su alcance.</p>
+<style> 
+  .lt-social {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: "Helvetica", Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }</p>
+<p>  .lt-social caption {
+    caption-side: top;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px 10px;
+    text-align: left;
+    color: #fff;
+    background: #334b8c;
+  }</p>
+<p>  .lt-social td {
+    padding: 8px 6px;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+    color: #000;
+  }</p>
+<p>  /* CELDA DEL ÍCONO */
+  .lt-social td.icon {
+    width: 42px;
+    text-align: center;
+    background-color: #334b8c; /* azul estándar */
+  }</p>
+<p>  /* ÍCONO */
+  .lt-social td.icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* blanco puro */
+  }</p>
+<p>  .lt-social a {
+    color: #000;
+    text-decoration: none;
+  }</p>
+<p>  .lt-social a:hover {
+    text-decoration: underline;
+  }</p>
+<p>  @media (max-width: 600px) {
+    .lt-social {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<table class="lt-social">
+<caption>Jornada &#8211; Redes sociales</caption>
+<tbody>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" /></td>
+<td><a href="https://www.facebook.com/diariojornada" target="_blank" rel="noopener">Facebook</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" /></td>
+<td><a href="https://www.instagram.com/diariojornada.ayac/" target="_blank" rel="noopener">Instagram</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok" /></td>
+<td><a href="https://www.tiktok.com/@diario.jornada" target="_blank" rel="noopener">TikTok</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X" /></td>
+<td><a href="https://x.com/diariojornada" target="_blank" rel="noopener">X (Twitter)</a></td>
+</tr>
+<tr>
+<td class="icon"><img decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" fifu-lazy="1" fifu-data-sizes="auto" fifu-data-srcset="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 75w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 100w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 150w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 240w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 320w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 500w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 640w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 800w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1024w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1280w, https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg 1600w" fifu-data-src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" /></td>
+<td><a href="https://www.whatsapp.com/channel/0029Va1rjhJBFLgNh5iBHM3V" target="_blank" rel="noopener">Canal de WhatsApp</a></td>
+</tr>
+</tbody>
+</table><p>The post <a href="https://jornada.com.pe/manifestantes-cuestionan-gestion-de-oscorima-y-advierten-riesgo-para-presupuesto-2027/">Manifestantes cuestionan gestión de Oscorima y advierten riesgo para presupuesto 2027</a> first appeared on <a href="https://jornada.com.pe">Diario Jornada</a>.</p>]]></content:encoded>
+					
+		
+		
+		<media:content url="https://biblioteca.jornada.com.pe/images/2026/11/23/23-11-Manifestantes-cuestionan-gestion-de-Oscorima-y-advierten-riesgo-para-presupuesto-2027-1.webp" medium="image"></media:content>
+	</item>
+	</channel>
+</rss>
