@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Tue, 24 Nov 2026 15:20:40 GMT</lastBuildDate>
+    <pubDate>Tue, 24 Nov 2026 09:00:23 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Contraloría: supervisión dio conformidad al Illathupa con fallas</title>
+    <link>https://ahora.com.pe/regional/contraloria-supervision-dio-conformidad-al-illathupa-con-fallas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/contraloria-supervision-dio-conformidad-al-illathupa-con-fallas</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:23 GMT</pubDate>
+    <description><![CDATA[El colegio, que según su contrato original debía estar listo en mayo de 2025, se inaugura con la palabra del supervisor que objetó la Contraloría]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Contraloría]]></category>
+    <category><![CDATA[Illathupa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/07d3b40a0140.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/07d3b40a0140.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/07d3b40a0140.png"/>
+    <media:description type="plain"><![CDATA[Contraloría: supervisión dio conformidad al Illathupa con fallas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Descuento del 90% en multas de tránsito vence hoy: pague solo el 10%</title>
+    <link>https://ahora.com.pe/nacional/descuento-90-multas-transito-vence-hoy-pague-10</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/descuento-90-multas-transito-vence-hoy-pague-10</guid>
+    <pubDate>Mon, 23 Nov 2026 17:50:06 GMT</pubDate>
+    <description><![CDATA[Este lunes 23 de noviembre vence el plazo para acogerse al descuento del 90% en multas de tránsito en Perú, según el Decreto Supremo N.° 017-2026-MTC. Los conductores pagan solo el 10% de sus deudas, excepto por infracciones muy graves como conducir ebrio o sin licencia.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[descuento multas tránsito]]></category>
+    <category><![CDATA[SAT Lima]]></category>
+    <category><![CDATA[Sutran]]></category>
+    <category><![CDATA[Decreto Supremo 017-2026-MTC]]></category>
+    <category><![CDATA[papeletas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9e3e832f86a8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9e3e832f86a8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9e3e832f86a8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>San Martín lidera invicta la Liga Peruana de Vóley tras la sexta fecha</title>
+    <link>https://ahora.com.pe/deportes/san-martin-lidera-liga-peruana-voley-sexta-fecha</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/san-martin-lidera-liga-peruana-voley-sexta-fecha</guid>
+    <pubDate>Tue, 24 Nov 2026 15:20:06 GMT</pubDate>
+    <description><![CDATA[Universidad de San Martín de Porres se mantiene invicta y líder con 18 puntos en la Liga Peruana de Vóley, tras vencer 3-0 a Olva Latino en la sexta fecha.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga Peruana de Vóley]]></category>
+    <category><![CDATA[San Martín]]></category>
+    <category><![CDATA[sexta fecha]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Regatas Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b5f85c4280c2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b5f85c4280c2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b5f85c4280c2.jpg"/>
+    <media:description type="plain"><![CDATA[San Martín lidera la tabla con 18 puntos, seguido de cerca por Alianza Lima con 17. Revisa acá la tabla de posiciones de la Liga Peruana de Vóley. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>De Panenka, youtuber de Universitario, fue increpado y empujado en Matute</title>
+    <link>https://ahora.com.pe/deportes/de-panenka-increpado-empujado-matute</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/de-panenka-increpado-empujado-matute</guid>
+    <pubDate>Tue, 24 Nov 2026 15:10:06 GMT</pubDate>
+    <description><![CDATA[El youtuber De Panenka, hincha de Universitario, sufrió insultos y empujones de presuntos seguidores de Alianza Lima en los exteriores de Matute mientras grababa un programa de YouTube; la Policía intervino para resguardarlo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[De Panenka]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Matute]]></category>
+    <category><![CDATA[Caminito íntimo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fc24a4a40b50.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fc24a4a40b50.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fc24a4a40b50.jpg"/>
+    <media:description type="plain"><![CDATA[El youtuber 'De Panenka', del programa 'La jugada good', sufrió ataques verbales y físicos por presuntos hinchas de Alianza Lima tras asistir al 'Caminito íntimo'. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Metropolitano: pasajeros soportan hasta 30 grados y piden aire acondicionado</title>
+    <link>https://ahora.com.pe/regional/metropolitano-pasajeros-temperaturas-30-grados-2</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/metropolitano-pasajeros-temperaturas-30-grados-2</guid>
+    <pubDate>Tue, 24 Nov 2026 14:50:05 GMT</pubDate>
+    <description><![CDATA[Pasajeros del Metropolitano denuncian temperaturas de hasta 30 grados dentro de las unidades, situación que se agrava en hora punta y podría provocar golpes de calor, según especialistas.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Metropolitano]]></category>
+    <category><![CDATA[temperaturas altas]]></category>
+    <category><![CDATA[transporte público]]></category>
+    <category><![CDATA[golpes de calor]]></category>
+    <category><![CDATA[aire acondicionado]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2c45444ed65a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2c45444ed65a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2c45444ed65a.jpg"/>
+    <media:description type="plain"><![CDATA[Composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>El Barça, sin Lamine Yamal ante el Sabah: la estadística que revela su peso</title>
+    <link>https://ahora.com.pe/deportes/barca-sin-lamine-yamal-sabah-dato-dependencia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/barca-sin-lamine-yamal-sabah-dato-dependencia</guid>
+    <pubDate>Tue, 24 Nov 2026 14:30:09 GMT</pubDate>
+    <description><![CDATA[Lamine Yamal ha disputado 17 partidos oficiales con el Barça esta temporada y solo fue sustituido cuatro veces, siempre con ventaja en el marcador. Ante el Sabah en Bakú, Flick no podrá contar con él por primera vez.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Lamine Yamal]]></category>
+    <category><![CDATA[FC Barcelona]]></category>
+    <category><![CDATA[Sabah]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ee4e1fcf06b5.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ee4e1fcf06b5.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ee4e1fcf06b5.webp"/>
+    <media:description type="plain"><![CDATA[Hay una estadística que invita a la reflexión sobre el peso de <b>Lamine Yamal</b> en el Barça y, sobre todo, sobre la dependencia que el equipo ha desarrollado alrededor del canterano. De los 17 partidos oficiales disputados hasta ahora, 13 de Liga y cuatro de Champions League, el extremo ha sido s — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Estudio plantea un planeta extra, PX2, para explicar órbitas anómalas más allá de Neptuno</title>
+    <link>https://ahora.com.pe/tecnologia/estudio-planeta-px2-sistema-solar</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/estudio-planeta-px2-sistema-solar</guid>
+    <pubDate>Tue, 24 Nov 2026 14:20:07 GMT</pubDate>
+    <description><![CDATA[Un equipo internacional publicó un modelo que sugiere la existencia de PX2, un planeta de 1,5 a 2 masas terrestres más allá de Neptuno, para explicar órbitas anómalas de objetos transneptunianos como Sedna. Los autores admiten que no hay pruebas directas.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[PX2]]></category>
+    <category><![CDATA[Sistema Solar]]></category>
+    <category><![CDATA[planeta 9]]></category>
+    <category><![CDATA[Sedna]]></category>
+    <category><![CDATA[astronomía]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0c2187851eda.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0c2187851eda.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0c2187851eda.jpg"/>
+    <media:description type="plain"><![CDATA[Esta impresión artística ilustra un objeto interestelar aproximándose rápidamente a nuestro Sistema Solar. El objeto, expulsado de su sistema planetario de origen hace mucho tiempo, viajó a través del espacio interestelar durante miles de millones de años antes de pasar brevemente por nuestro vecindario cósmico. El observatorio Rubin revelará muchos de estos visitantes interestelares que aún se desconocen. <strong>Texto alternativo de la imagen principal:</strong> Impresión artística de un peque — Foto: Rubin Observatory/NOIRLab/NSF/AURA/J. daSilva (wikimedia-cc by 4.0)]]></media:description>
+  </item>
+  <item>
+    <title>Perú conquistó 16 medallas en los torneos sudamericanos de gimnasia artística</title>
+    <link>https://ahora.com.pe/deportes/peru-16-medallas-gimnasia-artistica-sudamericano-videna</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/peru-16-medallas-gimnasia-artistica-sudamericano-videna</guid>
+    <pubDate>Tue, 24 Nov 2026 13:30:12 GMT</pubDate>
+    <description><![CDATA[Perú logró 16 medallas en el Sudamericano Senior, el Prejuvenil y la Copa Sudamericana de Clubes 2026 de gimnasia artística, disputados en el Polideportivo 3 de la Videna.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[gimnasia artística]]></category>
+    <category><![CDATA[Perú]]></category>
+    <category><![CDATA[Sudamericano Senior]]></category>
+    <category><![CDATA[Videna]]></category>
+    <category><![CDATA[IPD]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e2a5ac9128d0.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e2a5ac9128d0.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e2a5ac9128d0.webp"/>
+    <media:description type="plain"><![CDATA[La selección nacional de gimnasia artística se llevó los aplausos al ganar  un total de 16 medallas en el Campeonato Sudamericano Senior, el Campeonato Prejuvenil y la Copa Sudamericana de Clubes 2026, torneos que se desarrollaron con el respaldo del Instituto Peruano del Deporte (IPD), en el Polide — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Diez años del acuerdo con las FARC: historiador explica por qué persiste la violencia en Colombia</title>
+    <link>https://ahora.com.pe/mundo/diez-anos-acuerdo-paz-farc-violencia-colombia</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/diez-anos-acuerdo-paz-farc-violencia-colombia</guid>
+    <pubDate>Tue, 24 Nov 2026 13:20:08 GMT</pubDate>
+    <description><![CDATA[A una década del acuerdo de paz con las FARC, el historiador colombiano Jorge Orlando Melo analiza qué falló: el incumplimiento de la reforma agraria, el desacato al plebiscito y la persistencia del narcotráfico explican la violencia que sigue en Colombia.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[acuerdo de paz]]></category>
+    <category><![CDATA[FARC]]></category>
+    <category><![CDATA[Colombia]]></category>
+    <category><![CDATA[Jorge Orlando Melo]]></category>
+    <category><![CDATA[narcotráfico]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0fcf5754d4d1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0fcf5754d4d1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0fcf5754d4d1.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Serenazgo interviene fiesta de cumpleaños de Christian Cueva en Cieneguilla</title>
+    <link>https://ahora.com.pe/entretenimiento/serenazgo-interviene-fiesta-christian-cueva-cieneguilla</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/serenazgo-interviene-fiesta-christian-cueva-cieneguilla</guid>
+    <pubDate>Tue, 24 Nov 2026 13:20:08 GMT</pubDate>
+    <description><![CDATA[El serenazgo de Cieneguilla intervino la fiesta de cumpleaños de Christian Cueva tras quejas vecinales por ruido; el sonómetro registró 70 decibeles cuando el límite es 60, y Magaly Medina criticó al futbolista.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Christian Cueva]]></category>
+    <category><![CDATA[Cieneguilla]]></category>
+    <category><![CDATA[serenazgo]]></category>
+    <category><![CDATA[Magaly Medina]]></category>
+    <category><![CDATA[Pamela Franco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4b6dae3f91d3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4b6dae3f91d3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4b6dae3f91d3.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Ahora Nación evalúa censurar al canciller Espá si no da explicaciones</title>
+    <link>https://ahora.com.pe/politica/ahora-nacion-censura-canciller-espa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/ahora-nacion-censura-canciller-espa</guid>
+    <pubDate>Tue, 24 Nov 2026 13:20:07 GMT</pubDate>
+    <description><![CDATA[El vocero de Ahora Nación, Ángel Meneses, advirtió que su bancada evaluará promover la censura del canciller Carlos Espá si sus explicaciones ante el Congreso no son satisfactorias. La moción de interpelación, impulsada por Marleny Arminta, ya fue presentada con las firmas requeridas. Meneses también cuestionó el gasto de S/ 11 millones en la misa papal y rechazó ampliar el Reinfo.]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Carlos Espá]]></category>
+    <category><![CDATA[Ángel Meneses]]></category>
+    <category><![CDATA[Ahora Nación]]></category>
+    <category><![CDATA[censura]]></category>
+    <category><![CDATA[Reinfo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bdef8ed9b929.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bdef8ed9b929.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bdef8ed9b929.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Betis alerta: bengalas en Bratislava podrían dejar a su afición sin viajar a Múnich</title>
+    <link>https://ahora.com.pe/deportes/betis-bengalas-aficion-munich</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/betis-bengalas-aficion-munich</guid>
+    <pubDate>Tue, 24 Nov 2026 12:50:06 GMT</pubDate>
+    <description><![CDATA[El Real Betis advierte que el uso de bengalas en el partido de Champions ante el Slovan de Bratislava podría derivar en la prohibición de vender entradas a su afición para el desplazamiento a Múnich y fases posteriores.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Betis]]></category>
+    <category><![CDATA[bengalas]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[UEFA]]></category>
+    <category><![CDATA[Slovan de Bratislava]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f5c8b5b52098.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f5c8b5b52098.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f5c8b5b52098.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Palmeiras y Estudiantes disputan la final de la Libertadores 2026 en Montevideo</title>
+    <link>https://ahora.com.pe/deportes/palmeiras-estudiantes-final-libertadores-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/palmeiras-estudiantes-final-libertadores-2026</guid>
+    <pubDate>Tue, 24 Nov 2026 11:50:06 GMT</pubDate>
+    <description><![CDATA[Palmeiras y Estudiantes de La Plata jugarán la final de la Copa Libertadores 2026 el sábado 28 de noviembre en el Estadio Centenario de Montevideo, con transmisión de Disney+ Premium y ESPN.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Libertadores 2026]]></category>
+    <category><![CDATA[Palmeiras]]></category>
+    <category><![CDATA[Estudiantes de La Plata]]></category>
+    <category><![CDATA[final]]></category>
+    <category><![CDATA[Estadio Centenario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d75f847c7e39.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d75f847c7e39.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d75f847c7e39.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Pasajeros del Metropolitano soportan hasta 30 grados y piden aire acondicionado</title>
+    <link>https://ahora.com.pe/regional/metropolitano-calor-30-grados-aire-acondicionado</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/metropolitano-calor-30-grados-aire-acondicionado</guid>
+    <pubDate>Tue, 24 Nov 2026 11:20:08 GMT</pubDate>
+    <description><![CDATA[Pasajeros del Metropolitano de Lima soportan temperaturas de hasta 30 grados durante sus viajes y piden a las autoridades aire acondicionado en las unidades, ante el temor de que en enero y febrero el calor haga imposible viajar.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Metropolitano]]></category>
+    <category><![CDATA[Lima]]></category>
+    <category><![CDATA[transporte público]]></category>
+    <category><![CDATA[aire acondicionado]]></category>
+    <category><![CDATA[golpes de calor]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8e4310eafba9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8e4310eafba9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8e4310eafba9.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Emre Mor, ex del Celta, se retira temporalmente del fútbol a los 29 años</title>
+    <link>https://ahora.com.pe/deportes/emre-mor-retira-temporalmente-futbol-29-anos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/emre-mor-retira-temporalmente-futbol-29-anos</guid>
+    <pubDate>Tue, 24 Nov 2026 11:10:07 GMT</pubDate>
+    <description><![CDATA[Emre Mor, exjugador del Celta de Vigo y del Borussia Dortmund, anunció su retirada temporal del fútbol profesional a los 29 años tras rescindir su contrato con el NEC Nimega para priorizar su salud.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Emre Mor]]></category>
+    <category><![CDATA[NEC Nimega]]></category>
+    <category><![CDATA[Celta de Vigo]]></category>
+    <category><![CDATA[retirada temporal]]></category>
+    <category><![CDATA[fútbol turco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/db0c7db615b2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/db0c7db615b2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/db0c7db615b2.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Oswaldo Valenzuela jugará en Melgar la Liga 1 2027, según Ernesto Macedo</title>
+    <link>https://ahora.com.pe/deportes/oswaldo-valenzuela-melgar-liga1-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/oswaldo-valenzuela-melgar-liga1-2027</guid>
+    <pubDate>Tue, 24 Nov 2026 10:10:05 GMT</pubDate>
+    <description><![CDATA[Oswaldo Valenzuela, exjugador de Alianza Lima y Cusco FC, jugará en FBC Melgar la Liga 1 2027 y la Copa Libertadores 2027 con contrato hasta fines de 2028, según reveló el periodista Ernesto Macedo León.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Oswaldo Valenzuela]]></category>
+    <category><![CDATA[FBC Melgar]]></category>
+    <category><![CDATA[Liga 1 2027]]></category>
+    <category><![CDATA[Cusco FC]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/244c2459f70b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/244c2459f70b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/244c2459f70b.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Baba Miller, fuera de la rotación de los Clippers: un minuto en la derrota ante Houston</title>
+    <link>https://ahora.com.pe/deportes/baba-miller-fuera-rotacion-clippers</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/baba-miller-fuera-rotacion-clippers</guid>
+    <pubDate>Tue, 24 Nov 2026 09:30:10 GMT</pubDate>
+    <description><![CDATA[Baba Miller jugó apenas un minuto en la derrota de los Clippers 116-104 ante los Rockets y sigue sin entrar en la rotación de Tyronn Lue.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Baba Miller]]></category>
+    <category><![CDATA[Los Angeles Clippers]]></category>
+    <category><![CDATA[Houston Rockets]]></category>
+    <category><![CDATA[NBA]]></category>
+    <category><![CDATA[Tyronn Lue]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/23b7e877c87c.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/23b7e877c87c.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/23b7e877c87c.webp"/>
+    <media:description type="plain"><![CDATA[Tan cierto es que <b>Baba Miller </b>tiene un talento intrigante para la NBA como que ahora mismo está totalmente fuera de la rotación de los Clippers, apenas jugando los minutos de la basura pese a que ha aprovechado los minutos de calidad que ha tenido. — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Chacos imparable y León pierde terreno</title>
+    <link>https://ahora.com.pe/deportes/chacos-imparable-y-leon-pierde-terreno</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/chacos-imparable-y-leon-pierde-terreno</guid>
+    <pubDate>Tue, 24 Nov 2026 09:02:14 GMT</pubDate>
+    <description><![CDATA[Municipal de Chacos y León de Huánuco atraviesan realidades distintas en el torneo Tradición Copera, que completó la cuarta jornada de la rueda de ida.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Chacos]]></category>
+    <category><![CDATA[León]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7c20580f771c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7c20580f771c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7c20580f771c.jpg"/>
+    <media:description type="plain"><![CDATA[Chacos imparable y León pierde terreno — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Carabalí se acerca a Universitario</title>
+    <link>https://ahora.com.pe/deportes/carabali-se-acerca-a-universitario</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/carabali-se-acerca-a-universitario</guid>
+    <pubDate>Tue, 24 Nov 2026 09:02:10 GMT</pubDate>
+    <description><![CDATA[El lateral ecuatoriano José Carabalí quedó libre tras desvincularse de Liga Deportiva Universitaria de Quito y podría retornar a Universitario de Deportes para afrontar la temporada 2027, según]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Carabalí]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2d04400c458c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2d04400c458c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2d04400c458c.jpg"/>
+    <media:description type="plain"><![CDATA[Carabalí se acerca a Universitario — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Arancibia podría despedirse de Deportivo Garcilaso</title>
+    <link>https://ahora.com.pe/deportes/arancibia-podria-despedirse-de-deportivo-garcilaso</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/arancibia-podria-despedirse-de-deportivo-garcilaso</guid>
+    <pubDate>Tue, 24 Nov 2026 09:02:07 GMT</pubDate>
+    <description><![CDATA[El delantero chileno Francisco Arancibia podría dejar Deportivo Garcilaso al finalizar la presente temporada, luego de despertar el interés de clubes extranjeros gracias a sus destacadas actuaciones]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Arancibia]]></category>
+    <category><![CDATA[Deportivo Garcilaso]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/882c6491b8b0.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/882c6491b8b0.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/882c6491b8b0.jpg"/>
+    <media:description type="plain"><![CDATA[Arancibia podría despedirse de Deportivo Garcilaso — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Sanguinetti tiene contrato hasta 2027 con Huancayo</title>
+    <link>https://ahora.com.pe/deportes/sanguinetti-tiene-contrato-hasta-2027-con-huancayo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sanguinetti-tiene-contrato-hasta-2027-con-huancayo</guid>
+    <pubDate>Tue, 24 Nov 2026 09:02:00 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo cuenta con Javier Sanguinetti para la próxima temporada, luego de que el futbolista argentino se consolidara como una de las principales figuras del Torneo Clausura 2026, certamen que]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sanguinetti]]></category>
+    <category><![CDATA[Huancayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/0a7daaae0fb3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/0a7daaae0fb3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/0a7daaae0fb3.jpg"/>
+    <media:description type="plain"><![CDATA[Sanguinetti tiene contrato hasta 2027 con Huancayo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Alania y Castro conquistaron Meseta del Bombón</title>
+    <link>https://ahora.com.pe/deportes/alania-y-castro-conquistaron-meseta-del-bombon</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alania-y-castro-conquistaron-meseta-del-bombon</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:57 GMT</pubDate>
+    <description><![CDATA[El fondista pasqueño Alejandro Alania Aira y la atleta huancavelicana Deysi Castro Huamán conquistaron las principales categorías de la 43.ª Maratón Internacional Meseta del Bombón, disputada el]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alania]]></category>
+    <category><![CDATA[Castro]]></category>
+    <category><![CDATA[Meseta del Bombón]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1d6ffb3bbea1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1d6ffb3bbea1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1d6ffb3bbea1.jpg"/>
+    <media:description type="plain"><![CDATA[Alania y Castro conquistaron Meseta del Bombón — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Unheval celebró aniversario con carrera</title>
+    <link>https://ahora.com.pe/deportes/unheval-celebro-aniversario-con-carrera</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/unheval-celebro-aniversario-con-carrera</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:53 GMT</pubDate>
+    <description><![CDATA[Con una carrera pedestre de ocho kilómetros, la Universidad Nacional Hermilio Valdizán (Unheval) rindió homenaje al destacado médico y científico huanuqueño, al conmemorarse el 141.º aniversario de]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f9f154008546.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f9f154008546.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f9f154008546.jpg"/>
+    <media:description type="plain"><![CDATA[Unheval celebró aniversario con carrera — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Cuestionan arbitraje tras empate de León</title>
+    <link>https://ahora.com.pe/deportes/cuestionan-arbitraje-tras-empate-de-leon</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/cuestionan-arbitraje-tras-empate-de-leon</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:49 GMT</pubDate>
+    <description><![CDATA[El director técnico de León de Huánuco, Carlos Cortijo, expresó su preocupación por el rendimiento del equipo crema en el torneo Tradición Copera y cuestionó severamente la actuación del árbitro]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/718e23b55579.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/718e23b55579.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/718e23b55579.jpg"/>
+    <media:description type="plain"><![CDATA[Cuestionan arbitraje tras empate de León — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Cadena perpetua para mototaxista que violó a una niña de nueve años</title>
+    <link>https://ahora.com.pe/policiales/cadena-perpetua-para-mototaxista-que-violo-a-una-nina-de-nueve-anos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/cadena-perpetua-para-mototaxista-que-violo-a-una-nina-de-nueve-anos</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:45 GMT</pubDate>
+    <description><![CDATA[Kevin Rusver Cachique Ruvina, de 31 años, fue condenado a cadena perpetua por violar sexualmente a una niña de nueve años en Tingo María.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1139acffc8fa.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1139acffc8fa.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1139acffc8fa.jpg"/>
+    <media:description type="plain"><![CDATA[Cadena perpetua para mototaxista que violó a una niña de nueve años — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Recuperan motocicleta hurtada y buscan esclarecer cómo llegó a un inmueble</title>
+    <link>https://ahora.com.pe/policiales/recuperan-motocicleta-hurtada-y-buscan-esclarecer-como-llego-a-un-inmueble</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/recuperan-motocicleta-hurtada-y-buscan-esclarecer-como-llego-a-un-inmueble</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:42 GMT</pubDate>
+    <description><![CDATA[Una motocicleta denunciada como hurtada fue recuperada por agentes del Departamento de Investigación Criminal (Depincri) de Huánuco dentro de un inmueble del jirón Prolongación Aguilar.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/8d357a9d1cdc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/8d357a9d1cdc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/8d357a9d1cdc.jpg"/>
+    <media:description type="plain"><![CDATA[Recuperan motocicleta hurtada y buscan esclarecer cómo llegó a un inmueble — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Caen dos con más de 13 kilos de droga ocultos en miniván</title>
+    <link>https://ahora.com.pe/policiales/caen-dos-con-mas-de-13-kilos-de-droga-ocultos-en-minivan</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/caen-dos-con-mas-de-13-kilos-de-droga-ocultos-en-minivan</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:39 GMT</pubDate>
+    <description><![CDATA[Una miniván que se dirigía de Huánuco hacia Pasco transportaba 13,444 kilogramos de pasta básica de cocaína ocultos en su estructura, según informó la Dirección Antidrogas de la Policía Nacional.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e769eaa63bfc.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e769eaa63bfc.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e769eaa63bfc.jpg"/>
+    <media:description type="plain"><![CDATA[Caen dos con más de 13 kilos de droga ocultos en miniván — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Prisión preventiva por presunto asalto a joven con discapacidad y venta de clonazepam</title>
+    <link>https://ahora.com.pe/policiales/prision-preventiva-por-presunto-asalto-a-joven-con-discapacidad-y-venta-de</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/prision-preventiva-por-presunto-asalto-a-joven-con-discapacidad-y-venta-de</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:34 GMT</pubDate>
+    <description><![CDATA[Yumi Criollo, de 18 años, cumplirá nueve meses de prisión preventiva, investigada por presunto robo agravado y comercialización ilegal de sustancias psicotrópicas, según informó el Ministerio Público.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4b6b49582117.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4b6b49582117.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4b6b49582117.jpg"/>
+    <media:description type="plain"><![CDATA[Prisión preventiva por presunto asalto a joven con discapacidad y venta de clonazepam — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Doce meses de prisión preventiva por presuntos cobros de S/ 185 000</title>
+    <link>https://ahora.com.pe/policiales/doce-meses-de-prision-preventiva-por-presuntos-cobros-de-s-185-000</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/doce-meses-de-prision-preventiva-por-presuntos-cobros-de-s-185-000</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:31 GMT</pubDate>
+    <description><![CDATA[Fiscalía atribuye a Enry Vargas haber recibido S/ 185 000 de cinco ciudadanos por ofrecimientos de puestos en el mercado y rebajas de deudas tributarias que nunca llegaron a concretarse]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4059332ec1e9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4059332ec1e9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4059332ec1e9.jpg"/>
+    <media:description type="plain"><![CDATA[Doce meses de prisión preventiva por presuntos cobros de S/ 185 000 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Denuncian violación en hospedaje de La Unión: joven queda detenido</title>
+    <link>https://ahora.com.pe/policiales/denuncian-violacion-en-hospedaje-de-la-union-joven-queda-detenido</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/denuncian-violacion-en-hospedaje-de-la-union-joven-queda-detenido</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:27 GMT</pubDate>
+    <description><![CDATA[Policía detuvo a un joven de 20 años tras la denuncia de una mujer por una presunta agresión sexual en un hospedaje de La Unión; Fiscalía fue informada del caso]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Unión]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4a4b1f6fd4b6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4a4b1f6fd4b6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4a4b1f6fd4b6.jpg"/>
+    <media:description type="plain"><![CDATA[Denuncian violación en hospedaje de La Unión: joven queda detenido — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Ataque ucraniano contra buques rusos en Libia amplía el conflicto</title>
+    <link>https://ahora.com.pe/mundo/ataque-ucraniano-contra-buques-rusos-en-libia-amplia-el-conflicto</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/ataque-ucraniano-contra-buques-rusos-en-libia-amplia-el-conflicto</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:23 GMT</pubDate>
+    <description><![CDATA[Ucrania reivindicó este lunes 23 de noviembre un ataque contra dos buques rusos en Bengasi, al este de Libia, una operación que evidencia la expansión del conflicto más allá de Europa.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Libia]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/9a0f97eb12f6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/9a0f97eb12f6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/9a0f97eb12f6.jpg"/>
+    <media:description type="plain"><![CDATA[Ataque ucraniano contra buques rusos en Libia amplía el conflicto — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Nvidia restituye a Jensen Huang tras escándalo y respaldo de Trump</title>
+    <link>https://ahora.com.pe/tecnologia/nvidia-restituye-a-jensen-huang-tras-escandalo-y-respaldo-de-trump</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/nvidia-restituye-a-jensen-huang-tras-escandalo-y-respaldo-de-trump</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:20 GMT</pubDate>
+    <description><![CDATA[Nvidia anunció este lunes 23 de noviembre la restitución de Jensen Huang como presidente y director ejecutivo, once días después de su renuncia en medio de un escándalo personal.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Nvidia]]></category>
+    <category><![CDATA[Jensen Huang]]></category>
+    <category><![CDATA[Trump]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/05c155471f8a.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/05c155471f8a.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/05c155471f8a.jpg"/>
+    <media:description type="plain"><![CDATA[Nvidia restituye a Jensen Huang tras escándalo y respaldo de Trump — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Muertes infantiles por dengue en Perú superan las registradas en 2025</title>
+    <link>https://ahora.com.pe/sociedad/muertes-infantiles-por-dengue-en-peru-superan-las-registradas-en-2025</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/muertes-infantiles-por-dengue-en-peru-superan-las-registradas-en-2025</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:17 GMT</pubDate>
+    <description><![CDATA[Las muertes de niños por dengue en el Perú ya superaron las registradas durante todo el 2025. La sala situacional del Ministerio de Salud reportó, al 23 de noviembre de 2026, 29 fallecimientos por]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a4970d77da44.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a4970d77da44.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a4970d77da44.jpg"/>
+    <media:description type="plain"><![CDATA[Muertes infantiles por dengue en Perú superan las registradas en 2025 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Congreso aprueba presupuesto de S/ 266 506 millones para 2027</title>
+    <link>https://ahora.com.pe/politica/congreso-aprueba-presupuesto-de-s-266-506-millones-para-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/politica/congreso-aprueba-presupuesto-de-s-266-506-millones-para-2027</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:13 GMT</pubDate>
+    <description><![CDATA[El Congreso de la República aprobó el Presupuesto del Sector Público para el año fiscal 2027, por S/ 266 506 millones, destinados al funcionamiento del Estado, la ejecución de inversiones y la]]></description>
+    <dc:creator><![CDATA[Ahora Politica]]></dc:creator>
+    <category><![CDATA[Política]]></category>
+    <category><![CDATA[Congreso]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c235c8ac06e1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c235c8ac06e1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c235c8ac06e1.jpg"/>
+    <media:description type="plain"><![CDATA[Congreso aprueba presupuesto de S/ 266 506 millones para 2027 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Sismos, lluvias y oleajes causan daños en varias regiones del Perú</title>
+    <link>https://ahora.com.pe/nacional/sismos-lluvias-y-oleajes-causan-danos-en-varias-regiones-del-peru</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/sismos-lluvias-y-oleajes-causan-danos-en-varias-regiones-del-peru</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:09 GMT</pubDate>
+    <description><![CDATA[El Perú enfrenta emergencias por movimientos sísmicos, lluvias intensas y oleajes que han ocasionado daños en distintas regiones.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cadea895a3fe.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cadea895a3fe.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cadea895a3fe.jpg"/>
+    <media:description type="plain"><![CDATA[Sismos, lluvias y oleajes causan daños en varias regiones del Perú — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Chavín de Pariarca agradece y pide la oruga</title>
+    <link>https://ahora.com.pe/regional/chavin-de-pariarca-agradece-y-pide-la-oruga</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/chavin-de-pariarca-agradece-y-pide-la-oruga</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:05 GMT</pubDate>
+    <description><![CDATA[La comitiva llevó fruta al gobernador, que anunció 120 máquinas para las provincias y dijo que no alcanzan; el distrito pide la oruga por unos días]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Chavín de Pariarca]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f0e71ac382e5.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f0e71ac382e5.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f0e71ac382e5.png"/>
+    <media:description type="plain"><![CDATA[Chavín de Pariarca agradece y pide la oruga — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Radiación UV llegó a 17 en Huánuco y Senamhi pide evitar quemas</title>
+    <link>https://ahora.com.pe/regional/radiacion-uv-llego-a-17-en-huanuco-y-senamhi-pide-evitar-quemas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/radiacion-uv-llego-a-17-en-huanuco-y-senamhi-pide-evitar-quemas</guid>
+    <pubDate>Tue, 24 Nov 2026 09:01:02 GMT</pubDate>
+    <description><![CDATA[El Senamhi previó peligro de incendios forestales para el lunes 23 y vio poca humedad en la sierra a inicios de noviembre]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d8c48236a9e3.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d8c48236a9e3.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d8c48236a9e3.jpg"/>
+    <media:description type="plain"><![CDATA[Radiación UV llegó a 17 en Huánuco y Senamhi pide evitar quemas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Churubamba recibe cinco máquinas para sus caminos</title>
+    <link>https://ahora.com.pe/regional/churubamba-recibe-cinco-maquinas-para-sus-caminos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/churubamba-recibe-cinco-maquinas-para-sus-caminos</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:58 GMT</pubDate>
+    <description><![CDATA[Cinco máquinas nuevas para los caminos traen dos años de mantenimiento gratis, salvo el combustible, según el alcalde saliente William Romero]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b127cd8acaeb.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b127cd8acaeb.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b127cd8acaeb.png"/>
+    <media:description type="plain"><![CDATA[Churubamba recibe cinco máquinas para sus caminos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Trabajadores del Centro de Salud Amarilis denuncian presión con cierre y traslados</title>
+    <link>https://ahora.com.pe/regional/trabajadores-del-centro-de-salud-amarilis-denuncian-presion-con-cierre-y</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/trabajadores-del-centro-de-salud-amarilis-denuncian-presion-con-cierre-y</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:53 GMT</pubDate>
+    <description><![CDATA[La Municipalidad de Amarilis declaró el local inhabitable y en riesgo muy alto de colapso en junio de 2025, y ordenó desocuparlo y demolerlo]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Centro de Salud Amarilis]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/460ad26055b8.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/460ad26055b8.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/460ad26055b8.png"/>
+    <media:description type="plain"><![CDATA[Trabajadores del Centro de Salud Amarilis denuncian presión con cierre y traslados — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dengue suma 313 casos en Huánuco con signos de alarma. La región registra seis casos graves</title>
+    <link>https://ahora.com.pe/regional/dengue-suma-313-casos-en-huanuco-con-signos-de-alarma-la-region-registra-seis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/dengue-suma-313-casos-en-huanuco-con-signos-de-alarma-la-region-registra-seis</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:49 GMT</pubDate>
+    <description><![CDATA[Uno de cada seis casos de dengue en la región tuvo signos de alarma o un cuadro grave, según la tabla de la Diresa con corte al 20 de noviembre]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fda90ade55d9.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fda90ade55d9.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fda90ade55d9.png"/>
+    <media:description type="plain"><![CDATA[Dengue suma 313 casos en Huánuco con signos de alarma. La región registra seis casos graves — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Llegan 76 máquinas del segundo lote regional</title>
+    <link>https://ahora.com.pe/regional/llegan-76-maquinas-del-segundo-lote-regional</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/llegan-76-maquinas-del-segundo-lote-regional</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:46 GMT</pubDate>
+    <description><![CDATA[Con el primer lote, el Gobierno Regional dice que ya suma 110 máquinas para mantener carreteras, abrir trochas y despejar vías en emergencias]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/db625e8d25d0.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/db625e8d25d0.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/db625e8d25d0.png"/>
+    <media:description type="plain"><![CDATA[Llegan 76 máquinas del segundo lote regional — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Colegio de Abogados gasta medio millón en canastas</title>
+    <link>https://ahora.com.pe/regional/colegio-de-abogados-gasta-medio-millon-en-canastas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/colegio-de-abogados-gasta-medio-millon-en-canastas</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:41 GMT</pubDate>
+    <description><![CDATA[El decano niega sobrecosto en la leche Gloria, el único producto de la canasta del que dio precio: S/ 3,66 por tarro]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Abogados]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7386c67f32b2.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7386c67f32b2.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7386c67f32b2.jpg"/>
+    <media:description type="plain"><![CDATA[Colegio de Abogados gasta medio millón en canastas — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Párroco suspende el culto en iglesia de Ambo</title>
+    <link>https://ahora.com.pe/regional/parroco-suspende-el-culto-en-iglesia-de-ambo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/parroco-suspende-el-culto-en-iglesia-de-ambo</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:36 GMT</pubDate>
+    <description><![CDATA[El decreto de emergencia por 60 días cubre cinco distritos de Huánuco; su anexo no incluye al distrito de Ambo ni al de Tomayquichua]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Ambo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/38158c7d8c1b.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/38158c7d8c1b.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/38158c7d8c1b.png"/>
+    <media:description type="plain"><![CDATA[Párroco suspende el culto en iglesia de Ambo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Seda Huánuco corta el agua este martes</title>
+    <link>https://ahora.com.pe/regional/seda-huanuco-corta-el-agua-este-martes</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/seda-huanuco-corta-el-agua-este-martes</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:32 GMT</pubDate>
+    <description><![CDATA[El servicio se suspende desde las 7 a. m. y vuelve de forma progresiva desde las 11 p. m.; habrá cinco cisternas]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Seda Huánuco]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a340588644d5.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a340588644d5.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a340588644d5.png"/>
+    <media:description type="plain"><![CDATA[Seda Huánuco corta el agua este martes — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>20 predios frenan construcción de tubería del agua y siguen sin fecha de salida</title>
+    <link>https://ahora.com.pe/regional/20-predios-frenan-construccion-de-tuberia-del-agua-y-siguen-sin-fecha-de-salida</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/20-predios-frenan-construccion-de-tuberia-del-agua-y-siguen-sin-fecha-de-salida</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:28 GMT</pubDate>
+    <description><![CDATA[Sin los 20 predios libres no habrá convocatoria para la tubería, y el gerente regional dice que la firma le tocará a la nueva gestión]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cc3592737601.png" length="0" type="image/png"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cc3592737601.png" medium="image" type="image/png"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cc3592737601.png"/>
+    <media:description type="plain"><![CDATA[20 predios frenan construcción de tubería del agua y siguen sin fecha de salida — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>El paro por el agua sigue en pie. Dirigentes exigen presencia del ministro para el 26</title>
+    <link>https://ahora.com.pe/regional/el-paro-por-el-agua-sigue-en-pie-dirigentes-exigen-presencia-del-ministro-para</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/el-paro-por-el-agua-sigue-en-pie-dirigentes-exigen-presencia-del-ministro-para</guid>
+    <pubDate>Tue, 24 Nov 2026 09:00:19 GMT</pubDate>
+    <description><![CDATA[El paro del miércoles 2 de diciembre sigue acordado y Luján ata su postura a que el ministro instale en persona la mesa del jueves 26, en Huánuco]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e73429d82dbb.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e73429d82dbb.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e73429d82dbb.jpg"/>
+    <media:description type="plain"><![CDATA[El paro por el agua sigue en pie. Dirigentes exigen presencia del ministro para el 26 — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Melgar habría acordado con Oswaldo Valenzuela para 2027</title>
+    <link>https://ahora.com.pe/deportes/melgar-oswaldo-valenzuela-liga-1-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/melgar-oswaldo-valenzuela-liga-1-2027</guid>
+    <pubDate>Tue, 24 Nov 2026 08:30:10 GMT</pubDate>
+    <description><![CDATA[Melgar trabaja en el armado del plantel para la Liga 1 y la Copa Libertadores 2027 y habría acordado la llegada del mediocampista Oswaldo Valenzuela, procedente de Cusco FC y libre.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Melgar]]></category>
+    <category><![CDATA[Oswaldo Valenzuela]]></category>
+    <category><![CDATA[Liga 1 2027]]></category>
+    <category><![CDATA[Copa Libertadores 2027]]></category>
+    <category><![CDATA[Cusco FC]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/38f8d969281c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/38f8d969281c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/38f8d969281c.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>El nuevo &apos;Palco Vip&apos; de Matute: el espacio que Alianza Lima preparó para las finales de Liga 1</title>
+    <link>https://ahora.com.pe/deportes/alianza-lima-palco-vip-matute-finales-liga-1</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/alianza-lima-palco-vip-matute-finales-liga-1</guid>
+    <pubDate>Tue, 24 Nov 2026 06:50:05 GMT</pubDate>
+    <description><![CDATA[Alianza Lima acondicionó un nuevo espacio entre la tribuna sur y oriente del estadio Alejandro Villanueva, conocido como &apos;Palco Vip&apos;, según El Comercio. El ambiente estaría destinado a recibir &apos;visitantes&apos; en las finales de la Liga 1.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[Matute]]></category>
+    <category><![CDATA[Palco Vip]]></category>
+    <category><![CDATA[Liga 1]]></category>
+    <category><![CDATA[Alejandro Villanueva]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/7f8bd9388d9f.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/7f8bd9388d9f.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/7f8bd9388d9f.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>FIFPRO critica al Bayern por cuestionar el futuro y el salario de Musiala</title>
+    <link>https://ahora.com.pe/deportes/fifpro-critica-bayern-musiala</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/fifpro-critica-bayern-musiala</guid>
+    <pubDate>Tue, 24 Nov 2026 06:10:05 GMT</pubDate>
+    <description><![CDATA[El presidente de FIFPRO, Sergio Marchi, criticó al Bayern de Múnich por cuestionar públicamente el futuro y el salario de Jamal Musiala, quien atraviesa problemas físicos y neurológicos.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[FIFPRO]]></category>
+    <category><![CDATA[Sergio Marchi]]></category>
+    <category><![CDATA[Bayern Múnich]]></category>
+    <category><![CDATA[Jamal Musiala]]></category>
+    <category><![CDATA[contrato]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b4ead462c9a9.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b4ead462c9a9.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b4ead462c9a9.webp"/>
+    <media:description type="plain"><![CDATA[El presidente del sindicato de futbolistas <b>FIFPRO</b>, <b>Sergio Marchi</b>, ha criticado contundentemente a los dirigentes del <b>Bayern de Múnich </b>por cuestionar públicamente el futuro de <b>Jamal Musiala</b>, futbolista del club alemán que atraviesa problemas físicos y neurológicos.&nbsp; — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Footbao: la IA que analiza videos y conecta a jóvenes futbolistas con clubes</title>
+    <link>https://ahora.com.pe/tecnologia/footbao-ia-jovenes-futbolistas-clubes</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/footbao-ia-jovenes-futbolistas-clubes</guid>
+    <pubDate>Tue, 24 Nov 2026 05:40:07 GMT</pubDate>
+    <description><![CDATA[Footbao usa inteligencia artificial para analizar videos de jóvenes futbolistas y generar informes técnicos, tácticos, físicos y mentales que luego revisan los ojeadores de más de 80 clubes asociados.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Footbao]]></category>
+    <category><![CDATA[inteligencia artificial]]></category>
+    <category><![CDATA[fútbol]]></category>
+    <category><![CDATA[ojeadores]]></category>
+    <category><![CDATA[aplicación]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ebb423498dcb.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ebb423498dcb.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ebb423498dcb.webp"/>
+    <media:description type="plain"><![CDATA[La inteligencia artificial se abre camino hasta los campos de fútbol con una aplicación diseñada para detectar jóvenes talentos, que se lanzará en enero en Europa tras ser probada en América Latina. — Foto: Agencia Andina]]></media:description>
+  </item>
+  </channel>
+</rss>

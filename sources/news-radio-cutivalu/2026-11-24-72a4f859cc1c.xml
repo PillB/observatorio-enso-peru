@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Tue, 24 Nov 2026 15:15:46 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Piura: más de 320 mil mujeres no han culminado su Educación Básica</title>
+		<link>https://www.cutivalu.pe/piura-mas-de-320-mil-mujeres-no-han-culminado-su-educacion-basica/</link>
+		
+		<dc:creator><![CDATA[Gabriela Campos]]></dc:creator>
+		<pubDate>Tue, 24 Nov 2026 15:15:45 +0000</pubDate>
+				<category><![CDATA[Featured]]></category>
+		<category><![CDATA[Piura]]></category>
+		<category><![CDATA[Región]]></category>
+		<category><![CDATA[Educación Básica]]></category>
+		<category><![CDATA[MUJERES NO TERMINAN SU EDUCACIÓN]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=195232</guid>
+
+					<description><![CDATA[<p>Más de 320 mil mujeres mayores de 15 años no han culminado sus estudios de educación básica en la región Piura. Así lo informó Jorge Guerrero, especialista de la Dirección de Educación Básica Alternativa (DEBA), quien precisó que esta cifra representa el 53 % de la población que no ha terminado la primaria o secundaria [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/piura-mas-de-320-mil-mujeres-no-han-culminado-su-educacion-basica/">Piura: más de 320 mil mujeres no han culminado su Educación Básica</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
