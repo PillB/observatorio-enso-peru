@@ -83,8 +83,10 @@ def test_fwi_each_level_word(intensidad, rank):
     assert sev["rank"] == rank and sev["label"].lower() == f"peligro {intensidad.lower()}"
 
 
-def test_fwi_unknown_word_is_loud_not_silent():
-    title = "SENAMHI · peligro extrema de incendios forestales (índice FWI > 97): Loreto"
+@pytest.mark.parametrize("word", ["catastrofico", "muy extremo", "severo"])
+def test_fwi_unknown_word_is_loud_not_silent(word):
+    """Una palabra que no es de la escala (ni una forma de una) no se adivina: «muy extremo» no es «extremo»."""
+    title = f"SENAMHI · peligro {word} de incendios forestales (índice FWI > 97): Loreto"
     sev = SV.severity("senamhi-incendios", title, "")
     st = SV.level_status("senamhi-incendios", "pronostico", title, "", sev)
     assert sev is None and st["code"] == "no-leido" and st["loud"]

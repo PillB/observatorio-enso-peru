@@ -741,25 +741,35 @@ mutation("json-error-200", {"json"}, False, "error de ArcGIS con HTTP 200 ({\"er
     lambda b, c: json.dumps({"error": {"code": 500, "message": "Error performing query operation", "details": []}}).encode())
 
 
-#: Vocabulario del nivel que una capa podría pasar a usar sin aviso (números romanos, otro género, inglés). Lo correcto
-#: no es leer «sin nivel»: es avisar (``alert-level-unread``), porque esas fuentes asignan un nivel a cada aviso.
-LEVEL_VOCAB = {"NIVEL 1": "Nivel I", "NIVEL 2": "Nivel II", "NIVEL 3": "Nivel III", "NIVEL 4": "Nivel IV",
-               "BAJO": "BAJA", "MODERADO": "MODERADA", "ALTO": "ALTA", "MUY ALTO": "MUY ALTA", "EXTREMO": "EXTREMA",
+#: Vocabulario del nivel que una capa podría pasar a usar sin aviso y que NO es otra forma de escribir el mismo nivel
+#: (otras palabras, otro idioma). Lo correcto no es leer «sin nivel» ni adivinar: es avisar (``alert-level-unread``),
+#: porque esas fuentes asignan un nivel a cada aviso.
+LEVEL_VOCAB = {"NIVEL 1": "Grado 1", "NIVEL 2": "Grado 2", "NIVEL 3": "Grado 3", "NIVEL 4": "Grado 4",
+               "BAJO": "LEVE", "MODERADO": "MEDIO", "ALTO": "SEVERO", "MUY ALTO": "MUY SEVERO", "EXTREMO": "CATASTROFICO",
                "AMARILLO": "YELLOW", "NARANJA": "ORANGE", "ROJO": "RED"}
+#: Otra forma de escribir el mismo nivel (números romanos o en palabras, otro género o número, mayúsculas, tildes,
+#: espacios): ``textnorm`` debe leer el mismo nivel.
+LEVEL_FORMS = {"NIVEL 1": "Nivel I", "NIVEL 2": "NIVEL II", "NIVEL 3": "nivel: 3", "NIVEL 4": "Nivel cuatro",
+               "BAJO": "Baja", "MODERADO": "MODERADA", "ALTO": "Alta", "MUY ALTO": "MUY  ALTA", "EXTREMO": "Extrema",
+               "AMARILLO": "Amarilla", "NARANJA": "NARANJAS", "ROJO": "Roja"}
 LEVEL_KEYS = {"NIVEL", "INTENSIDAD", "COLOR_TEXT"}
 
 
-def _level_vocab(d):
-    if isinstance(d, dict):
-        return {k: (LEVEL_VOCAB.get(v.strip().upper(), v) if k.upper() in LEVEL_KEYS and isinstance(v, str)
-                    else _level_vocab(v)) for k, v in d.items()}
-    if isinstance(d, list):
-        return [_level_vocab(v) for v in d]
-    return d
+def _level_values(table: dict):
+    def op(d):
+        if isinstance(d, dict):
+            return {k: (table.get(" ".join(v.split()).upper(), v) if k.upper() in LEVEL_KEYS and isinstance(v, str)
+                        else op(v)) for k, v in d.items()}
+        if isinstance(d, list):
+            return [op(v) for v in d]
+        return d
+    return op
 
 
-mutation("level-vocab", {"json"}, False, "el campo del nivel con otro vocabulario (Nivel IV, EXTREMA, ORANGE)")(
-    _json_op(_level_vocab))
+mutation("level-vocab", {"json"}, False, "el campo del nivel con otro vocabulario (Grado 4, CATASTROFICO, ORANGE)")(
+    _json_op(_level_values(LEVEL_VOCAB)))
+mutation("level-forms", {"json"}, True, "el campo del nivel escrito de otra forma (Nivel IV, EXTREMA, Amarilla)")(
+    _json_op(_level_values(LEVEL_FORMS)))
 
 
 def _dhn_wording(body, ctx):
@@ -1165,6 +1175,12 @@ def _feeds_to_simulate(all_feeds: bool, only: Optional[set]) -> list:
 #: (objetivo o «*», mutación) → por qué un SILENT-WRONG está revisado y se acepta. Cada entrada es una decisión con su
 #: costo dicho: no una forma de callar la prueba.
 ALLOWLIST: dict[tuple[str, str], str] = {
+    ("adapter:arcgis", "level-forms"): (
+        "Con el nivel escrito de otra forma («EXTREMA», «Nivel IV»), el titular, el nivel y las categorías son los "
+        "mismos (textnorm los lleva a la palabra de la escala); cambian el enlace y el id, porque el filtro de la capa "
+        "en el enlace (INTENSIDAD='EXTREMA') tiene que citar el valor de la fuente para seleccionar los mismos "
+        "polígonos. Que solo cambie eso lo prueba tests/test_textnorm.py (test_level_forms_keep_every_level). Costo: el "
+        "día del cambio, el aviso puede figurar dos veces en el historial (id nuevo)."),
     ("adapter:arcgis", "json-empty-valid"): (
         "Una capa de avisos vacía es la respuesta normal cuando no hay avisos vigentes y no se distingue, desde la "
         "respuesta, de una capa que el servidor dejó de llenar. Lo que se puede comprobar se comprueba: que la capa "

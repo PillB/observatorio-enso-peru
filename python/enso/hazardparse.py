@@ -33,6 +33,7 @@ from datetime import datetime, timezone
 from typing import Iterator, Optional
 
 from .feedparse import LIMA, FeedError, Parsed, clean_summary, clean_text, _finish, text_of
+from .textnorm import level_number, lookup
 
 COMPASS = {"N": "N", "NNE": "NNE", "NE": "NE", "ENE": "ENE", "E": "E", "ESE": "ESE", "SE": "SE", "SSE": "SSE",
            "S": "S", "SSW": "SSO", "SW": "SO", "WSW": "OSO", "W": "O", "WNW": "ONO", "NW": "NO", "NNW": "NNO"}
@@ -800,6 +801,30 @@ def _main_departments(by_dep: dict) -> list:
     return [c for c, a in sorted(by_dep.items(), key=lambda x: -x[1]) if total and a / total >= 0.03]
 
 
+#: Vocabularios de los campos de nivel de las capas del SENAMHI (las claves de ``severity.SCALES``).
+_UMBRAL_WORDS = ("amarillo", "naranja", "rojo")
+_FWI_WORDS = ("bajo", "moderado", "alto", "muy alto", "extremo")
+
+
+def _canon_nivel(raw: str) -> str:
+    """«Nivel IV», «NIVEL 4», «nivel: 4» → «Nivel 4»; un valor fuera de la escala, tal cual (``severity`` no lo lee y la
+    publicación avisa). El enlace de la capa sigue usando el valor de la fuente: su filtro debe coincidir."""
+    n = level_number(raw)
+    return f"Nivel {n}" if n else raw
+
+
+def _value_filter(field: str, raws) -> str:
+    """El filtro de la capa con los valores tal como los escribe la fuente (dos grafías del mismo nivel: ``IN``)."""
+    vals = sorted({str(v).replace("'", "''") for v in raws})
+    return f"{field}='{vals[0]}'" if len(vals) == 1 else f"{field} IN ({', '.join(repr(v) for v in vals)})"
+
+
+def _canon_word(raw: str, vocab: tuple) -> str:
+    """«EXTREMA», «Muy Alta», «amarrillo» → la palabra de la escala; un valor desconocido, tal cual."""
+    hit = lookup(raw, vocab, fuzzy=False)  # la errata se lee en ``severity``, que la marca; aquí no se corrige
+    return hit.key if hit else raw
+
+
 def parse_arcgis(body: bytes, base_url: str) -> Parsed:
     feats = _arcgis_features(body)
     rows = [(f or {}).get("attributes") or (f or {}).get("properties") or {} for f in feats]
@@ -818,7 +843,7 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
         for num, rs in by_num.items():
             r0 = rs[0]
             when = _ora_day(r0.get("FECHA_HORA")) or _day_ms(r0.get("FECHA"))
-            color = str(r0.get("COLOR_TEXT") or "").strip().lower()
+            color = _canon_word(str(r0.get("COLOR_TEXT") or "").strip(), _UMBRAL_WORDS).lower()
             where = [f"distrito de {_proper(str(r.get('NOMBDIST') or ''))}, provincia de {_proper(str(r.get('NOMBPROV') or ''))}, "
                      f"departamento de {_dep_name(r.get('NOMBDEP'))}" for r in rs if r.get("NOMBDEP")]
             places = sorted({f"{_proper(str(r.get('NOM_ESTACI') or ''))} ({w})" for r, w in zip([r for r in rs if r.get("NOMBDEP")], where)})
@@ -842,7 +867,8 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
         gz = gazetteer()
         groups: dict = {}
         for r in rows:
-            g = groups.setdefault((r.get("FECHA"), r.get("NIVEL")), {"deps": {}, "dists": {}})
+            g = groups.setdefault((r.get("FECHA"), _canon_nivel(str(r.get("NIVEL")))), {"deps": {}, "dists": {}, "raw": set()})
+            g["raw"].add(r.get("NIVEL"))
             dep = _dep_name(r.get("NOMBDEP"))
             n = int(r.get("N") or r.get("n") or 1)
             g["deps"][dep] = g["deps"].get(dep, 0) + n
@@ -856,17 +882,18 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             total = sum(n for _, n in per)
             deps = [d for d, _ in per]
             dists = sorted(g["dists"].items(), key=lambda x: (-x[1], x[0]))
-            where = f"NIVEL='{nivel}'" + (f" AND FECHA=DATE '{when.date().isoformat()}'" if when else "")
+            where = _value_filter("NIVEL", g["raw"]) + (f" AND FECHA=DATE '{when.date().isoformat()}'" if when else "")
             in_dists = f" en {len(dists)} distrito{'s' if len(dists) != 1 else ''}" if dists else ""
             top = ", ".join(f"{gz.label(c)['name']} ({gz.label(c[:2])['name']}) {n}" for c, n in dists[:8])
-            items.append({"title": clean_text(f"SENAMHI · aviso de activación de quebradas por lluvias, {str(nivel).lower()}: "
+            shown = nivel
+            items.append({"title": clean_text(f"SENAMHI · aviso de activación de quebradas por lluvias, {shown.lower()}: "
                                               f"{total} quebrada{'s' if total != 1 else ''}{in_dists} de {_join(deps[:6])}"
                                               + (f" y {len(deps) - 6} departamentos más" if len(deps) > 6 else ""), 300),
                           "link": _layer_link(base_url, where), "published": _iso(when) if when else None,
                           "summary": clean_text("Quebradas con probable activación en las próximas 24 horas, según el SENAMHI, "
                                                 "por departamento: " + ", ".join(f"{d} ({n})" for d, n in per) + "."
                                                 + (f" Distritos con más quebradas: {top}." if top else ""), 600),
-                          "categories": ["huaico", str(nivel)], "geo": [", ".join(f"departamento de {d}" for d in deps)],
+                          "categories": ["huaico", shown], "geo": [", ".join(f"departamento de {d}" for d in deps)],
                           **({"areas": [{"code": c, "name": gz.label(c)["name"], "n": n} for c, n in dists]} if dists else {})})
     elif "INTENSIDAD" in keys and "RANGO" in keys:  # peligro de incendios forestales (FWI): polígonos sin lugares
         kind = "fwi"
@@ -874,10 +901,12 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
         from .geopoly import cap_rings, polygon_departments, shape_rings
 
         names = department_names()
-        groups, shapes = {}, {}
+        groups, shapes, raws = {}, {}, {}
         for f in feats:
             r = (f or {}).get("properties") or (f or {}).get("attributes") or {}
-            k = (r.get("FECHA"), str(r.get("INTENSIDAD") or "").strip(), str(r.get("RANGO") or "").strip())
+            raw = str(r.get("INTENSIDAD") or "").strip()
+            k = (r.get("FECHA"), _canon_word(raw, _FWI_WORDS).upper(), str(r.get("RANGO") or "").strip())
+            raws.setdefault(k, set()).add(raw)
             g = groups.setdefault(k, {})
             for code, area in polygon_departments((f or {}).get("geometry") or {}).items():
                 g[code] = g.get(code, 0.0) + area
@@ -888,18 +917,19 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             codes = _main_departments(by_dep)
             when = _day_ms(fecha)
             deps = [names.get(c, c) for c in codes]
-            level = intensidad.lower() or "sin nivel"
+            canon = intensidad
+            level = canon.lower() or "sin nivel"
             items.append({"title": clean_text(f"SENAMHI · peligro {level} de incendios forestales (índice FWI {rango})"
                                               + (f": {_join(deps[:6])}" if deps else "")
                                               + (f" y {len(deps) - 6} departamentos más" if len(deps) > 6 else ""), 300),
-                          "link": _layer_link(base_url, f"INTENSIDAD='{intensidad}'"
+                          "link": _layer_link(base_url, _value_filter("INTENSIDAD", raws[(fecha, intensidad, rango)])
                                               + (f" AND FECHA=DATE '{when.date().isoformat()}'" if when else "")),
                           "published": _iso(when) if when else None,
                           "summary": clean_text(f"Zonas donde el índice meteorológico de peligro de incendios forestales (FWI) "
                                                 f"está {_range_es(rango)}, nivel {level}, según el aviso de 24 horas del SENAMHI. "
                                                 + (f"Departamentos, de mayor a menor área: {', '.join(deps)}. " if deps else "")
                                                 + "No es un incendio: son condiciones en que un fuego se inicia y propaga con facilidad.", 600),
-                          "categories": ["incendio", "FWI", intensidad],
+                          "categories": ["incendio", "FWI", canon],
                           "ubigeo": codes, "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else [],
                           **({"shapes": [{"rings": rings}]} if rings else {})})
     elif "NIVEL" in keys and "NOMBDEP" not in keys:  # avisos de precipitaciones de 24 horas: polígonos por nivel
@@ -908,16 +938,18 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
         from .geopoly import cap_rings, polygon_departments, shape_rings
 
         names = department_names()
-        groups, shapes = {}, {}
+        groups, shapes, raws = {}, {}, {}
         for f in feats:
             r = (f or {}).get("properties") or (f or {}).get("attributes") or {}
-            nivel = str(r.get("NIVEL") or "").strip()
-            if re.match(r"(?i)^nivel\s+1$", nivel):
-                continue  # el nivel 1 (verde) no es un aviso
-            # Cualquier otro valor se publica tal cual: si no es «Nivel 2» a «Nivel 4», ``severity`` no lo lee y la
-            # publicación avisa (``alert-level-unread``). Antes se descartaba como si fuera el nivel 1: con «Nivel IV»
-            # la capa entera desaparecía sin aviso (``tools.drift_sim``, mutación level-vocab).
+            raw = str(r.get("NIVEL") or "").strip()
+            nivel = _canon_nivel(raw)
+            if level_number(raw) == 1:
+                continue  # el nivel 1 (verde) no es un aviso («Nivel 1», «Nivel I», «NIVEL 1»)
+            # «Nivel IV» o «NIVEL 4» se publican como «Nivel 4» (``_canon_nivel``). Un valor fuera de la escala
+            # («Nivel 5») se publica tal cual: ``severity`` no lo lee y la publicación avisa (``alert-level-unread``).
+            # Antes se descartaba como si fuera el nivel 1 y la capa entera desaparecía sin aviso.
             g = groups.setdefault((r.get("FECHA"), nivel), {})
+            raws.setdefault((r.get("FECHA"), nivel), set()).add(raw)
             shapes.setdefault((r.get("FECHA"), nivel), []).extend(shape_rings((f or {}).get("geometry") or {}))
             # Un polígono cubre a veces varios departamentos: su área se reparte con una grilla.
             for code, area in polygon_departments((f or {}).get("geometry") or {}, sample=True).items():
@@ -928,15 +960,16 @@ def parse_arcgis(body: bytes, base_url: str) -> Parsed:
             deps = [names.get(c, c) for c in codes]
             more = len(deps) - 6
             named = _join(deps) if more <= 0 else f"{', '.join(deps[:6])} y {more} departamento{'s' if more > 1 else ''} más"
-            items.append({"title": clean_text(f"SENAMHI · aviso de precipitaciones para 24 horas, {nivel.lower()}"
+            shown = nivel
+            items.append({"title": clean_text(f"SENAMHI · aviso de precipitaciones para 24 horas, {shown.lower()}"
                                               + (f": {named}" if deps else ""), 300),
-                          "link": _layer_link(base_url, f"NIVEL='{nivel}'"
+                          "link": _layer_link(base_url, _value_filter("NIVEL", raws[(fecha, nivel)])
                                               + (f" AND FECHA=DATE '{when.date().isoformat()}'" if when else "")),
                           "published": _iso(when) if when else None,
-                          "summary": clean_text(f"Zonas con aviso de precipitaciones de {nivel.lower()} para las próximas "
+                          "summary": clean_text(f"Zonas con aviso de precipitaciones de {shown.lower()} para las próximas "
                                                 "24 horas, según la capa del SENAMHI en el servidor GEOSINPAD del INDECI. "
                                                 + (f"Departamentos, de mayor a menor área: {', '.join(deps)}." if deps else ""), 600),
-                          "categories": ["lluvias", nivel], "ubigeo": codes,
+                          "categories": ["lluvias", shown], "ubigeo": codes,
                           "geo": [", ".join(f"departamento de {d}" for d in deps)] if deps else [],
                           **({"shapes": [{"rings": rings}]} if (rings := cap_rings(shapes.get((fecha, nivel)) or [])) else {})})
         if not items:

@@ -22,7 +22,35 @@ de alertas y preguntó si de verdad no tenían nivel o si era un problema de lec
 | Boletines de tsunami de la DHN «en evaluación» | 2 de 12 en 60 días (20 en la copia completa) | Otra redacción («se emite BOLETIN DE INFORMACIÓN - SE INTENSIFICA VIGILANCIA», «se comunica que se ha emitido…») | El lector acepta las dos; el aviso queda «En evaluación», no verde ni «sin nivel» |
 | Cancelación de una alerta de tsunami | 2 en la copia completa | «Cancelación de alerta de tsunami» contenía «alerta de tsunami» y se mostraba como alerta vigente (naranja) | Nivel propio, rango 0 («Cancelación de la alerta de tsunami») |
 | Avisos verdes (PAGER verde, «no genera tsunami») | 15 | El filtro y la matriz del mapa los contaban como «Sin nivel» | Filtro «Verde» aparte |
-| Capa de lluvias con otro vocabulario («Nivel IV») | simulado | El lector descartaba todo valor que no fuera «Nivel 2» a «Nivel 4» como si fuera el nivel 1: la capa desaparecía sin aviso | Solo se descarta «Nivel 1»; lo demás se publica y, si no se lee, avisa |
+| Capa de lluvias con otro vocabulario («Nivel IV») | simulado | El lector descartaba todo valor que no fuera «Nivel 2» a «Nivel 4» como si fuera el nivel 1: la capa desaparecía sin aviso | Solo se descarta el nivel 1 («Nivel 1», «Nivel I»); lo demás se publica y, si no se lee, avisa |
+| El mismo nivel escrito de otra forma | simulado | Una expresión por forma: «EXTREMA», «Muy Alta», «alertas naranjas», «Nivel IV», «nivel: 3», «se encuentra en el umbral de color rojo», «ama-⏎rillo» en el PDF, un titular del COEN sin tildes quedaban sin nivel | `enso/textnorm.py` (abajo) |
+
+## Leer el nivel con su forma, no con su grafía (`enso/textnorm.py`)
+
+Cada lector de nivel trabaja sobre el texto plegado y toma la palabra del nivel contra el vocabulario de su escala:
+
+1. **Plegado** (`fold`): NFKC, sin caracteres invisibles (guion blando, ancho cero), rayas y comillas tipográficas a
+   ASCII, palabra partida por un guion al final de la línea del PDF unida, sin tildes, minúsculas, espacios simples.
+2. **Raíz de flexión** (`stem`): un *light stemmer* del español (Savoy 2002; el `SpanishLightStemFilter` de
+   Lucene) que quita solo género y número. No el Snowball: también quita derivación y juntaría «moderado» con
+   «moderadamente». Desde 4 letras (Lucene: 5), para que «roja», «alta» y «baja» sean «rojo», «alto» y «bajo».
+3. **Números** (`level_number`): «Nivel 4», «Nivel IV», «nivel: 4», «Nivel N° 4», «nivel cuatro». No «Nivel 5»,
+   «nivel 10» ni «nivel 4.5».
+4. **Errata** (`lookup`): un único término de la escala a distancia de edición 1 (Damerau) y de 5 letras o más
+   («amarrillo»). Se publica con «≈» en el mapa, «lectura aproximada de …» en la ficha y la incidencia
+   `alert-level-approx`. En el umbral del PDF no se acepta: el aviso queda pendiente y escala.
+
+Las capas del SENAMHI publican la palabra de la escala («Nivel 4», «EXTREMO») aunque la fuente escriba «Nivel IV» o
+«EXTREMA», y agrupan por ella; el enlace a la capa cita el valor de la fuente, que es el que su filtro encuentra.
+
+Lo que no se tolera, a propósito: otro idioma («ORANGE»), otras palabras («Grado 4», «CATASTRÓFICO»), «muy extremo»,
+un número fuera de la escala y una errata a una letra de dos términos. Esos casos son un vocabulario nuevo: abren
+`alert-level-unread`.
+
+Encontrado al probarlo: los boletines de la DHN citan al «Sistema Nacional de Alerta de Tsunamis». La regla vieja
+lo esquivaba sin saberlo, porque pedía «tsunami» en singular. Con el plural aceptado, cada boletín informativo se volvía
+«Alerta de tsunami». Ahora el nombre de la institución se quita antes de leer el estado (prueba con el boletín
+28-2026-1).
 
 ## Lo que sí no tiene nivel, y cómo se dice ahora
 
@@ -59,13 +87,18 @@ figuran «Nivel no leído» con borde de aviso, nunca como verdes ni como «sin 
 
 ## Simulación de deriva
 
-`python -m tools.drift_sim` tiene dos mutaciones nuevas que deben terminar LOUD:
+`python -m tools.drift_sim` tiene tres mutaciones nuevas:
 
-- `level-vocab`: el campo NIVEL, INTENSIDAD o COLOR_TEXT de una capa pasa a otro vocabulario («Nivel IV»,
-  «EXTREMA», «ORANGE»).
+- `level-vocab` (debe terminar LOUD): el campo NIVEL, INTENSIDAD o COLOR_TEXT de una capa pasa a otro vocabulario
+  («Grado 4», «CATASTROFICO», «ORANGE»).
+- `level-forms` (debe conservar cada nivel, sin incidencia): el mismo campo escrito de otra forma («Nivel IV»,
+  «nivel: 3», «EXTREMA», «MUY  ALTA», «Amarilla», «NARANJAS»). Solo cambian el enlace y el id, porque el filtro de
+  la capa cita el valor de la fuente (entrada revisada en `ALLOWLIST`; `tests/test_textnorm.py` comprueba que no
+  cambia nada más).
 - `status-wording`: la DHN escribe el estado con otras palabras («se informa que…», «no se espera tsunami»).
 
-`tests/test_niveles_de_aviso.py` las corre para las capas de quebradas, lluvias, FWI e hidrológica y para la DHN.
+`tests/test_niveles_de_aviso.py` y `tests/test_textnorm.py` las corren para las capas de quebradas, lluvias, FWI e
+hidrológica y para la DHN.
 
 ## Qué hacer cuando llega una incidencia
 
@@ -77,6 +110,13 @@ figuran «Nivel no leído» con borde de aviso, nunca como verdes ni como «sin 
 4. Si el aviso de verdad no tiene nivel: agregar la regla en `level_status` con su razón, nunca un nivel inventado.
 
 ## Costos y límites (decisiones tomadas)
+
+- **Una errata se lee, no se calla ni se adivina en silencio**: con distancia 1, ninguna palabra de una escala está a
+  menos de 3 de otra (lo prueba `test_fuzzy_candidates_are_far_apart`), así que la errata no puede caer en el nivel
+  equivocado. Costo: «rajo» (a 1 de «rojo», 4 letras) no se lee. Las palabras cortas no se aproximan porque una letra
+  es un cuarto de la palabra.
+- **El día que una capa cambia la grafía del nivel** («EXTREMO» a «EXTREMA»), el enlace del aviso cambia y el aviso
+  puede figurar dos veces en el historial (id nuevo). El nivel y el titular no cambian.
 
 - **Muy alto y extremo comparten el rango 3** (rojo) en la escala común del mapa: el mapa tiene tres colores de
   aviso para todas las instituciones; la etiqueta («Peligro extremo») los distingue y la ficha muestra el color

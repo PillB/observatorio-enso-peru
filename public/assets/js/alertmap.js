@@ -156,12 +156,19 @@ function reasonChip(st, s) {
   return html`<span class="lvl ${st.loud ? 'lvl-err' : 'lvl-un'}${s}" title="${st.why}">${st.label}</span>`;
 }
 
+/** El título del nivel: la escala, otra fuente que da otro nivel («≠») y una errata leída por aproximación («≈»). */
+function levelNotes(a) {
+  const differs = a.conflict ? ` · otra fuente: ${a.conflict.label} (${a.conflict.basis})` : '';
+  const approx = a.sev.approx ? ` · lectura aproximada: la fuente escribió «${a.sev.approx}»` : '';
+  return { title: `${a.sev.scaleLabel}${differs}${approx}`, marks: `${a.conflict ? ' ≠' : ''}${a.sev.approx ? ' ≈' : ''}` };
+}
+
 function levelChip(a, { small = false } = {}) {
   const r = rankOf(a);
   const s = small ? ' lvl-s' : '';
   if (!a.sev) return reasonChip(a.status, s);
-  const differs = a.conflict ? ` · otra fuente: ${a.conflict.label} (${a.conflict.basis})` : '';
-  return html`<span class="lvl lvl-r${r}${s}${a.conflict ? ' lvl-conflict' : ''}" title="${a.sev.scaleLabel}${differs}">${r === 3 ? raw(ICON.octagon) : r ? raw(ICON.triangle) : ''}${a.sev.label}${a.conflict ? ' ≠' : ''}</span>`;
+  const { title, marks } = levelNotes(a);
+  return html`<span class="lvl lvl-r${r}${s}${a.conflict ? ' lvl-conflict' : ''}" title="${title}">${r === 3 ? raw(ICON.octagon) : r ? raw(ICON.triangle) : ''}${a.sev.label}${marks}</span>`;
 }
 
 // La copia de la tabla de avisos del SENAMHI que publica el sitio (data/archive/…): esa página solo

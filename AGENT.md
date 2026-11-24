@@ -159,6 +159,14 @@ Every upstream here has already changed silently at least once (section 6). Rule
   "no warning" (`Nivel 1`), never "anything not in the list". See `docs/niveles-de-aviso.md`.
 - **When two sources give the same fact, compare them** and record the disagreement (`alert-level-conflict`), the
   way the COEN PDF and the SENAMHI layer give the same river aviso.
+- **Read a level by its form, not its spelling.** Match level words through `enso/textnorm.py` (`fold`, then a light
+  inflectional stemmer, `lookup` against the scale's own keys, `level_number` for "Nivel IV"/"nivel: 4"), never with a
+  new regex per spelling. Tolerate form (case, accents, gender, number, roman numerals, PDF line-break hyphens);
+  never translate, never guess a word outside the scale, and mark an edit-distance-1 typo (`approx`,
+  `alert-level-approx`) instead of absorbing it. When you widen a matcher, look for the text it now also catches: the
+  plural "tsunamis" turned the DHN's own name ("Sistema Nacional de Alerta de Tsunamis") into an alert. Every
+  tolerated form needs a drift mutation that must stay BENIGN (`level-forms`), and every refused one a mutation that
+  must stay LOUD (`level-vocab`).
 - When adding a source: archive a real response under `python/tests/fixtures/sources/`, add a parser test against it,
   a fingerprint, a plausibility range, a `stale_days` measured from its real publishing gaps (not guessed), and its
   block/variant behaviour.
@@ -181,6 +189,7 @@ Every upstream here has already changed silently at least once (section 6). Rule
 
 | 824 of 1178 hazard alerts in 60 days showed the same grey "Sin nivel" ("uncategorized"); 26 had a level at the source (9 fire-danger avisos, 17 river avisos via the COEN), 2 tsunami-alert cancellations showed as active alerts, 15 green ones were filtered as "no level" | One label for every reason; the fire layer uses words (EXTREMO) and the parser looked for "Nivel N"; the river level was in the PDF, not the RSS; "cancelación de alerta de tsunami" contains "alerta de tsunami" | A missing level needs a reason; sources that always assign levels are loud when one is not read; scales come from the source's own definition; check the negating phrase first |
 | The rain layer dropped every value it did not list ("Nivel IV") as if it were "Nivel 1": the layer vanished silently | Filter written as an allow-list of warnings | Drop only values known to mean "no warning"; the drift simulator's `level-vocab` mutation now covers it |
+| One regex per spelling: "EXTREMA", "alertas naranjas", "Nivel IV", "umbral de color rojo", an accent-less COEN title would each have read as "no level"; widening to plurals then made every DHN bulletin an alert through the institution's own name | Matching spellings instead of normalising forms; a guard that worked by accident (singular "tsunami") | One normaliser (`enso/textnorm.py`) with tests on both sides: forms it must read and words it must refuse; strip names before matching status words |
 | During this fix, a new `if` was inserted in the middle of an `if/elif` chain in `documentos.read` (valid Python, different meaning); the existing suite stayed green | No test fed an aviso a text that a later branch would also match | Red-team your own diff for control-flow edits; the guard test feeds such a text (`tests/test_niveles_de_aviso.py`) |
 
 ## 7. Fail verbose, with clear diagnostics

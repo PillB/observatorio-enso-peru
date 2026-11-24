@@ -57,6 +57,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from .feedparse import LIMA
+from .textnorm import Match, fold, level_number, lookup
 
 #: Escalas por institución: etiqueta de cada nivel y su orden (``rank``).
 SCALES = {
@@ -89,23 +90,29 @@ SCALES = {
              "levels": {"none": (0, "Sin amenaza de tsunami", "verde"), "threat": (3, "Amenaza de tsunami", "rojo")}},
 }
 
-_COLOR = {"amarillo": "amarillo", "amarilla": "amarillo", "naranja": "naranja", "rojo": "rojo", "roja": "rojo",
-          "verde": "verde"}
 _MONTHS = {m: i for i, m in enumerate(["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
                                        "septiembre", "octubre", "noviembre", "diciembre"], 1)} | {"setiembre": 9}
 _MON_RE = "|".join(sorted(_MONTHS, key=len, reverse=True))
 
-_NIVEL_RE = re.compile(r"\bnivel\s+([1-4])\b", re.I)
-_HIDRO_RE = re.compile(r"\(nivel\s+(amarillo|naranja|rojo)\)", re.I)
-_VOLCAN_RE = re.compile(r"\balerta\s+(verde|amarill[ao]|naranja|roj[ao])\b", re.I)
-_PAGER_RE = re.compile(r"\balerta PAGER (green|yellow|orange|red)\b", re.I)
+# Los lectores de nivel trabajan sobre el texto plegado (``textnorm.fold``: sin tildes, minúsculas) y toman la
+# palabra del nivel con ``textnorm.lookup`` (género, número, tildes, una errata): una expresión por forma de
+# escribir el nivel dejaba avisos «sin nivel» (docs/niveles-de-aviso.md).
+_HIDRO_RE = re.compile(r"\(nivel\s+(\w+)\)")
+#: «alerta naranja», «alertas naranjas», «alerta volcánica naranja», «Alerta volcánica: Naranja».
+_VOLCAN_RE = re.compile(r"\balertas?\s*(?:volcanicas?\s*)?:?\s*(\w+)")
+_PAGER_RE = re.compile(r"\balerta pager (green|yellow|orange|red)\b")
 #: Titular que arma ``hazardparse`` con el campo INTENSIDAD de la capa FWI: «SENAMHI · peligro extremo de incendios…».
-_FWI_RE = re.compile(r"\bpeligro\s+(bajo|moderado|alto|muy\s+alto|extremo)\s+de\s+incendios\b", re.I)
+_FWI_RE = re.compile(r"\bpeligro\s+((?:muy\s+)?\w+)\s+de\s+incendios\b")
 #: Umbral de la estación en el PDF del COEN de un aviso hidrológico («ubicándose en el umbral amarillo»), como lo
 #: deja ``documentos.summary``: «Umbral de la estación según el PDF del COEN: amarillo.»
-_UMBRAL_RE = re.compile(r"\bumbral de la estaci[óo]n según el PDF del COEN:\s+(amarillo|naranja|rojo)\b", re.I)
-#: Un color del SENAMHI citado en el texto de un aviso («aviso naranja», «nivel rojo», «alerta amarilla»).
-_TEXT_COLOR_RE = re.compile(r"\b(?:aviso|nivel|alerta)\s+(?:de\s+(?:color\s+)?)?(amarill[ao]|naranja|roj[ao])\b", re.I)
+_UMBRAL_RE = re.compile(r"\bumbral de la estacion segun el pdf del coen:\s+(\w+)")
+#: Un color del SENAMHI citado en el texto de un aviso («aviso naranja», «nivel rojo», «alertas amarillas»).
+_TEXT_COLOR_RE = re.compile(r"\b(?:avisos?|nivel(?:es)?|alertas?)\s+(?:de\s+(?:color\s+)?)?(\w+)")
+
+#: Vocabulario de cada escala para ``textnorm.lookup``: las claves de ``SCALES``, y las variantes que no son flexión.
+_COLORS = {"verde": "verde", "amarillo": "amarillo", "naranja": "naranja", "rojo": "rojo"}
+_UMBRALES = {k: k for k in ("amarillo", "naranja", "rojo")}
+_FWI_WORDS = {k: k for k in ("bajo", "moderado", "alto", "muy alto", "extremo")}
 
 # «del 22 al 24 de octubre», «del 18 y 19 de octubre», «del 31 de octubre al 2 de noviembre (del 2026)» y, en los
 # boletines del COEN, «desde el jueves 22 al domingo 24 de octubre»
@@ -147,10 +154,21 @@ def _parse_when(s: Optional[str]) -> Optional[datetime]:
     return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
-def _level(scale: str, key: str, basis: str) -> dict:
+def _level(scale: str, key: str, basis: str, hit: Optional[Match] = None) -> dict:
     rank, label, color = SCALES[scale]["levels"][key]
-    return {"rank": rank, "label": label, "color": color, "scale": scale,
-            "scaleLabel": SCALES[scale]["label"], "basis": basis}
+    out = {"rank": rank, "label": label, "color": color, "scale": scale,
+           "scaleLabel": SCALES[scale]["label"], "basis": basis}
+    if hit is not None and hit.how == "aproximado":
+        # Una errata («amarrillo») leída con distancia de edición 1: se publica, se dice en la ficha y la publicación
+        # la registra (``alert-level-approx``) para que alguien la confirme.
+        out["approx"] = hit.raw
+        out["basis"] = f"{basis} (lectura aproximada de «{hit.raw}»)"
+    return out
+
+
+def _first(rx: re.Pattern, text: str, vocab: dict) -> Optional[Match]:
+    """La primera coincidencia de ``rx`` cuya palabra está en el vocabulario («alerta de tsunami» no lo está)."""
+    return next((hit for m in rx.finditer(text) if (hit := lookup(m.group(1), vocab))), None)
 
 
 def _year_for(month: int, ref: datetime) -> int:
@@ -186,44 +204,49 @@ def _range(text: str, ref: datetime) -> Optional[tuple[datetime, datetime]]:
 
 
 def _sev_layer(feed_id: str, title: str, summary: str) -> Optional[dict]:
-    m = _NIVEL_RE.search(title)
+    n = level_number(title)
     layer = "de precipitaciones " if feed_id == "senamhi-lluvias" else ""
-    return _level("senamhi-niveles", m.group(1), f"campo NIVEL de la capa {layer}del SENAMHI en GEOSINPAD") if m else None
+    return _level("senamhi-niveles", str(n), f"campo NIVEL de la capa {layer}del SENAMHI en GEOSINPAD") if n else None
 
 
 def _sev_hidro(feed_id: str, title: str, summary: str) -> Optional[dict]:
-    m = _HIDRO_RE.search(title)
-    return _level("senamhi-umbral", m.group(1).lower(), "campo COLOR_TEXT del aviso hidrológico") if m else None
+    hit = _first(_HIDRO_RE, title, _UMBRALES)
+    return _level("senamhi-umbral", hit.key, "campo COLOR_TEXT del aviso hidrológico", hit) if hit else None
 
 
 def _sev_fwi(feed_id: str, title: str, summary: str) -> Optional[dict]:
     # La capa da palabras (BAJO … EXTREMO), no «Nivel N» ni colores: hasta noviembre de 2026 se buscaban esos y
     # los 9 avisos de peligro extremo de los 60 días anteriores quedaron «sin nivel» (docs/niveles-de-aviso.md).
-    m = _FWI_RE.search(title)
-    return _level("senamhi-fwi", " ".join(m.group(1).lower().split()),
-                  "campo INTENSIDAD de la capa FWI del SENAMHI en GEOSINPAD") if m else None
+    hit = _first(_FWI_RE, title, _FWI_WORDS)
+    return _level("senamhi-fwi", hit.key, "campo INTENSIDAD de la capa FWI del SENAMHI en GEOSINPAD", hit) if hit else None
 
 
 def _sev_volcan(feed_id: str, title: str, summary: str) -> Optional[dict]:
-    m = _VOLCAN_RE.search(f"{title} {summary}")
-    return _level("igp-volcan", _COLOR[m.group(1).lower()], "nivel de alerta del boletín del CENVUL") if m else None
+    hit = _first(_VOLCAN_RE, f"{title} {summary}", _COLORS)
+    return _level("igp-volcan", hit.key, "nivel de alerta del boletín del CENVUL", hit) if hit else None
 
 
 def _sev_usgs(feed_id: str, title: str, summary: str) -> Optional[dict]:
     m = _PAGER_RE.search(summary)
-    return _level("usgs-pager", m.group(1).lower(), "alerta PAGER publicada por USGS") if m else None
+    return _level("usgs-pager", m.group(1), "alerta PAGER publicada por USGS") if m else None
+
+
+#: Nombres de instituciones que contienen «alerta de tsunamis»: el boletín los cita en cada número («organismo
+#: responsable del Sistema Nacional de Alerta de Tsunamis»). Se quitan antes de buscar el estado: la regla vieja
+#: solo los esquivaba porque pedía «tsunami» en singular, y aceptar el plural los volvía alertas.
+_DHN_NAMES_RE = re.compile(r"\b(?:sistema|centro) nacional de alerta de tsunamis?\b|\bsnat\b|\bcnat\b")
 
 
 def _sev_dhn_tsunami(feed_id: str, title: str, summary: str) -> Optional[dict]:
-    low = f"{title} {summary}".lower()
+    low = _DHN_NAMES_RE.sub(" ", f"{title} {summary}")
     # Antes que «alerta»: «Cancelación de alerta de tsunami en el litoral peruano» se mostraba como una alerta
     # vigente (naranja) hasta noviembre de 2026.
     # «…hasta la cancelación de ALERTA de tsunamis» es parte de una alerta vigente, no su cancelación.
-    if re.search(r"(?<!hasta la )\bcancelaci[óo]n de (?:la )?(?:alerta|alarma) de tsunami\b", low):
+    if re.search(r"(?<!hasta la )\bcancelacion de (?:la )?(?:alerta|alarma) de tsunami\b", low):
         return _level("dhn-tsunami", "cancelacion", "estado del boletín de la DHN")
-    if re.search(r"\balarma de tsunami\b", low):
+    if re.search(r"\balarmas? de tsunamis?\b", low):
         return _level("dhn-tsunami", "alarma", "estado del boletín de la DHN")
-    if re.search(r"\balerta de tsunami\b", low) and not re.search(r"no (?:genera|representa)", low):
+    if re.search(r"\balertas? de tsunamis?\b", low) and not re.search(r"no (?:genera|representa)", low):
         return _level("dhn-tsunami", "alerta", "estado del boletín de la DHN")
     if re.search(r"no (?:genera|generar[ií]a|representa)\w*\s+(?:\w+\s+){0,3}tsunami", low):
         return _level("dhn-tsunami", "info", "estado del boletín de la DHN")
@@ -240,12 +263,12 @@ def _sev_ptwc(feed_id: str, title: str, summary: str) -> Optional[dict]:
 
 
 def _sev_text_color(feed_id: str, title: str, summary: str) -> Optional[dict]:
-    if is_coen(feed_id) and title.lower().startswith("aviso hidrol"):
-        m = _UMBRAL_RE.search(summary)
-        if m:
-            return _level("senamhi-umbral", m.group(1).lower(), "umbral de la estación en el PDF del boletín del COEN")
-    m = _TEXT_COLOR_RE.search(f"{title} {summary}")
-    return _level("senamhi-colores", _COLOR[m.group(1).lower()], "color del aviso citado en su texto") if m else None
+    if is_coen(feed_id) and title.startswith("aviso hidrol"):
+        hit = _first(_UMBRAL_RE, summary, _UMBRALES)
+        if hit:
+            return _level("senamhi-umbral", hit.key, "umbral de la estación en el PDF del boletín del COEN", hit)
+    hit = _first(_TEXT_COLOR_RE, f"{title} {summary}", _COLORS)
+    return _level("senamhi-colores", hit.key, "color del aviso citado en su texto", hit) if hit else None
 
 
 #: Lector del nivel de cada feed (por id exacto o por prefijo, en ese orden).
@@ -263,7 +286,8 @@ def _reader(feed_id: str):
 def severity(feed_id: str, title: str, summary: str) -> Optional[dict]:
     """El nivel que la institución asignó al aviso, o ``None`` si no se encontró (``level_status`` dice por qué)."""
     fn = _reader(feed_id)
-    return fn(feed_id, title, summary) if fn else None
+    # Cada lector recibe el texto plegado (``textnorm.fold``): sin tildes ni mayúsculas, guiones y comillas en ASCII.
+    return fn(feed_id, fold(title), fold(summary)) if fn else None
 
 
 # ---------------------------------------------------------------------------
@@ -308,9 +332,9 @@ def _status(code: str, why: str = "", label: str = "") -> dict:
 
 
 def _coen_reason(title: str, summary: str, kind: str) -> str:
-    low = title.lower()
-    code = next((c for pre, c in _COEN_RULES if low.startswith(pre)), None)
-    if code == "pendiente" and "según el pdf del coen" in summary.lower():
+    low = fold(title)
+    code = next((c for pre, c in _COEN_RULES if low.startswith(fold(pre))), None)
+    if code == "pendiente" and "segun el pdf del coen" in fold(summary):
         return "no-leido"  # el PDF se leyó y no dice el umbral (o lo dice de otra forma)
     if code:
         return code
@@ -330,7 +354,7 @@ def level_status(feed_id: str, kind: str, title: str, summary: str, sev: Optiona
     leyó (``no-leido``) o la fuente no tiene regla (``sin-regla``): la publicación abre una incidencia."""
     if sev is not None:
         return None
-    if feed_id == "dhn-tsunamis" and _VIGILANCIA_RE.search(f"{title} {summary}"):
+    if feed_id == "dhn-tsunamis" and _VIGILANCIA_RE.search(fold(f"{title} {summary}")):
         return _status("en-evaluacion")
     if feed_id in LEVELED:
         return _status("no-leido", "la fuente asigna un nivel a cada aviso y no se encontró en el titular ni en "

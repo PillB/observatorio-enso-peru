@@ -32,6 +32,8 @@ from datetime import datetime, timedelta
 from typing import Callable, Optional
 from urllib.parse import quote, urlsplit, urlunsplit
 
+from .textnorm import fold, lookup
+
 #: Feeds cuyas publicaciones enlazan un PDF que se lee (adaptador ``indeci-coen``).
 FOLLOW_ADAPTERS = ("indeci-coen",)
 #: Publicaciones de hasta estos días (las del mapa de alertas: ``sourcefeed.ALERTS_DAYS``).
@@ -47,8 +49,10 @@ MAX_PDF_BYTES = 15 * 2**20
 #: Más lugares que estos se publican por departamento (el resumen sigue nombrando las provincias).
 MAX_PLACES = 25
 #: Versión de lo que ``read`` saca de un PDF. Una lectura guardada con una versión anterior se repite una vez (lo
-#: nuevo de la 2: el umbral de la estación de los avisos hidrológicos), en vez de dejar esos avisos sin nivel.
-READ_VERSION = 2
+#: nuevo de la 2: el umbral de la estación de los avisos hidrológicos; de la 3: el umbral leído sobre el texto
+#: plegado, con «se encuentra en el umbral de color naranja» o una palabra partida al final de la línea), en vez de
+#: dejar esos avisos sin nivel.
+READ_VERSION = 3
 
 _PDF_RE = re.compile(r'href="(https?://portal\.indeci\.gob\.pe/wp-content/uploads/[^"]+?\.pdf)"', re.I)
 _PAGE_RE = re.compile(r"^https?://portal\.indeci\.gob\.pe/emergencias/[^?#]+", re.I)
@@ -407,13 +411,18 @@ _STATION_RE = re.compile(r"^(?P<row>.*?[A-Za-zÁÉÍÓÚÑáéíóúñ].*?)\s+\d
 #: El umbral en que está la estación, en la descripción del boletín de aviso hidrológico («…registró un nivel de
 #: 200.37 m s. n. m., ubicándose en el umbral amarillo.»). Pide un verbo antes de «umbral» para no tomar la cabecera
 #: de la tabla («Umbral Rojo (m s. n. m.)») ni la leyenda de niveles.
-_UMBRAL_RE = re.compile(r"\b(?:ubic[áa]ndose|ubica|se\s+encuentra|encontr[áa]ndose|super[óa]ndo|super[óa]|alcanz[óa]ndo"
-                        r"|alcanz[óa])\s+(?:en\s+)?(?:el\s+)?umbral\s+(amarillo|naranja|rojo)\b", re.I)
+_UMBRAL_RE = re.compile(r"\b(?:ubica\w*|se\s+encuentra\w*|encontrand\w*|supera\w*|supero|alcanza\w*|alcanzo"
+                        r"|registr\w*\s+en)\s+(?:en\s+)?(?:el\s+)?umbral\s+(?:de\s+(?:color\s+)?)?(\w+)")
 
 
 def station_threshold(text: str) -> Optional[str]:
-    """Umbral (amarillo, naranja, rojo) de la estación en un boletín de aviso hidrológico, o ``None``."""
-    found = {m.group(1).lower() for m in _UMBRAL_RE.finditer(_flat(text))}
+    """Umbral (amarillo, naranja, rojo) de la estación en un boletín de aviso hidrológico, o ``None``.
+
+    Sobre el texto plegado (``textnorm.fold``: tildes, mayúsculas, palabras partidas al final de la línea del PDF),
+    con la palabra del umbral leída por ``textnorm.lookup`` sin lectura aproximada: un PDF ilegible queda
+    «pendiente» y escala a las 48 h, en vez de adivinar un color."""
+    found = {hit.key for m in _UMBRAL_RE.finditer(fold(text))
+             if (hit := lookup(m.group(1), ("amarillo", "naranja", "rojo"), fuzzy=False))}
     return found.pop() if len(found) == 1 else None  # dos umbrales distintos: ambiguo, no se elige
 
 

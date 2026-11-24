@@ -227,6 +227,8 @@ def _classify_levels(alerts_: list[dict], now: datetime) -> tuple[dict[str, int]
             by.setdefault((a["source"], st["code"]), []).append(a)
         if a.get("levelConflict"):
             by.setdefault((a["source"], "conflicto"), []).append(a)
+        if (a.get("severity") or {}).get("approx"):
+            by.setdefault((a["source"], "aproximado"), []).append(a)
     return counts, by
 
 
@@ -239,15 +241,27 @@ def _log_conflict(log, src: str, bad: list[dict]) -> None:
               "(docs/niveles-de-aviso.md).")
 
 
+def _log_approx(log, src: str, bad: list[dict]) -> None:
+    log.add("warning", src.removeprefix("news-"), "parse", "alert-level-approx",
+            f"{len(bad)} aviso(s) con el nivel leído por aproximación (una errata a una letra de la palabra de la "
+            "escala): " + "; ".join(f"«{a['title'][:110]}»: «{a['severity']['approx']}» leído como "
+                                    f"{a['severity']['label']}" for a in bad[:4])
+            + ". El mapa lo muestra y la ficha dice que es una lectura aproximada. Confirmar en la respuesta archivada; "
+              "si la fuente adoptó esa grafía, agregarla al vocabulario (enso/severity.py) con su prueba.")
+
+
+_SPECIAL_LOGS = {"conflicto": _log_conflict, "aproximado": _log_approx}
+
+
 def audit_levels(alerts_: list[dict], log, now: datetime) -> dict[str, int]:
     """Incidencias por los niveles que no se leyeron: ``alert-level-unread`` (la fuente asigna niveles y el lector
     no encontró este; un campo renombrado o un vocabulario nuevo), ``alert-level-norule`` (una fuente de peligros
-    nueva sin regla en ``severity.level_status``) y ``alert-level-conflict`` (el PDF del COEN y la capa del
-    SENAMHI dan otro nivel al mismo aviso). Devuelve cuántos avisos hay con cada razón (para el informe)."""
+    nueva sin regla en ``severity.level_status``), ``alert-level-conflict`` (el PDF del COEN y la capa del
+    SENAMHI dan otro nivel al mismo aviso) y ``alert-level-approx`` (el nivel se leyó por aproximación). Devuelve cuántos avisos hay con cada razón (para el informe)."""
     counts, by = _classify_levels(alerts_, now)
     for (src, code), bad in sorted(by.items()):
-        if code == "conflicto":
-            _log_conflict(log, src, bad)
+        if code in _SPECIAL_LOGS:
+            _SPECIAL_LOGS[code](log, src, bad)
             continue
         log.add("warning", src.removeprefix("news-"), "parse",
                 "alert-level-norule" if code == "sin-regla" else "alert-level-unread",

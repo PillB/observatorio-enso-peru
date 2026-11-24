@@ -280,3 +280,9 @@ it('dos fuentes con otro nivel para el mismo aviso: se ve el del PDF y se marca 
   const out = String(itemBadges({ ...RATED, levelConflict: { label: 'Umbral amarillo', basis: 'capa del SENAMHI' } }, NOW));
   assert.match(out, /lvl-conflict[^>]*title="SENAMHI · otra fuente: Umbral amarillo \(capa del SENAMHI\)">.*Rojo ≠/);
 });
+
+it('un nivel leído por aproximación se marca «≈» y dice qué escribió la fuente', () => {
+  const out = String(itemBadges({ ...RATED, severity: { ...RATED.severity, approx: 'amarrillo' } }, NOW));
+  assert.match(out, /title="SENAMHI · lectura aproximada: la fuente escribió «amarrillo»">.*Rojo ≈</);
+  assert.doesNotMatch(String(itemBadges(RATED, NOW)), /≈/);
+});
