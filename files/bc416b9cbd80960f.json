@@ -48,6 +48,13 @@
                   "confidence" : -1,
                   "place" : 0
                 } ],
+                "dc.date.available" : [ {
+                  "value" : "2026-11-23T00:28:16Z",
+                  "language" : null,
+                  "authority" : null,
+                  "confidence" : -1,
+                  "place" : 0
+                } ],
                 "dc.date.issued" : [ {
                   "value" : "2026-10-30",
                   "language" : null,
@@ -168,7 +175,7 @@
               "inArchive" : true,
               "discoverable" : true,
               "withdrawn" : false,
-              "lastModified" : "2026-11-23T00:28:20.775+00:00",
+              "lastModified" : "2026-11-23T04:01:31.406+00:00",
               "entityType" : null,
               "type" : "item",
               "_links" : {
