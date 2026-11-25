@@ -105,6 +105,7 @@ python -m tools.complexity                  # techo de complejidad (--update al 
 - [Techo de complejidad ciclomática](docs/complejidad.md): por qué 10, cómo se mide en Python y JavaScript, el trinquete de la lista de excepciones y qué hacer cuando falla
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
+- [Política de Privacidad y Términos de Uso](docs/legal.md): de qué plantillas salen, qué se cambió y qué falta
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
 
 ## Licencia

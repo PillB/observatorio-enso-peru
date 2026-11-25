@@ -27,7 +27,8 @@ from urllib.parse import urlsplit
 DEFAULT_URL = "https://pillb.github.io/observatorio-enso-peru/"
 DEFAULT_PATH = "/observatorio-enso-peru/"
 REPO_HOST = "github.com/PillB/observatorio-enso-peru"
-TEXT_FILES = ("index.html", "404.html", "robots.txt", "sitemap.xml", "manifest.webmanifest")
+TEXT_FILES = ("index.html", "404.html", "robots.txt", "sitemap.xml", "manifest.webmanifest", "privacy.html", "terms.html",
+              "privacidad.html", "terminos.html")
 
 HEADERS = """\
 /*
