@@ -680,6 +680,9 @@ table.grd .chip { white-space: normal; }
 .lvl-r2 { background: color-mix(in srgb, var(--amap-r2) 22%, transparent); color: var(--amap-r2-ink); border-color: color-mix(in srgb, var(--amap-r2) 60%, transparent); }
 .lvl-r3 { background: var(--amap-r3); color: #fff; }
 .lvl-un { background: var(--na-bg); color: var(--na); border: 1px dashed color-mix(in srgb, var(--na) 50%, transparent); }
+/* «Nivel no leído»: la fuente sí asigna niveles y el observatorio no lo leyó (hay una incidencia abierta). */
+.lvl-err { background: var(--na-bg); color: var(--fg); border: 1px dashed var(--amap-r2); }
+.lvl-conflict { outline: 1px dashed var(--fg-2); outline-offset: 1px; }
 .tag-phase { font-weight: 700; }
 .ph-vigente, .ph-en-curso { background: var(--fg); color: var(--bg); }
 .ph-proxima { background: transparent; border: 1px dashed var(--fg-2); color: var(--fg-2); }
@@ -689,7 +692,7 @@ table.grd .chip { white-space: normal; }
 .amap-legend li { display: flex; align-items: center; gap: 8px; }
 .sw { display: inline-block; flex: none; width: 16px; height: 12px; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--fg) 18%, transparent); background: var(--amap-base); }
 .sw-r1 { background: var(--amap-r1); } .sw-r2 { background: var(--amap-r2); } .sw-r3 { background: var(--amap-r3); }
-.sw-un { background: var(--amap-un); } .sw-rep { background: var(--amap-rep); }
+.sw-un { background: var(--amap-un); } .sw-rep { background: var(--amap-rep); } .sw-r0 { background: var(--ok); }
 .sw-striped { background: repeating-linear-gradient(45deg, var(--amap-r2) 0 3px, var(--amap-base) 3px 7px); }
 .sw-soon { border-radius: 50%; width: 13px; height: 13px; border: 1.6px dashed var(--fg-2); background: transparent; }
 .sw-size { border-radius: 50%; width: 13px; height: 13px; background: var(--amap-un); box-shadow: 6px 0 0 -2px var(--amap-un); }
@@ -701,7 +704,7 @@ table.grd .chip { white-space: normal; }
 .amap-matrix th .sw { margin-right: 6px; vertical-align: -1px; }
 .amap-matrix td { padding: 0; }
 .cell { width: 100%; min-height: 40px; border-radius: 7px; border: 1px solid var(--line); font: 700 0.95rem var(--font); color: var(--fg); cursor: pointer; background: color-mix(in srgb, var(--c) calc(var(--a) * 100%), var(--bg-elev)); }
-.cell.c-r1 { --c: var(--amap-r1); } .cell.c-r2 { --c: var(--amap-r2); } .cell.c-r3 { --c: var(--amap-r3); } .cell.c-un { --c: var(--amap-un); }
+.cell.c-r1 { --c: var(--amap-r1); } .cell.c-r2 { --c: var(--amap-r2); } .cell.c-r3 { --c: var(--amap-r3); } .cell.c-un { --c: var(--amap-un); } .cell.c-r0 { --c: var(--ok); }
 .cell.c-r3[style*="--a:1"], .cell.c-r3.on { color: #fff; }
 .cell:disabled { cursor: default; color: var(--fg-3); font-weight: 500; }
 .cell.on { outline: 3px solid var(--fg); outline-offset: 1px; }

@@ -171,14 +171,14 @@ export const GUIDES = {
   // --- Noticias ---------------------------------------------------------------------------------------------------
   'amap-h': {
     que: 'Los avisos oficiales vigentes y próximos por departamento. El nivel es el que dio cada institución: el observatorio no asigna niveles.',
-    colores: [['alert', 'Rojo: el nivel más alto de la institución.'], ['orange', 'Naranja: intermedio.'], ['watch', 'Amarillo: el primer nivel.'], ['na', 'Gris: aviso sin nivel en la fuente, o solo reportes y avisos pasados.']],
+    colores: [['alert', 'Rojo: el nivel más alto de la institución.'], ['orange', 'Naranja: intermedio.'], ['watch', 'Amarillo: el primer nivel.'], ['na', 'Gris: aviso sin nivel de aviso (verde, un reporte, una institución sin escala de niveles o un boletín de varios niveles: la etiqueta de cada aviso dice cuál), o solo reportes y avisos pasados.']],
     valores: ['Cada departamento lleva el color de su aviso más alto. Pase el puntero para ver cuáles son y tóquelo para filtrar la lista de abajo.', 'Los filtros eligen el momento (vigentes, próximos, pasados), el nivel y la antigüedad.'],
     ojo: 'Un departamento sin color no está «a salvo»: puede que su fuente no haya respondido hoy. La línea bajo la lista dice cuáles se leyeron.',
   },
   // --- Boletín ----------------------------------------------------------------------------------------------------
   'bol-h': {
     que: 'Una foto del corte: el estado del ENFEN, cuántos departamentos tienen avisos oficiales de lluvias, huaicos, inundaciones u oleaje en cada color, y los más críticos con qué podría pasar, cuándo y quién lo dice.',
-    colores: [['alert', 'Rojo: el nivel más alto que dio la institución.'], ['orange', 'Naranja.'], ['watch', 'Amarillo.'], ['na', 'Gris: aviso sin nivel en su fuente.'], ['ok', 'Verde: ningún aviso de El Niño vigente o próximo; no quiere decir que no haya riesgo.']],
+    colores: [['alert', 'Rojo: el nivel más alto que dio la institución.'], ['orange', 'Naranja.'], ['watch', 'Amarillo.'], ['na', 'Gris: aviso sin nivel de aviso; la etiqueta de cada aviso dice por qué.'], ['ok', 'Verde: ningún aviso de El Niño vigente o próximo; no quiere decir que no haya riesgo.']],
     valores: ['Cada departamento lleva el color de su aviso más alto. Rayado o «próx.»: el aviso todavía no empieza. Más claro: venció después del corte.', 'Los contadores de arriba filtran la lista; «Qué cambió» dice qué es nuevo desde la edición anterior.', 'Las probabilidades son las del informe técnico del ENFEN, con su página; el boletín no calcula ninguna.'],
     ojo: 'Es un resumen de avisos oficiales, no una alerta propia: ante una emergencia, siga al INDECI, al SENAMHI y a su municipalidad.',
   },

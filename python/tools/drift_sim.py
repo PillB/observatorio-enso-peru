@@ -741,6 +741,48 @@ mutation("json-error-200", {"json"}, False, "error de ArcGIS con HTTP 200 ({\"er
     lambda b, c: json.dumps({"error": {"code": 500, "message": "Error performing query operation", "details": []}}).encode())
 
 
+#: Vocabulario del nivel que una capa podría pasar a usar sin aviso y que NO es otra forma de escribir el mismo nivel
+#: (otras palabras, otro idioma). Lo correcto no es leer «sin nivel» ni adivinar: es avisar (``alert-level-unread``),
+#: porque esas fuentes asignan un nivel a cada aviso.
+LEVEL_VOCAB = {"NIVEL 1": "Grado 1", "NIVEL 2": "Grado 2", "NIVEL 3": "Grado 3", "NIVEL 4": "Grado 4",
+               "BAJO": "LEVE", "MODERADO": "MEDIO", "ALTO": "SEVERO", "MUY ALTO": "MUY SEVERO", "EXTREMO": "CATASTROFICO",
+               "AMARILLO": "YELLOW", "NARANJA": "ORANGE", "ROJO": "RED"}
+#: Otra forma de escribir el mismo nivel (números romanos o en palabras, otro género o número, mayúsculas, tildes,
+#: espacios): ``textnorm`` debe leer el mismo nivel.
+LEVEL_FORMS = {"NIVEL 1": "Nivel I", "NIVEL 2": "NIVEL II", "NIVEL 3": "nivel: 3", "NIVEL 4": "Nivel cuatro",
+               "BAJO": "Baja", "MODERADO": "MODERADA", "ALTO": "Alta", "MUY ALTO": "MUY  ALTA", "EXTREMO": "Extrema",
+               "AMARILLO": "Amarilla", "NARANJA": "NARANJAS", "ROJO": "Roja"}
+LEVEL_KEYS = {"NIVEL", "INTENSIDAD", "COLOR_TEXT"}
+
+
+def _level_values(table: dict):
+    def op(d):
+        if isinstance(d, dict):
+            return {k: (table.get(" ".join(v.split()).upper(), v) if k.upper() in LEVEL_KEYS and isinstance(v, str)
+                        else op(v)) for k, v in d.items()}
+        if isinstance(d, list):
+            return [op(v) for v in d]
+        return d
+    return op
+
+
+mutation("level-vocab", {"json"}, False, "el campo del nivel con otro vocabulario (Grado 4, CATASTROFICO, ORANGE)")(
+    _json_op(_level_values(LEVEL_VOCAB)))
+mutation("level-forms", {"json"}, True, "el campo del nivel escrito de otra forma (Nivel IV, EXTREMA, Amarilla)")(
+    _json_op(_level_values(LEVEL_FORMS)))
+
+
+def _dhn_wording(body, ctx):
+    """La DHN escribe el estado del boletín con otras palabras («se informa que…», «no se espera tsunami»)."""
+    t = _text(body)
+    new = re.sub(r"se comunica que", "se informa que", t, flags=re.I)
+    new = re.sub(r"no genera tsunami", "no se espera tsunami", new, flags=re.I)
+    return _same_or_none(new.encode("utf-8"), body)
+
+
+mutation("status-wording", {"html"}, False, "el estado del boletín de tsunami con otras palabras")(_dhn_wording)
+
+
 def _layer_id(url: str) -> Optional[int]:
     m = re.search(r"/MapServer/(\d+)", url or "")
     return int(m.group(1)) if m else None
@@ -958,6 +1000,7 @@ def feed_target(f, body: Optional[bytes] = None) -> Target:
         # en un feed oficial de avisos, ``alert-source-format`` el mismo día si cambió de forma.
         state, _ = P.feed_state(st, f, {}, now, P.rules())
         sig = [f"degraded:{state}"] if state else []
+        sig += _level_signals(f.id, found)
         if st.get("formatError"):
             sig.append("format-error")
         entries = sorted(canon(_norm_entry(e)) for e in (seen[0].items if seen and st.get("ok") else []))
@@ -973,6 +1016,22 @@ def feed_target(f, body: Optional[bytes] = None) -> Target:
     if latest:
         ctx["now"] = datetime.fromisoformat(latest.replace("Z", "+00:00")) + timedelta(hours=1)
     return Target(f.id, "feed", ctx["family"], body, run, ctx)
+
+
+def _level_signals(feed_id: str, found: list) -> list[str]:
+    """Lo que ``sourcefeed.audit_levels`` registraría con estas entradas: ``alert-level-unread`` si alguna, de una
+    fuente que asigna niveles, queda sin nivel leído (un vocabulario nuevo en el campo del nivel)."""
+    from enso import severity as SV
+
+    if feed_id not in SV.LEVELED:
+        return []
+    for i in found:
+        title, summary = i.get("title") or "", i.get("summary") or ""
+        sev = SV.severity(feed_id, title, summary)
+        st = SV.level_status(feed_id, SV.kind_of(feed_id, title), title, summary, sev)
+        if st and st["loud"]:
+            return ["warning:alert-level-unread"]
+    return []
 
 
 def _date_style(body: bytes) -> str:
@@ -1116,6 +1175,12 @@ def _feeds_to_simulate(all_feeds: bool, only: Optional[set]) -> list:
 #: (objetivo o «*», mutación) → por qué un SILENT-WRONG está revisado y se acepta. Cada entrada es una decisión con su
 #: costo dicho: no una forma de callar la prueba.
 ALLOWLIST: dict[tuple[str, str], str] = {
+    ("adapter:arcgis", "level-forms"): (
+        "Con el nivel escrito de otra forma («EXTREMA», «Nivel IV»), el titular, el nivel y las categorías son los "
+        "mismos (textnorm los lleva a la palabra de la escala); cambian el enlace y el id, porque el filtro de la capa "
+        "en el enlace (INTENSIDAD='EXTREMA') tiene que citar el valor de la fuente para seleccionar los mismos "
+        "polígonos. Que solo cambie eso lo prueba tests/test_textnorm.py (test_level_forms_keep_every_level). Costo: el "
+        "día del cambio, el aviso puede figurar dos veces en el historial (id nuevo)."),
     ("adapter:arcgis", "json-empty-valid"): (
         "Una capa de avisos vacía es la respuesta normal cuando no hay avisos vigentes y no se distingue, desde la "
         "respuesta, de una capa que el servidor dejó de llenar. Lo que se puede comprobar se comprueba: que la capa "

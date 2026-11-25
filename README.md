@@ -85,6 +85,7 @@ python -m tools.complexity                  # techo de complejidad (--update al 
 - [Metodología e indicadores](docs/metodologia.md)
 - [Catálogo de fuentes](docs/catalogo-fuentes.md)
 - [Auditoría de deriva de las fuentes (noviembre de 2026)](docs/auditoria-deriva-fuentes.md): cada fuente leída en vivo contra su lector, qué había cambiado sin avisar y qué guardias lo detectan ahora
+- [Niveles de aviso (noviembre de 2026)](docs/niveles-de-aviso.md): por qué un aviso del mapa queda sin nivel, cuándo eso es un error de lectura y la incidencia que lo avisa
 - [Informes en texto libre y vigencia de los datos](docs/informes-texto.md): comunicado e informe técnico del ENFEN leídos del PDF, con su validación y procedencia
 - [Operación diaria, incidencias y recuperación](docs/operaciones.md)
 - [Recolector desde el Perú (mini servidor)](docs/servidor-peru.md): kit descargable, instalación en Windows y macOS, verificación y alarmas

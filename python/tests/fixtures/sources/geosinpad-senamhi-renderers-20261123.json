@@ -1,0 +1,140 @@
+{
+ "2": {
+  "name": "SDE.SENAMHI_AvisoActQuebrada24H",
+  "renderer": {
+   "type": "uniqueValue",
+   "field1": "NIVEL",
+   "uniqueValueInfos": [
+    {
+     "value": "Nivel 1",
+     "label": "Nivel 1",
+     "color": [
+      130,
+      130,
+      130,
+      0
+     ]
+    },
+    {
+     "value": "Nivel 2",
+     "label": "Nivel 2",
+     "color": [
+      255,
+      255,
+      0,
+      255
+     ]
+    },
+    {
+     "value": "Nivel 3",
+     "label": "Nivel 3",
+     "color": [
+      255,
+      170,
+      0,
+      255
+     ]
+    }
+   ]
+  }
+ },
+ "3": {
+  "name": "SDE.SENAMHI_AvisoFWI24H",
+  "renderer": {
+   "type": "uniqueValue",
+   "field1": "INTENSIDAD",
+   "uniqueValueInfos": [
+    {
+     "value": "ALTO",
+     "label": "ALTO",
+     "color": [
+      255,
+      85,
+      0,
+      255
+     ]
+    },
+    {
+     "value": "BAJO",
+     "label": "BAJO",
+     "color": [
+      184,
+      252,
+      182,
+      0
+     ]
+    },
+    {
+     "value": "EXTREMO",
+     "label": "EXTREMO",
+     "color": [
+      169,
+      0,
+      230,
+      255
+     ]
+    },
+    {
+     "value": "MODERADO",
+     "label": "MODERADO",
+     "color": [
+      255,
+      255,
+      0,
+      255
+     ]
+    },
+    {
+     "value": "MUY ALTO",
+     "label": "MUY ALTO",
+     "color": [
+      255,
+      0,
+      0,
+      255
+     ]
+    }
+   ]
+  }
+ },
+ "5": {
+  "name": "SDE.SENAMHI_AvisoPP24H",
+  "renderer": {
+   "type": "uniqueValue",
+   "field1": "NIVEL",
+   "uniqueValueInfos": [
+    {
+     "value": "Nivel 1",
+     "label": "Nivel 1",
+     "color": [
+      130,
+      130,
+      130,
+      0
+     ]
+    },
+    {
+     "value": "Nivel 2",
+     "label": "Nivel 2",
+     "color": [
+      255,
+      255,
+      0,
+      255
+     ]
+    },
+    {
+     "value": "Nivel 3",
+     "label": "Nivel 3",
+     "color": [
+      255,
+      170,
+      0,
+      255
+     ]
+    }
+   ]
+  }
+ },
+ "_doc": "drawingInfo.renderer de las capas del SENAMHI en GEOSINPAD (MapServer/2 quebradas, /3 FWI, /5 lluvias), copiado el 23 de noviembre de 2026 de .../SENAMHI/MapServer/<n>?f=json. Es la escala que la propia capa declara."
+}

@@ -207,7 +207,7 @@ export function currentAlerts(items, now) {
 
 function alertList(list) {
   return html`<ul class="link-list">${list.slice(0, 8).map((a) => html`<li>
-    <strong>${a.institution}</strong>${a.severity ? html` · <span class="lvl lvl-r${a.severity.rank}" title="${a.severity.scaleLabel}">${a.severity.label}</span>` : html` · <span class="muted">sin nivel</span>`}
+    <strong>${a.institution}</strong>${a.severity ? html` · <span class="lvl lvl-r${a.severity.rank}" title="${a.severity.scaleLabel}">${a.severity.label}</span>` : html` · <span class="muted" title="${a.levelStatus?.why || 'La fuente no asigna nivel a este aviso'}">${(a.levelStatus?.label || 'sin nivel').toLowerCase()}</span>`}
     — <a href="${safeUrl(a.url)}" rel="noopener" target="_blank">${a.title}</a> <span class="muted small">${F.fmtDate(a.date)}</span></li>`)}</ul>
     ${list.length > 8 ? html`<p class="muted small">Y ${list.length - 8} más en <a href="#/noticias">Noticias</a>.</p>` : ''}`;
 }

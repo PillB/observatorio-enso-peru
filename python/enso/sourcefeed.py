@@ -8,6 +8,7 @@ y enlaza al documento o archivo original.
 from __future__ import annotations
 
 import calendar
+import re
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -115,6 +116,7 @@ def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
     since = (now - timedelta(days=ALERTS_DAYS)).isoformat()
     deps = department_names()
     out, seen = [], set()
+    hidro = hidro_levels(news_items)
     # Una línea por aviso (``latest_versions``): la versión vista después. Ordenar por fecha no basta: el USGS, al
     # revisar el sismo us6000u1kt (magnitud 5,2 → 5,3), le corrigió también la hora en un segundo hacia atrás, y la
     # versión vieja quedaba primero y tapaba a la nueva.
@@ -140,10 +142,139 @@ def alerts(news_items: list[dict], now: datetime, avisos=None) -> list[dict]:
                     **({"document": i["document"]} if i.get("document") else {}),
                     **({"detail": det} if (det := _detail(i)) else {}),
                     **assess(f.id, i["title"], i.get("summary") or "", when, now, avisos)})
+        cross_level(out[-1], hidro)
         if len(out) >= ALERTS_MAX:
             break
     _share_places(out)
     return out
+
+
+_HIDRO_NUM_RE = re.compile(r"aviso hidrol[óo]gico N° (\d+)", re.I)
+
+
+def hidro_levels(news_items: list[dict]) -> dict[int, dict]:
+    """Nivel de cada aviso hidrológico en la capa del SENAMHI (``senamhi-hidrologicos``), por su número: la
+    segunda fuente del nivel de los avisos hidrológicos que difunde el COEN."""
+    from .severity import severity
+
+    out: dict[int, dict] = {}
+    for i in news_items or []:
+        if i.get("feed") != "senamhi-hidrologicos":
+            continue
+        m, sev = _HIDRO_NUM_RE.search(i.get("title") or ""), severity("senamhi-hidrologicos", i.get("title") or "", "")
+        if m and sev:
+            out[int(m.group(1))] = {**sev, "basis": f"nivel del aviso hidrológico N° {m.group(1)} en la capa del "
+                                                    "SENAMHI en GEOSINPAD"}
+    return out
+
+
+def cross_level(alert: dict, hidro: dict[int, dict]) -> None:
+    """Un aviso hidrológico del COEN toma el nivel de la capa del SENAMHI si su PDF no lo dio, y anota
+    (``levelConflict``) si las dos fuentes no coinciden: ninguna de las dos se descarta en silencio."""
+    from .severity import is_coen
+
+    m = _HIDRO_NUM_RE.match(alert.get("title") or "")
+    other = hidro.get(int(m.group(1))) if m and is_coen(alert["source"].removeprefix("news-")) else None
+    if other is None:
+        return
+    own = alert.get("severity")
+    if own is None:
+        alert["severity"] = other
+        alert.pop("levelStatus", None)
+    elif own.get("rank") != other.get("rank"):
+        alert["levelConflict"] = {"label": other["label"], "basis": other["basis"]}
+
+
+#: Cuánto puede esperar un aviso que cita su número a que se lea el documento con su nivel antes de contar como
+#: no leído (dos corridas diarias con su PDF o su tabla).
+PENDING_HOURS = 48
+_CITES_NUM_RE = re.compile(r"\bN°\s*\d+")
+
+
+def _escalate(a: dict, now: datetime) -> None:
+    st = a.get("levelStatus") or {}
+    if st.get("code") != "pendiente" or not _CITES_NUM_RE.search(a.get("title") or ""):
+        return
+    try:
+        age = (now - datetime.fromisoformat(a["date"].replace("Z", "+00:00"))).total_seconds() / 3600
+    except (KeyError, ValueError, AttributeError):
+        return
+    if age > PENDING_HOURS:
+        from .severity import STATUS
+
+        label, _, _ = STATUS["no-leido"]
+        a["levelStatus"] = {"code": "no-leido", "label": label, "loud": True,
+                            "why": f"el aviso cita su número y su nivel sigue sin leerse después de {age:.0f} h "
+                                   "(el PDF del COEN no lo dice o la tabla de avisos del SENAMHI no lo trae)"}
+
+
+def _level_lines(bad: list[dict]) -> str:
+    return "; ".join(f"«{a['title'][:110]}» ({a.get('url', '')}): {a['levelStatus']['why']}" for a in bad[:4]) + (
+        f"; y {len(bad) - 4} más" if len(bad) > 4 else "")
+
+
+def _classify_levels(alerts_: list[dict], now: datetime) -> tuple[dict[str, int], dict[tuple[str, str], list[dict]]]:
+    """Cuántos avisos hay por razón, y los que abren incidencia agrupados por (fuente, razón)."""
+    counts: dict[str, int] = {}
+    by: dict[tuple[str, str], list[dict]] = {}
+    for a in alerts_:
+        _escalate(a, now)
+        st = a.get("levelStatus")
+        code = st["code"] if st else ("conflicto" if a.get("levelConflict") else None)
+        if code:
+            counts[code] = counts.get(code, 0) + 1
+        if st and st.get("loud"):
+            by.setdefault((a["source"], st["code"]), []).append(a)
+        if a.get("levelConflict"):
+            by.setdefault((a["source"], "conflicto"), []).append(a)
+        if (a.get("severity") or {}).get("approx"):
+            by.setdefault((a["source"], "aproximado"), []).append(a)
+    return counts, by
+
+
+def _log_conflict(log, src: str, bad: list[dict]) -> None:
+    log.add("warning", src.removeprefix("news-"), "parse", "alert-level-conflict",
+            f"{len(bad)} aviso(s) con un nivel distinto en el PDF del COEN y en la capa del SENAMHI: "
+            + "; ".join(f"«{a['title'][:110]}»: PDF {a['severity']['label']}, capa {a['levelConflict']['label']}"
+                        for a in bad[:4])
+            + ". El mapa muestra el del PDF y la ficha avisa de la diferencia. Revisar cuál es el vigente "
+              "(docs/niveles-de-aviso.md).")
+
+
+def _log_approx(log, src: str, bad: list[dict]) -> None:
+    log.add("warning", src.removeprefix("news-"), "parse", "alert-level-approx",
+            f"{len(bad)} aviso(s) con el nivel leído por aproximación (una errata a una letra de la palabra de la "
+            "escala): " + "; ".join(f"«{a['title'][:110]}»: «{a['severity']['approx']}» leído como "
+                                    f"{a['severity']['label']}" for a in bad[:4])
+            + ". El mapa lo muestra y la ficha dice que es una lectura aproximada. Confirmar en la respuesta archivada; "
+              "si la fuente adoptó esa grafía, agregarla al vocabulario (enso/severity.py) con su prueba.")
+
+
+_SPECIAL_LOGS = {"conflicto": _log_conflict, "aproximado": _log_approx}
+
+
+def audit_levels(alerts_: list[dict], log, now: datetime) -> dict[str, int]:
+    """Incidencias por los niveles que no se leyeron: ``alert-level-unread`` (la fuente asigna niveles y el lector
+    no encontró este; un campo renombrado o un vocabulario nuevo), ``alert-level-norule`` (una fuente de peligros
+    nueva sin regla en ``severity.level_status``), ``alert-level-conflict`` (el PDF del COEN y la capa del
+    SENAMHI dan otro nivel al mismo aviso) y ``alert-level-approx`` (el nivel se leyó por aproximación). Devuelve cuántos avisos hay con cada razón (para el informe)."""
+    counts, by = _classify_levels(alerts_, now)
+    for (src, code), bad in sorted(by.items()):
+        if code in _SPECIAL_LOGS:
+            _SPECIAL_LOGS[code](log, src, bad)
+            continue
+        log.add("warning", src.removeprefix("news-"), "parse",
+                "alert-level-norule" if code == "sin-regla" else "alert-level-unread",
+                f"{len(bad)} aviso(s) de {src.removeprefix('news-')} sin nivel leído, de una fuente que sí asigna "
+                f"niveles (o sin regla de niveles): {_level_lines(bad)}. En el mapa figuran «{bad[0]['levelStatus']['label']}»"
+                ", no como sin peligro. Qué hacer: comparar el campo del nivel en la respuesta archivada con "
+                "enso/severity.py (SCALES, _SEVERITY_BY_FEED, level_status) y seguir docs/niveles-de-aviso.md.")
+    return counts
+
+
+def audit_feed_levels(feed: dict, log, now: datetime) -> dict[str, int]:
+    """``audit_levels`` sobre el grupo «alertas» de un ``feed.json`` armado por ``build``."""
+    return audit_levels([i for g in feed.get("groups") or [] if g.get("id") == "alertas" for i in g["items"]], log, now)
 
 
 def _brief_places(codes: list[str], confidence: float, method: str) -> list[dict]:
