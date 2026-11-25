@@ -24,6 +24,8 @@ pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
 
 ROUTES = ["", "costero", "pacifico", "oceano", "mapa", "historia", "memoria", "noticias", "datos", "metodologia", "asistente", "boletin"]
+# Páginas fuera de la navegación (se llega desde el pie): se prueban igual que las pestañas.
+PAGES = [*ROUTES, "apoyar"]
 VIEWPORTS = {"telefono-320": (320, 640), "telefono-390": (390, 844), "tableta": (820, 1180), "escritorio": (1366, 900)}
 
 
@@ -112,7 +114,7 @@ def test_phone_layout_survives_wider_system_fonts(site, browser, w):
                         f"document.createElement('style'), {{textContent: {json.dumps(WIDE_TEXT)}}})));")
     pg = ctx.new_page()
     try:
-        for r in ROUTES:
+        for r in PAGES:
             go(pg, base, r)
             overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
             assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en #{r} a {w}px con letras más anchas"
@@ -129,7 +131,7 @@ def test_every_section_renders_without_errors_or_overflow(site, browser, vp):
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
     pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
-    for r in ROUTES:
+    for r in PAGES:
         go(pg, base, r)
         assert pg.locator("main h1").count() == 1, r
         overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
@@ -186,7 +188,7 @@ def test_long_unbroken_text_from_the_sources_never_widens_the_page(site, browser
     ctx.route("**/data/**/*.json*", stretched)
     pg = ctx.new_page()
     try:
-        for r in ROUTES:
+        for r in PAGES:
             go(pg, base, r)
             overflow = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
             assert overflow <= 1, f"desbordamiento horizontal de {overflow}px en #{r} a {w}px"
@@ -274,6 +276,33 @@ def test_theme_persists_after_reload(site, page):
     page.reload()
     go(page, base)
     assert page.evaluate("document.documentElement.dataset.theme") == theme
+
+
+def test_support_page_is_reached_from_the_footer_and_never_interrupts(site, page):
+    base, _ = site
+    go(page, base)
+    # Ni en la navegación ni como aviso: solo un enlace en el pie.
+    assert page.locator("nav a", has_text="Apoyar").count() == 0
+    assert page.locator("#banner a[href='#/apoyar']").count() == 0
+    page.locator("footer").get_by_role("link", name="puede ayudar a sostenerlo").click()
+    expect(page.locator("main h1")).to_have_text("Apoyar al observatorio")
+    # Sin vías configuradas no se muestra ninguna tarjeta de pago.
+    assert page.locator(".support-way").count() == 0
+    expect(page.get_by_role("heading", name="Otras formas de ayudar")).to_be_visible()
+    assert not page.errors
+
+
+def test_support_page_shows_only_the_configured_ways(site, page):
+    base, root = site
+    src = (root / "assets" / "js" / "content.js").read_text(encoding="utf-8")
+    src = src.replace("kofi: ''", "kofi: 'https://ko-fi.com/ejemplo'").replace("yapeQr: ''", "yapeQr: 'favicon.svg'")
+    page.route("**/assets/js/content.js", lambda r: r.fulfill(body=src, content_type="text/javascript"))
+    go(page, base, "apoyar")
+    expect(page.locator(".support-way")).to_have_count(2)
+    expect(page.get_by_role("link", name="Aportar en Ko-fi")).to_have_attribute("href", "https://ko-fi.com/ejemplo")
+    expect(page.get_by_role("img", name="Código QR de Yape para aportar al observatorio")).to_be_visible()
+    assert page.get_by_role("link", name="Aportar en GitHub Sponsors").count() == 0
+    assert not page.errors
 
 
 def test_tutorial_start_pause_resume_and_clear(site, page):

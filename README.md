@@ -103,6 +103,7 @@ python -m tools.complexity                  # techo de complejidad (--update al 
 - [Máquinas de estado implícitas](docs/maquinas-de-estado.md): cada estado que guarda el sitio (ruta, versiones, tutorial, mapas, consola), sus diagramas, los estados errados que se encontraron y su corrección
 - [Fiabilidad de las escrituras y de la red](docs/fiabilidad-datos.md): qué pasa si una escritura se repite, choca con otra o se corta a la mitad (bloqueo optimista, idempotencia, bandeja de salida, reintentos) y qué patrones no aplican
 - [Techo de complejidad ciclomática](docs/complejidad.md): por qué 10, cómo se mide en Python y JavaScript, el trinquete de la lista de excepciones y qué hacer cuando falla
+- [Aportes voluntarios](docs/apoyo.md): cómo activar Ko-fi, Yape y GitHub Sponsors, y dónde aparecen
 - [Limitaciones conocidas](docs/limitaciones.md)
 - [Atribución y licencias](docs/atribucion-licencias.md)
 - [Requisitos del propietario](docs/requisitos-del-propietario.md)
