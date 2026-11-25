@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Cutivalú Piura</title>
+	<atom:link href="https://www.cutivalu.pe/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.cutivalu.pe/</link>
+	<description>Somos más que radio</description>
+	<lastBuildDate>Wed, 25 Nov 2026 00:28:30 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://www.cutivalu.pe/wp-content/uploads/2017/10/cropped-favicon-32x32.png</url>
+	<title>Cutivalú Piura</title>
+	<link>https://www.cutivalu.pe/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Guillermo La Torre busca el sillón regional con un plan de gobierno idéntico al del actual gobernador Luis Neyra</title>
+		<link>https://www.cutivalu.pe/guillermo-la-torre-busca-el-sillon-regional-con-un-plan-de-gobierno-identico-al-del-actual-gobernador-luis-neyra/</link>
+		
+		<dc:creator><![CDATA[Radio Cutivalú]]></dc:creator>
+		<pubDate>Wed, 25 Nov 2026 00:19:12 +0000</pubDate>
+				<category><![CDATA[Featured]]></category>
+		<category><![CDATA[Piura]]></category>
+		<category><![CDATA[Portada]]></category>
+		<category><![CDATA[Guillermo La Torre]]></category>
+		<category><![CDATA[Luis Neyra]]></category>
+		<guid isPermaLink="false">https://www.cutivalu.pe/?p=195193</guid>
+
+					<description><![CDATA[<p>El candidato de Podemos Perú plantea mejorar la salud, la educación, el saneamiento y la prevención ante El Niño, al igual que su aliado político Luis Neyra cuando participó en la campaña del 2022, pero que nunca resolvió en estos 4 años de gestión. La cercanía política y laboral entre ambos convierte la propuesta de [&#8230;]</p>
+<p>La entrada <a href="https://www.cutivalu.pe/guillermo-la-torre-busca-el-sillon-regional-con-un-plan-de-gobierno-identico-al-del-actual-gobernador-luis-neyra/">Guillermo La Torre busca el sillón regional con un plan de gobierno idéntico al del actual gobernador Luis Neyra</a> se publicó primero en <a href="https://www.cutivalu.pe">Cutivalú Piura</a>.</p>
+]]></description>
+		
+		
+		
+			</item>
+	</channel>
+</rss>
