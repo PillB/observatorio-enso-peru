@@ -1,0 +1,29 @@
+WEPA40 PHEB 261730
+TSUPAC
+ 
+TEST...COMMUNICATION TEST MESSAGE...TEST
+NWS PACIFIC TSUNAMI WARNING CENTER HONOLULU HI
+0030 UTC TUE NOV 26 2026
+ 
+...THIS MESSAGE IS FOR TEST PURPOSES ONLY...
+...TEST PTWC RESPONSE REQUESTED COMMUNICATION TEST...
+ 
+This is a communication test from the Pacific Tsunami Warning
+Center to Member States of the UNESCO/IOC Pacific Tsunami
+Warning and Mitigation System. Its purpose is to help ensure
+that Member States of that system can reliably receive Pacific
+Tsunami Warning Center products in a timely manner to help save
+lives in the event of a hazardous tsunami.
+ 
+Please respond within 24 hours by answering a few questions at
+ 
+      https://www.surveymonkey.com/r/testPTWS
+ 
+Thank you for your participation.
+ 
+THIS IS A TEST MESSAGE. DO NOT TAKE ACTION BASED UPON THIS TEST
+MESSAGE OTHER THAN RESPONDING TO THE SURVEY.
+ 
+$$
+
+
