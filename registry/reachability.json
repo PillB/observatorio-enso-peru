@@ -1,6 +1,6 @@
 {
  "schema": "enso-reachability/2",
- "updated_at": "2026-11-16T19:43:13+00:00",
+ "updated_at": "2026-11-27T08:49:01+00:00",
  "urls": {
   "http://met.igp.gob.pe/datos/ICEN.txt": {
    "n8n": {
@@ -16,7 +16,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 15870,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -34,10 +34,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 15870,
-     "ms": 754,
+     "ms": 253,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:46+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     }
    },
@@ -46,7 +46,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 15870,
-     "at": "2026-11-15T02:10:40+00:00",
+     "at": "2026-11-27T02:00:26+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -58,11 +58,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 153029,
-     "ms": 126,
+     "bytes": 151839,
+     "ms": 55,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:44+00:00",
+     "at": "2026-11-27T08:45:12+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -86,8 +86,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 155141,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 151839,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -98,11 +98,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 72877,
-     "ms": 1009,
+     "bytes": 78173,
+     "ms": 633,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:46+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -126,21 +126,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 81063,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 72634,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://ahora.com.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -149,11 +138,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 66864,
-     "ms": 1707,
+     "bytes": 63576,
+     "ms": 296,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:47+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -177,8 +166,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 67866,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 66218,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -189,11 +178,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58777,
-     "ms": 2295,
+     "bytes": 58101,
+     "ms": 2013,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:51+00:00",
+     "at": "2026-11-27T08:45:16+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -217,32 +206,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 58777,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 58101,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://andina.pe/?feed=rss2": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "la respuesta es una página HTML, no un feed"
-    }
-   }
-  },
-  "https://andina.pe/agencia/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -259,8 +226,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 19080,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 19519,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -277,133 +244,12 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 19272,
-     "ms": 323,
+     "bytes": 19473,
+     "ms": 200,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:46+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
-    }
-   }
-  },
-  "https://andina.pe/arcio/rss/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/feed": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/feed.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/feeds/posts/default?alt=rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/index.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/noticias/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-5xx",
-     "http": 500,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andina.pe/rss/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://andinaradio.net/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -413,10 +259,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25899,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:26+00:00",
+     "at": "2026-11-27T08:45:52+00:00",
      "vantage": "github-actions"
     }
    },
@@ -424,8 +270,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 293970,
-     "at": "2026-11-15T02:46:09+00:00",
+     "bytes": 293298,
+     "at": "2026-11-27T02:02:04+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -438,10 +284,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25014,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:25+00:00",
+     "at": "2026-11-27T08:45:52+00:00",
      "vantage": "github-actions"
     }
    },
@@ -450,7 +296,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 3663,
-     "at": "2026-11-15T02:46:07+00:00",
+     "at": "2026-11-27T02:02:01+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -463,10 +309,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 367,
+     "ms": 0,
      "detail": "ConnectError: [Errno -2] Name or service not known",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:45+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     }
    },
@@ -475,10 +321,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 8,
+     "ms": 5,
      "detail": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
      "robots": "allowed",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:24+00:00",
      "vantage": "peru-server"
     }
    }
@@ -488,11 +334,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 25402,
-     "ms": 28,
+     "bytes": 27113,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:44+00:00",
+     "at": "2026-11-27T08:45:12+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -516,8 +362,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 25733,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 27113,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -536,8 +382,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 122639,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 133097,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -554,11 +400,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 122488,
-     "ms": 129,
+     "bytes": 133097,
+     "ms": 15,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:45+00:00",
+     "at": "2026-11-27T08:45:12+00:00",
      "vantage": "github-actions"
     }
    }
@@ -569,10 +415,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 708,
+     "ms": 0,
      "detail": "ConnectError: [Errno -2] Name or service not known",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:46+00:00",
+     "at": "2026-11-27T08:45:12+00:00",
      "vantage": "github-actions"
     }
    },
@@ -581,10 +427,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 4,
+     "ms": 8,
      "detail": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
      "robots": "allowed",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:24+00:00",
      "vantage": "peru-server"
     }
    }
@@ -595,10 +441,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 194161,
-     "ms": 843,
+     "ms": 857,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:47+00:00",
+     "at": "2026-11-27T08:45:16+00:00",
      "vantage": "github-actions"
     }
    },
@@ -606,8 +452,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 194161,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 193930,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -618,11 +464,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 215405,
-     "ms": 1520,
+     "bytes": 215288,
+     "ms": 626,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:50+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     }
    },
@@ -630,21 +476,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 214628,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 215288,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://chachapoyasonline.com/sitemap-news.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "raíz XML inesperada: {http://www.sitemaps.org/schemas/sitemap/0.9}urlset"
     }
    }
   },
@@ -662,7 +497,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 8285,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -677,25 +512,18 @@
      "vantage": "n8n-actions-azure"
     },
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 8285,
-     "ms": 241,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:38:45+00:00",
-     "vantage": "github-actions"
-    }
-   }
-  },
-  "https://convoca.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions",
-     "detail": ""
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:38:45+00:00"
+     }
     }
    }
   },
@@ -704,11 +532,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 45630,
-     "ms": 411,
+     "bytes": 54279,
+     "ms": 391,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:46+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -732,21 +560,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 57747,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 54279,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://diarioamanecer.net/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -755,11 +572,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 547287,
-     "ms": 393,
+     "bytes": 464558,
+     "ms": 48,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:46+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -783,8 +600,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 571887,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 462458,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -803,8 +620,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 688578,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 565903,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -821,23 +638,12 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 523524,
-     "ms": 616,
+     "bytes": 565026,
+     "ms": 153,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:48+00:00",
+     "at": "2026-11-27T08:45:14+00:00",
      "vantage": "github-actions"
-    }
-   }
-  },
-  "https://diariocorreo.pe/arcio/rss/category/edicion/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -846,11 +652,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 37366,
-     "ms": 337,
+     "bytes": 32530,
+     "ms": 224,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:46+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -874,8 +680,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 36142,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 35140,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -884,14 +690,18 @@
   "https://diariodelcusco.pe/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 45377,
-     "ms": 6079,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:38:53+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:13+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:38:53+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -914,21 +724,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 45248,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 40494,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://diarioimpetu.com.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "dns",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectError: [Errno -2] Name or service not known"
     }
    }
   },
@@ -937,11 +736,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 41656,
-     "ms": 289,
+     "bytes": 29646,
+     "ms": 367,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:47+00:00",
+     "at": "2026-11-27T08:45:14+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -965,8 +764,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 46791,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 25467,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -977,11 +776,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 54047,
-     "ms": 791,
+     "bytes": 49849,
+     "ms": 134,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:48+00:00",
+     "at": "2026-11-27T08:45:15+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1005,21 +804,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 54047,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 49849,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://diariosinfronteras.com.pe/category/moquegua/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -1028,11 +816,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 41541,
-     "ms": 775,
+     "bytes": 46840,
+     "ms": 166,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:50+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1056,8 +844,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 41541,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 46840,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1068,11 +856,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 46294,
-     "ms": 1270,
+     "bytes": 49832,
+     "ms": 94,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:53+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1096,8 +884,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 46294,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 49832,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1108,11 +896,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 62568,
-     "ms": 469,
+     "bytes": 55171,
+     "ms": 297,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:48+00:00",
+     "at": "2026-11-27T08:45:14+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1136,8 +924,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 59090,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 55171,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1148,11 +936,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 16547,
-     "ms": 46,
+     "bytes": 23026,
+     "ms": 176,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:47+00:00",
+     "at": "2026-11-27T08:45:13+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1160,8 +948,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 15819,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 23026,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1172,11 +960,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 115591,
-     "ms": 800,
+     "bytes": 123564,
+     "ms": 191,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:48+00:00",
+     "at": "2026-11-27T08:45:14+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1200,8 +988,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 125349,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 123564,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1212,11 +1000,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1762094,
-     "ms": 428,
+     "bytes": 616735,
+     "ms": 42,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:48+00:00",
+     "at": "2026-11-27T08:45:14+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1240,8 +1028,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 2044410,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 611265,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1259,8 +1047,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 2038513,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 1782696,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1276,34 +1064,12 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1768844,
-     "ms": 541,
+     "bytes": 2089016,
+     "ms": 48,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:50+00:00",
+     "at": "2026-11-27T08:45:15+00:00",
      "vantage": "github-actions"
-    }
-   }
-  },
-  "https://elcomercio.pe/arcio/rss/category/peru/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://elperuano.pe/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -1312,11 +1078,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 10137,
-     "ms": 920,
+     "bytes": 10371,
+     "ms": 24,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:50+00:00",
+     "at": "2026-11-27T08:45:14+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1340,8 +1106,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 10496,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 10375,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1374,13 +1140,13 @@
      "vantage": "n8n-actions-azure"
     },
     "github-actions": {
-     "class": "dns",
-     "http": null,
-     "bytes": 0,
-     "ms": 10015,
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "class": "ok",
+     "http": 200,
+     "bytes": 75036,
+     "ms": 503,
+     "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:08+00:00",
+     "at": "2026-11-27T08:45:15+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1388,34 +1154,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 74066,
-     "at": "2026-11-15T02:10:35+00:00",
-     "vantage": "peru-server",
-     "detail": "",
-     "robots": "allowed"
-    }
-   }
-  },
-  "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-18-2026/?wpdmdl=2165": {
-   "peru": {
-    "peru-server": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 765408,
-     "at": "2026-10-26T02:01:16+00:00",
-     "vantage": "peru-server",
-     "detail": "",
-     "robots": "allowed"
-    }
-   }
-  },
-  "https://enfen.imarpe.gob.pe/download/comunicado-oficial-enfen-n-19-2026/": {
-   "peru": {
-    "peru-server": {
-     "class": "http-4xx",
-     "http": 404,
-     "bytes": 66839,
-     "at": "2026-10-26T02:01:18+00:00",
+     "bytes": 75210,
+     "at": "2026-11-27T02:00:18+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -1454,7 +1194,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 581180,
-     "at": "2026-11-15T02:46:17+00:00",
+     "at": "2026-11-27T02:02:14+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -1466,8 +1206,8 @@
     "peru-server": {
      "class": "http-4xx",
      "http": 404,
-     "bytes": 66839,
-     "at": "2026-11-15T02:46:28+00:00",
+     "bytes": 68181,
+     "at": "2026-11-27T02:02:21+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -1479,21 +1219,8 @@
     "peru-server": {
      "class": "http-4xx",
      "http": 404,
-     "bytes": 66839,
-     "at": "2026-11-15T02:46:29+00:00",
-     "vantage": "peru-server",
-     "detail": "",
-     "robots": "allowed"
-    }
-   }
-  },
-  "https://enfen.imarpe.gob.pe/download/informe-tecnico-enfen-ano-12-n18-al-13-de-octubre-de-2026-2/?wpdmdl=2166": {
-   "peru": {
-    "peru-server": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 17555279,
-     "at": "2026-10-26T02:01:36+00:00",
+     "bytes": 68182,
+     "at": "2026-11-27T02:02:23+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -1519,45 +1246,23 @@
      "class": "ok",
      "http": 200,
      "bytes": 16758023,
-     "at": "2026-11-15T02:46:45+00:00",
+     "at": "2026-11-27T02:02:49+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
     }
    }
   },
-  "https://enfen.imarpe.gob.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "dns",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution"
-    }
-   }
-  },
-  "https://enfen.imarpe.gob.pe/feed/?post_type=wpdmpro": {
-   "actions": {
-    "github-actions": {
-     "class": "dns",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution"
-    }
-   }
-  },
   "https://enfen.imarpe.gob.pe/informes-tecnicos/": {
    "actions": {
     "github-actions": {
-     "class": "dns",
-     "http": null,
-     "bytes": 0,
-     "ms": 10017,
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "class": "ok",
+     "http": 200,
+     "bytes": 73687,
+     "ms": 208,
+     "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:20+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1565,8 +1270,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 72440,
-     "at": "2026-11-15T02:10:40+00:00",
+     "bytes": 73958,
+     "at": "2026-11-27T02:00:26+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -1600,13 +1305,13 @@
      "vantage": "n8n-actions-azure"
     },
     "github-actions": {
-     "class": "dns",
-     "http": null,
-     "bytes": 0,
-     "ms": 10028,
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "class": "ok",
+     "http": 200,
+     "bytes": 81816,
+     "ms": 898,
+     "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:31+00:00",
+     "at": "2026-11-27T08:45:19+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1614,8 +1319,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 79258,
-     "at": "2026-11-15T02:10:34+00:00",
+     "bytes": 81816,
+     "at": "2026-11-27T02:00:17+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -1627,11 +1332,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 112939,
-     "ms": 1640,
+     "bytes": 113790,
+     "ms": 1481,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:52+00:00",
+     "at": "2026-11-27T08:45:16+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -1653,34 +1358,12 @@
      "vantage": "n8n-aws"
     },
     "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-11-16T03:54:45+00:00",
-     "detail": "ECONNABORTED: timeout of 60000ms exceeded",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://etphuacho.com/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://exitosanoticias.pe/feed/": {
-   "actions": {
-    "github-actions": {
      "class": "ok",
      "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
+     "bytes": 113790,
+     "at": "2026-11-27T03:52:19+00:00",
+     "detail": "",
+     "vantage": "n8n-aws-us-east-1"
     }
    }
   },
@@ -1697,8 +1380,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 28595,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 28885,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1715,11 +1398,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 28640,
-     "ms": 192,
+     "bytes": 29046,
+     "ms": 115,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:50+00:00",
+     "at": "2026-11-27T08:45:15+00:00",
      "vantage": "github-actions"
     }
    }
@@ -1729,11 +1412,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 583318,
-     "ms": 537,
+     "bytes": 1164973,
+     "ms": 147,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:51+00:00",
+     "at": "2026-11-27T08:45:15+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1741,8 +1424,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 871276,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 1723145,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1754,10 +1437,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 162365,
-     "ms": 122,
+     "ms": 53,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:51+00:00",
+     "at": "2026-11-27T08:45:15+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1771,20 +1454,6 @@
      "robots": "allowed",
      "at": "2026-10-26T02:01:37+00:00",
      "vantage": "peru-server"
-    }
-   }
-  },
-  "https://geosinpad.indeci.gob.pe/indeci/rest/services/Ent_Tecnico_Cientificas/SENAMHI/MapServer/2/query?where=1%3D1&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22OBJECTID%22%2C%22outStatisticFieldName%22%3A%22n%22%7D%5D&groupByFieldsForStatistics=NIVEL%2CNOMBDEP%2CFECHA&f=json": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 3534,
-     "ms": 329,
-     "detail": "",
-     "robots": "absent",
-     "at": "2026-10-27T01:51:18+00:00",
-     "vantage": "github-actions"
     }
    }
   },
@@ -1803,11 +1472,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 115128,
-     "ms": 1106,
+     "bytes": 62839,
+     "ms": 1363,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1815,8 +1484,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 139005,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 62839,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1827,11 +1496,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 6330,
-     "ms": 395,
+     "bytes": 42,
+     "ms": 255,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:52+00:00",
+     "at": "2026-11-27T08:45:19+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1839,8 +1508,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 4447,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 42,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1851,11 +1520,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 4354,
-     "ms": 346,
+     "bytes": 8248,
+     "ms": 676,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:54+00:00",
+     "at": "2026-11-27T08:45:21+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1863,8 +1532,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 6075,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 8248,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1875,11 +1544,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 17887,
-     "ms": 1054,
+     "bytes": 19314,
+     "ms": 398,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:38:59+00:00",
+     "at": "2026-11-27T08:45:23+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1899,8 +1568,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 22571,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 19314,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1918,8 +1587,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 807547,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 813198,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -1935,23 +1604,12 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 798486,
-     "ms": 584,
+     "bytes": 807997,
+     "ms": 82,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:53+00:00",
+     "at": "2026-11-27T08:45:16+00:00",
      "vantage": "github-actions"
-    }
-   }
-  },
-  "https://huaralenlinea.com/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -1961,10 +1619,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25385,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:33+00:00",
+     "at": "2026-11-27T08:45:56+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1973,7 +1631,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 1646,
-     "at": "2026-11-15T02:26:53+00:00",
+     "at": "2026-11-27T02:00:37+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -1986,10 +1644,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25197,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:00+00:00",
+     "at": "2026-11-27T08:46:23+00:00",
      "vantage": "github-actions"
     }
    },
@@ -1998,7 +1656,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 71,
-     "at": "2026-11-15T02:26:52+00:00",
+     "at": "2026-11-27T02:00:36+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -2011,10 +1669,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25727,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:27+00:00",
+     "at": "2026-11-27T08:46:49+00:00",
      "vantage": "github-actions"
     }
    },
@@ -2022,8 +1680,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 670518,
-     "at": "2026-11-15T02:26:52+00:00",
+     "bytes": 703069,
+     "at": "2026-11-27T02:00:35+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -2035,11 +1693,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 35501,
-     "ms": 69,
+     "bytes": 35777,
+     "ms": 6,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:53+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     }
    }
@@ -2049,11 +1707,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 106627,
-     "ms": 815,
+     "bytes": 152936,
+     "ms": 213,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:55+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2077,32 +1735,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 90580,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 152936,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://lalupa.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://laopinion.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "dns",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectError: [Errno -2] Name or service not known"
     }
    }
   },
@@ -2119,8 +1755,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 341884,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 593209,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -2137,11 +1773,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 404938,
-     "ms": 45,
+     "bytes": 602317,
+     "ms": 41,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:54+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     }
    }
@@ -2149,14 +1785,18 @@
   "https://losandes.com.pe/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 32491,
-     "ms": 985,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:38:56+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:17+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:38:56+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -2179,73 +1819,28 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 35977,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 40890,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://met.igp.gob.pe/datos/ICEN.txt": {
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "ECONNABORTED: timeout of 60000ms exceeded",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "ECONNABORTED: timeout of 60000ms exceeded",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   },
-   "actions": {
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "ECONNABORTED: timeout of 60000ms exceeded",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    },
-    "github-actions": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt sin respuesta",
-     "robots": "unreachable",
-     "at": "2026-10-21T04:47:18+00:00",
-     "vantage": "github-actions"
-    }
-   },
-   "peru": {
-    "peru-server": {
-     "class": "timeout",
-     "http": null,
-     "bytes": null,
-     "at": "2026-10-26T02:00:12+00:00",
-     "vantage": "peru-server",
-     "detail": "robots.txt sin respuesta (timeout): no se pide nada a este servidor",
-     "robots": "unreachable"
     }
    }
   },
   "https://nacionalcallaotv.pe/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 81036,
-     "ms": 339,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:38:56+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:17+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:38:56+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -2269,7 +1864,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 81036,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -2310,7 +1905,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     }
    }
@@ -2350,7 +1945,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     }
    }
@@ -2364,7 +1959,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2404,7 +1999,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2444,7 +2039,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2484,7 +2079,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2524,7 +2119,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2564,7 +2159,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2604,7 +2199,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2644,7 +2239,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2684,7 +2279,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2724,7 +2319,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2764,7 +2359,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2804,7 +2399,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2844,7 +2439,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2884,7 +2479,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2924,7 +2519,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -2964,7 +2559,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3004,7 +2599,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3044,7 +2639,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3084,7 +2679,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3124,7 +2719,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3164,7 +2759,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3204,7 +2799,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3244,7 +2839,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3284,7 +2879,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3324,7 +2919,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3364,7 +2959,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3404,7 +2999,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3444,7 +3039,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3484,7 +3079,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3515,28 +3110,6 @@
     }
    }
   },
-  "https://news.google.com/rss/search?q=site%3Adiarioamanecer.net&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://news.google.com/rss/search?q=site%3Adiarioimpetu.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "empty",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "sin entradas"
-    }
-   }
-  },
   "https://news.google.com/rss/search?q=site%3Aelperuano.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
    "actions": {
     "github-actions": {
@@ -3546,7 +3119,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3586,7 +3159,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3617,39 +3190,6 @@
     }
    }
   },
-  "https://news.google.com/rss/search?q=site%3Alaindustria.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "empty",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "sin entradas"
-    }
-   }
-  },
-  "https://news.google.com/rss/search?q=site%3Alaopinion.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "empty",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "sin entradas"
-    }
-   }
-  },
-  "https://news.google.com/rss/search?q=site%3Aojo-publico.com&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
   "https://news.google.com/rss/search?q=site%3Apanamericana.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
    "actions": {
     "github-actions": {
@@ -3659,7 +3199,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3690,39 +3230,6 @@
     }
    }
   },
-  "https://news.google.com/rss/search?q=site%3Apanoramacajamarquino.com&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "empty",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "sin entradas"
-    }
-   }
-  },
-  "https://news.google.com/rss/search?q=site%3Aprimicia.com.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "empty",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "sin entradas"
-    }
-   }
-  },
-  "https://news.google.com/rss/search?q=site%3Aradioanqara.com&hl=es-419&gl=PE&ceid=PE:es-419": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
   "https://news.google.com/rss/search?q=site%3Aradionacional.gob.pe&hl=es-419&gl=PE&ceid=PE:es-419": {
    "actions": {
     "github-actions": {
@@ -3732,7 +3239,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3772,7 +3279,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3812,7 +3319,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3852,7 +3359,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:56+00:00",
+     "at": "2026-11-27T08:45:17+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3896,8 +3403,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 40211,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 39963,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -3915,10 +3422,10 @@
      "class": "http-4xx",
      "http": 404,
      "bytes": 2124,
-     "ms": 16080,
+     "ms": 15615,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:39:28+00:00",
+     "at": "2026-11-27T08:45:49+00:00",
      "vantage": "github-actions"
     }
    }
@@ -3928,11 +3435,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 43961,
-     "ms": 257,
+     "bytes": 43977,
+     "ms": 591,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:57+00:00",
+     "at": "2026-11-27T08:45:18+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -3956,8 +3463,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 43961,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 43977,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -3969,10 +3476,10 @@
      "class": "connect",
      "http": null,
      "bytes": 0,
-     "ms": 1034,
+     "ms": 196,
      "detail": "ConnectError: [Errno 104] Connection reset by peer",
      "robots": "allowed",
-     "at": "2026-11-16T19:38:58+00:00",
+     "at": "2026-11-27T08:45:18+00:00",
      "vantage": "github-actions"
     }
    },
@@ -3980,33 +3487,11 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 228426,
-     "at": "2026-11-15T02:26:49+00:00",
+     "bytes": 233553,
+     "at": "2026-11-27T02:00:33+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
-    }
-   }
-  },
-  "https://ojo-publico.com/feed": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://ojo-publico.com/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -4019,7 +3504,7 @@
      "ms": 0,
      "detail": "robots.txt no permite la ruta",
      "robots": "disallowed",
-     "at": "2026-11-16T19:38:58+00:00",
+     "at": "2026-11-27T08:45:18+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4050,28 +3535,6 @@
     }
    }
   },
-  "https://panamericana.pe/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://panoramacajamarquino.com/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "timeout",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectTimeout: timed out"
-    }
-   }
-  },
   "https://perureports.com/feed/": {
    "n8n": {
     "n8n-aws": {
@@ -4085,8 +3548,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 127700,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 126556,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4103,11 +3566,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 127700,
-     "ms": 25404,
+     "bytes": 126556,
+     "ms": 328,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:28+00:00",
+     "at": "2026-11-27T08:45:18+00:00",
      "vantage": "github-actions"
     }
    }
@@ -4117,11 +3580,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 31784,
-     "ms": 2049,
+     "bytes": 29584,
+     "ms": 1339,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:03+00:00",
+     "at": "2026-11-27T08:45:21+00:00",
      "vantage": "github-actions"
     }
    },
@@ -4141,8 +3604,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 34092,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 33608,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4153,11 +3616,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 21437,
-     "ms": 1150,
+     "bytes": 20549,
+     "ms": 1492,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:05+00:00",
+     "at": "2026-11-27T08:45:24+00:00",
      "vantage": "github-actions"
     }
    },
@@ -4165,8 +3628,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 21690,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 22121,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4175,14 +3638,18 @@
   "https://pregon.com.pe/index.php/regionales?format=feed&type=rss": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 30930,
-     "ms": 155,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:39:03+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:19+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:39:03+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -4205,8 +3672,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 27566,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 30274,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4217,11 +3684,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 42834,
-     "ms": 19,
+     "bytes": 29767,
+     "ms": 9,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:03+00:00",
+     "at": "2026-11-27T08:45:19+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4245,8 +3712,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 42834,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 29767,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4257,11 +3724,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 44371,
-     "ms": 2851,
+     "bytes": 43442,
+     "ms": 869,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:09+00:00",
+     "at": "2026-11-27T08:45:20+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4285,21 +3752,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 45148,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 44254,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://primicia.com.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "dns",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectError: [Errno -2] Name or service not known"
     }
    }
   },
@@ -4317,7 +3773,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 8296,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4335,10 +3791,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8296,
-     "ms": 29,
+     "ms": 46,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:39:05+00:00",
+     "at": "2026-11-27T08:45:20+00:00",
      "vantage": "github-actions"
     }
    }
@@ -4357,7 +3813,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 8362,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4375,36 +3831,29 @@
      "class": "ok",
      "http": 200,
      "bytes": 8362,
-     "ms": 31,
+     "ms": 46,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:39:07+00:00",
+     "at": "2026-11-27T08:45:21+00:00",
      "vantage": "github-actions"
-    }
-   }
-  },
-  "https://radioandahuaylas.com/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
   "https://radiohuancayo.com.pe/wp54/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 46038,
-     "ms": 428,
-     "detail": "",
-     "robots": "absent",
-     "at": "2026-11-16T19:39:08+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:20+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "absent",
+      "at": "2026-11-16T19:39:08+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -4427,8 +3876,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 46038,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 51799,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4439,11 +3888,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 43460,
-     "ms": 207,
+     "bytes": 48636,
+     "ms": 30,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:09+00:00",
+     "at": "2026-11-27T08:45:20+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4467,35 +3916,28 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 40403,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 48636,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://radiorsd.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
   "https://radiosantarosa.com.pe/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 70490,
-     "ms": 1721,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:39:10+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:20+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:39:10+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -4518,8 +3960,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 70490,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 63975,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4530,11 +3972,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 81269,
-     "ms": 1306,
+     "bytes": 114463,
+     "ms": 1204,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:11+00:00",
+     "at": "2026-11-27T08:45:22+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -4558,8 +4000,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 96308,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 114463,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4568,14 +4010,18 @@
   "https://radioyaravi.org.pe/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 30319,
-     "ms": 166,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:39:10+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:22+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:39:10+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -4598,8 +4044,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 30493,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 33402,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4608,14 +4054,18 @@
   "https://reinadelaselva.pe/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 49807,
-     "ms": 941,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:39:12+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:21+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:39:12+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -4638,8 +4088,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 45376,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 94390,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -4648,13 +4098,13 @@
   "https://repositorio.ana.gob.pe/": {
    "actions": {
     "github-actions": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "ms": 25373,
-     "detail": "ConnectTimeout: timed out",
+     "class": "ok",
+     "http": 200,
+     "bytes": 737,
+     "ms": 99,
+     "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:51+00:00",
+     "at": "2026-11-27T08:45:22+00:00",
      "vantage": "github-actions"
     }
    },
@@ -4663,7 +4113,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 737,
-     "at": "2026-11-15T02:27:05+00:00",
+     "at": "2026-11-27T02:00:41+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4676,10 +4126,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 7,
+     "ms": 0,
      "detail": "ConnectError: [Errno -2] Name or service not known",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:12+00:00",
+     "at": "2026-11-27T08:45:22+00:00",
      "vantage": "github-actions"
     }
    },
@@ -4688,10 +4138,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 6,
+     "ms": 43,
      "detail": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
      "robots": "allowed",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:24+00:00",
      "vantage": "peru-server"
     }
    }
@@ -4728,7 +4178,33 @@
      "class": "ok",
      "http": 200,
      "bytes": 4531584,
-     "at": "2026-11-15T02:47:07+00:00",
+     "at": "2026-11-27T02:03:11+00:00",
+     "vantage": "peru-server",
+     "detail": "",
+     "robots": "allowed"
+    }
+   }
+  },
+  "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/5931af43-9582-41a8-b979-5393b435ae09/content": {
+   "peru": {
+    "peru-server": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 581180,
+     "at": "2026-11-27T02:02:55+00:00",
+     "vantage": "peru-server",
+     "detail": "",
+     "robots": "allowed"
+    }
+   }
+  },
+  "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/59692575-90e5-4a91-b321-506b6eb754bc/content": {
+   "peru": {
+    "peru-server": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 14490155,
+     "at": "2026-11-27T02:03:04+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4741,7 +4217,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 5131323,
-     "at": "2026-11-15T02:47:03+00:00",
+     "at": "2026-11-27T02:03:08+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4754,7 +4230,20 @@
      "class": "ok",
      "http": 200,
      "bytes": 4621908,
-     "at": "2026-11-15T02:47:05+00:00",
+     "at": "2026-11-27T02:03:10+00:00",
+     "vantage": "peru-server",
+     "detail": "",
+     "robots": "allowed"
+    }
+   }
+  },
+  "https://repositorio.imarpe.gob.pe/server/api/core/bitstreams/cecfd906-5018-4557-b756-42e2b76ee182/content": {
+   "peru": {
+    "peru-server": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 4882349,
+     "at": "2026-11-27T02:03:06+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4780,7 +4269,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 11632,
-     "at": "2026-11-15T02:46:55+00:00",
+     "at": "2026-11-27T02:02:57+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4793,7 +4282,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 11632,
-     "at": "2026-11-15T02:46:56+00:00",
+     "at": "2026-11-27T02:02:58+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4819,7 +4308,46 @@
      "class": "ok",
      "http": 200,
      "bytes": 11426,
-     "at": "2026-11-15T02:47:04+00:00",
+     "at": "2026-11-27T02:03:08+00:00",
+     "vantage": "peru-server",
+     "detail": "",
+     "robots": "allowed"
+    }
+   }
+  },
+  "https://repositorio.imarpe.gob.pe/server/api/core/items/6e021637-cf79-47b8-ab64-baa3abe5f4c3/bundles?embed=bitstreams": {
+   "peru": {
+    "peru-server": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 11622,
+     "at": "2026-11-27T02:02:55+00:00",
+     "vantage": "peru-server",
+     "detail": "",
+     "robots": "allowed"
+    }
+   }
+  },
+  "https://repositorio.imarpe.gob.pe/server/api/core/items/795b6ba9-62b4-4653-8fd1-922714fd72cd/bundles?embed=bitstreams": {
+   "peru": {
+    "peru-server": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 11426,
+     "at": "2026-11-27T02:03:04+00:00",
+     "vantage": "peru-server",
+     "detail": "",
+     "robots": "allowed"
+    }
+   }
+  },
+  "https://repositorio.imarpe.gob.pe/server/api/core/items/d3746777-ec3a-466e-8d2c-3e4b9a4146e8/bundles?embed=bitstreams": {
+   "peru": {
+    "peru-server": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 11515,
+     "at": "2026-11-27T02:02:53+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4832,7 +4360,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 11426,
-     "at": "2026-11-15T02:47:02+00:00",
+     "at": "2026-11-27T02:03:06+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4845,7 +4373,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 11426,
-     "at": "2026-11-15T02:47:06+00:00",
+     "at": "2026-11-27T02:03:10+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4858,7 +4386,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 11617,
-     "at": "2026-11-15T02:46:54+00:00",
+     "at": "2026-11-27T02:02:56+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4868,13 +4396,13 @@
   "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Bolet%C3%ADn+Semanal+Oceanogr%C3%A1fico+y+Biol%C3%B3gico%22&dsoType=ITEM&size=8&sort=dc.date.issued%2CDESC": {
    "actions": {
     "github-actions": {
-     "class": "dns",
-     "http": null,
-     "bytes": 0,
-     "ms": 6863,
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "class": "ok",
+     "http": 200,
+     "bytes": 95787,
+     "ms": 379,
+     "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:29+00:00",
+     "at": "2026-11-27T08:45:37+00:00",
      "vantage": "github-actions"
     }
    },
@@ -4882,8 +4410,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 96149,
-     "at": "2026-11-15T02:45:47+00:00",
+     "bytes": 95787,
+     "at": "2026-11-27T02:01:02+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4893,13 +4421,13 @@
   "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado+Oficial+ENFEN%22&dsoType=ITEM&size=6&sort=dc.date.issued%2CDESC": {
    "actions": {
     "github-actions": {
-     "class": "dns",
-     "http": null,
-     "bytes": 0,
-     "ms": 10015,
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "class": "ok",
+     "http": 200,
+     "bytes": 60169,
+     "ms": 364,
+     "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:40+00:00",
+     "at": "2026-11-27T08:45:39+00:00",
      "vantage": "github-actions"
     }
    },
@@ -4907,8 +4435,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 62641,
-     "at": "2026-11-15T02:45:45+00:00",
+     "bytes": 60169,
+     "at": "2026-11-27T02:01:00+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4946,8 +4474,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 54352,
-     "at": "2026-11-15T02:46:51+00:00",
+     "bytes": 52193,
+     "at": "2026-11-27T02:02:53+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4957,13 +4485,13 @@
   "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22&dsoType=ITEM&size=4&sort=dc.date.issued%2CDESC": {
    "actions": {
     "github-actions": {
-     "class": "dns",
-     "http": null,
-     "bytes": 0,
-     "ms": 10019,
-     "detail": "ConnectError: [Errno -3] Temporary failure in name resolution",
+     "class": "ok",
+     "http": 200,
+     "bytes": 50033,
+     "ms": 357,
+     "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:52+00:00",
+     "at": "2026-11-27T08:45:41+00:00",
      "vantage": "github-actions"
     }
    },
@@ -4971,8 +4499,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 50360,
-     "at": "2026-11-15T02:45:45+00:00",
+     "bytes": 50033,
+     "at": "2026-11-27T02:01:01+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -4997,8 +4525,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 63868,
-     "at": "2026-11-09T03:52:27+00:00",
+     "bytes": 62769,
+     "at": "2026-11-27T02:03:01+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -5010,8 +4538,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 63531,
-     "at": "2026-11-15T02:46:58+00:00",
+     "bytes": 63196,
+     "at": "2026-11-27T02:02:59+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -5024,10 +4552,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25193,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:06+00:00",
+     "at": "2026-11-27T08:46:03+00:00",
      "vantage": "github-actions"
     }
    },
@@ -5035,8 +4563,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 40527,
-     "at": "2026-11-15T02:26:55+00:00",
+     "bytes": 40198,
+     "at": "2026-11-27T02:00:38+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -5052,7 +4580,7 @@
      "ms": 0,
      "detail": "robots.txt sin respuesta",
      "robots": "unreachable",
-     "at": "2026-11-16T19:39:41+00:00",
+     "at": "2026-11-27T08:45:38+00:00",
      "vantage": "github-actions"
     }
    },
@@ -5060,8 +4588,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 387649,
-     "at": "2026-11-15T02:46:10+00:00",
+     "bytes": 381721,
+     "at": "2026-11-27T02:02:10+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -5073,11 +4601,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57156,
-     "ms": 177,
+     "bytes": 62507,
+     "ms": 75,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:28+00:00",
+     "at": "2026-11-27T08:45:24+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5101,8 +4629,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 54849,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 62611,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5113,11 +4641,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 56935,
-     "ms": 154,
+     "bytes": 61950,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:30+00:00",
+     "at": "2026-11-27T08:45:26+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5141,8 +4669,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 57097,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 61054,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5153,11 +4681,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 61361,
-     "ms": 91,
+     "bytes": 61548,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:32+00:00",
+     "at": "2026-11-27T08:45:27+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5181,8 +4709,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 61361,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 61548,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5193,11 +4721,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58123,
-     "ms": 17,
+     "bytes": 54349,
+     "ms": 117,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:33+00:00",
+     "at": "2026-11-27T08:45:29+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5221,8 +4749,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 58977,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 54349,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5233,11 +4761,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 59982,
-     "ms": 175,
+     "bytes": 59860,
+     "ms": 82,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:35+00:00",
+     "at": "2026-11-27T08:45:30+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5261,8 +4789,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 59982,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 59860,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5273,11 +4801,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 53351,
-     "ms": 15,
+     "bytes": 52954,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:36+00:00",
+     "at": "2026-11-27T08:45:32+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5301,8 +4829,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 53351,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 52954,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5313,11 +4841,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 60804,
-     "ms": 190,
+     "bytes": 60789,
+     "ms": 70,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:38+00:00",
+     "at": "2026-11-27T08:45:33+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5341,8 +4869,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 60804,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 60789,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5354,10 +4882,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 60707,
-     "ms": 92,
+     "ms": 96,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:40+00:00",
+     "at": "2026-11-27T08:45:35+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5382,7 +4910,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 60707,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5393,11 +4921,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57655,
-     "ms": 188,
+     "bytes": 57597,
+     "ms": 94,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:41+00:00",
+     "at": "2026-11-27T08:45:37+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5421,8 +4949,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 57655,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 57597,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5433,11 +4961,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 56568,
-     "ms": 18,
+     "bytes": 55718,
+     "ms": 13,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:43+00:00",
+     "at": "2026-11-27T08:45:38+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5461,8 +4989,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 56568,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 55718,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5473,11 +5001,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 58096,
-     "ms": 180,
+     "bytes": 58156,
+     "ms": 74,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:44+00:00",
+     "at": "2026-11-27T08:45:40+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5501,8 +5029,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 58096,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 58156,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5513,11 +5041,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57554,
-     "ms": 189,
+     "bytes": 57403,
+     "ms": 82,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:46+00:00",
+     "at": "2026-11-27T08:45:41+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5541,8 +5069,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 57554,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 57403,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5553,11 +5081,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 55934,
-     "ms": 16,
+     "bytes": 55070,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:48+00:00",
+     "at": "2026-11-27T08:45:43+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5581,8 +5109,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 56326,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 55070,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5593,11 +5121,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57721,
-     "ms": 15,
+     "bytes": 56749,
+     "ms": 11,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:49+00:00",
+     "at": "2026-11-27T08:45:44+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5621,8 +5149,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 57721,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 56749,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5633,11 +5161,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 59461,
-     "ms": 16,
+     "bytes": 58465,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:51+00:00",
+     "at": "2026-11-27T08:45:46+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5661,8 +5189,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 59461,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 58465,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5673,11 +5201,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 60863,
-     "ms": 18,
+     "bytes": 61180,
+     "ms": 72,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:52+00:00",
+     "at": "2026-11-27T08:45:47+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5701,8 +5229,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 60863,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 61180,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5714,10 +5242,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 57617,
-     "ms": 172,
+     "ms": 86,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:54+00:00",
+     "at": "2026-11-27T08:45:49+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5742,7 +5270,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 57617,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5754,10 +5282,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 64999,
-     "ms": 163,
+     "ms": 80,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:55+00:00",
+     "at": "2026-11-27T08:45:50+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5782,7 +5310,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 64999,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5794,10 +5322,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 58279,
-     "ms": 184,
+     "ms": 117,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:57+00:00",
+     "at": "2026-11-27T08:45:52+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5822,7 +5350,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 58279,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5833,11 +5361,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 55373,
-     "ms": 176,
+     "bytes": 55002,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:39:59+00:00",
+     "at": "2026-11-27T08:45:54+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5861,8 +5389,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 55373,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 55002,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5873,11 +5401,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57827,
-     "ms": 209,
+     "bytes": 58058,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:00+00:00",
+     "at": "2026-11-27T08:45:55+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5901,8 +5429,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 57827,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 58252,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5913,11 +5441,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 54265,
-     "ms": 17,
+     "bytes": 54455,
+     "ms": 12,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:02+00:00",
+     "at": "2026-11-27T08:45:57+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5941,8 +5469,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 54265,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 54455,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5953,11 +5481,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 60025,
-     "ms": 190,
+     "bytes": 59990,
+     "ms": 110,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:04+00:00",
+     "at": "2026-11-27T08:45:58+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -5981,8 +5509,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 60025,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 59990,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -5993,11 +5521,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 56216,
-     "ms": 169,
+     "bytes": 56055,
+     "ms": 154,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:05+00:00",
+     "at": "2026-11-27T08:46:00+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6021,8 +5549,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 56216,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 56055,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6033,11 +5561,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 55931,
-     "ms": 167,
+     "bytes": 56292,
+     "ms": 98,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:07+00:00",
+     "at": "2026-11-27T08:46:01+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6061,8 +5589,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 55931,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 56292,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6073,11 +5601,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 55679,
-     "ms": 172,
+     "bytes": 54660,
+     "ms": 156,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:09+00:00",
+     "at": "2026-11-27T08:46:03+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6101,8 +5629,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 55498,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 54660,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6121,8 +5649,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 462816,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 469019,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6139,11 +5667,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 424659,
-     "ms": 23,
+     "bytes": 426395,
+     "ms": 14,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:10+00:00",
+     "at": "2026-11-27T08:46:05+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6154,10 +5682,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25367,
+     "ms": 25021,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:38+00:00",
+     "at": "2026-11-27T08:46:34+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6166,7 +5694,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 111858,
-     "at": "2026-11-15T02:46:10+00:00",
+     "at": "2026-11-27T02:02:06+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -6204,10 +5732,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 256,
-     "ms": 180,
+     "ms": 110,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:00+00:00",
+     "at": "2026-11-27T08:45:56+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6216,7 +5744,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 256,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6226,7 +5754,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 256,
-     "at": "2026-11-15T02:45:47+00:00",
+     "at": "2026-11-27T02:01:03+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -6239,10 +5767,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 8430,
-     "ms": 3508,
+     "ms": 3535,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:05+00:00",
+     "at": "2026-11-27T08:46:01+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6251,7 +5779,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 8430,
-     "at": "2026-11-15T02:45:52+00:00",
+     "at": "2026-11-27T02:01:08+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -6262,7 +5790,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 8430,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6274,7 +5802,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 7933574,
-     "at": "2026-11-15T02:47:20+00:00",
+     "at": "2026-11-27T02:03:22+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -6287,7 +5815,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 1418520,
-     "at": "2026-11-15T02:47:12+00:00",
+     "at": "2026-11-27T02:03:17+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -6300,7 +5828,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 1418826,
-     "at": "2026-11-15T02:47:07+00:00",
+     "at": "2026-11-27T02:03:13+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -6310,13 +5838,13 @@
   "https://sinrodeoscajamarca.com/feed/": {
    "actions": {
     "github-actions": {
-     "class": "robots",
+     "class": "challenge",
      "http": null,
      "bytes": 0,
      "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-11-16T19:40:00+00:00",
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:56+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6377,10 +5905,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 1560,
-     "ms": 156,
+     "ms": 102,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:01+00:00",
+     "at": "2026-11-27T08:45:57+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6389,7 +5917,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 1560,
-     "at": "2026-11-15T02:26:56+00:00",
+     "at": "2026-11-27T02:00:40+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -6426,10 +5954,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 91814,
-     "ms": 613,
+     "ms": 399,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:04+00:00",
+     "at": "2026-11-27T08:45:59+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6438,35 +5966,28 @@
      "class": "ok",
      "http": 200,
      "bytes": 91814,
-     "at": "2026-11-15T02:26:59+00:00",
+     "at": "2026-11-27T02:00:41+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
     }
    }
   },
-  "https://soltvperu.com/category/regiones/ancash-noticias/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
   "https://soltvperu.com/category/regiones/cajamarca-noticias/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 77481,
-     "ms": 463,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:40:03+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:57+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:40:03+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -6489,8 +6010,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 77481,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 77717,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6499,14 +6020,18 @@
   "https://soltvperu.com/category/regiones/la-libertad-noticias/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 55777,
-     "ms": 506,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:40:05+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:57+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:40:05+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -6529,8 +6054,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 50842,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 47794,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6539,14 +6064,18 @@
   "https://soltvperu.com/category/regiones/lambayeque-noticias/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 79609,
-     "ms": 417,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:40:06+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:57+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:40:06+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -6569,8 +6098,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 79609,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 54685,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6579,14 +6108,18 @@
   "https://soltvperu.com/category/regiones/piura-noticias/feed/": {
    "actions": {
     "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 51170,
-     "ms": 367,
-     "detail": "",
-     "robots": "allowed",
-     "at": "2026-11-16T19:40:08+00:00",
-     "vantage": "github-actions"
+     "class": "challenge",
+     "http": null,
+     "bytes": 0,
+     "ms": 0,
+     "detail": "robots.txt sin respuesta",
+     "robots": "unreachable",
+     "at": "2026-11-27T08:45:57+00:00",
+     "vantage": "github-actions",
+     "robots_read": {
+      "robots": "allowed",
+      "at": "2026-11-16T19:40:08+00:00"
+     }
     },
     "n8n-actions-azure": {
      "class": "ok",
@@ -6609,8 +6142,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 50208,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 52502,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6622,10 +6155,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25352,
+     "ms": 25025,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:45+00:00",
+     "at": "2026-11-27T08:46:37+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6634,10 +6167,10 @@
      "class": "empty",
      "http": 200,
      "bytes": 172,
-     "ms": 89,
+     "ms": 1650,
      "detail": "HTML casi vacío",
      "robots": "absent",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:26+00:00",
      "vantage": "peru-server"
     }
    }
@@ -6647,11 +6180,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 110704,
-     "ms": 345,
+     "bytes": 93155,
+     "ms": 266,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:05+00:00",
+     "at": "2026-11-27T08:45:59+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6659,8 +6192,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 96562,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 93154,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6671,11 +6204,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 7133,
-     "ms": 66,
+     "bytes": 7132,
+     "ms": 3,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:05+00:00",
+     "at": "2026-11-27T08:45:59+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6685,11 +6218,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1069,
-     "ms": 68,
+     "bytes": 862,
+     "ms": 44,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:09+00:00",
+     "at": "2026-11-27T08:45:59+00:00",
      "vantage": "github-actions"
     }
    },
@@ -6697,8 +6230,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 1069,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 862,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6709,11 +6242,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 9200,
-     "ms": 67,
+     "bytes": 13320,
+     "ms": 23,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:06+00:00",
+     "at": "2026-11-27T08:45:59+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6737,32 +6270,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 9685,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 13320,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://tumbesdemiercoles.com.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://tumbesdemiercoles.com.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -6772,33 +6283,22 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25013,
+     "ms": 25025,
      "detail": "ReadTimeout: The read operation timed out",
      "robots": "absent",
-     "at": "2026-11-16T19:40:31+00:00",
+     "at": "2026-11-27T08:46:24+00:00",
      "vantage": "github-actions"
     }
    },
    "peru": {
     "peru-server": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 3,
-     "at": "2026-11-15T02:46:06+00:00",
+     "class": "http-5xx",
+     "http": 503,
+     "bytes": 0,
+     "at": "2026-11-27T02:02:00+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
-    }
-   }
-  },
-  "https://willax.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -6807,11 +6307,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 143935,
-     "ms": 311,
+     "bytes": 161785,
+     "ms": 241,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:07+00:00",
+     "at": "2026-11-27T08:46:00+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -6835,21 +6335,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 124596,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 161785,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.atv.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -6866,8 +6355,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 540697,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 996817,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6884,11 +6373,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 540697,
-     "ms": 125,
+     "bytes": 996817,
+     "ms": 74,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:06+00:00",
+     "at": "2026-11-27T08:46:00+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6907,7 +6396,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 14752,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6925,10 +6414,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 14752,
-     "ms": 70,
+     "ms": 28,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:07+00:00",
+     "at": "2026-11-27T08:46:00+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6947,7 +6436,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -6965,10 +6454,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 72,
+     "ms": 13,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:10+00:00",
+     "at": "2026-11-27T08:46:01+00:00",
      "vantage": "github-actions"
     }
    }
@@ -6987,7 +6476,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7005,10 +6494,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 72,
+     "ms": 11,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:08+00:00",
+     "at": "2026-11-27T08:46:03+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7027,7 +6516,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7045,10 +6534,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 73,
+     "ms": 9,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:11+00:00",
+     "at": "2026-11-27T08:46:04+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7067,7 +6556,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 23050,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7085,10 +6574,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23050,
-     "ms": 72,
+     "ms": 9,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:13+00:00",
+     "at": "2026-11-27T08:46:06+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7107,7 +6596,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 12968,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7125,10 +6614,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12968,
-     "ms": 70,
+     "ms": 9,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:15+00:00",
+     "at": "2026-11-27T08:46:07+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7147,7 +6636,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 39345,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7165,10 +6654,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 39345,
-     "ms": 74,
+     "ms": 10,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:16+00:00",
+     "at": "2026-11-27T08:46:09+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7187,7 +6676,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7205,10 +6694,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 19452,
-     "ms": 72,
+     "ms": 10,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:18+00:00",
+     "at": "2026-11-27T08:46:10+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7225,8 +6714,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 148731,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 148857,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7242,11 +6731,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 148794,
-     "ms": 141,
+     "bytes": 148857,
+     "ms": 18,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:19+00:00",
+     "at": "2026-11-27T08:46:12+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7265,7 +6754,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7283,10 +6772,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 12522,
-     "ms": 72,
+     "ms": 9,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:21+00:00",
+     "at": "2026-11-27T08:46:13+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7305,7 +6794,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 13344,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7323,10 +6812,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 13344,
-     "ms": 71,
+     "ms": 10,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:22+00:00",
+     "at": "2026-11-27T08:46:15+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7345,7 +6834,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 23093,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7363,10 +6852,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 23093,
-     "ms": 72,
+     "ms": 14,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:24+00:00",
+     "at": "2026-11-27T08:46:17+00:00",
      "vantage": "github-actions"
     }
    }
@@ -7376,11 +6865,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2646,
-     "ms": 587,
+     "bytes": 2540,
+     "ms": 496,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:15+00:00",
+     "at": "2026-11-27T08:46:09+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -7404,21 +6893,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 2646,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 2540,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/?feed=rss2": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "la respuesta es una página HTML, no un feed"
     }
    }
   },
@@ -7498,7 +6976,7 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-16T03:54:45+00:00",
+     "at": "2026-11-27T03:52:58+00:00",
      "detail": "human-verification",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7508,7 +6986,7 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-15T02:46:20+00:00",
+     "at": "2026-11-27T02:02:17+00:00",
      "vantage": "peru-server",
      "detail": "página de verificación antirobots: no se guarda (no se evade)",
      "robots": "allowed"
@@ -7529,7 +7007,7 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-16T03:54:45+00:00",
+     "at": "2026-11-27T03:52:58+00:00",
      "detail": "human-verification",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7539,7 +7017,7 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-15T02:46:18+00:00",
+     "at": "2026-11-27T02:02:15+00:00",
      "vantage": "peru-server",
      "detail": "página de verificación antirobots: no se guarda (no se evade)",
      "robots": "allowed"
@@ -7552,7 +7030,7 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-15T02:46:22+00:00",
+     "at": "2026-11-27T02:02:19+00:00",
      "vantage": "peru-server",
      "detail": "página de verificación antirobots: no se guarda (no se evade)",
      "robots": "allowed"
@@ -7563,7 +7041,7 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-16T03:54:45+00:00",
+     "at": "2026-11-27T03:52:58+00:00",
      "detail": "human-verification",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7575,7 +7053,7 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-15T02:46:29+00:00",
+     "at": "2026-11-27T02:02:22+00:00",
      "vantage": "peru-server",
      "detail": "página de verificación antirobots: no se guarda (no se evade)",
      "robots": "allowed"
@@ -7586,86 +7064,9 @@
      "class": "challenge",
      "http": 200,
      "bytes": 3117,
-     "at": "2026-11-16T03:54:45+00:00",
+     "at": "2026-11-27T03:52:58+00:00",
      "detail": "human-verification",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/arcio/rss/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/feed": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/feed.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/feeds/posts/default?alt=rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/index.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/noticias/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -7674,11 +7075,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 2386053,
-     "ms": 841,
+     "bytes": 2411211,
+     "ms": 347,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:16+00:00",
+     "at": "2026-11-27T08:46:09+00:00",
      "vantage": "github-actions"
     }
    },
@@ -7686,8 +7087,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 2386053,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 2411211,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7698,11 +7099,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 653558,
-     "ms": 213,
+     "bytes": 655771,
+     "ms": 166,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:18+00:00",
+     "at": "2026-11-27T08:46:11+00:00",
      "vantage": "github-actions"
     }
    },
@@ -7710,8 +7111,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 649686,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 655771,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7730,8 +7131,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 269743,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 270008,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7748,11 +7149,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 269743,
-     "ms": 200,
+     "bytes": 270008,
+     "ms": 146,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:19+00:00",
+     "at": "2026-11-27T08:46:13+00:00",
      "vantage": "github-actions"
     }
    },
@@ -7760,8 +7161,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 269126,
-     "at": "2026-11-15T02:10:39+00:00",
+     "bytes": 270008,
+     "at": "2026-11-27T02:00:24+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -7773,11 +7174,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 194000,
-     "ms": 202,
+     "bytes": 194265,
+     "ms": 143,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:40:21+00:00",
+     "at": "2026-11-27T08:46:14+00:00",
      "vantage": "github-actions"
     }
    },
@@ -7785,76 +7186,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 194000,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 194265,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.dhn.mil.pe/rss/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.diario-hoy.com.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.diariodechimbote.com/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.esferaradio.net/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -7863,11 +7198,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 30431,
-     "ms": 364,
+     "bytes": 30871,
+     "ms": 48,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:19+00:00",
+     "at": "2026-11-27T08:46:11+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -7891,21 +7226,10 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 34223,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 30853,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.exitosanoticias.pe/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -7914,11 +7238,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 112402,
-     "ms": 671,
+     "bytes": 96288,
+     "ms": 602,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:19+00:00",
+     "at": "2026-11-27T08:46:12+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -7942,8 +7266,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 113828,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 96288,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7961,8 +7285,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 710111,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 527710,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -7978,61 +7302,12 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 758922,
-     "ms": 1905,
+     "bytes": 536828,
+     "ms": 1826,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:22+00:00",
+     "at": "2026-11-27T08:46:15+00:00",
      "vantage": "github-actions"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido=noticias&institucion=munlima&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=ana&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
-     "vantage": "n8n-aws-us-east-1"
     }
    }
   },
@@ -8041,11 +7316,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 66038,
-     "ms": 686,
+     "bytes": 72613,
+     "ms": 551,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:20+00:00",
+     "at": "2026-11-27T08:46:13+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8053,48 +7328,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 66046,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=cenepred&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:42+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69046,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69046,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69046,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 72621,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8105,11 +7340,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 71639,
-     "ms": 659,
+     "bytes": 62559,
+     "ms": 471,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:22+00:00",
+     "at": "2026-11-27T08:46:17+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8117,47 +7352,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 71647,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 62559,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=igp&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -8167,11 +7364,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 82238,
-     "ms": 539,
+     "bytes": 78558,
+     "ms": 468,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:24+00:00",
+     "at": "2026-11-27T08:46:15+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8179,48 +7376,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 82238,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 78544,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indeci&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 77453,
-     "detail": "",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -8230,11 +7388,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 72025,
-     "ms": 534,
+     "bytes": 71072,
+     "ms": 545,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:26+00:00",
+     "at": "2026-11-27T08:46:19+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8242,47 +7400,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 72025,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 71072,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=midagri&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -8292,11 +7412,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 104148,
-     "ms": 819,
+     "bytes": 106775,
+     "ms": 604,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:29+00:00",
+     "at": "2026-11-27T08:46:21+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8304,47 +7424,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 104156,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 106775,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=minam&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -8354,11 +7436,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 95166,
-     "ms": 529,
+     "bytes": 102690,
+     "ms": 600,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:31+00:00",
+     "at": "2026-11-27T08:46:23+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8366,59 +7448,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 95162,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=munlima&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "http-4xx",
-     "http": 404,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=pcm&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73823,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73823,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73823,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 102690,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8429,11 +7460,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 71581,
-     "ms": 535,
+     "bytes": 68875,
+     "ms": 466,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:33+00:00",
+     "at": "2026-11-27T08:46:25+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8441,47 +7472,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 71581,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 68875,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=presidencia&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -8491,11 +7484,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 163104,
-     "ms": 691,
+     "bytes": 122591,
+     "ms": 601,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:35+00:00",
+     "at": "2026-11-27T08:46:27+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8503,48 +7496,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 163104,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionamazonas&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41956,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41956,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41956,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 122591,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8555,11 +7508,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 38333,
-     "ms": 548,
+     "bytes": 37987,
+     "ms": 436,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:37+00:00",
+     "at": "2026-11-27T08:46:29+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8567,59 +7520,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 38333,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionancash&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionapurimac&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 51080,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 51080,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 51080,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 37987,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8631,10 +7533,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 51068,
-     "ms": 649,
+     "ms": 532,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:39+00:00",
+     "at": "2026-11-27T08:46:31+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8643,47 +7545,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 51068,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionarequipa&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 71028,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 71028,
-     "detail": "",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 71028,
-     "at": "2026-10-21T03:32:52+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8694,11 +7556,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 77850,
-     "ms": 664,
+     "bytes": 80254,
+     "ms": 716,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:41+00:00",
+     "at": "2026-11-27T08:46:33+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8706,48 +7568,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 77850,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionayacucho&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 53338,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 53338,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 53338,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 80254,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8758,11 +7580,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 53324,
-     "ms": 529,
+     "bytes": 53326,
+     "ms": 679,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:43+00:00",
+     "at": "2026-11-27T08:46:36+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8771,58 +7593,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 53326,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncajamarca&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncallao&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73006,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73006,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73006,
-     "at": "2026-10-21T03:32:52+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8833,11 +7604,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 62294,
-     "ms": 654,
+     "bytes": 60917,
+     "ms": 570,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:46+00:00",
+     "at": "2026-11-27T08:46:38+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8845,48 +7616,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 62294,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regioncusco&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73852,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73852,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73852,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 60917,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -8897,11 +7628,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 78427,
-     "ms": 696,
+     "bytes": 70546,
+     "ms": 582,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:48+00:00",
+     "at": "2026-11-27T08:46:40+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8909,47 +7640,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 77588,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 70546,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuancavelica&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -8959,11 +7652,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 100170,
-     "ms": 832,
+     "bytes": 105154,
+     "ms": 722,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:50+00:00",
+     "at": "2026-11-27T08:46:42+00:00",
      "vantage": "github-actions"
     }
    },
@@ -8971,48 +7664,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 97392,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionhuanuco&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73857,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73857,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73857,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 105154,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9024,10 +7677,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 71575,
-     "ms": 681,
+     "ms": 644,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:52+00:00",
+     "at": "2026-11-27T08:46:44+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9036,68 +7689,8 @@
      "class": "ok",
      "http": 200,
      "bytes": 71575,
-     "at": "2026-11-16T03:52:59+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionica&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionjunin&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlalibertad&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -9107,11 +7700,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 73830,
+     "bytes": 69536,
      "ms": 656,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:54+00:00",
+     "at": "2026-11-27T08:46:46+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9119,47 +7712,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 73830,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 69536,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlambayeque&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -9169,11 +7724,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 83830,
-     "ms": 697,
+     "bytes": 84925,
+     "ms": 650,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:57+00:00",
+     "at": "2026-11-27T08:46:48+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9181,48 +7736,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 82066,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionlima&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63709,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63709,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63709,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 84925,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9233,11 +7748,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 57759,
-     "ms": 747,
+     "bytes": 54661,
+     "ms": 578,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:40:59+00:00",
+     "at": "2026-11-27T08:46:50+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9245,48 +7760,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 58322,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionloreto&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 49809,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 49809,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 49809,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 54661,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9298,10 +7773,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 56988,
-     "ms": 697,
+     "ms": 786,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:01+00:00",
+     "at": "2026-11-27T08:46:53+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9309,48 +7784,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 55545,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmadrededios&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63834,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63834,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63834,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 56988,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9361,11 +7796,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 63822,
-     "ms": 699,
+     "bytes": 60648,
+     "ms": 596,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:03+00:00",
+     "at": "2026-11-27T08:46:55+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9373,48 +7808,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 63822,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 60648,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionmoquegua&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 76299,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -9424,11 +7820,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 77027,
-     "ms": 632,
+     "bytes": 77111,
+     "ms": 568,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:05+00:00",
+     "at": "2026-11-27T08:46:57+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9436,48 +7832,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 77027,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpasco&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 23903,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 23903,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 23903,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 77111,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9488,11 +7844,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 25320,
-     "ms": 478,
+     "bytes": 25538,
+     "ms": 427,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:07+00:00",
+     "at": "2026-11-27T08:46:59+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9500,48 +7856,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 25320,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpiura&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69039,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69039,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 69039,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 25538,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9552,11 +7868,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 71923,
-     "ms": 675,
+     "bytes": 67492,
+     "ms": 632,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:09+00:00",
+     "at": "2026-11-27T08:47:01+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9564,48 +7880,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 71923,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionpuno&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 64096,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 64096,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 64096,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 67492,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9617,10 +7893,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 65890,
-     "ms": 683,
+     "ms": 677,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:12+00:00",
+     "at": "2026-11-27T08:47:03+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9629,47 +7905,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 65890,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionsanmartin&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63952,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63952,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 63952,
-     "at": "2026-10-21T03:32:52+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9680,11 +7916,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 76404,
-     "ms": 539,
+     "bytes": 69142,
+     "ms": 465,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:14+00:00",
+     "at": "2026-11-27T08:47:05+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9692,59 +7928,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 74697,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontacna&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regiontumbes&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41353,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41353,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 41353,
-     "at": "2026-10-21T03:32:52+00:00",
+     "bytes": 69142,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9756,10 +7941,10 @@
      "class": "ok",
      "http": 200,
      "bytes": 39463,
-     "ms": 562,
+     "ms": 454,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:16+00:00",
+     "at": "2026-11-27T08:47:07+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9768,47 +7953,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 39463,
-     "at": "2026-11-16T03:52:59+00:00",
-     "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=regionucayali&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73176,
-     "detail": "",
-     "at": "2026-10-21T02:35:37+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73176,
-     "detail": "",
-     "at": "2026-10-21T03:23:12+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "ok",
-     "http": 200,
-     "bytes": 73176,
-     "at": "2026-10-21T03:34:31+00:00",
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9819,11 +7964,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 69370,
-     "ms": 622,
+     "bytes": 72986,
+     "ms": 704,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:18+00:00",
+     "at": "2026-11-27T08:47:09+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9831,47 +7976,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 69370,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 72986,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=senamhi&sheet=1&sort_by=recent": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -9881,11 +7988,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 76582,
-     "ms": 539,
+     "bytes": 78826,
+     "ms": 504,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:20+00:00",
+     "at": "2026-11-27T08:47:11+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9893,47 +8000,9 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 76560,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 78826,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
-     "vantage": "n8n-aws-us-east-1"
-    }
-   }
-  },
-  "https://www.gob.pe/busquedas.rss?contenido[]=noticias&sheet=1&sort_by=recent&term=huaico": {
-   "actions": {
-    "github-actions": {
-     "class": "robots",
-     "http": null,
-     "bytes": 0,
-     "ms": 0,
-     "detail": "robots.txt no permite la ruta",
-     "robots": "disallowed",
-     "at": "2026-10-21T04:24:41+00:00",
-     "vantage": "github-actions"
-    },
-    "n8n-actions-azure": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T02:37:15+00:00",
-     "vantage": "n8n-actions-azure"
-    }
-   },
-   "n8n": {
-    "n8n-aws": {
-     "class": "timeout",
-     "bytes": 0,
-     "detail": "aborted",
-     "at": "2026-10-21T03:24:51+00:00",
-     "vantage": "n8n-aws"
-    },
-    "n8n-aws-us-east-1": {
-     "class": "timeout",
-     "http": null,
-     "bytes": 0,
-     "at": "2026-10-21T03:34:31+00:00",
-     "detail": "aborted",
      "vantage": "n8n-aws-us-east-1"
     }
    }
@@ -9943,11 +8012,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 75907,
-     "ms": 728,
+     "bytes": 80954,
+     "ms": 1164,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:22+00:00",
+     "at": "2026-11-27T08:47:14+00:00",
      "vantage": "github-actions"
     }
    },
@@ -9955,8 +8024,44 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 75791,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 80954,
+     "at": "2026-11-27T03:52:19+00:00",
+     "detail": "",
+     "vantage": "n8n-aws-us-east-1"
+    }
+   }
+  },
+  "https://www.gob.pe/busquedas.rss?contenido[]=publicaciones&institucion[]=senamhi&term=enfen&sort_by=recent": {
+   "actions": {
+    "github-actions": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 32837,
+     "ms": 739,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-11-27T08:47:16+00:00",
+     "vantage": "github-actions"
+    }
+   },
+   "peru": {
+    "peru-server": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 32837,
+     "ms": 757,
+     "detail": "",
+     "robots": "allowed",
+     "at": "2026-11-27T02:03:26+00:00",
+     "vantage": "peru-server"
+    }
+   },
+   "n8n": {
+    "n8n-aws-us-east-1": {
+     "class": "ok",
+     "http": 200,
+     "bytes": 32837,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9975,8 +8080,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 206416,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 206716,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -9993,11 +8098,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 206416,
-     "ms": 637,
+     "bytes": 204225,
+     "ms": 579,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:24+00:00",
+     "at": "2026-11-27T08:47:18+00:00",
      "vantage": "github-actions"
     }
    }
@@ -10015,8 +8120,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 298927,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 304440,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -10033,11 +8138,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 298927,
-     "ms": 1420,
+     "bytes": 304440,
+     "ms": 902,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:06+00:00",
+     "at": "2026-11-27T08:46:59+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10045,8 +8150,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 298927,
-     "at": "2026-11-15T02:27:15+00:00",
+     "bytes": 304440,
+     "at": "2026-11-27T02:00:48+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -10058,11 +8163,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 13059,
-     "ms": 2289,
+     "bytes": 21590,
+     "ms": 2350,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:10+00:00",
+     "at": "2026-11-27T08:47:03+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -10086,8 +8191,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 13059,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 21590,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1",
      "robots_read": {
@@ -10110,8 +8215,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 226560,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 228346,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -10128,11 +8233,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 226560,
-     "ms": 7193,
+     "bytes": 228346,
+     "ms": 8981,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:19+00:00",
+     "at": "2026-11-27T08:47:14+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10140,8 +8245,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 226560,
-     "at": "2026-11-15T02:27:24+00:00",
+     "bytes": 228346,
+     "at": "2026-11-27T02:00:57+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -10154,10 +8259,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 355,
+     "ms": 1,
      "detail": "ConnectError: [Errno -2] Name or service not known",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:07+00:00",
+     "at": "2026-11-27T08:47:00+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10166,10 +8271,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 4,
+     "ms": 6,
      "detail": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
      "robots": "allowed",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:24+00:00",
      "vantage": "peru-server"
     }
    }
@@ -10186,8 +8291,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 849327,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 817286,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -10203,56 +8308,12 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 868164,
-     "ms": 72,
+     "bytes": 832870,
+     "ms": 139,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:08+00:00",
+     "at": "2026-11-27T08:47:00+00:00",
      "vantage": "github-actions"
-    }
-   }
-  },
-  "https://www.inforegion.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.laindustria.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "tls",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.laindustria.pe'. (_ssl.c:1010)"
-    }
-   }
-  },
-  "https://www.laindustria.pe/rss": {
-   "actions": {
-    "github-actions": {
-     "class": "tls",
-     "http": null,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.laindustria.pe'. (_ssl.c:1010)"
-    }
-   }
-  },
-  "https://www.noticiasser.pe/feed": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -10296,38 +8357,16 @@
     }
    }
   },
-  "https://www.noticiasser.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": "la respuesta es una página HTML, no un feed"
-    }
-   }
-  },
-  "https://www.proycontra.com.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
   "https://www.proycontra.com.pe/rss.xml": {
    "actions": {
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 83379,
-     "ms": 549,
+     "bytes": 114964,
+     "ms": 685,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:09+00:00",
+     "at": "2026-11-27T08:47:01+00:00",
      "vantage": "github-actions"
     },
     "n8n-actions-azure": {
@@ -10349,8 +8388,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 83676,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 114964,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -10362,10 +8401,10 @@
      "class": "http-403",
      "http": 403,
      "bytes": 118,
-     "ms": 65,
+     "ms": 5,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:41:09+00:00",
+     "at": "2026-11-27T08:47:01+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10377,41 +8416,8 @@
      "ms": 106,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:26+00:00",
      "vantage": "peru-server"
-    }
-   }
-  },
-  "https://www.radionacional.gob.pe/feed": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.radionacional.gob.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.radiosantarosa.com.pe/feed/": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -10421,10 +8427,10 @@
      "class": "dns",
      "http": null,
      "bytes": 0,
-     "ms": 186,
+     "ms": 1,
      "detail": "ConnectError: [Errno -2] Name or service not known",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:10+00:00",
+     "at": "2026-11-27T08:47:01+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10436,7 +8442,7 @@
      "ms": 4,
      "detail": "ConnectError: [Errno 8] nodename nor servname provided, or not known",
      "robots": "allowed",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:24+00:00",
      "vantage": "peru-server"
     }
    }
@@ -10471,10 +8477,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25720,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:42:45+00:00",
+     "at": "2026-11-27T08:47:41+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10482,8 +8488,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 1296202,
-     "at": "2026-11-15T02:26:46+00:00",
+     "bytes": 1306092,
+     "at": "2026-11-27T02:00:30+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -10520,10 +8526,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25718,
+     "ms": 25013,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:42:18+00:00",
+     "at": "2026-11-27T08:48:08+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10532,7 +8538,7 @@
      "class": "ok",
      "http": 200,
      "bytes": 297728,
-     "at": "2026-11-15T02:26:46+00:00",
+     "at": "2026-11-27T02:00:30+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -10569,10 +8575,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25892,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:51+00:00",
+     "at": "2026-11-27T08:48:34+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10580,8 +8586,8 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 79255,
-     "at": "2026-11-15T02:10:43+00:00",
+     "bytes": 79300,
+     "at": "2026-11-27T02:00:27+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
@@ -10618,10 +8624,10 @@
      "class": "timeout",
      "http": null,
      "bytes": 0,
-     "ms": 25887,
+     "ms": 25026,
      "detail": "ConnectTimeout: timed out",
      "robots": "allowed",
-     "at": "2026-11-16T19:43:13+00:00",
+     "at": "2026-11-27T08:49:01+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10629,22 +8635,11 @@
     "peru-server": {
      "class": "ok",
      "http": 200,
-     "bytes": 128160,
-     "at": "2026-11-15T02:26:48+00:00",
+     "bytes": 127611,
+     "at": "2026-11-27T02:00:32+00:00",
      "vantage": "peru-server",
      "detail": "",
      "robots": "allowed"
-    }
-   }
-  },
-  "https://www.servindi.org/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "ok",
-     "http": 200,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   },
@@ -10653,11 +8648,11 @@
     "github-actions": {
      "class": "ok",
      "http": 200,
-     "bytes": 1989,
-     "ms": 21,
+     "bytes": 1953,
+     "ms": 6,
      "detail": "",
      "robots": "allowed",
-     "at": "2026-11-16T19:41:12+00:00",
+     "at": "2026-11-27T08:47:05+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10665,8 +8660,8 @@
     "n8n-aws-us-east-1": {
      "class": "ok",
      "http": 200,
-     "bytes": 1989,
-     "at": "2026-11-16T03:52:59+00:00",
+     "bytes": 1953,
+     "at": "2026-11-27T03:52:19+00:00",
      "detail": "",
      "vantage": "n8n-aws-us-east-1"
     }
@@ -10678,10 +8673,10 @@
      "class": "http-403",
      "http": 403,
      "bytes": 118,
-     "ms": 76,
+     "ms": 4,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-16T19:41:12+00:00",
+     "at": "2026-11-27T08:47:05+00:00",
      "vantage": "github-actions"
     }
    },
@@ -10690,33 +8685,11 @@
      "class": "http-403",
      "http": 403,
      "bytes": 118,
-     "ms": 112,
+     "ms": 105,
      "detail": "",
      "robots": "absent",
-     "at": "2026-11-15T02:47:21+00:00",
+     "at": "2026-11-27T02:03:25+00:00",
      "vantage": "peru-server"
-    }
-   }
-  },
-  "https://www.tvperu.gob.pe/feed": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
-    }
-   }
-  },
-  "https://www.tvperu.gob.pe/rss.xml": {
-   "actions": {
-    "github-actions": {
-     "class": "http-403",
-     "http": 403,
-     "at": "2026-10-21T01:06:51+00:00",
-     "vantage": "github-actions",
-     "detail": ""
     }
    }
   }

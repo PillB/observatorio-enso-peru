@@ -1,6 +1,6 @@
 {
  "schema": "enso-source-registry/1",
- "generated_at": "2026-11-21T04:39:16+00:00",
+ "generated_at": "2026-11-27T08:49:01+00:00",
  "rules": {
   "peru-server": "si y solo si geoblocked es true (alguna URL geobloqueada; ver by_url)",
   "robots": "sin canales si robots.txt prohíbe la URL, salvo los feeds de noticias con reader: solo actions, como mucho cada 20 h; by_url robots unknown (nadie pudo leer su robots.txt): n8n y el pipeline lo leen antes de pedirla; by_url hop: destino de una redirección cuyo robots.txt no respondió (robots queda unknown), y quien pida la URL lee también el de ese destino",
@@ -1580,19 +1580,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -1600,7 +1597,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -1608,7 +1604,6 @@
     "https://radiosantarosa.com.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -2388,19 +2383,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -2408,7 +2400,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -2416,7 +2407,6 @@
     "https://reinadelaselva.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -3059,19 +3049,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -3079,7 +3066,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -3087,7 +3073,6 @@
     "https://pregon.com.pe/index.php/regionales?format=feed&type=rss": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -3242,19 +3227,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -3262,7 +3244,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -3270,7 +3251,6 @@
     "https://radioyaravi.org.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -3862,19 +3842,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -3882,7 +3859,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -3890,7 +3866,6 @@
     "https://soltvperu.com/category/regiones/cajamarca-noticias/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -3917,7 +3892,7 @@
    "notes": "tipo de medio: digital; alcance: local",
    "tier": 1,
    "geoblock": {
-    "status": "robots-disallowed",
+    "status": "open",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -3933,8 +3908,8 @@
     },
     "peru": null,
     "actions": {
-     "class": "robots",
-     "robots": "disallowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -3942,17 +3917,16 @@
     }
    },
    "channels": [
-    "actions"
+    "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://sinrodeoscajamarca.com/feed/": {
-     "status": "robots-disallowed",
+     "status": "open",
      "channels": [
-      "actions"
+      "n8n"
      ],
-     "robots": "disallowed",
-     "reader": true
+     "robots": "unknown"
     }
    }
   },
@@ -4167,19 +4141,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -4187,7 +4158,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -4195,7 +4165,6 @@
     "https://nacionalcallaotv.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -4476,19 +4445,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -4496,7 +4462,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -4504,7 +4469,6 @@
     "https://diariodelcusco.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -5338,19 +5302,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "absent"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "absent"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -5358,7 +5319,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -5366,7 +5326,6 @@
     "https://radiohuancayo.com.pe/wp54/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -5647,19 +5606,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -5667,7 +5623,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -5675,7 +5630,6 @@
     "https://soltvperu.com/category/regiones/la-libertad-noticias/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -5893,19 +5847,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -5913,7 +5864,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -5921,7 +5871,6 @@
     "https://soltvperu.com/category/regiones/lambayeque-noticias/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -7430,19 +7379,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -7450,7 +7396,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -7458,7 +7403,6 @@
     "https://soltvperu.com/category/regiones/piura-noticias/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -7856,19 +7800,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -7876,7 +7817,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -7884,7 +7824,6 @@
     "https://losandes.com.pe/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -10357,19 +10296,16 @@
      "n8n-aws-us-east-1"
     ],
     "open_from": [
-     "actions",
      "n8n"
     ],
     "us": {
      "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "http": 200
     },
     "peru": null,
     "actions": {
-     "class": "ok",
-     "http": 200,
-     "robots": "allowed"
+     "class": "challenge",
+     "robots": "unreachable"
     },
     "n8n": {
      "class": "ok",
@@ -10377,7 +10313,6 @@
     }
    },
    "channels": [
-    "actions",
     "n8n"
    ],
    "geoblocked": false,
@@ -10385,7 +10320,6 @@
     "https://ciifen.org/feed/": {
      "status": "open",
      "channels": [
-      "actions",
       "n8n"
      ],
      "robots": "allowed"
@@ -11432,7 +11366,7 @@
    "archive": true,
    "tier": 1,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "open",
     "from": [
      "github-actions",
      "n8n-actions-azure",
@@ -11441,10 +11375,12 @@
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "peru"
     ],
     "us": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "peru": {
@@ -11453,7 +11389,8 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": {
@@ -11462,22 +11399,21 @@
    },
    "channels": [
     "actions",
-    "n8n",
-    "peru-server"
+    "n8n"
    ],
-   "geoblocked": true,
+   "geoblocked": false,
    "by_url": {
     "https://enfen.imarpe.gob.pe/wp-json/wp/v2/posts?per_page=10&search=comunicado": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     },
     "https://enfen.imarpe.gob.pe/comunicados/": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     },
@@ -11516,16 +11452,18 @@
    "archive": true,
    "tier": 2,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "open",
     "from": [
      "github-actions",
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "peru"
     ],
     "us": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "peru": {
@@ -11534,22 +11472,23 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": null
    },
    "channels": [
     "actions",
-    "n8n",
-    "peru-server"
+    "n8n"
    ],
-   "geoblocked": true,
+   "geoblocked": false,
    "by_url": {
     "https://enfen.imarpe.gob.pe/informes-tecnicos/": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions",
+      "n8n"
      ],
      "robots": "allowed"
     },
@@ -11584,22 +11523,45 @@
    "notes": "el PDF de cada ítem está en cdn.www.gob.pe (robots.txt solo prohíbe /admin/); ruta directa desde Actions cuando la DHN pide verificación humana",
    "tier": 1,
    "geoblock": {
-    "status": "unknown",
-    "from": [],
-    "open_from": [],
-    "us": null,
-    "peru": null,
-    "actions": null,
-    "n8n": null
+    "status": "open",
+    "from": [
+     "github-actions",
+     "n8n-aws-us-east-1",
+     "peru-server"
+    ],
+    "open_from": [
+     "actions",
+     "n8n",
+     "peru"
+    ],
+    "us": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "peru": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "actions": {
+     "class": "ok",
+     "http": 200,
+     "robots": "allowed"
+    },
+    "n8n": {
+     "class": "ok",
+     "http": 200
+    }
    },
    "channels": [
     "actions",
     "n8n"
    ],
-   "geoblocked": null,
+   "geoblocked": false,
    "by_url": {
     "https://www.gob.pe/busquedas.rss?contenido[]=publicaciones&institucion[]=senamhi&term=enfen&sort_by=recent": {
-     "status": "unknown",
+     "status": "open",
      "channels": [
       "actions",
       "n8n"
@@ -11635,16 +11597,18 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "open",
     "from": [
      "github-actions",
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "peru"
     ],
     "us": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "peru": {
@@ -11653,27 +11617,28 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": false,
    "by_url": {
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Comunicado+Oficial+ENFEN%22&dsoType=ITEM&size=6&sort=dc.date.issued%2CDESC": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     },
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Informe+T%C3%A9cnico+ENFEN%22&dsoType=ITEM&size=4&sort=dc.date.issued%2CDESC": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -11701,16 +11666,18 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "open",
     "from": [
      "github-actions",
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "peru"
     ],
     "us": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "peru": {
@@ -11719,20 +11686,21 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "dns",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": false,
    "by_url": {
     "https://repositorio.imarpe.gob.pe/server/api/discover/search/objects?query=%22Bolet%C3%ADn+Semanal+Oceanogr%C3%A1fico+y+Biol%C3%B3gico%22&dsoType=ITEM&size=8&sort=dc.date.issued%2CDESC": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -11834,21 +11802,19 @@
    "n8n": false,
    "tier": 1,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "down",
     "from": [
      "github-actions",
      "peru-server"
     ],
-    "open_from": [
-     "peru"
-    ],
+    "open_from": [],
     "us": {
      "class": "timeout",
      "robots": "absent"
     },
     "peru": {
-     "class": "ok",
-     "http": 200,
+     "class": "http-5xx",
+     "http": 503,
      "robots": "allowed"
     },
     "actions": {
@@ -11858,14 +11824,14 @@
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": null,
    "by_url": {
     "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json": {
-     "status": "geoblocked",
+     "status": "down",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
@@ -12211,16 +12177,18 @@
    "n8n": false,
    "tier": 2,
    "geoblock": {
-    "status": "geoblocked",
+    "status": "open",
     "from": [
      "github-actions",
      "peru-server"
     ],
     "open_from": [
+     "actions",
      "peru"
     ],
     "us": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "peru": {
@@ -12229,20 +12197,21 @@
      "robots": "allowed"
     },
     "actions": {
-     "class": "timeout",
+     "class": "ok",
+     "http": 200,
      "robots": "allowed"
     },
     "n8n": null
    },
    "channels": [
-    "peru-server"
+    "actions"
    ],
-   "geoblocked": true,
+   "geoblocked": false,
    "by_url": {
     "https://repositorio.ana.gob.pe/": {
-     "status": "geoblocked",
+     "status": "open",
      "channels": [
-      "peru-server"
+      "actions"
      ],
      "robots": "allowed"
     }
