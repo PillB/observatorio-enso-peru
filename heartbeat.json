@@ -1,12 +1,12 @@
 {
  "schema": "enso-relay-heartbeat/1",
- "at": "2026-11-27T02:03:28+00:00",
+ "at": "2026-11-28T03:00:04+00:00",
  "result": "ok",
- "reachable": "51/58",
+ "reachable": "48/58",
  "summary": {
   "enfen": "4/4",
   "igp": "1/1",
-  "senamhi": "9/9",
+  "senamhi": "6/9",
   "ana": "3/3",
   "imarpe": "5/5",
   "cenepred": "2/2",
@@ -20,6 +20,20 @@
   "enlaces": "3/3"
  },
  "failures": [
+  {
+   "url": "https://idesep.senamhi.gob.pe/geoserver/ows?service=WFS&version=2.0.0&request=GetCapabilities",
+   "class": "timeout",
+   "error": "ConnectTimeout: timed out"
+  },
+  {
+   "url": "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=GetFeature&maxFeatures=1000&outputFormat=application/json",
+   "class": "timeout",
+   "error": "ConnectTimeout: timed out"
+  },
+  {
+   "url": "https://idesep.senamhi.gob.pe/geoserver/g_100_01/ows?service=WFS&version=1.0.0&typeName=g_100_01:view_aviso_24horas_5dias_ultimos&request=DescribeFeatureType",
+   "error": "no se pidió: el servidor no respondió a las URL anteriores"
+  },
   {
    "url": "https://web.archive.org/cdx/search/cdx?url=elcomercio.com.pe/*&from=1997&to=1998&limit=5&output=json",
    "status": 503,
@@ -84,5 +98,5 @@
   "http-403": 2,
   "ok": 1
  },
- "carried": 1
+ "carried": 4
 }
