@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Diario Ahora — Noticias de Huánuco y Perú</title>
+    <link>https://ahora.com.pe</link>
+    <description>Noticias, reportajes y opinión de Huánuco y Perú. Diario Ahora liderando la información regional.</description>
+    <language>es</language>
+    <lastBuildDate>Sat, 28 Nov 2026 03:12:24 GMT</lastBuildDate>
+    <pubDate>Fri, 27 Nov 2026 18:20:14 GMT</pubDate>
+    <atom:link href="https://ahora.com.pe/feed.xml" rel="self" type="application/rss+xml"/>
+    <copyright>© 2026 Diario Ahora — Todos los derechos reservados.</copyright>
+    <managingEditor>contacto@ahora.com.pe (Diario Ahora)</managingEditor>
+    <webMaster>contacto@ahora.com.pe (Diario Ahora)</webMaster>
+    <generator>Diario Ahora — Next.js</generator>
+    <ttl>15</ttl>
+    <image>
+      <url>https://ahora.com.pe/img/logodiario.png</url>
+      <title>Diario Ahora</title>
+      <link>https://ahora.com.pe</link>
+      <width>144</width>
+      <height>50</height>
+    </image>
+  <item>
+    <title>Helicóptero de la FAP sufre siniestro en el VRAEM durante extracción de patrulla</title>
+    <link>https://ahora.com.pe/nacional/helicoptero-fap-siniestro-vraem-sanabamba</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/helicoptero-fap-siniestro-vraem-sanabamba</guid>
+    <pubDate>Fri, 27 Nov 2026 18:20:14 GMT</pubDate>
+    <description><![CDATA[Un helicóptero de la FAP sufrió un siniestro este viernes 27 de noviembre en el VRAEM mientras extraía una patrulla militar. El Comando Especial VRAEM activó los protocolos SAR en Sanabamba, Canayre (Ayacucho).]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[FAP]]></category>
+    <category><![CDATA[VRAEM]]></category>
+    <category><![CDATA[helicóptero]]></category>
+    <category><![CDATA[siniestro]]></category>
+    <category><![CDATA[Comando Especial VRAEM]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/5a35105185ab.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/5a35105185ab.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/5a35105185ab.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Juan Reynoso da de baja a ocho jugadores en Necaxa tras el Apertura 2026</title>
+    <link>https://ahora.com.pe/deportes/juan-reynoso-bajas-necaxa-apertura-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/juan-reynoso-bajas-necaxa-apertura-2026</guid>
+    <pubDate>Sat, 28 Nov 2026 03:00:13 GMT</pubDate>
+    <description><![CDATA[Necaxa confirmó la salida de ocho futbolistas como parte del proceso de renovación encabezado por Juan Reynoso, tras una campaña en la que el club quedó fuera de la Liguilla del Apertura 2026.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Juan Reynoso]]></category>
+    <category><![CDATA[Necaxa]]></category>
+    <category><![CDATA[Liga MX]]></category>
+    <category><![CDATA[Apertura 2026]]></category>
+    <category><![CDATA[Clausura 2027]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c0a9b7e5c3f1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c0a9b7e5c3f1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c0a9b7e5c3f1.jpg"/>
+    <media:description type="plain"><![CDATA[El ‘Cabezón’ tomó una drástica decisión con miras a la temporada 2027 y anunció la salida de ocho futbolistas. — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Italia vence 2-1 a Chequia y jugará su cuarta final consecutiva de Copa Davis</title>
+    <link>https://ahora.com.pe/deportes/italia-vencio-chequia-final-copa-davis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/italia-vencio-chequia-final-copa-davis</guid>
+    <pubDate>Sat, 28 Nov 2026 02:50:05 GMT</pubDate>
+    <description><![CDATA[Italia derrotó 2-1 a Chequia en la semifinal de la Copa Davis en Bolonia y accedió a su cuarta final consecutiva, donde enfrentará a España o Gran Bretaña.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Copa Davis]]></category>
+    <category><![CDATA[Italia]]></category>
+    <category><![CDATA[Chequia]]></category>
+    <category><![CDATA[Lorenzo Musetti]]></category>
+    <category><![CDATA[final]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cbcf40a544d4.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cbcf40a544d4.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cbcf40a544d4.webp"/>
+    <media:description type="plain"><![CDATA[Son dieciséis eliminatorias consecutivas ganadas, no conoce la derrota desde 2023. Se clasificó para su cuarta final consecutiva, algo que no se conocía en la era moderna de la <b>Copa Davis </b>desde que Suecia encadenó siete&nbsp; entre 1983 y 1989. Buscara un póker seguido este domingo, a las 15: — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Asociaciones lanzan campaña para proteger animales ante huaicos e inundaciones por El Niño</title>
+    <link>https://ahora.com.pe/sociedad/campana-animales-huaicos-fenomeno-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/campana-animales-huaicos-fenomeno-nino</guid>
+    <pubDate>Sat, 28 Nov 2026 01:20:06 GMT</pubDate>
+    <description><![CDATA[Protectoras de animales impulsan la campaña &apos;Juntos por los Animales en Desastres&apos; ante el Fenómeno El Niño 2026-2027. La red suma nueve organizaciones de Lima y tres regionales, con brigadas veterinarias y colecta desde el 30 de noviembre.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <category><![CDATA[protección animal]]></category>
+    <category><![CDATA[huaicos]]></category>
+    <category><![CDATA[campaña solidaria]]></category>
+    <category><![CDATA[ASPPA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/62543b3d0396.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/62543b3d0396.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/62543b3d0396.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Gordon y Adeyemi, la punta del tridente del Barça que Flick aún no define</title>
+    <link>https://ahora.com.pe/deportes/gordon-adeyemi-punta-tridente-barca-flick</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gordon-adeyemi-punta-tridente-barca-flick</guid>
+    <pubDate>Sat, 28 Nov 2026 01:10:05 GMT</pubDate>
+    <description><![CDATA[Gordon y Adeyemi compiten por el tercer puesto del ataque del Barcelona junto a Lamine Yamal y Raphinha, con Gabriel Jesus como suplente del nueve.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barcelona]]></category>
+    <category><![CDATA[Anthony Gordon]]></category>
+    <category><![CDATA[Karim Adeyemi]]></category>
+    <category><![CDATA[Hansi Flick]]></category>
+    <category><![CDATA[Gabriel Jesus]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/041601114f24.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/041601114f24.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/041601114f24.webp"/>
+    <media:description type="plain"><![CDATA[No hay mucho secreto en la delantera ideal del <b>Barça</b>. Si no hay accidentes, <b>Lamine Yamal </b>y <b>Raphinha </b>son indiscutibles por su capacidad para marcar diferencias.<b> Gabriel Jesus</b> también tiene claro su rol como delantero centro suplente, ya sea para emergencias o para dar desc — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Sutran pide no cruzar tramos inundados por lluvias del Fenómeno El Niño</title>
+    <link>https://ahora.com.pe/sociedad/sutran-no-cruzar-tramos-inundados-lluvias-nino</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/sutran-no-cruzar-tramos-inundados-lluvias-nino</guid>
+    <pubDate>Sat, 28 Nov 2026 00:20:08 GMT</pubDate>
+    <description><![CDATA[Sutran recomendó a conductores de vehículos particulares, de pasajeros y de carga evitar tramos inundados y pasos a desnivel anegados ante el incremento de lluvias por el Fenómeno El Niño. El Senamhi mantiene avisos meteorológicos en varias regiones del país y el Indeci advirtió que 208 distritos están en riesgo de huaicos y deslizamientos.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Sutran]]></category>
+    <category><![CDATA[Fenómeno El Niño]]></category>
+    <category><![CDATA[lluvias]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <category><![CDATA[tramos inundados]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c35d722f5828.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c35d722f5828.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c35d722f5828.webp"/>
+    <media:description type="plain"><![CDATA[Ante el incremento de lluvias por el fenómeno El Niño, la Superintendencia de Transporte Terrestre de Personas, Carga y Mercancías (Sutran) recomendó a los conductores de vehículos particulares y de transporte de pasajeros y mercancías evitar los pasos a desnivel (baipases) inundados por precipitaci — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Perú Pass: Cómo llevar el DNI en el celular y qué trámites se podrán hacer sin mostrar el documento físico</title>
+    <link>https://ahora.com.pe/tecnologia/peru-pass-como-llevar-el-dni-en-el-celular-y-que-tramites-se-podran-hacer-sin</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/peru-pass-como-llevar-el-dni-en-el-celular-y-que-tramites-se-podran-hacer-sin</guid>
+    <pubDate>Fri, 27 Nov 2026 23:58:17 GMT</pubDate>
+    <description><![CDATA[Perú Pass: el DNI digital y los trámites que puedes hacer]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3919e5d79ba4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3919e5d79ba4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3919e5d79ba4.jpg"/>
+  </item>
+  <item>
+    <title>Real Madrid vs. Alavés: horario, canales y dónde ver la fecha 14 de LaLiga</title>
+    <link>https://ahora.com.pe/deportes/real-madrid-alaves-fecha-14-laliga-horario-canales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/real-madrid-alaves-fecha-14-laliga-horario-canales</guid>
+    <pubDate>Fri, 27 Nov 2026 23:40:09 GMT</pubDate>
+    <description><![CDATA[Real Madrid y Deportivo Alavés se enfrentan este sábado 28 de noviembre por la jornada 14 de LaLiga EA Sports en el Santiago Bernabéu, con transmisión de Movistar Plus en España y ESPN/Disney+ en Perú.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Alavés]]></category>
+    <category><![CDATA[LaLiga EA Sports]]></category>
+    <category><![CDATA[fecha 14]]></category>
+    <category><![CDATA[Movistar Plus]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/fc153bec4488.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/fc153bec4488.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/fc153bec4488.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>El clásico Barça-Madrid en una final de Champions: ¿posible en 2027?</title>
+    <link>https://ahora.com.pe/deportes/final-barca-madrid-champions-2027</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/final-barca-madrid-champions-2027</guid>
+    <pubDate>Fri, 27 Nov 2026 23:40:08 GMT</pubDate>
+    <description><![CDATA[El artículo especula con una final de Champions entre Barça y Real Madrid en 2027, un hecho histórico que nunca ha ocurrido y que estuvo cerca en cuatro ocasiones.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Barça]]></category>
+    <category><![CDATA[Real Madrid]]></category>
+    <category><![CDATA[Champions League]]></category>
+    <category><![CDATA[final]]></category>
+    <category><![CDATA[Metropolitano]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e0e8941c93f1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e0e8941c93f1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e0e8941c93f1.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Satipo: Serfor refuerza capacidades de brigadas asháninkas contra incendios forestales</title>
+    <link>https://ahora.com.pe/regional/satipo-serfor-brigadas-ashaninkas-incendios-forestales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/satipo-serfor-brigadas-ashaninkas-incendios-forestales</guid>
+    <pubDate>Fri, 27 Nov 2026 22:50:07 GMT</pubDate>
+    <description><![CDATA[El Serfor capacitó a brigadas comunitarias asháninkas en prevención de incendios forestales y control del fuego inicial en Satipo, Junín. La formación se realizó en el marco de la Estrategia Paamari de la CARE.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[incendios forestales]]></category>
+    <category><![CDATA[Satipo]]></category>
+    <category><![CDATA[brigadas asháninkas]]></category>
+    <category><![CDATA[Serfor]]></category>
+    <category><![CDATA[Estrategia Paamari]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/39ea8f2eebd2.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/39ea8f2eebd2.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/39ea8f2eebd2.webp"/>
+    <media:description type="plain"><![CDATA[El Servicio Nacional Forestal y de Fauna Silvestre (Serfor) del Ministerio de Desarrollo Agrario y Riego (Midagri) reforzó las capacidades de brigadas asháninkas en prevención de incendios forestales y control del fuego en etapa inicial, en la provincia de Satipo, departamento de Junín. — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Buses y camiones solo reciben multa por GPS si superan el límite en más de 10 km/h</title>
+    <link>https://ahora.com.pe/regional/buses-y-camiones-solo-reciben-multa-por-gps-si-superan-el-limite-en-mas-de-10-km</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/buses-y-camiones-solo-reciben-multa-por-gps-si-superan-el-limite-en-mas-de-10-km</guid>
+    <pubDate>Fri, 27 Nov 2026 22:44:44 GMT</pubDate>
+    <description><![CDATA[Un bus interprovincial que recorre la carretera Longitudinal de la Sierra Norte, a la altura de Ambo, tiene un límite de 90 kilómetros por hora. Desde octubre]]></description>
+    <dc:creator><![CDATA[Jefferson Jhair Campos Azucena]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/709f64d21ae1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/709f64d21ae1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/709f64d21ae1.jpg"/>
+  </item>
+  <item>
+    <title>Ivana Yturbe celebra convocatoria de Beto Da Silva a la selección peruana</title>
+    <link>https://ahora.com.pe/entretenimiento/ivana-yturbe-beto-da-silva-convocatoria-seleccion</link>
+    <guid isPermaLink="true">https://ahora.com.pe/entretenimiento/ivana-yturbe-beto-da-silva-convocatoria-seleccion</guid>
+    <pubDate>Fri, 27 Nov 2026 22:00:13 GMT</pubDate>
+    <description><![CDATA[Ivana Yturbe dedicó un emotivo mensaje en redes a su esposo Beto Da Silva tras su convocatoria a la selección peruana para el amistoso contra Panamá, el 9 de diciembre en el estadio Garcilaso de la Vega del Cusco.]]></description>
+    <dc:creator><![CDATA[Ahora Entretenimiento]]></dc:creator>
+    <category><![CDATA[Entretenimiento]]></category>
+    <category><![CDATA[Ivana Yturbe]]></category>
+    <category><![CDATA[Beto Da Silva]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Mano Menezes]]></category>
+    <category><![CDATA[amistoso Perú Panamá]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ccb0290cc188.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ccb0290cc188.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ccb0290cc188.jpg"/>
+    <media:description type="plain"><![CDATA[Ivana Yturbe no pudo ser ajena a la reciente convocatoria de su esposo Beto Da Silva en la lista de Mano Menezes, y tuvo un lindo gesto con él en las redes. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>España completa su primer enlace militar por satélite con la red segura Govsatcom de la UE</title>
+    <link>https://ahora.com.pe/tecnologia/espana-primer-enlace-militar-govsatcom-spainsat</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/espana-primer-enlace-militar-govsatcom-spainsat</guid>
+    <pubDate>Fri, 27 Nov 2026 22:00:11 GMT</pubDate>
+    <description><![CDATA[España realizó con éxito su primera conexión satelital mediante el programa europeo Govsatcom, en un ensayo militar coordinado por el INTA y el Cestic con el satélite SpainSat NG I de Hisdesat.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Govsatcom]]></category>
+    <category><![CDATA[SpainSat NG I]]></category>
+    <category><![CDATA[INTA]]></category>
+    <category><![CDATA[Cestic]]></category>
+    <category><![CDATA[Hisdesat]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6685b4a3c5b1.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6685b4a3c5b1.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6685b4a3c5b1.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Andrealli queda fuera de la lista de Perú para el amistoso ante Panamá</title>
+    <link>https://ahora.com.pe/deportes/andrealli-fuera-convocatoria-peru-panama</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/andrealli-fuera-convocatoria-peru-panama</guid>
+    <pubDate>Fri, 27 Nov 2026 20:20:07 GMT</pubDate>
+    <description><![CDATA[Francesco Andrealli no integra la lista de 24 convocados de Perú para el amistoso ante Panamá del 9 de diciembre en Cusco. Su club, el Como 1907, decidió retenerlo al no tratarse de una fecha FIFA oficial.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Francesco Andrealli]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Mano Menezes]]></category>
+    <category><![CDATA[Perú vs Panamá]]></category>
+    <category><![CDATA[Como 1907]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/936e4b60a85d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/936e4b60a85d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/936e4b60a85d.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Atlético de Madrid sigue a Gustavo Varela, goleador del Monza</title>
+    <link>https://ahora.com.pe/deportes/atletico-madrid-gustavo-varela-monza</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/atletico-madrid-gustavo-varela-monza</guid>
+    <pubDate>Fri, 27 Nov 2026 20:20:06 GMT</pubDate>
+    <description><![CDATA[El Atlético de Madrid monitorea a Gustavo Varela, delantero portugués del Monza que suma 11 goles en 11 jornadas de la Serie A y atrae el interés de varios gigantes europeos, aunque no hay constancia de una oferta formal del club español.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gustavo Varela]]></category>
+    <category><![CDATA[Atlético de Madrid]]></category>
+    <category><![CDATA[Monza]]></category>
+    <category><![CDATA[Serie A]]></category>
+    <category><![CDATA[fichajes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/bdd4eac3df24.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/bdd4eac3df24.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/bdd4eac3df24.webp"/>
+    <media:description type="plain"><![CDATA[El<b> Atlético de Madrid</b> tiene en su radar a uno de los delanteros que más ruido están haciendo esta temporada en el fútbol italiano. Se trata de <b>Gustavo Varela</b>, portugués de apenas 21 años, que está brillando en la<b> Serie A.</b> — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Samuel Pereda, el zaguero de 18 años de Alianza Lima que convocó Mano Menezes</title>
+    <link>https://ahora.com.pe/deportes/samuel-pereda-alianza-lima-convocado-seleccion-peruana</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/samuel-pereda-alianza-lima-convocado-seleccion-peruana</guid>
+    <pubDate>Fri, 27 Nov 2026 18:40:08 GMT</pubDate>
+    <description><![CDATA[Samuel Pereda, defensa central de 18 años de Alianza Lima, fue convocado por Mano Menezes a la selección peruana para el amistoso ante Panamá.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Samuel Pereda]]></category>
+    <category><![CDATA[Alianza Lima]]></category>
+    <category><![CDATA[selección peruana]]></category>
+    <category><![CDATA[Mano Menezes]]></category>
+    <category><![CDATA[amistoso Perú Panamá]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/be4e8c02d280.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/be4e8c02d280.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/be4e8c02d280.jpg"/>
+    <media:description type="plain"><![CDATA[Una de las novedades del Mano Menezes es Samuel Pereda, futbolista que juega en las juveniles de Alianza Lima. Conoce más sobre este nuevo 'Potrillo'. — Foto: Líbero]]></media:description>
+  </item>
+  <item>
+    <title>Dani Olmo apadrina una Cruyff Court en Terrassa y apunta a &quot;ganarlo todo&quot; antes de Navidad</title>
+    <link>https://ahora.com.pe/deportes/dani-olmo-cruyff-court-terrassa-ganarlo-todo-navidad</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/dani-olmo-cruyff-court-terrassa-ganarlo-todo-navidad</guid>
+    <pubDate>Fri, 27 Nov 2026 18:40:07 GMT</pubDate>
+    <description><![CDATA[Dani Olmo inauguró una nueva Cruyff Court en Terrassa, su ciudad natal, y declaró que el Barça tiene el objetivo de ganar todo antes del parón navideño. El jugador también elogió a Marc Márquez tras su retirada.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Dani Olmo]]></category>
+    <category><![CDATA[Cruyff Court]]></category>
+    <category><![CDATA[Terrassa]]></category>
+    <category><![CDATA[Barça]]></category>
+    <category><![CDATA[Marc Márquez]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2ff7d96f883f.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2ff7d96f883f.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2ff7d96f883f.webp"/>
+    <media:description type="plain"><![CDATA[El barrio de Montserrat, en Terrassa, la localidad natal de <b>Dani Olmo</b>, acoge desde este viernes una <b>nueva Cruyff Court</b>, apadrinada por el mediapunta de 28 años del <b>Barça</b>. Es la 337 del mundo en 20 países, la segunda en la ciudad egarense tras la inaugurada por <b>Xavi Hernández< — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Una final de Libertadores con sabor a 1968</title>
+    <link>https://ahora.com.pe/deportes/una-final-de-libertadores-con-sabor-a-1968</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/una-final-de-libertadores-con-sabor-a-1968</guid>
+    <pubDate>Fri, 27 Nov 2026 18:24:32 GMT</pubDate>
+    <description><![CDATA[Palmeiras y Estudiantes definen la Copa Libertadores 2026 en el Centenario de Montevideo]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/488b3b6221f7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/488b3b6221f7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/488b3b6221f7.jpg"/>
+  </item>
+  <item>
+    <title>Desborde del río La Leche aísla caseríos de Pacora y afecta 300 hectáreas</title>
+    <link>https://ahora.com.pe/policiales/rio-la-leche-desborde-pacora-caserios-aislados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/rio-la-leche-desborde-pacora-caserios-aislados</guid>
+    <pubDate>Fri, 27 Nov 2026 17:50:08 GMT</pubDate>
+    <description><![CDATA[El río La Leche se desbordó en Pacora, Lambayeque, y dejó aislados a siete caseríos y más de 300 hectáreas de cultivos afectadas, según Agroperú Informa. El alcalde en funciones, José Luis Sipión, reportó al menos 50 familias perjudicadas y pidió maquinaria más grande para reforzar las márgenes.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[río La Leche]]></category>
+    <category><![CDATA[Pacora]]></category>
+    <category><![CDATA[Lambayeque]]></category>
+    <category><![CDATA[desborde]]></category>
+    <category><![CDATA[lluvias]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/837685b6865d.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/837685b6865d.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/837685b6865d.webp"/>
+    <media:description type="plain"><![CDATA[La emergencia por las intensas lluvias en la región Lambayeque se agrava. El río La Leche se desbordó en el sector de la unión con el antiguo cauce del río Motupe, en la zona de Pacora, provocando la interrupción del camino que conecta a los pobladores de los caseríos Las Juntas en la parte baja, Se — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>San Pedro de Saño alberga la segunda fecha de la Liga Distrital de Huancayo</title>
+    <link>https://ahora.com.pe/deportes/segunda-fecha-liga-distrital-huancayo-sano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/segunda-fecha-liga-distrital-huancayo-sano</guid>
+    <pubDate>Fri, 27 Nov 2026 17:00:15 GMT</pubDate>
+    <description><![CDATA[La Liga Distrital de Fútbol de Huancayo programó la segunda fecha de su torneo de segunda división para el domingo 29 en el estadio Nazareno de San Pedro de Saño, con seis partidos y doce clubes participantes.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Liga Distrital de Huancayo]]></category>
+    <category><![CDATA[segunda división]]></category>
+    <category><![CDATA[estadio Nazareno]]></category>
+    <category><![CDATA[San Pedro de Saño]]></category>
+    <category><![CDATA[Copa Perú]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/899f820b3bba.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/899f820b3bba.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/899f820b3bba.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Leganés y Sabadell, separados por un punto, se miden este viernes en Butarque</title>
+    <link>https://ahora.com.pe/deportes/leganes-sabadell-laliga-hypermotion-butarque</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leganes-sabadell-laliga-hypermotion-butarque</guid>
+    <pubDate>Fri, 27 Nov 2026 17:00:13 GMT</pubDate>
+    <description><![CDATA[El CD Leganés recibe al CE Sabadell este viernes en Butarque por LaLiga Hypermotion, con solo un punto de diferencia en la clasificación y transmisión en directo vía Mundo Deportivo.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Leganés]]></category>
+    <category><![CDATA[Sabadell]]></category>
+    <category><![CDATA[LaLiga Hypermotion]]></category>
+    <category><![CDATA[Butarque]]></category>
+    <category><![CDATA[Mundo Deportivo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/03205945cce4.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/03205945cce4.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/03205945cce4.webp"/>
+    <media:description type="plain"><![CDATA[Gracias a un acuerdo alcanzado con Mediapro, la web de Mundo Deportivo ofrecerá cada jornada a sus lectores un partido de <b>LaLiga Hypermotion</b>, la liga de fútbol de la Segunda División española. A través de nuestra edición digital, con un acceso desde la Homepage, podrá seguirse en directo uno — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Senamhi: Lima Oeste llegará a 32°C y Lima Este a 31°C este 27 de noviembre</title>
+    <link>https://ahora.com.pe/sociedad/senamhi-pronostico-lima-27-noviembre-2026</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/senamhi-pronostico-lima-27-noviembre-2026</guid>
+    <pubDate>Fri, 27 Nov 2026 16:50:07 GMT</pubDate>
+    <description><![CDATA[El Senamhi pronosticó para este 27 de noviembre temperaturas de hasta 32°C en Lima Oeste y 31°C en Lima Este, con cielo nublado variando a parcial. La sensación térmica ya había llegado a 35°C el 18 de noviembre en Jesús María.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <category><![CDATA[pronóstico del clima]]></category>
+    <category><![CDATA[Lima]]></category>
+    <category><![CDATA[temperatura máxima]]></category>
+    <category><![CDATA[El Niño 2026]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/77c1477ad42d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/77c1477ad42d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/77c1477ad42d.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Diresa pide apoyo de municipios y otras instituciones en la lucha contra el dengue</title>
+    <link>https://ahora.com.pe/regional/diresa-pide-apoyo-municipios-dengue-huanuco</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/diresa-pide-apoyo-municipios-dengue-huanuco</guid>
+    <pubDate>Fri, 27 Nov 2026 16:20:07 GMT</pubDate>
+    <description><![CDATA[La Dirección Regional de Salud de Huánuco reclamó la participación de municipios, Policía, Ejército y Fiscalía en las acciones contra el dengue. Confirmó el aumento de casos, atribuyó los cuadros graves a la automedicación y anunció la llegada de 2 000 vacunas para Puerto Inca y Leoncio Prado.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[dengue Huánuco]]></category>
+    <category><![CDATA[Diresa]]></category>
+    <category><![CDATA[Leoncio Prado]]></category>
+    <category><![CDATA[vacunas dengue]]></category>
+    <category><![CDATA[Luis Maccha Aiquipa]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c8f9991eb2ca.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c8f9991eb2ca.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c8f9991eb2ca.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Estudiante awajún de Educación Inicial Bilingüe sigue hospitalizada con anemia grave</title>
+    <link>https://ahora.com.pe/sociedad/estudiante-awajun-anemia-grave-yarinacocha</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/estudiante-awajun-anemia-grave-yarinacocha</guid>
+    <pubDate>Fri, 27 Nov 2026 15:20:10 GMT</pubDate>
+    <description><![CDATA[Una estudiante awajún del noveno ciclo de Educación Inicial Bilingüe está hospitalizada en Yarinacocha con anemia grave y plaquetas bajas; sus compañeras gestionan donantes de sangre.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[anemia awajún]]></category>
+    <category><![CDATA[Educación Inicial Bilingüe]]></category>
+    <category><![CDATA[Hospital Amazónico Yarinacocha]]></category>
+    <category><![CDATA[estudiante indígena]]></category>
+    <category><![CDATA[donantes de sangre]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e1d63c2ccf63.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e1d63c2ccf63.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e1d63c2ccf63.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Ecocampo y Provraem capacitan en Pangoa sobre nutrición del cacao</title>
+    <link>https://ahora.com.pe/policiales/ecocampo-provraem-nutricion-cacao-pangoa</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/ecocampo-provraem-nutricion-cacao-pangoa</guid>
+    <pubDate>Fri, 27 Nov 2026 15:20:09 GMT</pubDate>
+    <description><![CDATA[Ecocampo acompañó al equipo técnico de Provraem en una jornada formativa sobre nutrición de plantaciones de cacao en Pangoa, Junín. La actividad busca fortalecer la producción cacaotera sostenible y rentable en la zona.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[cacao]]></category>
+    <category><![CDATA[Pangoa]]></category>
+    <category><![CDATA[Ecocampo]]></category>
+    <category><![CDATA[Provraem]]></category>
+    <category><![CDATA[nutrición de cultivos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2435d4e144bd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2435d4e144bd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2435d4e144bd.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Gabriel Calderón: técnicos y gestores formados antes que infraestructura en el fútbol peruano</title>
+    <link>https://ahora.com.pe/deportes/gabriel-calderon-tecnicos-gestores-infraestructura-futbol-peruano</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/gabriel-calderon-tecnicos-gestores-infraestructura-futbol-peruano</guid>
+    <pubDate>Fri, 27 Nov 2026 15:20:08 GMT</pubDate>
+    <description><![CDATA[Gabriel Calderón, director del Máster en Football Coaching &amp; Management de la Universidad Europea, planteó en Lima un orden de prioridades para el fútbol peruano: formación de técnicos, luego de directivos y al final infraestructura.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Gabriel Calderón]]></category>
+    <category><![CDATA[fútbol peruano]]></category>
+    <category><![CDATA[canteras]]></category>
+    <category><![CDATA[formación de técnicos]]></category>
+    <category><![CDATA[Universidad Europea]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6bc492ba59b8.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6bc492ba59b8.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6bc492ba59b8.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Policía halla tres celulares arrojados durante asalto en la Costa Verde, Callao</title>
+    <link>https://ahora.com.pe/policiales/asalto-costa-verde-callao-celulares</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/asalto-costa-verde-callao-celulares</guid>
+    <pubDate>Fri, 27 Nov 2026 15:20:07 GMT</pubDate>
+    <description><![CDATA[La Policía investiga un asalto en la subida de Santa Rosa de la Costa Verde, en el Callao, donde halló tres celulares que habrían sido arrojados por los atacantes y revisa un vehículo blindado con impactos de bala.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[asalto Costa Verde]]></category>
+    <category><![CDATA[Callao]]></category>
+    <category><![CDATA[Policía Nacional del Perú]]></category>
+    <category><![CDATA[celulares]]></category>
+    <category><![CDATA[vehículo blindado]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/e45c57b8bdf7.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/e45c57b8bdf7.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/e45c57b8bdf7.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>Desarrollo de la profesión contable en ambientes virtuales</title>
+    <link>https://ahora.com.pe/opinion/desarrollo-de-la-profesion-contable-en-ambientes-virtuales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/desarrollo-de-la-profesion-contable-en-ambientes-virtuales</guid>
+    <pubDate>Fri, 27 Nov 2026 15:11:19 GMT</pubDate>
+    <description><![CDATA[La integración de las TIC y la inteligencia artificial transforma la formación y el ejercicio del contador público.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[César Augusto Kanashiro Castañeda]]></category>
+    <category><![CDATA[contabilidad]]></category>
+    <category><![CDATA[TIC]]></category>
+    <category><![CDATA[inteligencia artificial]]></category>
+    <category><![CDATA[educación virtual]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/f0e84713e4db.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/f0e84713e4db.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/f0e84713e4db.jpg"/>
+    <media:title type="plain"><![CDATA[Columna de opinión de César Augusto Kanashiro Castañeda]]></media:title>
+  </item>
+  <item>
+    <title>Miguel Lescano y la Primera Bienal Street NY</title>
+    <link>https://ahora.com.pe/opinion/miguel-lescano-y-la-primera-bienal-street-ny</link>
+    <guid isPermaLink="true">https://ahora.com.pe/opinion/miguel-lescano-y-la-primera-bienal-street-ny</guid>
+    <pubDate>Fri, 27 Nov 2026 15:09:44 GMT</pubDate>
+    <description><![CDATA[El poeta y artista visual Miguel Lescano llevó obras de artistas peruanos a Central Park en un acto performático de calle.]]></description>
+    <dc:creator><![CDATA[Jimmy Trujillo]]></dc:creator>
+    <category><![CDATA[Opinión]]></category>
+    <category><![CDATA[Israel Tolentino]]></category>
+    <category><![CDATA[Miguel Lescano]]></category>
+    <category><![CDATA[Primera Bienal Street NY]]></category>
+    <category><![CDATA[Central Park]]></category>
+    <category><![CDATA[arte peruano]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d82d87ed7c82.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d82d87ed7c82.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d82d87ed7c82.jpg"/>
+    <media:title type="plain"><![CDATA[Columna de opinión de Israel Tolentino]]></media:title>
+  </item>
+  <item>
+    <title>Cenepred advierte riesgo de huaicos e inundaciones por lluvias en siete regiones</title>
+    <link>https://ahora.com.pe/sociedad/cenepred-riesgo-huaicos-inundaciones-siete-regiones</link>
+    <guid isPermaLink="true">https://ahora.com.pe/sociedad/cenepred-riesgo-huaicos-inundaciones-siete-regiones</guid>
+    <pubDate>Fri, 27 Nov 2026 12:20:07 GMT</pubDate>
+    <description><![CDATA[Cenepred advirtió que las lluvias de moderada a extrema intensidad previstas del 27 al 29 de noviembre podrían causar huaicos, deslizamientos e inundaciones en Piura, Tumbes, Cajamarca, Junín, La Libertad, Lambayeque y Lima, con millones de personas en riesgo alto y muy alto.]]></description>
+    <dc:creator><![CDATA[Ahora Sociedad]]></dc:creator>
+    <category><![CDATA[Sociedad]]></category>
+    <category><![CDATA[Cenepred]]></category>
+    <category><![CDATA[huaicos]]></category>
+    <category><![CDATA[inundaciones]]></category>
+    <category><![CDATA[Senamhi]]></category>
+    <category><![CDATA[lluvias intensas]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d316c358bde4.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d316c358bde4.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d316c358bde4.webp"/>
+    <media:description type="plain"><![CDATA[Las lluvias de moderada a extrema intensidad previstas desde hoy viernes 27 al domingo 29 de noviembre podrían desencadenar inundaciones, activación de quebradas, huaicos y deslizamientos en el norte y otras regiones del país que pondrían en riesgo muy alto y alto a la población de los departamentos — Foto: Agencia Andina]]></media:description>
+  </item>
+  <item>
+    <title>Dos sujetos con cascos y rostro cubierto asaltan minimarket en Amarilis y huyen en moto</title>
+    <link>https://ahora.com.pe/regional/asalto-minimarket-don-pedrito-amarilis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/asalto-minimarket-don-pedrito-amarilis</guid>
+    <pubDate>Fri, 27 Nov 2026 12:10:07 GMT</pubDate>
+    <description><![CDATA[Dos sujetos con el rostro cubierto y cascos de seguridad asaltaron anoche el minimarket Don Pedrito, en la vía Colectora, distrito de Amarilis, y huyeron con el dinero de las ventas del día en una motocicleta conducida por un tercer implicado. La Policía revisa cámaras de seguridad de la zona.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[asalto]]></category>
+    <category><![CDATA[minimarket Don Pedrito]]></category>
+    <category><![CDATA[Amarilis]]></category>
+    <category><![CDATA[Huánuco]]></category>
+    <category><![CDATA[Policía Nacional]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1ae754489b3e.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1ae754489b3e.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1ae754489b3e.jpg"/>
+    <media:description type="plain"><![CDATA[Límites: OCHA/IGN Perú · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Sport Huancayo no podría usar el IPD si llega a la final ante Alianza Lima</title>
+    <link>https://ahora.com.pe/deportes/sport-huancayo-ipd-riesgo-final-alianza-lima</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/sport-huancayo-ipd-riesgo-final-alianza-lima</guid>
+    <pubDate>Fri, 27 Nov 2026 12:10:07 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo ganó el Torneo Clausura y enfrentará a Universitario en semifinales de la Liga 1 2026, con solo tribuna occidente y hinchada local habilitadas. Si llega a la final, el IPD no le alquilaría su estadio por los trabajos de renovación de la pista atlética y por el incumplimiento en la tribuna oriente.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Sport Huancayo]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Liga 1 2026]]></category>
+    <category><![CDATA[IPD Huancayo]]></category>
+    <category><![CDATA[semifinales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6b93131217c4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6b93131217c4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6b93131217c4.jpg"/>
+    <media:description type="plain"><![CDATA[Escudos: ESPN · composición del Diario Ahora — Foto: Diario Ahora (propia)]]></media:description>
+  </item>
+  <item>
+    <title>Fallece a los 37 años el arquero islandés Ingvar Jónsson</title>
+    <link>https://ahora.com.pe/deportes/muere-ingvar-jonsson-arquero-islandes-37-anos</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/muere-ingvar-jonsson-arquero-islandes-37-anos</guid>
+    <pubDate>Fri, 27 Nov 2026 12:10:06 GMT</pubDate>
+    <description><![CDATA[El arquero islandés Ingvar Jónsson, del Víkingur Reykjavík y exinternacional con Islandia, falleció a los 37 años tras un cáncer detectado a inicios de temporada. Su club y la Federación Islandesa confirmaron la noticia.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Ingvar Jónsson]]></category>
+    <category><![CDATA[Víkingur Reykjavík]]></category>
+    <category><![CDATA[fútbol islandés]]></category>
+    <category><![CDATA[Islandia]]></category>
+    <category><![CDATA[Eurocopa 2016]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a07174431f6a.webp" length="0" type="image/webp"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a07174431f6a.webp" medium="image" type="image/webp"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a07174431f6a.webp"/>
+    <media:description type="plain"><![CDATA[Luto en el fútbol islandés tras conocerse la noticia del fallecimiento del guardameta<b> Ingvar Jónsson</b>. Según ha informado tanto su club, el <b>Víkingur</b>, como su selección, la <b>Federación Islandesa de Fútbol</b>, el&nbsp;jugador ha fallecido a la edad de 37 años víctima de un cáncer que l — Foto: Mundo Deportivo]]></media:description>
+  </item>
+  <item>
+    <title>Terafab: Musk inicia en Texas la fábrica de chips más grande del planeta</title>
+    <link>https://ahora.com.pe/tecnologia/terafab-musk-fabrica-chips-mas-grande-texas</link>
+    <guid isPermaLink="true">https://ahora.com.pe/tecnologia/terafab-musk-fabrica-chips-mas-grande-texas</guid>
+    <pubDate>Fri, 27 Nov 2026 10:30:10 GMT</pubDate>
+    <description><![CDATA[Tesla y SpaceX iniciaron en octubre la construcción de la primera fase de Terafab, un complejo de semiconductores en Anderson, Texas, con una inversión inicial de 16.800 millones de dólares y una meta final de 9,29 millones de metros cuadrados para fabricar chips.]]></description>
+    <dc:creator><![CDATA[Ahora Tecnologia]]></dc:creator>
+    <category><![CDATA[Tecnología]]></category>
+    <category><![CDATA[Terafab]]></category>
+    <category><![CDATA[Elon Musk]]></category>
+    <category><![CDATA[semiconductores]]></category>
+    <category><![CDATA[Tesla]]></category>
+    <category><![CDATA[SpaceX]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a47ebc66ddbd.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a47ebc66ddbd.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a47ebc66ddbd.jpg"/>
+    <media:description type="plain"><![CDATA[Imagen generada por IA · Diario Ahora]]></media:description>
+  </item>
+  <item>
+    <title>León se juega puntos vitales</title>
+    <link>https://ahora.com.pe/deportes/leon-se-juega-puntos-vitales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/leon-se-juega-puntos-vitales</guid>
+    <pubDate>Fri, 27 Nov 2026 09:02:06 GMT</pubDate>
+    <description><![CDATA[En medio de cuestionamientos del comando técnico y de los representantes de las barras contra la dirigencia, León de Huánuco viajó a la provincia de Cajabamba, región Cajamarca, para enfrentar al Dos]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[León]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/a941da08f551.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/a941da08f551.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/a941da08f551.jpg"/>
+    <media:description type="plain"><![CDATA[León se juega puntos vitales — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Arrasco despierta interés de Alianza y Cristal</title>
+    <link>https://ahora.com.pe/deportes/arrasco-despierta-interes-de-alianza-y-cristal</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/arrasco-despierta-interes-de-alianza-y-cristal</guid>
+    <pubDate>Fri, 27 Nov 2026 09:02:02 GMT</pubDate>
+    <description><![CDATA[Tras consumarse el descenso de FC Cajamarca, el delantero Mauricio Arrasco se despidió de la institución mediante un mensaje publicado en sus redes sociales, mientras su futuro profesional estaría]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Arrasco]]></category>
+    <category><![CDATA[Alianza]]></category>
+    <category><![CDATA[Cristal]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6f8c59d08b79.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6f8c59d08b79.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6f8c59d08b79.jpg"/>
+    <media:description type="plain"><![CDATA[Arrasco despierta interés de Alianza y Cristal — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Martín Távara continuará su carrera en Angola</title>
+    <link>https://ahora.com.pe/deportes/martin-tavara-continuara-su-carrera-en-angola</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/martin-tavara-continuara-su-carrera-en-angola</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:59 GMT</pubDate>
+    <description><![CDATA[El mediocampista peruano Martín Távara inició una nueva etapa en su carrera profesional tras ser anunciado oficialmente como incorporación de Petro de Luanda, uno de los clubes más importantes de]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Martín Távara]]></category>
+    <category><![CDATA[Angola]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/6cbb41ac70a9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/6cbb41ac70a9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/6cbb41ac70a9.jpg"/>
+    <media:description type="plain"><![CDATA[Martín Távara continuará su carrera en Angola — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Universitario jugará sin su hinchada en Huancayo</title>
+    <link>https://ahora.com.pe/deportes/universitario-jugara-sin-su-hinchada-en-huancayo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/universitario-jugara-sin-su-hinchada-en-huancayo</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:53 GMT</pubDate>
+    <description><![CDATA[Sport Huancayo recibirá a Universitario de Deportes sin presencia de público visitante en el encuentro de ida de las semifinales de los playoffs de la Liga 1 2026, programado para este domingo 29 de]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Universitario]]></category>
+    <category><![CDATA[Huancayo]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/d0e709c36f62.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/d0e709c36f62.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/d0e709c36f62.jpg"/>
+    <media:description type="plain"><![CDATA[Universitario jugará sin su hinchada en Huancayo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Municipal de Chacos busca su quinta victoria</title>
+    <link>https://ahora.com.pe/deportes/municipal-de-chacos-busca-su-quinta-victoria</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/municipal-de-chacos-busca-su-quinta-victoria</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:49 GMT</pubDate>
+    <description><![CDATA[Municipal de Chacos buscará mantener su puntaje perfecto cuando enfrente este domingo 29 de noviembre a Regatas Lima, por la quinta jornada del Grupo 4 del torneo Tradición Copera.]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Municipal de Chacos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/1d3b9c310a2b.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/1d3b9c310a2b.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/1d3b9c310a2b.jpg"/>
+    <media:description type="plain"><![CDATA[Municipal de Chacos busca su quinta victoria — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Atlético EVZA busca gerente deportivo</title>
+    <link>https://ahora.com.pe/deportes/atletico-evza-busca-gerente-deportivo</link>
+    <guid isPermaLink="true">https://ahora.com.pe/deportes/atletico-evza-busca-gerente-deportivo</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:46 GMT</pubDate>
+    <description><![CDATA[Con miras a su participación en la Copa Perú 2027, Atlético EVZA, campeón huanuqueño, anunció la convocatoria para contratar a un gerente deportivo, profesional que tendrá la responsabilidad de]]></description>
+    <dc:creator><![CDATA[Ahora Deportes]]></dc:creator>
+    <category><![CDATA[Deportes]]></category>
+    <category><![CDATA[Atlético EVZA]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/2aac46d4155d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/2aac46d4155d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/2aac46d4155d.jpg"/>
+    <media:description type="plain"><![CDATA[Atlético EVZA busca gerente deportivo — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Dictan siete meses de prisión preventiva por presuntos tocamientos a terramoza</title>
+    <link>https://ahora.com.pe/policiales/dictan-siete-meses-de-prision-preventiva-por-presuntos-tocamientos-a-terramoza</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/dictan-siete-meses-de-prision-preventiva-por-presuntos-tocamientos-a-terramoza</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:39 GMT</pubDate>
+    <description><![CDATA[Un pasajero identificado con las iniciales T. L. recibió siete meses de prisión preventiva mientras es investigado por presuntos tocamientos indebidos contra una joven terramoza en un bus]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/cd1a7b03bb84.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/cd1a7b03bb84.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/cd1a7b03bb84.jpg"/>
+    <media:description type="plain"><![CDATA[Dictan siete meses de prisión preventiva por presuntos tocamientos a terramoza — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Asaltantes con máscaras roban dinero de minimarket Don Pedrito en Amarilis</title>
+    <link>https://ahora.com.pe/policiales/asaltantes-con-mascaras-roban-dinero-de-minimarket-don-pedrito-en-amarilis</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/asaltantes-con-mascaras-roban-dinero-de-minimarket-don-pedrito-en-amarilis</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:36 GMT</pubDate>
+    <description><![CDATA[Dos sujetos que utilizaban máscaras y cascos de seguridad asaltaron el minimarket Don Pedrito, ubicado en la vía Colectora, en el distrito de Amarilis, provincia y departamento de Huánuco.]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Don Pedrito]]></category>
+    <category><![CDATA[Amarilis]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/ed9cb57e8561.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/ed9cb57e8561.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/ed9cb57e8561.jpg"/>
+    <media:description type="plain"><![CDATA[Asaltantes con máscaras roban dinero de minimarket Don Pedrito en Amarilis — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Caen “Cholo” y “Francito” por presunto robo de S/70 mil</title>
+    <link>https://ahora.com.pe/policiales/caen-cholo-y-francito-por-presunto-robo-de-s-70-mil</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/caen-cholo-y-francito-por-presunto-robo-de-s-70-mil</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:32 GMT</pubDate>
+    <description><![CDATA[La Policía detuvo a dos investigados en Huánuco y Lima mediante una orden de detención preliminar. Falta precisar si están vinculados al asalto contra esposos que denunciaron perder S/71 540]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c99a57e95d5d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c99a57e95d5d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c99a57e95d5d.jpg"/>
+    <media:description type="plain"><![CDATA[Caen “Cholo” y “Francito” por presunto robo de S/70 mil — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Escolar resulta herida en pelea entre estudiantes de Tingo María</title>
+    <link>https://ahora.com.pe/regional/escolar-resulta-herida-en-pelea-entre-estudiantes-de-tingo-maria</link>
+    <guid isPermaLink="true">https://ahora.com.pe/regional/escolar-resulta-herida-en-pelea-entre-estudiantes-de-tingo-maria</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:29 GMT</pubDate>
+    <description><![CDATA[Una estudiante de la institución educativa Gómez Arias Dávila fue trasladada de emergencia al hospital de Tingo María después de resultar herida durante una pelea con otra escolar.]]></description>
+    <dc:creator><![CDATA[Ahora Regional]]></dc:creator>
+    <category><![CDATA[Regional]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/c74e0c14315c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/c74e0c14315c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/c74e0c14315c.jpg"/>
+    <media:description type="plain"><![CDATA[Escolar resulta herida en pelea entre estudiantes de Tingo María — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Caen dos sospechosos de asaltar a joven en Tingo María</title>
+    <link>https://ahora.com.pe/policiales/caen-dos-sospechosos-de-asaltar-a-joven-en-tingo-maria</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/caen-dos-sospechosos-de-asaltar-a-joven-en-tingo-maria</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:26 GMT</pubDate>
+    <description><![CDATA[Dos hombres fueron detenidos por efectivos de la Policía Nacional tras ser señalados como presuntos responsables del asalto a una joven de 21 años en la sexta cuadra del jirón Lamas, en Tingo María]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Tingo María]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/780888e5285d.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/780888e5285d.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/780888e5285d.jpg"/>
+    <media:description type="plain"><![CDATA[Caen dos sospechosos de asaltar a joven en Tingo María — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Hallan muerto en el Huallaga a trabajador del puente La Muyuna</title>
+    <link>https://ahora.com.pe/policiales/hallan-muerto-en-el-huallaga-a-trabajador-del-puente-la-muyuna</link>
+    <guid isPermaLink="true">https://ahora.com.pe/policiales/hallan-muerto-en-el-huallaga-a-trabajador-del-puente-la-muyuna</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:22 GMT</pubDate>
+    <description><![CDATA[Aldair Guerra Pérez, de 25 años, desapareció tras ingresar al río durante su descanso. Su cuerpo fue encontrado en Castillo Grande; las circunstancias del fallecimiento permanecen pendientes de esclarecimiento oficial]]></description>
+    <dc:creator><![CDATA[Ahora Policiales]]></dc:creator>
+    <category><![CDATA[Policiales]]></category>
+    <category><![CDATA[Huallaga]]></category>
+    <category><![CDATA[Muyuna]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b6696cd2f65c.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b6696cd2f65c.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b6696cd2f65c.jpg"/>
+    <media:description type="plain"><![CDATA[Hallan muerto en el Huallaga a trabajador del puente La Muyuna — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Trump pide a Putin frenar agresiones en Europa tras reunirse con Rutte</title>
+    <link>https://ahora.com.pe/mundo/trump-pide-a-putin-frenar-agresiones-en-europa-tras-reunirse-con-rutte</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/trump-pide-a-putin-frenar-agresiones-en-europa-tras-reunirse-con-rutte</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:20 GMT</pubDate>
+    <description><![CDATA[El presidente de Estados Unidos, Donald Trump, aseguró este jueves 26 de noviembre que pidió a su homólogo ruso, Vladímir Putin, detener las agresiones militares contra territorios europeos.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Trump]]></category>
+    <category><![CDATA[Putin]]></category>
+    <category><![CDATA[Europa]]></category>
+    <category><![CDATA[Rutte]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/4207603da0cf.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/4207603da0cf.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/4207603da0cf.jpg"/>
+    <media:description type="plain"><![CDATA[Trump pide a Putin frenar agresiones en Europa tras reunirse con Rutte — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Tormentas y fallas aéreas complican viajes por Acción de Gracias en Estados Unidos</title>
+    <link>https://ahora.com.pe/mundo/tormentas-y-fallas-aereas-complican-viajes-por-accion-de-gracias-en-estados</link>
+    <guid isPermaLink="true">https://ahora.com.pe/mundo/tormentas-y-fallas-aereas-complican-viajes-por-accion-de-gracias-en-estados</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:16 GMT</pubDate>
+    <description><![CDATA[Millones de viajeros afrontan una semana complicada en Estados Unidos por la coincidencia de tormentas, alta demanda de transporte y problemas técnicos en aeropuertos.]]></description>
+    <dc:creator><![CDATA[Ahora Mundo]]></dc:creator>
+    <category><![CDATA[Mundo]]></category>
+    <category><![CDATA[Acción de Gracias]]></category>
+    <category><![CDATA[Estados Unidos]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/3ed904d8e4f4.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/3ed904d8e4f4.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/3ed904d8e4f4.jpg"/>
+    <media:description type="plain"><![CDATA[Tormentas y fallas aéreas complican viajes por Acción de Gracias en Estados Unidos — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>MTPE anuncia 18 659 vacantes y plantea reglas para descansos laborales</title>
+    <link>https://ahora.com.pe/economia/mtpe-anuncia-18-659-vacantes-y-plantea-reglas-para-descansos-laborales</link>
+    <guid isPermaLink="true">https://ahora.com.pe/economia/mtpe-anuncia-18-659-vacantes-y-plantea-reglas-para-descansos-laborales</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:13 GMT</pubDate>
+    <description><![CDATA[El Ministerio de Trabajo y Promoción del Empleo (MTPE) informó que su plataforma Empleos Perú ofrece 18 659 vacantes laborales, según el balance difundido el 21 de noviembre.]]></description>
+    <dc:creator><![CDATA[Ahora Economia]]></dc:creator>
+    <category><![CDATA[Economía]]></category>
+    <category><![CDATA[MTPE]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/b87659e4ecb6.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/b87659e4ecb6.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/b87659e4ecb6.jpg"/>
+    <media:description type="plain"><![CDATA[MTPE anuncia 18 659 vacantes y plantea reglas para descansos laborales — Licencia: propia]]></media:description>
+  </item>
+  <item>
+    <title>Lluvias inundan Piura y dejan a unas 50 personas atrapadas en centro comercial</title>
+    <link>https://ahora.com.pe/nacional/lluvias-inundan-piura-y-dejan-a-unas-50-personas-atrapadas-en-centro-comercial</link>
+    <guid isPermaLink="true">https://ahora.com.pe/nacional/lluvias-inundan-piura-y-dejan-a-unas-50-personas-atrapadas-en-centro-comercial</guid>
+    <pubDate>Fri, 27 Nov 2026 09:01:10 GMT</pubDate>
+    <description><![CDATA[Las intensas lluvias registradas la tarde y noche del jueves 26 de noviembre de 2026 inundaron calles de Piura y dificultaron el desplazamiento de ciudadanos.]]></description>
+    <dc:creator><![CDATA[Ahora Nacional]]></dc:creator>
+    <category><![CDATA[Nacional]]></category>
+    <category><![CDATA[Piura]]></category>
+    <enclosure url="https://ahora.com.pe/api/uploads/images/2026/11/11823c1023f9.jpg" length="0" type="image/jpeg"/>
+    <media:content url="https://ahora.com.pe/api/uploads/images/2026/11/11823c1023f9.jpg" medium="image" type="image/jpeg"/>
+    <media:thumbnail url="https://ahora.com.pe/api/uploads/images/2026/11/11823c1023f9.jpg"/>
+    <media:description type="plain"><![CDATA[Lluvias inundan Piura y dejan a unas 50 personas atrapadas en centro comercial — Licencia: propia]]></media:description>
+  </item>
+  </channel>
+</rss>
